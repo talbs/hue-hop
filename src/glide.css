@@ -1,0 +1,27 @@
+@layer hue-hop {
+  @property --_hop-slide {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+  @property --_hop-span {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 1;
+  }
+  @keyframes hue-hop-glide {
+    from {
+      --_hop-slide: 2;
+    }
+    to {
+      --_hop-slide: 0;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) and (forced-colors: none) and (prefers-contrast: no-preference) {
+    hue-hop[glide] {
+      --_hop-span: var(--hop-glide-spread, 1);
+      animation: hue-hop-glide calc(var(--hop-glide-cycle, 10) * 1s) linear
+        infinite;
+    }
+  }
+}
