@@ -1,0 +1,63 @@
+{
+  "name": "hue-hop",
+  "version": "0.1.0",
+  "description": "Give each letter of a heading or name its own color, stepped from one color to another.",
+  "keywords": [
+    "web-components",
+    "custom-element",
+    "css",
+    "oklch",
+    "color",
+    "typography",
+    "heading",
+    "highlight-api"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "author": "Brian Talbot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talbs/hue-hop.git"
+  },
+  "homepage": "https://github.com/talbs/hue-hop#readme",
+  "bugs": "https://github.com/talbs/hue-hop/issues",
+  "exports": {
+    ".": {
+      "types": "./hue-hop.d.ts",
+      "default": "./dist/hue-hop.js"
+    },
+    "./drift.css": "./dist/drift.css",
+    "./glide.css": "./dist/glide.css",
+    "./hues.css": "./dist/hues.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "./dist/hue-hop.js",
+    "./dist/*.css"
+  ],
+  "customElements": "custom-elements.json",
+  "jsdelivr": "./dist/hue-hop.js",
+  "unpkg": "./dist/hue-hop.js",
+  "files": [
+    "dist",
+    "hue-hop.d.ts",
+    "custom-elements.json"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "size": "node scripts/size.js",
+    "pretest": "npm run build",
+    "test": "prettier --check . --ignore-path .gitignore --ignore-path .git/info/exclude && node --test 'test/*.test.js'",
+    "prepack": "npm run build && npm run size",
+    "format": "prettier --write . --ignore-path .gitignore --ignore-path .git/info/exclude",
+    "prepublishOnly": "npm test"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright": "1.64.1",
+    "prettier": "3.9.10"
+  }
+}

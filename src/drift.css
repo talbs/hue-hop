@@ -1,0 +1,27 @@
+@layer hue-hop {
+  @property --_hop-drift {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+  @property --_hop-wave {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+  }
+  @keyframes hue-hop-drift {
+    from {
+      --_hop-wave: -1;
+    }
+    to {
+      --_hop-wave: 1;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) and (forced-colors: none) and (prefers-contrast: no-preference) {
+    hue-hop[drift] {
+      --_hop-drift: calc(var(--_hop-wave) * var(--hop-drift-range, 24));
+      animation: hue-hop-drift calc(var(--hop-drift-cycle, 10) * 0.5s)
+        ease-in-out calc(var(--hop-drift-cycle, 10) * -0.25s) infinite alternate;
+    }
+  }
+}
