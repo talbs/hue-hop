@@ -1,0 +1,176 @@
+{
+  "schemaVersion": "2.1.0",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "dist/hue-hop.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "HueHop",
+          "description": "Colors each letter of its text with a different step of a color ramp.",
+          "customElement": true,
+          "tagName": "hue-hop",
+          "superclass": {
+            "name": "HTMLElement",
+            "package": "global:"
+          },
+          "attributes": [
+            {
+              "name": "start",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "start",
+              "description": "The color of the first letter, which sets `--hop-start` on this element. Left out, it's picked from the end color."
+            },
+            {
+              "name": "end",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "end",
+              "description": "The color of the last letter, which sets `--hop-end` on this element. Left out, it's picked from the start color."
+            },
+            {
+              "name": "drift",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Slowly sways the hues back and forth, needs `drift.css`, and holds still when the visitor prefers reduced motion."
+            },
+            {
+              "name": "glide",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Slowly moves the colors along the letters, needs `glide.css`, and holds still when the visitor prefers reduced motion."
+            },
+            {
+              "name": "hue",
+              "type": {
+                "text": "'dusk' | 'reef' | 'fern' | 'ember' | 'guava' | 'orchid' | 'honey'"
+              },
+              "description": "Picks a ready-made look from `hues.css`."
+            },
+            {
+              "name": "display",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Switches the picked hue to its large-heading version, which passes 3:1 instead of 4.5:1."
+            },
+            {
+              "name": "hops",
+              "type": {
+                "text": "number"
+              },
+              "description": "How many color steps the letters use, one per letter up to 64, written by the element itself, so don't set it."
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "hops",
+              "type": {
+                "text": "number"
+              },
+              "readonly": true,
+              "description": "How many color steps the letters use, one per letter up to 64, or `0` when the element is off the page or the browser lacks support."
+            },
+            {
+              "kind": "field",
+              "name": "start",
+              "type": {
+                "text": "string | null"
+              },
+              "attribute": "start",
+              "description": "The color of the first letter, mirroring the `start` attribute, where `null` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "end",
+              "type": {
+                "text": "string | null"
+              },
+              "attribute": "end",
+              "description": "The color of the last letter, mirroring the `end` attribute, where `null` removes it."
+            }
+          ],
+          "cssProperties": [
+            {
+              "name": "--hop-start",
+              "syntax": "<color>",
+              "description": "The color of the first letter. Left out, it's picked from `--hop-end`."
+            },
+            {
+              "name": "--hop-end",
+              "syntax": "<color>",
+              "description": "The color of the last letter. Left out, it's picked from `--hop-start`."
+            },
+            {
+              "name": "--hop-curve",
+              "syntax": "<number>",
+              "default": "1",
+              "description": "How the steps are spaced: `1` is even, higher stays near the start color longer, and lower reaches the end color sooner."
+            },
+            {
+              "name": "--hop-lift",
+              "syntax": "<number>",
+              "default": "0",
+              "description": "How much extra color intensity (OKLCH chroma) the middle letters get, so the blend doesn't go dull halfway."
+            },
+            {
+              "name": "--hop-shift",
+              "syntax": "<number>",
+              "default": "0",
+              "description": "Turns every hue by this many degrees, written as a plain number (`30`, not `30deg`)."
+            },
+            {
+              "name": "--hop-drift-range",
+              "syntax": "<number>",
+              "default": "24",
+              "description": "How many degrees the hues sway each way when `drift` is on, written as a plain number."
+            },
+            {
+              "name": "--hop-drift-cycle",
+              "syntax": "<number>",
+              "default": "10",
+              "description": "How many seconds one full sway there and back takes when `drift` is on, written as a plain number."
+            },
+            {
+              "name": "--hop-glide-spread",
+              "syntax": "<number>",
+              "default": "1",
+              "description": "How many waves of color fit in the text when `glide` is on: `1` shows one at a time, and `2` or more reads as chasing lights."
+            },
+            {
+              "name": "--hop-glide-cycle",
+              "syntax": "<number>",
+              "default": "10",
+              "description": "How many seconds one full pass of the colors takes when `glide` is on, written as a plain number."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HueHop",
+          "declaration": {
+            "name": "HueHop",
+            "module": "dist/hue-hop.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "hue-hop",
+          "declaration": {
+            "name": "HueHop",
+            "module": "dist/hue-hop.js"
+          }
+        }
+      ]
+    }
+  ]
+}

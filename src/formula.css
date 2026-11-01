@@ -1,0 +1,22 @@
+::highlight(hue-hop-K) {
+  --_hop-x: mod(
+    var(--_hop-i) / max(var(--_hop-n) - 1, 1) * var(--_hop-span, 1) +
+      var(--_hop-slide, 0),
+    2
+  );
+  --_hop-p: pow(min(var(--_hop-x), 2 - var(--_hop-x)), var(--hop-curve, 1));
+  --_hop-partner: oklch(
+    from var(--hop-start, var(--hop-end)) l c
+      calc(h + 50 * clamp(-1, (mod(h - 95 + 180, 360) - 180) * 1000 + 1, 1))
+  );
+  --_hop-mix: color-mix(
+    in oklch,
+    var(--hop-start, var(--_hop-partner)),
+    var(--hop-end, var(--_hop-partner)) calc(var(--_hop-p) * 100%)
+  );
+  color: oklch(
+    from var(--_hop-mix) l
+      calc(c + var(--hop-lift, 0) * sin(var(--_hop-p) * pi))
+      calc(h + var(--hop-shift, 0) + var(--_hop-drift, 0))
+  );
+}
