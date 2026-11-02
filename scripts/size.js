@@ -5,7 +5,6 @@ import { basename } from 'node:path';
 const budgets = {
   'dist/hue-hop.js': 2048,
   'dist/drift.css': 400,
-  'dist/glide.css': 400,
   'dist/hues.css': 600,
 };
 
