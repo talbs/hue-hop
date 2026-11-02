@@ -86,29 +86,6 @@ No bundler? Load `dist/drift.css` from the package with a `<link>`.
 
 Drift only turns hues, and lightness holds. Contrast can still shift a little as the hues turn, so leave some margin at the start and end colors. Drift stops when the visitor prefers reduced motion.
 
-## Glide
-
-`glide.css` is a second motion add-on. Drift is the main one. Glide moves the colors along the letters instead of turning them. Import it once, then add `glide` to any element.
-
-```js
-import 'hue-hop/glide.css';
-```
-
-```html
-<hue-hop glide>Ada Lovelace</hue-hop>
-```
-
-No bundler? Load `dist/glide.css` from the package with a `<link>`.
-
-| Property             | Default | What it does                                                                                                                  |
-| -------------------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `--hop-glide-spread` | `1`     | How many waves of color fit in the text when `glide` is on: `1` shows one at a time, and `2` or more reads as chasing lights. |
-| `--hop-glide-cycle`  | `10`    | How many seconds one full pass of the colors takes when `glide` is on, written as a plain number.                             |
-
-The end color moves through the text from the first letter to the last, and then the start color does the same. In between, every step from start to end shows. Every letter stays on the steps between your two colors. To run it the other way, set `animation-direction: reverse` on the element.
-
-Glide looks best at spread `1`. Use one motion per heading. If an element has both `drift` and `glide`, only one of them runs. Glide stops when the visitor prefers reduced motion.
-
 ## Ready-made hues
 
 `hues.css` is an add-on with seven ready-made looks. Import it once, then pick one with the `hue` attribute.
@@ -148,7 +125,7 @@ Add `display` to switch to the display version (for large headings). Its colors 
 
 The hues use `light-dark()`, so the page needs `color-scheme` to get the dark versions (see below). A `start` or `end` attribute, or a `--hop-*` value you set on the element, wins over the hue's. So you can pick a hue and change one end (`<hue-hop hue="dusk" end="gold">`). Every hue also sets `--hop-lift` to `0.021`.
 
-`hues.css`, `drift.css` and `glide.css` live in a cascade layer named `hue-hop`, so your unlayered CSS always wins over them. If your site uses layers too (Tailwind v4 does), list `hue-hop` first in your layer order. Then your own layers win:
+`hues.css` and `drift.css` live in a cascade layer named `hue-hop`, so your unlayered CSS always wins over them. If your site uses layers too (Tailwind v4 does), list `hue-hop` first in your layer order. Then your own layers win:
 
 ```css
 @layer hue-hop, theme, base, components, utilities;
@@ -322,7 +299,7 @@ With server rendering, the server's HTML has no `hops`. If the element is define
 
 ## Accessibility
 
-Screen readers hear the text once, as words, because the text is never split. Forced colors mode turns the effect off, and so does an OS "increase contrast" setting (`prefers-contrast: more`). The heading falls back to its normal color, and a site can't opt back in. Drift and glide stop when the visitor prefers reduced motion.
+Screen readers hear the text once, as words, because the text is never split. Forced colors mode turns the effect off, and so does an OS "increase contrast" setting (`prefers-contrast: more`). The heading falls back to its normal color, and a site can't opt back in. Drift stops when the visitor prefers reduced motion.
 
 ## Known limits
 
@@ -345,7 +322,7 @@ Screen readers hear the text once, as words, because the text is never split. Fo
 - Screen-reader-only text inside the element (a visually hidden span, say) still uses up hops. So the visible letters may not reach `--hop-end`.
 - Gradient-text headings (`background-clip: text` with a transparent fill) hide the effect. The transparent fill wins.
 - `color` on `<hue-hop>` only shows where the effect is off: an unsupported browser, no start or end color, forced colors or increased contrast.
-- `drift.css` and `glide.css` target the `hue-hop` tag. If you register a subclass under another tag, copy the `hue-hop[drift]` or `hue-hop[glide]` rule for it, inside the same media query. Keep `var()` out of any keyframes you write for it, or Firefox animates them in jumps.
+- `drift.css` targets the `hue-hop` tag. If you register a subclass under another tag, copy the `hue-hop[drift]` rule for it, inside the same media query. Keep `var()` out of any keyframes you write for it, or Firefox animates them in jumps.
 - The element adds its styles from JavaScript (constructed stylesheets in the document, or in the shadow root it sits in), not a `<style>` tag. So a content security policy doesn't need `style-src 'unsafe-inline'`.
 
 ## Contributing

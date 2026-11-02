@@ -40,13 +40,6 @@
               "description": "Slowly sways the hues back and forth, needs `drift.css`, and holds still when the visitor prefers reduced motion."
             },
             {
-              "name": "glide",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Slowly moves the colors along the letters, needs `glide.css`, and holds still when the visitor prefers reduced motion."
-            },
-            {
               "name": "hue",
               "type": {
                 "text": "'dusk' | 'reef' | 'fern' | 'ember' | 'guava' | 'orchid' | 'honey'"
@@ -137,18 +130,6 @@
               "syntax": "<number>",
               "default": "10",
               "description": "How many seconds one full sway there and back takes when `drift` is on, written as a plain number."
-            },
-            {
-              "name": "--hop-glide-spread",
-              "syntax": "<number>",
-              "default": "1",
-              "description": "How many waves of color fit in the text when `glide` is on: `1` shows one at a time, and `2` or more reads as chasing lights."
-            },
-            {
-              "name": "--hop-glide-cycle",
-              "syntax": "<number>",
-              "default": "10",
-              "description": "How many seconds one full pass of the colors takes when `glide` is on, written as a plain number."
             }
           ]
         }

@@ -1,10 +1,8 @@
 ::highlight(hue-hop-K) {
-  --_hop-x: mod(
-    var(--_hop-i) / max(var(--_hop-n) - 1, 1) * var(--_hop-span, 1) +
-      var(--_hop-slide, 0),
-    2
+  --_hop-p: pow(
+    calc(var(--_hop-i) / max(var(--_hop-n) - 1, 1)),
+    var(--hop-curve, 1)
   );
-  --_hop-p: pow(min(var(--_hop-x), 2 - var(--_hop-x)), var(--hop-curve, 1));
   --_hop-partner: oklch(
     from var(--hop-start, var(--hop-end)) l c
       calc(h + 50 * clamp(-1, (mod(h - 95 + 180, 360) - 180) * 1000 + 1, 1))

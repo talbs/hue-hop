@@ -29,7 +29,7 @@ await esbuild.build({
 });
 
 await esbuild.build({
-  entryPoints: ['src/drift.css', 'src/glide.css', 'src/hues.css'],
+  entryPoints: ['src/drift.css', 'src/hues.css'],
   outdir: 'dist',
   minify: true,
 });

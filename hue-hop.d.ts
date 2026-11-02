@@ -24,7 +24,6 @@ declare module 'react' {
       'hue-hop': ClassAttributes<HueHop> &
         HTMLAttributes<HueHop> & {
           drift?: boolean | '';
-          glide?: boolean | '';
           hue?:
             'dusk' | 'reef' | 'fern' | 'ember' | 'guava' | 'orchid' | 'honey';
           display?: boolean | '';
