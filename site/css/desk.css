@@ -1,0 +1,528 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Background only: hidden from assistive tech and inert. Each cap rides its letter when the wordmark hops. Wide screens only, where the wordmark can't run under it. */
+.fader-bank {
+  display: none;
+}
+
+@media (min-width: 80rem) {
+  .fader-bank {
+    position: absolute;
+    inset-block-start: var(--space-page);
+    inset-inline-end: var(--gutter);
+    display: flex;
+    gap: var(--space-section);
+    padding-inline: 0.8125rem;
+    opacity: 0.4;
+  }
+
+  .fader-bank wa-slider::part(track) {
+    height: 11rem;
+  }
+
+  .fader-bank wa-slider::part(indicator) {
+    display: none;
+  }
+}
+
+.hero-title {
+  view-transition-name: hero-wordmark;
+  font-size: var(--type-display);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-display);
+  letter-spacing: -0.035em;
+  /* The H's left side bearing in Onest 800, so its stem lines up with the text below. */
+  margin-inline-start: -0.071em;
+}
+
+/* Hidden until hero.js drops the letters in, so the wordmark doesn't flash first. If the script never runs, it shows after a second anyway. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-title:not(.is-landed) {
+    animation: hero-wait 1s step-end;
+  }
+}
+
+@keyframes hero-wait {
+  from {
+    opacity: 0;
+  }
+}
+
+.hero-body {
+  --flank-size: 30rem;
+  --content-percentage: 44%;
+  gap: var(--space-section) var(--space-page);
+  margin-block-start: var(--space-page);
+}
+
+.hero-pitch {
+  max-width: 46rem;
+  color: var(--ink-quiet);
+  font-size: var(--type-lead);
+  line-height: var(--leading-tight);
+}
+
+.install-card {
+  min-width: 0;
+}
+
+/* The tab labels sit in padding the pitch's first line doesn't have; pulling the card up lines their tops up with the pitch's capitals. */
+@media (min-width: 64rem) {
+  .install-card {
+    margin-block-start: -0.4375rem;
+  }
+}
+
+.install-tabs {
+  --indicator-color: var(--lit);
+  --track-color: var(--divider);
+  --track-width: var(--border-thin);
+}
+
+.install-tabs wa-tab::part(base) {
+  padding: var(--space-related) var(--wa-space-s);
+  color: var(--ink-faint);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color var(--note-16) var(--ease-hit);
+}
+
+.install-tabs::part(tabs) {
+  gap: 0;
+}
+
+.install-tabs wa-tab:hover::part(base) {
+  color: var(--ink-quiet);
+}
+
+.install-tabs wa-tab[aria-selected='true']::part(base) {
+  color: var(--ink);
+}
+
+/* Holds the taller CDN panel's height, so switching tabs doesn't push the page. */
+.install-tabs::part(body) {
+  min-height: 10.5rem;
+  padding-block-start: var(--space-group);
+}
+
+.install-tabs wa-tab-panel {
+  --padding: 0;
+}
+
+.install-note {
+  margin-block: var(--space-group) var(--space-related);
+  color: var(--ink-quiet);
+  font-size: var(--type-small);
+}
+
+wa-copy-button {
+  color: var(--ink-quiet);
+}
+
+/* The pixel set is drawn on a 10-square grid; 15px puts each square on exactly 3 device pixels on 2x screens. */
+wa-copy-button wa-icon[family='pixel'] {
+  font-size: 15px;
+}
+
+wa-copy-button::part(success-icon) {
+  color: var(--lit);
+}
+
+.stage {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  align-items: center;
+  min-height: 11rem;
+  padding: var(--space-section) var(--space-group);
+  border: var(--border-thin) solid var(--border-container);
+  border-block-end: 0;
+  border-radius: var(--radius-container) var(--radius-container) 0 0;
+  background: var(--stage);
+}
+
+.stage-readout {
+  justify-self: end;
+}
+
+.stage-hue {
+  margin-inline-end: var(--space-related);
+}
+
+.stage-text {
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: var(--type-stage);
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  overflow-wrap: anywhere;
+}
+
+.desk {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--wa-space-l);
+  padding: var(--space-group);
+  border: var(--border-thin) solid transparent;
+  border-radius: 0 0 var(--radius-container) var(--radius-container);
+  background: var(--surface);
+  box-shadow: var(--depth-panel);
+}
+
+wa-input {
+  --wa-form-control-padding-inline: var(--space-group);
+  min-width: 0;
+}
+
+/* Pressed into the desk the same way as the sleeves. */
+wa-input::part(input-wrapper) {
+  min-height: var(--tap);
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+  background: var(--stage);
+  box-shadow: var(--depth-pressed);
+}
+
+wa-input::part(input) {
+  color: var(--ink);
+  font-size: var(--type-body);
+}
+
+wa-input:hover::part(input-wrapper) {
+  border-color: var(--border-control);
+}
+
+/* Takes the selected sleeve's lit edge. The outline stays, transparent, so forced-colors mode still draws it. */
+wa-input:focus-within::part(input-wrapper) {
+  outline-color: transparent;
+  outline-offset: 0;
+  border-color: var(--lit);
+  box-shadow:
+    inset 0 0 0 var(--border-thin) var(--lit),
+    var(--lit-glow);
+}
+
+.hue-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  gap: var(--wa-space-s);
+  margin-inline: calc(var(--space-group) * -1);
+  padding: var(--space-tight) var(--space-group) var(--space-related);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--space-group);
+}
+
+.sleeves {
+  display: contents;
+}
+
+.sleeve {
+  position: relative;
+  display: grid;
+  align-content: space-between;
+  gap: var(--space-related);
+  min-height: 5.5rem;
+  padding: 0.625rem var(--space-group) 0.75rem 0.875rem;
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+  background: var(--stage);
+  box-shadow: var(--depth-pressed);
+  color: inherit;
+  text-align: start;
+  text-decoration: none;
+  scroll-snap-align: start;
+  cursor: pointer;
+  transition:
+    transform var(--note-16) var(--ease-bounce),
+    border-color var(--note-16) var(--ease-hit),
+    box-shadow var(--note-16) var(--ease-hit);
+}
+
+.sleeve:focus-visible {
+  box-shadow: var(--depth-pressed), var(--focus-glow);
+}
+
+.sleeve:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-control);
+}
+
+.sleeve:active {
+  transform: translateY(1px) scale(0.985);
+  transition-duration: var(--note-32);
+  transition-timing-function: var(--ease-hit);
+}
+
+.sleeve[aria-checked='true'] {
+  animation: sleeve-drop var(--note-8) var(--ease-bounce);
+  border-color: var(--lit);
+  box-shadow:
+    inset 0 0 0 var(--border-thin) var(--lit),
+    var(--lit-glow);
+}
+
+@keyframes sleeve-drop {
+  from {
+    transform: translateY(-4px);
+  }
+}
+
+.sleeve-custom {
+  background: transparent;
+  box-shadow: none;
+}
+
+.swatches span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  box-shadow: inset 0 0 0 var(--border-thin) rgb(0 0 0 / 0.2);
+  forced-color-adjust: none;
+  transition: scale var(--note-16) var(--ease-bounce);
+}
+
+.sleeve-custom:hover .swatches span {
+  scale: 1.25;
+}
+
+.sleeve-custom:hover .swatches span + span {
+  transition-delay: calc(var(--note-32) / 2);
+}
+
+.sleeve-exit {
+  margin-inline-start: auto;
+  color: var(--ink-faint);
+  transition: color var(--note-16) var(--ease-hit);
+}
+
+.sleeve-custom:hover .sleeve-exit {
+  color: var(--ink);
+}
+
+.sleeve-name {
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.sleeve-title {
+  font-size: var(--type-body);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.01em;
+}
+
+.fader {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4.5ch;
+  align-items: end;
+  gap: var(--space-group);
+}
+
+/* One fader for the whole board. The cap is 18 along the travel and 32 across it, and its index line and grip always run across the travel, so the line points at the level. */
+wa-slider {
+  --cap-bevel:
+    inset 1px 1px 0 var(--edge-light), inset 0 -2px 0 var(--edge-shade);
+  --cap-index-size: var(--border-thick) 100%;
+  --cap-grip-to: to right;
+  --cap-grip-size: 70% 56%;
+  --track-size: 6px;
+  --thumb-width: 18px;
+  --thumb-height: 32px;
+}
+
+wa-slider[orientation='vertical'] {
+  --cap-index-size: 100% var(--border-thick);
+  --cap-grip-to: to bottom;
+  --cap-grip-size: 56% 70%;
+  --thumb-width: 32px;
+  --thumb-height: 18px;
+}
+
+wa-slider::part(label) {
+  margin-block-end: var(--space-related);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+}
+
+wa-slider::part(track) {
+  border-radius: var(--radius-pill);
+  background: var(--surface-sunken);
+  box-shadow:
+    var(--depth-groove),
+    0 1px 0 var(--edge-light);
+}
+
+wa-slider::part(indicator) {
+  transition:
+    left var(--note-8) var(--ease-bounce),
+    right var(--note-8) var(--ease-bounce);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    color-mix(in oklab, var(--lit), white 15%),
+    color-mix(in oklab, var(--lit), black 20%)
+  );
+  box-shadow: var(--lit-glow);
+}
+
+/* The cap: lit from the top-left, a grip of grooves, and a center index line. */
+wa-slider::part(thumb) {
+  border: var(--border-thin) solid
+    color-mix(in oklch, var(--border-control), var(--border-container));
+  border-radius: var(--radius-cap);
+  background:
+    linear-gradient(var(--ink-quiet), var(--ink-quiet)) center /
+      var(--cap-index-size) no-repeat,
+    repeating-linear-gradient(
+        var(--cap-grip-to),
+        transparent 0 3px,
+        var(--edge-shade) 3px 4px,
+        var(--edge-light) 4px 5px
+      )
+      center / var(--cap-grip-size) no-repeat,
+    linear-gradient(to bottom, var(--cap-top), var(--cap-bottom));
+  box-shadow: var(--cap-bevel), var(--depth-cap);
+  cursor: grab;
+  transition:
+    left var(--note-8) var(--ease-bounce),
+    right var(--note-8) var(--ease-bounce),
+    scale var(--note-16) var(--ease-bounce),
+    box-shadow var(--note-16) var(--ease-bounce),
+    filter var(--note-16) var(--ease-hit);
+}
+
+wa-slider:hover::part(thumb) {
+  filter: brightness(1.08);
+}
+
+/* Reset and arrow keys glide the cap like a motorized fader; a drag follows the pointer exactly. */
+wa-slider:state(focused)::part(thumb) {
+  box-shadow: var(--cap-bevel), var(--depth-cap), var(--focus-glow);
+}
+
+wa-slider:state(dragging)::part(thumb),
+wa-slider:state(dragging)::part(indicator) {
+  transition-property: scale, box-shadow, filter;
+}
+
+wa-slider:state(dragging)::part(thumb) {
+  cursor: grabbing;
+  scale: 1.06;
+  box-shadow: var(--cap-bevel), var(--depth-cap-lifted);
+}
+
+.fader-value {
+  padding-block-end: var(--border-thick);
+  font-family: var(--font-readout);
+  font-size: var(--type-readout);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.reset-button {
+  margin-inline-start: auto;
+}
+
+.lamp-led {
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+[data-state='pass'] {
+  --lit: var(--pass);
+}
+
+[data-state='check'] {
+  --lit: var(--check);
+}
+
+[data-state='check'] .led {
+  animation-name: led-hit-again;
+}
+
+[data-state='off'] .led {
+  border-color: var(--border-control);
+  background: var(--surface-sunken);
+  box-shadow: none;
+}
+
+.lamp-state {
+  color: var(--ink);
+}
+
+.lamp-detail {
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+}
+
+.studio-perks {
+  color: var(--ink-faint);
+  font-size: var(--type-fine);
+  line-height: var(--leading-tight);
+}
+
+.studio-perks li:not(:last-child)::after {
+  content: '·';
+  margin-inline: var(--space-related);
+}
+
+@media (forced-colors: active) {
+  .sleeve[aria-checked='true'] {
+    outline: 3px solid Highlight;
+    outline-offset: -3px;
+  }
+
+  wa-slider::part(thumb) {
+    background: ButtonText;
+  }
+
+  wa-slider::part(track) {
+    border: var(--border-thin) solid CanvasText;
+  }
+
+  wa-slider::part(indicator) {
+    background: CanvasText;
+  }
+}
+
+@media (min-width: 48rem) {
+  .stage {
+    min-height: 16rem;
+    padding: var(--space-section);
+  }
+
+  .desk {
+    gap: var(--space-section);
+    padding: var(--space-section);
+  }
+
+  .hue-grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-columns: auto;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 64rem) {
+  .desk {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    column-gap: var(--space-page);
+  }
+
+  .desk-code {
+    grid-column: 1 / -1;
+  }
+}

@@ -1,0 +1,60 @@
+<header class="site-header">
+  <div class="site-header-inner">
+    <a
+      class="site-wordmark"
+      href="./"
+      data-nav="home"
+    >
+      <hue-hop hue="dusk">Hue Hop</hue-hop>
+    </a>
+    <nav
+      class="site-nav wa-gap-l"
+      aria-label="Site"
+    >
+      <a
+        class="hop-link is-quiet"
+        href="{{docs-url}}"
+        data-nav="docs"
+      >
+        Docs
+      </a>
+      <a
+        class="hop-link is-quiet"
+        href="{{studio-url}}"
+        data-nav="studio"
+      >
+        Studio
+      </a>
+      <a
+        class="hop-link is-quiet"
+        href="{{repo-url}}"
+      >
+        GitHub
+      </a>
+    </nav>
+    <button
+      type="button"
+      class="side-toggle wa-gap-xs wa-align-items-center"
+      id="side-toggle"
+      role="switch"
+      aria-checked="false"
+    >
+      <span class="wa-visually-hidden">Light side</span>
+      <span
+        class="side-track"
+        aria-hidden="true"
+      >
+        <span class="side-knob"></span>
+        <span class="side-letter side-letter-a">A</span>
+        <span class="side-letter side-letter-b">B</span>
+      </span>
+      <span
+        class="side-name readout-label"
+        aria-hidden="true"
+      >
+        <span class="side-name-a">Dark</span>
+        <span class="side-name-b">Light</span>
+      </span>
+    </button>
+  </div>
+</header>

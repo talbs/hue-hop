@@ -68,6 +68,10 @@ async function buildSite() {
   });
   cpSync('site/fonts', '_site/fonts', { recursive: true });
   cpSync('dist', '_site/dist', { recursive: true });
+  cpSync('node_modules/microlighter/dist', '_site/js/microlighter', {
+    recursive: true,
+    filter: (path) => !path.endsWith('.d.ts'),
+  });
 
   await esbuild.build({
     entryPoints: ['site/js/wa.js'],

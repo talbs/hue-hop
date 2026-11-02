@@ -1,0 +1,1088 @@
+<!doctype html>
+<html
+  lang="en"
+  class="wa-dark"
+  data-side="a"
+  data-fa-kit-code="{{fa-kit}}"
+>
+  <head>
+    {{head}}
+    <title>Hue Hop</title>
+    <meta
+      name="description"
+      content="Give each letter of a heading or name its own color, stepped from one color to another."
+    />
+    <link
+      rel="stylesheet"
+      href="./css/desk.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./css/wild.css"
+    />
+    <link
+      rel="stylesheet"
+      href="./css/quickstart.css"
+    />
+    <script
+      type="module"
+      src="./js/desk.js"
+    ></script>
+    <script
+      type="module"
+      src="./js/hero.js"
+    ></script>
+    <script
+      type="module"
+      src="./js/wild.js"
+    ></script>
+  </head>
+  <body>
+    {{header}}
+    <main id="main">
+      <section
+        class="section hero"
+        aria-labelledby="hero-title"
+      >
+        <div
+          class="fader-bank"
+          aria-hidden="true"
+          inert
+        >
+          <wa-slider
+            orientation="vertical"
+            value="0.45"
+            min="0"
+            max="1"
+          ></wa-slider>
+          <wa-slider
+            orientation="vertical"
+            value="0.7"
+            min="0"
+            max="1"
+          ></wa-slider>
+          <wa-slider
+            orientation="vertical"
+            value="0.85"
+            min="0"
+            max="1"
+          ></wa-slider>
+          <wa-slider
+            orientation="vertical"
+            value="0.65"
+            min="0"
+            max="1"
+          ></wa-slider>
+          <wa-slider
+            orientation="vertical"
+            value="0.4"
+            min="0"
+            max="1"
+          ></wa-slider>
+          <wa-slider
+            orientation="vertical"
+            value="0.25"
+            min="0"
+            max="1"
+          ></wa-slider>
+          <wa-slider
+            orientation="vertical"
+            value="0.5"
+            min="0"
+            max="1"
+          ></wa-slider>
+        </div>
+        <h1
+          class="hero-title"
+          id="hero-title"
+        >
+          <hue-hop
+            hue="dusk"
+            drift
+          >
+            Hue Hop
+          </hue-hop>
+        </h1>
+        <div class="hero-body wa-flank:end wa-align-items-start">
+          <div class="wa-stack wa-gap-l">
+            <p class="hero-pitch">
+              Give each letter of a heading or name its own color, stepped from
+              one color to another. The text stays real, so selection,
+              find-in-page and screen readers all work. No spans, no images, no
+              build step.
+            </p>
+            <div class="wa-cluster wa-gap-m">
+              <a
+                class="lit-button lit-button-large is-lit"
+                href="#try"
+              >
+                <span
+                  class="led"
+                  aria-hidden="true"
+                ></span>
+                Try it
+              </a>
+              <a
+                class="lit-button lit-button-large"
+                href="{{docs-url}}"
+              >
+                Docs
+              </a>
+              <a
+                class="lit-button lit-button-large"
+                href="{{studio-url}}"
+              >
+                Studio
+              </a>
+            </div>
+          </div>
+          <div class="install-card wa-stack wa-gap-xs">
+            <h2 class="wa-visually-hidden">Install</h2>
+            <wa-tab-group class="install-tabs">
+              <wa-tab
+                slot="nav"
+                panel="npm"
+              >
+                npm
+              </wa-tab>
+              <wa-tab
+                slot="nav"
+                panel="cdn"
+              >
+                CDN
+              </wa-tab>
+              <wa-tab-panel name="npm">
+                <div class="code-well">
+                  <pre
+                    class="code-block"
+                  ><code class="language-bash" id="hero-install">npm install hue-hop</code></pre>
+                  <wa-copy-button
+                    class="code-copy"
+                    from="hero-install"
+                    copy-label="Copy install command"
+                  >
+                    <wa-icon
+                      slot="copy-icon"
+                      family="pixel"
+                      name="clone"
+                    ></wa-icon>
+                    <wa-icon
+                      slot="success-icon"
+                      family="pixel"
+                      name="check"
+                    ></wa-icon>
+                    <wa-icon
+                      slot="error-icon"
+                      family="pixel"
+                      name="xmark"
+                    ></wa-icon>
+                  </wa-copy-button>
+                </div>
+                <p class="install-note">Then import it once, anywhere</p>
+                <div class="code-well">
+                  <pre
+                    class="code-block"
+                  ><code class="language-javascript" id="hero-import">import 'hue-hop';</code></pre>
+                  <wa-copy-button
+                    class="code-copy"
+                    from="hero-import"
+                    copy-label="Copy import"
+                  >
+                    <wa-icon
+                      slot="copy-icon"
+                      family="pixel"
+                      name="clone"
+                    ></wa-icon>
+                    <wa-icon
+                      slot="success-icon"
+                      family="pixel"
+                      name="check"
+                    ></wa-icon>
+                    <wa-icon
+                      slot="error-icon"
+                      family="pixel"
+                      name="xmark"
+                    ></wa-icon>
+                  </wa-copy-button>
+                </div>
+              </wa-tab-panel>
+              <wa-tab-panel name="cdn">
+                <div class="code-well">
+                  <pre
+                    class="code-block"
+                  ><code class="language-html" id="hero-cdn">&lt;script
+  type="module"
+  src="https://cdn.jsdelivr.net/npm/hue-hop"
+&gt;&lt;/script&gt;</code></pre>
+                  <wa-copy-button
+                    class="code-copy"
+                    from="hero-cdn"
+                    copy-label="Copy CDN script tag"
+                  >
+                    <wa-icon
+                      slot="copy-icon"
+                      family="pixel"
+                      name="clone"
+                    ></wa-icon>
+                    <wa-icon
+                      slot="success-icon"
+                      family="pixel"
+                      name="check"
+                    ></wa-icon>
+                    <wa-icon
+                      slot="error-icon"
+                      family="pixel"
+                      name="xmark"
+                    ></wa-icon>
+                  </wa-copy-button>
+                </div>
+                <p class="install-note">No bundler. One tag in your page.</p>
+              </wa-tab-panel>
+            </wa-tab-group>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section"
+        id="try"
+        aria-labelledby="try-title"
+      >
+        <h2
+          class="section-title"
+          id="try-title"
+        >
+          Try It
+        </h2>
+        <p class="section-lead">
+          Type your own words and pick one of the seven hues. Move the faders,
+          then copy the markup, or take it all to the Studio for custom colors
+          and the rest of the controls.
+        </p>
+
+        <div
+          class="stage"
+          id="stage"
+        >
+          <div
+            class="stage-readout readout-label wa-cluster wa-gap-xs"
+            id="lamp"
+            data-state="off"
+          >
+            <span
+              class="stage-hue"
+              id="stage-hue"
+            >
+              Dusk
+            </span>
+            <span
+              class="led lamp-led"
+              aria-hidden="true"
+            ></span>
+            <span class="wa-visually-hidden">Contrast</span>
+            <output
+              class="lamp-state"
+              id="lamp-state"
+              aria-live="polite"
+            >
+              —
+            </output>
+            <span
+              class="lamp-detail"
+              id="lamp-detail"
+            ></span>
+          </div>
+          <p
+            class="stage-text"
+            dir="auto"
+          >
+            <hue-hop
+              id="live"
+              hue="dusk"
+            >
+              Halftime
+            </hue-hop>
+          </p>
+        </div>
+
+        <div
+          class="desk"
+          id="desk"
+        >
+          <div class="wa-stack wa-gap-xs">
+            <span
+              class="readout-label"
+              id="hues-label"
+            >
+              Hues
+            </span>
+            <div class="hue-grid">
+              <div
+                class="sleeves"
+                role="radiogroup"
+                aria-labelledby="hues-label"
+              >
+                <button
+                  type="button"
+                  role="radio"
+                  class="sleeve"
+                  data-hue="dusk"
+                  aria-checked="true"
+                  tabindex="0"
+                >
+                  <span
+                    class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    dusk
+                  </span>
+                  <span
+                    class="sleeve-title wa-text-truncate"
+                    aria-hidden="true"
+                  >
+                    <hue-hop hue="dusk">Electric Relaxation</hue-hop>
+                  </span>
+                  <span class="wa-visually-hidden">
+                    pale sky to blue-violet
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="sleeve"
+                  data-hue="reef"
+                  aria-checked="false"
+                  tabindex="-1"
+                >
+                  <span
+                    class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    reef
+                  </span>
+                  <span
+                    class="sleeve-title wa-text-truncate"
+                    aria-hidden="true"
+                  >
+                    <hue-hop hue="reef">Aquemini</hue-hop>
+                  </span>
+                  <span class="wa-visually-hidden">pale aqua to blue</span>
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="sleeve"
+                  data-hue="fern"
+                  aria-checked="false"
+                  tabindex="-1"
+                >
+                  <span
+                    class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    fern
+                  </span>
+                  <span
+                    class="sleeve-title wa-text-truncate"
+                    aria-hidden="true"
+                  >
+                    <hue-hop hue="fern">Award Tour</hue-hop>
+                  </span>
+                  <span class="wa-visually-hidden">lime to pine</span>
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="sleeve"
+                  data-hue="ember"
+                  aria-checked="false"
+                  tabindex="-1"
+                >
+                  <span
+                    class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    ember
+                  </span>
+                  <span
+                    class="sleeve-title wa-text-truncate"
+                    aria-hidden="true"
+                  >
+                    <hue-hop hue="ember">Liquid Swords</hue-hop>
+                  </span>
+                  <span class="wa-visually-hidden">pale amber to red</span>
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="sleeve"
+                  data-hue="guava"
+                  aria-checked="false"
+                  tabindex="-1"
+                >
+                  <span
+                    class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    guava
+                  </span>
+                  <span
+                    class="sleeve-title wa-text-truncate"
+                    aria-hidden="true"
+                  >
+                    <hue-hop hue="guava">Juicy</hue-hop>
+                  </span>
+                  <span class="wa-visually-hidden">peach to magenta</span>
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="sleeve"
+                  data-hue="orchid"
+                  aria-checked="false"
+                  tabindex="-1"
+                >
+                  <span
+                    class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    orchid
+                  </span>
+                  <span
+                    class="sleeve-title wa-text-truncate"
+                    aria-hidden="true"
+                  >
+                    <hue-hop hue="orchid">Passin' Me By</hue-hop>
+                  </span>
+                  <span class="wa-visually-hidden">
+                    blush pink to aubergine
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="sleeve"
+                  data-hue="honey"
+                  aria-checked="false"
+                  tabindex="-1"
+                >
+                  <span
+                    class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    honey
+                  </span>
+                  <span
+                    class="sleeve-title wa-text-truncate"
+                    aria-hidden="true"
+                  >
+                    <hue-hop hue="honey">Paid in Full</hue-hop>
+                  </span>
+                  <span class="wa-visually-hidden">butter yellow to rust</span>
+                </button>
+              </div>
+              <a
+                class="sleeve sleeve-custom"
+                id="custom-link"
+                aria-label="Your own colors, darkorange to crimson, in the Studio"
+                href="{{studio-url}}"
+              >
+                <span
+                  class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                >
+                  <span
+                    class="swatches wa-gap-3xs"
+                    aria-hidden="true"
+                  >
+                    <span style="background: darkorange"></span>
+                    <span style="background: crimson"></span>
+                  </span>
+                  custom
+                  <span class="sleeve-exit">Studio ↗</span>
+                </span>
+                <span class="sleeve-title wa-text-truncate">
+                  <hue-hop
+                    start="darkorange"
+                    end="crimson"
+                  >
+                    Pick both ends
+                  </hue-hop>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="wa-stack wa-gap-l">
+            <div class="wa-stack wa-gap-xs">
+              <span
+                class="readout-label"
+                aria-hidden="true"
+              >
+                Text
+              </span>
+              <div class="wa-flank:end wa-gap-s">
+                <wa-input
+                  class="wa-visually-hidden-label"
+                  id="desk-text"
+                  label="Text"
+                  value="Halftime"
+                  autocomplete="off"
+                  spellcheck="false"
+                ></wa-input>
+                <button
+                  type="button"
+                  class="lit-button"
+                  id="shuffle"
+                >
+                  Shuffle
+                </button>
+              </div>
+              <wa-random-content
+                id="samples"
+                items="1"
+                hidden
+              >
+                <span>Halftime</span>
+                <span>Ether</span>
+                <span>Respiration</span>
+                <span>Accordion</span>
+                <span>Electric Relaxation</span>
+                <span>Paid in Full</span>
+                <span>Award Tour</span>
+                <span>Juicy</span>
+                <span>Aquemini</span>
+                <span>Spottieottiedopaliscious</span>
+                <span>Liquid Swords</span>
+                <span>Passin' Me By</span>
+              </wa-random-content>
+            </div>
+
+            <div class="wa-stack wa-gap-m">
+              <div class="fader">
+                <wa-slider
+                  id="curve"
+                  label="Curve"
+                  min="0.3"
+                  max="3"
+                  step="0.1"
+                  value="1"
+                  indicator-offset="1"
+                ></wa-slider>
+                <output
+                  class="fader-value wa-text-end"
+                  for="curve"
+                >
+                  1.0
+                </output>
+              </div>
+              <div class="fader">
+                <wa-slider
+                  id="shift"
+                  label="Shift"
+                  min="-90"
+                  max="90"
+                  step="1"
+                  value="0"
+                  indicator-offset="0"
+                ></wa-slider>
+                <output
+                  class="fader-value wa-text-end"
+                  for="shift"
+                >
+                  0
+                </output>
+              </div>
+            </div>
+
+            <div class="wa-cluster wa-gap-s">
+              <button
+                type="button"
+                class="lit-button"
+                id="drift-switch"
+                aria-pressed="false"
+              >
+                <span
+                  class="led"
+                  aria-hidden="true"
+                ></span>
+                Drift
+              </button>
+              <button
+                type="button"
+                class="lit-button"
+                id="display-switch"
+                aria-pressed="false"
+              >
+                <span
+                  class="led"
+                  aria-hidden="true"
+                ></span>
+                Display
+              </button>
+              <button
+                type="button"
+                class="lit-button reset-button"
+                id="reset"
+              >
+                Reset
+              </button>
+            </div>
+
+            <div class="wa-stack wa-gap-xs">
+              <a
+                class="lit-button wa-justify-content-center"
+                id="studio-link"
+                href="{{studio-url}}"
+                aria-describedby="studio-caption"
+              >
+                Open in Studio
+              </a>
+              <ul
+                class="studio-perks wa-list-plain wa-flex-wrap wa-justify-content-center"
+                id="studio-caption"
+                aria-label="In the Studio"
+              >
+                <li>Custom ends</li>
+                <li>Accents</li>
+                <li>Lift</li>
+                <li>Per-letter contrast</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="desk-code wa-stack wa-gap-xs">
+            <span class="readout-label">Markup</span>
+            <div class="code-well">
+              <pre
+                class="code-block"
+              ><code class="language-html" id="markup"></code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="markup"
+                copy-label="Copy markup"
+              >
+                <wa-icon
+                  slot="copy-icon"
+                  family="pixel"
+                  name="clone"
+                ></wa-icon>
+                <wa-icon
+                  slot="success-icon"
+                  family="pixel"
+                  name="check"
+                ></wa-icon>
+                <wa-icon
+                  slot="error-icon"
+                  family="pixel"
+                  name="xmark"
+                ></wa-icon>
+              </wa-copy-button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="section"
+        id="wild"
+        aria-labelledby="wild-title"
+      >
+        <h2
+          class="section-title"
+          id="wild-title"
+        >
+          In the Wild
+        </h2>
+        <p class="section-lead">
+          Hue Hop is for short text that names something: a title, a name, a
+          number worth noticing. Flip the side to see every one of these light
+          and dark.
+        </p>
+        <div class="wild">
+          <figure class="wild-item wild-deck">
+            <div class="wild-frame">
+              <p class="mock-kicker readout-label">Feature</p>
+              <p class="mock-deck-title">
+                <hue-hop
+                  hue="ember"
+                  display
+                >
+                  Midnight Marauders
+                </hue-hop>
+              </p>
+              <p class="mock-standfirst">
+                A Tribe Called Quest's third album, all fourteen tracks, in the
+                order they were cut.
+              </p>
+              <p class="mock-byline readout-label">
+                By the music desk · 12 min read
+              </p>
+            </div>
+            <figcaption class="readout-label">Magazine deck</figcaption>
+          </figure>
+
+          <figure class="wild-item wild-year">
+            <div class="wild-frame">
+              <p class="mock-year">
+                <hue-hop
+                  hue="dusk"
+                  display
+                >
+                  1994
+                </hue-hop>
+              </p>
+              <ul class="mock-meta wa-stack wa-gap-2xs wa-list-plain">
+                <li>Illmatic</li>
+                <li>Ready to Die</li>
+                <li>Southernplayalisticadillacmuzik</li>
+              </ul>
+            </div>
+            <figcaption class="readout-label">A year</figcaption>
+          </figure>
+
+          <figure class="wild-item wild-dropcap">
+            <div class="wild-frame">
+              <p class="mock-runin">
+                <hue-hop hue="fern">
+                  <span class="mock-cap">T</span>
+                  he Low End Theory
+                </hue-hop>
+                runs fourteen tracks, opens with Excursions and closes with
+                Scenario. Play it front to back at least once.
+              </p>
+            </div>
+            <figcaption class="readout-label">Drop cap</figcaption>
+          </figure>
+
+          <figure class="wild-item wild-accent">
+            <div class="wild-frame">
+              <p class="mock-accent-line">
+                Now playing
+                <hue-hop
+                  hue="guava"
+                  display
+                >
+                  Aquemini
+                </hue-hop>
+              </p>
+              <p class="mock-meta">OutKast, 1998</p>
+              <div
+                class="mock-progress"
+                aria-hidden="true"
+              >
+                <span></span>
+              </div>
+              <p class="mock-times readout-label wa-split">
+                <span>2:41</span>
+                <span>5:19</span>
+              </p>
+            </div>
+            <figcaption class="readout-label">One accented word</figcaption>
+          </figure>
+
+          <figure class="wild-item wild-line">
+            <div class="wild-frame">
+              <p class="mock-line">
+                <hue-hop
+                  hue="orchid"
+                  display
+                  drift
+                >
+                  Spottieottiedopaliscious
+                </hue-hop>
+              </p>
+            </div>
+            <figcaption class="readout-label">A line, set large</figcaption>
+          </figure>
+
+          <figure class="wild-item wild-tags">
+            <div class="wild-frame">
+              <ul class="mock-tags wa-cluster wa-gap-xs wa-list-plain">
+                <li><hue-hop hue="reef">Nas</hue-hop></li>
+                <li><hue-hop hue="reef">Lauryn Hill</hue-hop></li>
+                <li class="is-selected">
+                  <hue-hop hue="reef">MF DOOM</hue-hop>
+                </li>
+                <li><hue-hop hue="reef">De La Soul</hue-hop></li>
+                <li><hue-hop hue="reef">Mos Def</hue-hop></li>
+              </ul>
+            </div>
+            <figcaption class="readout-label">Tag chips</figcaption>
+          </figure>
+
+          <figure class="wild-item wild-countdown">
+            <div class="wild-frame">
+              <p class="mock-countdown">
+                <hue-hop
+                  id="countdown"
+                  hue="honey"
+                  display
+                >
+                  03:14:52
+                </hue-hop>
+              </p>
+              <p class="mock-countdown-units readout-label">
+                <span>hours</span>
+                <span>min</span>
+                <span>sec</span>
+              </p>
+            </div>
+            <figcaption class="readout-label">Countdown</figcaption>
+          </figure>
+
+          <figure class="wild-item wild-term">
+            <div class="wild-frame">
+              <pre
+                class="mock-term"
+              ><span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯ npm run size</span>
+<span class="mock-term-out">hue-hop.js 1766 / 2048</span>
+<span class="mock-term-out">hues.css    472 / 600</span>
+<span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯</span></pre>
+            </div>
+            <figcaption class="readout-label">Terminal prompt</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section
+        class="section"
+        id="quickstart"
+        aria-labelledby="quickstart-title"
+      >
+        <h2
+          class="section-title"
+          id="quickstart-title"
+        >
+          Quickstart
+        </h2>
+        <p class="section-lead">
+          Three steps from npm to a colored heading. No framework, no config.
+        </p>
+        <div class="quickstart">
+          <ol class="steps wa-stack wa-gap-l wa-list-plain">
+            <li class="step wa-stack wa-gap-xs">
+              <h3 class="step-title wa-gap-m wa-align-items-baseline">
+                <span class="step-number">01</span>
+                Install
+              </h3>
+              <div class="code-well">
+                <pre
+                  class="code-block"
+                ><code class="language-bash" id="qs-install">npm install hue-hop</code></pre>
+                <wa-copy-button
+                  class="code-copy"
+                  from="qs-install"
+                  copy-label="Copy install command"
+                >
+                  <wa-icon
+                    slot="copy-icon"
+                    family="pixel"
+                    name="clone"
+                  ></wa-icon>
+                  <wa-icon
+                    slot="success-icon"
+                    family="pixel"
+                    name="check"
+                  ></wa-icon>
+                  <wa-icon
+                    slot="error-icon"
+                    family="pixel"
+                    name="xmark"
+                  ></wa-icon>
+                </wa-copy-button>
+              </div>
+            </li>
+            <li class="step wa-stack wa-gap-xs">
+              <h3 class="step-title wa-gap-m wa-align-items-baseline">
+                <span class="step-number">02</span>
+                Import
+              </h3>
+              <div class="code-well">
+                <pre
+                  class="code-block"
+                ><code class="language-javascript" id="qs-import">import 'hue-hop';
+import 'hue-hop/hues.css';</code></pre>
+                <wa-copy-button
+                  class="code-copy"
+                  from="qs-import"
+                  copy-label="Copy import code"
+                >
+                  <wa-icon
+                    slot="copy-icon"
+                    family="pixel"
+                    name="clone"
+                  ></wa-icon>
+                  <wa-icon
+                    slot="success-icon"
+                    family="pixel"
+                    name="check"
+                  ></wa-icon>
+                  <wa-icon
+                    slot="error-icon"
+                    family="pixel"
+                    name="xmark"
+                  ></wa-icon>
+                </wa-copy-button>
+              </div>
+              <p class="step-note">
+                The second line is optional. It adds the seven ready-made hues.
+              </p>
+            </li>
+            <li class="step wa-stack wa-gap-xs">
+              <h3 class="step-title wa-gap-m wa-align-items-baseline">
+                <span class="step-number">03</span>
+                Drop One In
+              </h3>
+              <div class="code-result">
+                <div class="code-well">
+                  <pre
+                    class="code-block"
+                  ><code class="language-html" id="qs-markup">&lt;hue-hop hue="reef"&gt;Aquemini&lt;/hue-hop&gt;</code></pre>
+                  <wa-copy-button
+                    class="code-copy"
+                    from="qs-markup"
+                    copy-label="Copy HTML"
+                  >
+                    <wa-icon
+                      slot="copy-icon"
+                      family="pixel"
+                      name="clone"
+                    ></wa-icon>
+                    <wa-icon
+                      slot="success-icon"
+                      family="pixel"
+                      name="check"
+                    ></wa-icon>
+                    <wa-icon
+                      slot="error-icon"
+                      family="pixel"
+                      name="xmark"
+                    ></wa-icon>
+                  </wa-copy-button>
+                </div>
+                <div class="result-frame wa-stack wa-gap-xs">
+                  <span class="readout-label">Result</span>
+                  <p>
+                    <hue-hop hue="reef">Aquemini</hue-hop>
+                  </p>
+                </div>
+              </div>
+            </li>
+          </ol>
+          <nav aria-labelledby="further-title">
+            <div class="further-head wa-split wa-align-items-baseline">
+              <h3
+                class="further-heading"
+                id="further-title"
+              >
+                Go Further
+              </h3>
+              <a
+                class="further-all readout-label hop-link"
+                href="{{docs-url}}"
+              >
+                All docs
+              </a>
+            </div>
+            <ol class="wa-list-plain">
+              <li>
+                <a
+                  class="further-row"
+                  href="{{repo-url}}#light-and-dark"
+                >
+                  <span class="further-number">04</span>
+                  <span class="further-text wa-stack wa-gap-xs">
+                    <span
+                      class="further-title hop-link is-quiet wa-align-self-start"
+                    >
+                      Light and Dark
+                    </span>
+                    <span class="further-detail">
+                      The hues need color-scheme to show their dark side.
+                    </span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="further-row"
+                  href="{{repo-url}}#start-and-end"
+                >
+                  <span class="further-number">05</span>
+                  <span class="further-text wa-stack wa-gap-xs">
+                    <span
+                      class="further-title hop-link is-quiet wa-align-self-start"
+                    >
+                      Your Own Colors
+                    </span>
+                    <span class="further-detail">
+                      Swap the hue for any start and end color.
+                    </span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="further-row"
+                  href="{{repo-url}}#picking-your-own-colors"
+                >
+                  <span class="further-number">06</span>
+                  <span class="further-text wa-stack wa-gap-xs">
+                    <span
+                      class="further-title hop-link is-quiet wa-align-self-start"
+                    >
+                      Colors That Pass
+                    </span>
+                    <span class="further-detail">
+                      Keep your own ends readable at 4.5:1.
+                    </span>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="further-row"
+                  href="{{repo-url}}#drift"
+                >
+                  <span class="further-number">07</span>
+                  <span class="further-text wa-stack wa-gap-xs">
+                    <span
+                      class="further-title hop-link is-quiet wa-align-self-start"
+                    >
+                      Drift
+                    </span>
+                    <span class="further-detail">
+                      Let the hues sway. It stops for reduced motion.
+                    </span>
+                  </span>
+                </a>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+    </main>
+    {{footer}}
+  </body>
+</html>
