@@ -53,27 +53,29 @@ function slatFrames({ step, length, total }) {
 // Each letter's right edge, as a share of the wordmark's box, so the reveal steps between letters and never cuts through one.
 function letterEdges(wordmark) {
   const hop = wordmark?.querySelector('hue-hop');
-  const box = wordmark?.getBoundingClientRect();
-  const letters = hop ? [...hop.querySelectorAll('.hop-letter')] : [];
+  if (!hop) return [];
+  const box = wordmark.getBoundingClientRect();
+  return letterRights(hop).map((right) => (right - box.left) / box.width);
+}
+
+export function letterRights(hop) {
+  const letters = [...hop.querySelectorAll('.hop-letter')];
   if (letters.length) {
     return letters
       .filter((letter) => !isBlankLetter(letter.textContent))
-      .map(
-        (letter) =>
-          (letter.getBoundingClientRect().right - box.left) / box.width
-      );
+      .map((letter) => letter.getBoundingClientRect().right);
   }
-  const text = hop?.firstChild;
+  const text = hop.firstChild;
   if (!text || text.nodeType !== Node.TEXT_NODE) return [];
   const range = document.createRange();
-  const edges = [];
+  const rights = [];
   for (const { index, letter, isBlank } of splitLetters(text.data)) {
     if (isBlank) continue;
     range.setStart(text, index);
     range.setEnd(text, index + letter.length);
-    edges.push((range.getBoundingClientRect().right - box.left) / box.width);
+    rights.push(range.getBoundingClientRect().right);
   }
-  return edges;
+  return rights;
 }
 
 // The wordmark takes each letter's new colors as that letter's slat hits bottom, on the same rhythm as the slats.

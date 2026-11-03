@@ -136,6 +136,7 @@ input {
 
 .hop-link:is(:hover, :focus-visible),
 .further-row:is(:hover, :focus-visible) .further-title,
+.hero-demo:is(:hover, :focus-visible) .hop-link,
 .hop-link[aria-current='page'] {
   background-size:
     100% var(--border-thick),
@@ -316,6 +317,16 @@ a {
     .led {
     background: CanvasText;
   }
+}
+
+/* Grayscale keeps each letter's lightness, so the resting mark holds the same contrast as the lit one. */
+.hop-quiet hue-hop {
+  filter: grayscale(1);
+  transition: filter var(--note-16) var(--ease-hit);
+}
+
+.hop-quiet:is(:hover, :focus-visible) hue-hop {
+  filter: none;
 }
 
 .hop-letter {

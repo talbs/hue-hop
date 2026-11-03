@@ -109,8 +109,16 @@ function splitIntoLetters(hop) {
   return spans;
 }
 
+function restoreTextAfter(hop, spans, animations) {
+  const text = spans.map((span) => span.textContent).join('');
+  Promise.all(animations.map((animation) => animation.finished)).then(() => {
+    if (hop.firstElementChild === spans[0] && !isSelecting()) {
+      hop.textContent = text;
+    }
+  });
+}
+
 export function hopLetters(hop, { keyframes, beats }) {
-  const text = hop.textContent.trim();
   const spans = splitIntoLetters(hop);
   const duration = beatMs() * beats;
   const { step, total } = hopTiming(spans.length, duration);
@@ -121,13 +129,36 @@ export function hopLetters(hop, { keyframes, beats }) {
       fill: 'backwards',
     })
   );
-  Promise.all(hops.map((animation) => animation.finished)).then(() => {
-    if (hop.firstElementChild === spans[0] && !isSelecting()) {
-      hop.textContent = text;
-    }
-  });
+  restoreTextAfter(hop, spans, hops);
   document.dispatchEvent(new CustomEvent('letterhop'));
   return total;
+}
+
+export function lightLetters(hop) {
+  const spans = splitIntoLetters(hop);
+  const { step, length } = hopTiming(spans.length);
+  const lights = spans.map((span, index) =>
+    span.animate([{ filter: 'grayscale(1)' }, { filter: 'none' }], {
+      duration: length,
+      delay: index * step,
+      easing: HOP_EASING,
+      fill: 'backwards',
+    })
+  );
+  restoreTextAfter(hop, spans, lights);
+}
+
+export function longestWordLength(text) {
+  const words = text.split(/\s+/).map((word) => splitLetters(word).length);
+  return Math.max(1, ...words);
+}
+
+export function segmentPitch(element) {
+  const style = getComputedStyle(element);
+  return (
+    parseFloat(style.getPropertyValue('--segment')) +
+    parseFloat(style.getPropertyValue('--segment-gap'))
+  );
 }
 
 // Letters as hue-hop counts them: graphemes, with blank ones marked so callers can skip them.

@@ -27,6 +27,48 @@
   font-size: var(--type-small);
 }
 
+.install-tabs {
+  --indicator-color: var(--lit);
+  --track-color: var(--divider);
+  --track-width: var(--border-thin);
+}
+
+.install-tabs wa-tab::part(base) {
+  padding: var(--space-related) var(--wa-space-s);
+  color: var(--ink-faint);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color var(--note-16) var(--ease-hit);
+}
+
+.install-tabs::part(tabs) {
+  gap: 0;
+}
+
+.install-tabs wa-tab:hover::part(base) {
+  color: var(--ink-quiet);
+}
+
+.install-tabs wa-tab[aria-selected='true']::part(base) {
+  color: var(--ink);
+}
+
+.install-tabs::part(body) {
+  padding-block-start: var(--space-group);
+}
+
+.install-tabs wa-tab-panel {
+  --padding: 0;
+}
+
+.install-note {
+  margin-block-start: var(--space-group);
+  color: var(--ink-quiet);
+  font-size: var(--type-small);
+}
+
 .code-result {
   overflow: hidden;
   border: var(--border-thin) solid var(--border-container);
@@ -52,7 +94,7 @@
 
 .further-head {
   padding-block-end: var(--space-group);
-  border-block-end: var(--border-thick) solid var(--ink);
+  border-block-end: var(--border-thin) solid var(--divider);
 }
 
 .further-heading {
@@ -69,7 +111,11 @@
   padding-block: var(--wa-space-l);
   border-block-end: var(--border-thin) solid var(--divider);
   text-decoration: none;
-  transition: padding-inline-start var(--note-16) var(--ease-bounce);
+}
+
+/* The row's contents slide on hover without changing width, so the text never rewraps. */
+.further-row > * {
+  transition: translate var(--note-16) var(--ease-bounce);
 }
 
 .further-number {
@@ -92,8 +138,8 @@
   line-height: var(--leading-tight);
 }
 
-.further-row:hover {
-  padding-inline-start: var(--space-related);
+.further-row:hover > * {
+  translate: var(--space-related) 0;
 }
 
 .further-row:hover .further-number {

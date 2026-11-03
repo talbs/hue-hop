@@ -282,30 +282,57 @@
   }
 }
 
-/* Each bar is lit segments, like an LED level meter. */
+/* Each bar is lit segments, like an LED level meter. Same proportions as the stage's step bars, at a smaller size. */
 .eq-meter {
+  --segment: 4px;
+  --segment-gap: 2px;
+  --segments: 4;
   position: absolute;
   inset-block-end: 100%;
   inset-inline-end: var(--gutter);
   display: flex;
   align-items: flex-end;
   gap: 3px;
-  height: 1.75rem;
+  height: calc(var(--segments) * (var(--segment) + var(--segment-gap)));
+  opacity: 0.7;
 }
 
 @media (min-width: 48rem) {
   .eq-meter {
-    height: 2.75rem;
+    --segments: 7;
   }
 }
 
+/* Levels round to whole segments, so no bar ends in a sliver of an LED. */
 .eq-meter span {
-  width: 6px;
-  height: calc(var(--level) * 100%);
+  width: 10px;
+  height: calc(
+    max(1, round(var(--level) * var(--segments))) *
+      (var(--segment) + var(--segment-gap))
+  );
+}
+
+wa-divider[orientation='vertical'] {
+  align-self: center;
+  width: 2px;
+  height: 0.875rem;
+  min-block-size: 0;
+  margin: 0;
+  border: 0;
   background: repeating-linear-gradient(
     to top,
-    var(--border-container) 0 3px,
-    transparent 3px 5px
+    var(--border-container) 0 2px,
+    transparent 2px 3px
+  );
+}
+
+/* LED ladder segments, shared by the footer meter and the stage's step bars. */
+.eq-meter span,
+.stage-eq span {
+  background: repeating-linear-gradient(
+    to top,
+    var(--border-container) 0 var(--segment),
+    transparent var(--segment) calc(var(--segment) + var(--segment-gap))
   );
 }
 

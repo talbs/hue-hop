@@ -24,12 +24,17 @@
     <div class="site-footer-row wa-split">
       <p class="site-footer-mark wa-gap-m wa-align-items-baseline">
         <a
-          class="site-footer-wordmark"
+          class="site-footer-wordmark hop-quiet"
           href="./"
         >
           <hue-hop hue="dusk">Hue Hop</hue-hop>
         </a>
-        <span class="readout-label">v{{version}} · MIT</span>
+        <wa-divider orientation="vertical"></wa-divider>
+        <span class="readout-label wa-cluster wa-gap-m">
+          v{{version}}
+          <wa-divider orientation="vertical"></wa-divider>
+          MIT
+        </span>
       </p>
       <ul class="wa-cluster wa-gap-l wa-list-plain">
         <li>
