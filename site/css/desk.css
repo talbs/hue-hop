@@ -58,66 +58,77 @@
   margin-block-start: var(--space-page);
 }
 
+/* The board's display, pressed in under the faders: the desk's sample words in each hue, with an LED per hue. */
+.hero-demo {
+  --stage-max: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: var(--space-section);
+  align-self: stretch;
+  container-type: inline-size;
+  min-height: 11rem;
+  padding: var(--space-group) var(--space-section) var(--space-section);
+  border: var(--border-thin) solid transparent;
+  border-radius: var(--radius-container);
+  background: var(--surface-sunken);
+  box-shadow: var(--depth-pressed);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color var(--note-16) var(--ease-hit);
+}
+
+.hero-demo:hover {
+  border-color: var(--border-container);
+}
+
+.hero-demo:focus-visible {
+  box-shadow: var(--depth-pressed), var(--focus-glow);
+}
+
+.hero-demo-readout {
+  color: var(--ink-faint);
+}
+
+.hero-demo-led {
+  display: flex;
+}
+
+/* Segment ticks, like a level meter's, rather than round LEDs. */
+.hero-demo-led .led {
+  width: 3px;
+  height: 0.875rem;
+  border-radius: 1px;
+}
+
+.hero-demo .stage-text {
+  align-self: end;
+  white-space: nowrap;
+}
+
+.hero-demo-facts {
+  margin: 0 calc(var(--space-section) * -1) calc(var(--space-section) * -1);
+  padding: var(--space-group) var(--space-section);
+  border-block-start: var(--border-thin) solid var(--border-container);
+}
+
+.hero-demo-facts span {
+  padding: var(--space-tight) var(--space-related);
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+  color: var(--ink-quiet);
+}
+
+.hero-demo-facts .hero-demo-still {
+  padding-inline: 0;
+  border-color: transparent;
+  color: var(--ink-faint);
+}
+
 .hero-pitch {
   max-width: 46rem;
   color: var(--ink-quiet);
   font-size: var(--type-lead);
   line-height: var(--leading-tight);
-}
-
-.install-card {
-  min-width: 0;
-}
-
-/* The tab labels sit in padding the pitch's first line doesn't have; pulling the card up lines their tops up with the pitch's capitals. */
-@media (min-width: 64rem) {
-  .install-card {
-    margin-block-start: -0.4375rem;
-  }
-}
-
-.install-tabs {
-  --indicator-color: var(--lit);
-  --track-color: var(--divider);
-  --track-width: var(--border-thin);
-}
-
-.install-tabs wa-tab::part(base) {
-  padding: var(--space-related) var(--wa-space-s);
-  color: var(--ink-faint);
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: color var(--note-16) var(--ease-hit);
-}
-
-.install-tabs::part(tabs) {
-  gap: 0;
-}
-
-.install-tabs wa-tab:hover::part(base) {
-  color: var(--ink-quiet);
-}
-
-.install-tabs wa-tab[aria-selected='true']::part(base) {
-  color: var(--ink);
-}
-
-/* Holds the taller CDN panel's height, so switching tabs doesn't push the page. */
-.install-tabs::part(body) {
-  min-height: 10.5rem;
-  padding-block-start: var(--space-group);
-}
-
-.install-tabs wa-tab-panel {
-  --padding: 0;
-}
-
-.install-note {
-  margin-block: var(--space-group) var(--space-related);
-  color: var(--ink-quiet);
-  font-size: var(--type-small);
 }
 
 wa-copy-button {
@@ -134,11 +145,15 @@ wa-copy-button::part(success-icon) {
 }
 
 .stage {
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
   display: grid;
   grid-template-rows: auto 1fr;
   align-items: center;
   min-height: 11rem;
-  padding: var(--space-section) var(--space-group);
+  --stage-pad-inline: var(--space-group);
+  padding: var(--space-section) var(--stage-pad-inline);
   border: var(--border-thin) solid var(--border-container);
   border-block-end: 0;
   border-radius: var(--radius-container) var(--radius-container) 0 0;
@@ -153,10 +168,36 @@ wa-copy-button::part(success-icon) {
   margin-inline-end: var(--space-related);
 }
 
+/* A fixed meter behind the stage: twelve bars stepping up the way the colors step, bent by the Curve fader. */
+.stage-eq {
+  --segment: 10px;
+  --segment-gap: 4px;
+  position: absolute;
+  z-index: -1;
+  inset-block: calc(var(--space-section) * 2) 0;
+  inset-inline: 45% var(--stage-pad-inline);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: var(--space-tight);
+  opacity: 0.7;
+}
+
+.stage-eq span {
+  flex: 0 1 1.5rem;
+  min-width: 0;
+  max-height: 100%;
+  transition: height var(--note-8) var(--ease-bounce);
+}
+
+/* A long word steps down until it fits one line: about 0.6em per letter at this weight. --letters is the longest word's length. */
 .stage-text {
   min-width: 0;
   font-family: var(--font-display);
-  font-size: var(--type-stage);
+  font-size: min(
+    var(--stage-max, var(--type-stage)),
+    100cqi / (var(--letters, 1) * 0.6)
+  );
   font-weight: var(--weight-heading);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
@@ -164,10 +205,11 @@ wa-copy-button::part(success-icon) {
 }
 
 .desk {
+  --desk-pad: var(--space-group);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--wa-space-l);
-  padding: var(--space-group);
+  padding: var(--desk-pad);
   border: var(--border-thin) solid transparent;
   border-radius: 0 0 var(--radius-container) var(--radius-container);
   background: var(--surface);
@@ -207,6 +249,33 @@ wa-input:focus-within::part(input-wrapper) {
     var(--lit-glow);
 }
 
+.desk-code {
+  margin: 0 calc(var(--desk-pad) * -1) calc(var(--desk-pad) * -1);
+  padding: var(--desk-pad);
+  border-block-start: var(--border-thin) solid var(--border-container);
+  border-radius: 0 0 var(--radius-container) var(--radius-container);
+  background: var(--surface-sunken);
+}
+
+.desk-code .code-well {
+  align-items: center;
+  gap: var(--space-group);
+  background: none;
+}
+
+.desk-code .code-block {
+  padding: 0;
+  background: none;
+  font-size: var(--type-body);
+  line-height: var(--leading-tight);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.desk-code .code-copy {
+  margin: 0;
+}
+
 .hue-grid {
   display: grid;
   grid-auto-flow: column;
@@ -229,8 +298,9 @@ wa-input:focus-within::part(input-wrapper) {
   display: grid;
   align-content: space-between;
   gap: var(--space-related);
+  --sleeve-pad: 0.625rem var(--space-group) 0.75rem 0.875rem;
   min-height: 5.5rem;
-  padding: 0.625rem var(--space-group) 0.75rem 0.875rem;
+  padding: var(--sleeve-pad);
   border: var(--border-thin) solid var(--border-container);
   border-radius: var(--radius-control);
   background: var(--stage);
@@ -246,7 +316,8 @@ wa-input:focus-within::part(input-wrapper) {
     box-shadow var(--note-16) var(--ease-hit);
 }
 
-.sleeve:focus-visible {
+.sleeve:focus-visible,
+.sleeve:has(> .sleeve-pick:focus-visible) {
   box-shadow: var(--depth-pressed), var(--focus-glow);
 }
 
@@ -255,13 +326,14 @@ wa-input:focus-within::part(input-wrapper) {
   border-color: var(--border-control);
 }
 
-.sleeve:active {
+.sleeve:not(.sleeve-custom):active {
   transform: translateY(1px) scale(0.985);
   transition-duration: var(--note-32);
   transition-timing-function: var(--ease-hit);
 }
 
-.sleeve[aria-checked='true'] {
+.sleeve[aria-checked='true'],
+.sleeve:has(> [aria-checked='true']) {
   animation: sleeve-drop var(--note-8) var(--ease-bounce);
   border-color: var(--lit);
   box-shadow:
@@ -276,35 +348,168 @@ wa-input:focus-within::part(input-wrapper) {
 }
 
 .sleeve-custom {
-  background: transparent;
-  box-shadow: none;
+  align-content: stretch;
+  padding: 0;
+  cursor: default;
 }
 
-.swatches span {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: var(--radius-pill);
-  box-shadow: inset 0 0 0 var(--border-thin) rgb(0 0 0 / 0.2);
-  forced-color-adjust: none;
-  transition: scale var(--note-16) var(--ease-bounce);
+/* Custom color keeps the tile layout: its radio fills the card (and sizes it), and the picker and the start/end switch sit over its corners, since a control can't live inside a button. */
+.sleeve-pick {
+  display: grid;
+  align-content: space-between;
+  gap: var(--space-related);
+  min-width: 0;
+  padding: var(--sleeve-pad);
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
 }
 
-.sleeve-custom:hover .swatches span {
-  scale: 1.25;
+.sleeve-pick:focus-visible {
+  outline-color: transparent;
 }
 
-.sleeve-custom:hover .swatches span + span {
-  transition-delay: calc(var(--note-32) / 2);
+.sleeve-custom .sleeve-name,
+.sleeve-custom .sleeve-title {
+  padding-inline-end: 2rem;
 }
 
-.sleeve-exit {
-  margin-inline-start: auto;
+.sleeve-custom:has(> [aria-checked='true']) :is(.sleeve-name, .sleeve-title) {
+  padding-inline-end: 6.5rem;
+}
+
+.one-color {
+  --chip-inset: 0.75rem;
+  position: absolute;
+  inset-block: var(--chip-inset);
+  inset-inline-end: var(--chip-inset);
+  align-items: stretch;
+}
+
+.end-slice wa-color-picker {
+  flex: 1;
+  min-block-size: 0;
+}
+
+/* Each end's AUTO switch works like the desk's toggles: LED lit means Hue Hop picks that end. */
+.end-auto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0;
+  border: 0;
+  background: none;
   color: var(--ink-faint);
-  transition: color var(--note-16) var(--ease-hit);
+  font-size: 9px;
+  cursor: pointer;
 }
 
-.sleeve-custom:hover .sleeve-exit {
+.end-auto .led {
+  width: 0.375rem;
+  height: 0.375rem;
+}
+
+.end-auto[aria-pressed='true'] {
   color: var(--ink);
+}
+
+.end-auto:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.sleeve-custom:not(:has(> [aria-checked='true'])) .end-auto {
+  display: none;
+}
+
+.one-color wa-color-picker,
+.one-color wa-color-picker::part(form-control),
+.one-color wa-color-picker::part(form-control-input),
+.one-color wa-color-picker::part(trigger-container) {
+  block-size: 100%;
+}
+
+.one-color wa-color-picker::part(trigger) {
+  inline-size: 2.5rem;
+  block-size: 100%;
+  border-radius: calc(var(--radius-control) - 2px);
+  transition:
+    inline-size var(--note-16) var(--ease-bounce),
+    opacity var(--note-16) var(--ease-hit);
+}
+
+/* Resting strips ignore clicks, so a click lands on the tile and opens them. */
+.sleeve-custom:not(:has(> [aria-checked='true'])) .one-color {
+  gap: var(--space-tight);
+  pointer-events: none;
+}
+
+.sleeve-custom:not(:has(> [aria-checked='true']))
+  .one-color
+  wa-color-picker::part(trigger) {
+  inline-size: 6px;
+  opacity: 0.6;
+}
+
+.end-slice.is-auto wa-color-picker::part(trigger) {
+  border-style: dashed;
+  background: none;
+}
+
+.end-slice.is-auto wa-color-picker::part(trigger)::before {
+  display: none;
+}
+
+wa-color-picker {
+  --wa-form-control-background-color: var(--stage);
+  --wa-form-control-border-color: var(--border-container);
+  --wa-form-control-border-radius: var(--radius-control);
+}
+
+wa-color-picker::part(trigger) {
+  border: var(--border-thin) solid var(--border-control);
+  border-radius: var(--radius-control);
+}
+
+wa-color-picker::part(input) {
+  border-radius: var(--radius-control);
+  box-shadow: var(--depth-pressed);
+  font-family: var(--font-code);
+}
+
+wa-color-picker::part(preview) {
+  border-radius: var(--radius-control);
+  box-shadow: var(--depth-pressed);
+}
+
+wa-color-picker::part(grid) {
+  border-radius: var(--radius-control) var(--radius-control) 0 0;
+}
+
+wa-color-picker::part(grid-handle) {
+  border: var(--border-thick) solid var(--ink);
+  box-shadow: var(--depth-cap);
+}
+
+wa-color-picker::part(eyedropper-button__base) {
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  box-shadow: var(--depth-raised);
+  color: var(--ink-quiet);
+}
+
+wa-color-picker::part(color-picker) {
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-container);
+  background: var(--surface);
+  box-shadow:
+    var(--depth-panel),
+    0 12px 32px rgb(0 0 0 / 0.35);
 }
 
 .sleeve-name {
@@ -327,7 +532,8 @@ wa-input:focus-within::part(input-wrapper) {
 }
 
 /* One fader for the whole board. The cap is 18 along the travel and 32 across it, and its index line and grip always run across the travel, so the line points at the level. */
-wa-slider {
+wa-slider,
+wa-color-picker {
   --cap-bevel:
     inset 1px 1px 0 var(--edge-light), inset 0 -2px 0 var(--edge-shade);
   --cap-index-size: var(--border-thick) 100%;
@@ -336,6 +542,22 @@ wa-slider {
   --track-size: 6px;
   --thumb-width: 18px;
   --thumb-height: 32px;
+}
+
+/* Web Awesome sizes the handle square, so the desk's 18 by 32 cap is stretched and re-centered on the slot. */
+wa-color-picker {
+  --slider-height: var(--track-size);
+  --slider-handle-size: var(--thumb-width);
+}
+
+wa-color-picker::part(slider) {
+  border-radius: var(--radius-pill);
+  box-shadow: var(--depth-groove);
+}
+
+wa-color-picker::part(slider-handle) {
+  block-size: var(--thumb-height);
+  translate: 0 calc((var(--thumb-width) - var(--thumb-height)) / 2);
 }
 
 wa-slider[orientation='vertical'] {
@@ -376,7 +598,8 @@ wa-slider::part(indicator) {
 }
 
 /* The cap: lit from the top-left, a grip of grooves, and a center index line. */
-wa-slider::part(thumb) {
+wa-slider::part(thumb),
+wa-color-picker::part(slider-handle) {
   border: var(--border-thin) solid
     color-mix(in oklch, var(--border-control), var(--border-container));
   border-radius: var(--radius-cap);
@@ -471,13 +694,36 @@ wa-slider:state(dragging)::part(thumb) {
   line-height: var(--leading-tight);
 }
 
-.studio-perks li:not(:last-child)::after {
-  content: '·';
-  margin-inline: var(--space-related);
+.studio-cta {
+  container-type: inline-size;
+}
+
+.studio-perks li {
+  display: flex;
+  align-items: center;
+  gap: var(--wa-space-m);
+}
+
+/* The four perks need about 23rem on one line. Narrower, they pair up in two columns so no divider is left hanging at a line end. */
+@container (width < 23rem) {
+  .studio-perks {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    row-gap: var(--space-tight);
+  }
+
+  .studio-perks li:nth-child(odd) {
+    justify-self: end;
+  }
+
+  .studio-perks li:nth-child(2) wa-divider {
+    display: none;
+  }
 }
 
 @media (forced-colors: active) {
-  .sleeve[aria-checked='true'] {
+  .sleeve[aria-checked='true'],
+  .sleeve:has(> [aria-checked='true']) {
     outline: 3px solid Highlight;
     outline-offset: -3px;
   }
@@ -497,13 +743,13 @@ wa-slider:state(dragging)::part(thumb) {
 
 @media (min-width: 48rem) {
   .stage {
+    --stage-pad-inline: var(--space-section);
     min-height: 16rem;
-    padding: var(--space-section);
   }
 
   .desk {
+    --desk-pad: var(--space-section);
     gap: var(--space-section);
-    padding: var(--space-section);
   }
 
   .hue-grid {

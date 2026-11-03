@@ -136,110 +136,108 @@
               </a>
             </div>
           </div>
-          <div class="install-card wa-stack wa-gap-xs">
-            <h2 class="wa-visually-hidden">Install</h2>
-            <wa-tab-group class="install-tabs">
-              <wa-tab
-                slot="nav"
-                panel="npm"
+          <a
+            class="hero-demo"
+            href="#try"
+            aria-label="Try this in the desk"
+          >
+            <span class="hero-demo-readout readout-label wa-split">
+              <span class="wa-cluster wa-gap-s">
+                <span
+                  class="wa-cluster wa-gap-2xs"
+                  aria-hidden="true"
+                >
+                  <span
+                    class="hero-demo-led"
+                    data-hue="dusk"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led is-lit"
+                    data-hue="reef"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led"
+                    data-hue="fern"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led"
+                    data-hue="ember"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led"
+                    data-hue="guava"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led"
+                    data-hue="orchid"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led"
+                    data-hue="honey"
+                  >
+                    <span class="led"></span>
+                  </span>
+                </span>
+                <span
+                  class="wa-cluster wa-gap-2xs"
+                  aria-hidden="true"
+                >
+                  <span
+                    class="hero-demo-led"
+                    data-pair="0"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led"
+                    data-pair="1"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led"
+                    data-pair="2"
+                  >
+                    <span class="led"></span>
+                  </span>
+                  <span
+                    class="hero-demo-led"
+                    data-pair="3"
+                  >
+                    <span class="led"></span>
+                  </span>
+                </span>
+                <span id="hero-demo-hue">reef</span>
+              </span>
+              <span class="hop-link is-quiet">Try your own</span>
+            </span>
+            <span class="stage-text">
+              <hue-hop
+                id="hero-demo-word"
+                hue="reef"
               >
-                npm
-              </wa-tab>
-              <wa-tab
-                slot="nav"
-                panel="cdn"
-              >
-                CDN
-              </wa-tab>
-              <wa-tab-panel name="npm">
-                <div class="code-well">
-                  <pre
-                    class="code-block"
-                  ><code class="language-bash" id="hero-install">npm install hue-hop</code></pre>
-                  <wa-copy-button
-                    class="code-copy"
-                    from="hero-install"
-                    copy-label="Copy install command"
-                  >
-                    <wa-icon
-                      slot="copy-icon"
-                      family="pixel"
-                      name="clone"
-                    ></wa-icon>
-                    <wa-icon
-                      slot="success-icon"
-                      family="pixel"
-                      name="check"
-                    ></wa-icon>
-                    <wa-icon
-                      slot="error-icon"
-                      family="pixel"
-                      name="xmark"
-                    ></wa-icon>
-                  </wa-copy-button>
-                </div>
-                <p class="install-note">Then import it once, anywhere</p>
-                <div class="code-well">
-                  <pre
-                    class="code-block"
-                  ><code class="language-javascript" id="hero-import">import 'hue-hop';</code></pre>
-                  <wa-copy-button
-                    class="code-copy"
-                    from="hero-import"
-                    copy-label="Copy import"
-                  >
-                    <wa-icon
-                      slot="copy-icon"
-                      family="pixel"
-                      name="clone"
-                    ></wa-icon>
-                    <wa-icon
-                      slot="success-icon"
-                      family="pixel"
-                      name="check"
-                    ></wa-icon>
-                    <wa-icon
-                      slot="error-icon"
-                      family="pixel"
-                      name="xmark"
-                    ></wa-icon>
-                  </wa-copy-button>
-                </div>
-              </wa-tab-panel>
-              <wa-tab-panel name="cdn">
-                <div class="code-well">
-                  <pre
-                    class="code-block"
-                  ><code class="language-html" id="hero-cdn">&lt;script
-  type="module"
-  src="https://cdn.jsdelivr.net/npm/hue-hop"
-&gt;&lt;/script&gt;</code></pre>
-                  <wa-copy-button
-                    class="code-copy"
-                    from="hero-cdn"
-                    copy-label="Copy CDN script tag"
-                  >
-                    <wa-icon
-                      slot="copy-icon"
-                      family="pixel"
-                      name="clone"
-                    ></wa-icon>
-                    <wa-icon
-                      slot="success-icon"
-                      family="pixel"
-                      name="check"
-                    ></wa-icon>
-                    <wa-icon
-                      slot="error-icon"
-                      family="pixel"
-                      name="xmark"
-                    ></wa-icon>
-                  </wa-copy-button>
-                </div>
-                <p class="install-note">No bundler. One tag in your page.</p>
-              </wa-tab-panel>
-            </wa-tab-group>
-          </div>
+                Ether
+              </hue-hop>
+            </span>
+            <span class="hero-demo-facts readout-label wa-cluster wa-gap-xs">
+              <span class="hero-demo-still">Still</span>
+              <span>Selectable</span>
+              <span>Searchable</span>
+              <span>Read aloud</span>
+            </span>
+          </a>
         </div>
       </section>
 
@@ -264,6 +262,10 @@
           class="stage"
           id="stage"
         >
+          <div
+            class="stage-eq"
+            aria-hidden="true"
+          ></div>
           <div
             class="stage-readout readout-label wa-cluster wa-gap-xs"
             id="lamp"
@@ -501,35 +503,95 @@
                   </span>
                   <span class="wa-visually-hidden">butter yellow to rust</span>
                 </button>
+                <div class="sleeve sleeve-custom">
+                  <button
+                    type="button"
+                    role="radio"
+                    class="sleeve-pick"
+                    data-hue="custom"
+                    aria-checked="false"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
+                    >
+                      <span
+                        class="led"
+                        aria-hidden="true"
+                      ></span>
+                      custom color
+                    </span>
+                    <span
+                      class="sleeve-title wa-text-truncate"
+                      aria-hidden="true"
+                    >
+                      <hue-hop
+                        id="one-color-sample"
+                        start="#e0582b"
+                      >
+                        Paid in Full
+                      </hue-hop>
+                    </span>
+                    <span class="wa-visually-hidden">
+                      custom colors: set a start, an end or both, and Hue Hop
+                      picks any end you leave out
+                    </span>
+                  </button>
+                  <div
+                    class="one-color wa-cluster wa-gap-xs"
+                    id="one-color"
+                  >
+                    <div
+                      class="end-slice wa-stack wa-gap-2xs"
+                      data-end="start"
+                    >
+                      <wa-color-picker
+                        class="wa-visually-hidden-label"
+                        label="Start color"
+                        value="#e0582b"
+                        size="small"
+                        without-format-toggle
+                      ></wa-color-picker>
+                      <button
+                        type="button"
+                        class="end-auto readout-label"
+                        aria-pressed="false"
+                        aria-label="Let Hue Hop pick the start"
+                      >
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        auto
+                      </button>
+                    </div>
+                    <div
+                      class="end-slice wa-stack wa-gap-2xs is-auto"
+                      data-end="end"
+                    >
+                      <wa-color-picker
+                        class="wa-visually-hidden-label"
+                        label="End color"
+                        value="#d6337f"
+                        size="small"
+                        without-format-toggle
+                      ></wa-color-picker>
+                      <button
+                        type="button"
+                        class="end-auto readout-label"
+                        aria-pressed="true"
+                        aria-label="Let Hue Hop pick the end"
+                      >
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        auto
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <a
-                class="sleeve sleeve-custom"
-                id="custom-link"
-                aria-label="Your own colors, darkorange to crimson, in the Studio"
-                href="{{studio-url}}"
-              >
-                <span
-                  class="sleeve-name readout-label wa-gap-xs wa-align-items-center"
-                >
-                  <span
-                    class="swatches wa-gap-3xs"
-                    aria-hidden="true"
-                  >
-                    <span style="background: darkorange"></span>
-                    <span style="background: crimson"></span>
-                  </span>
-                  custom
-                  <span class="sleeve-exit">Studio ↗</span>
-                </span>
-                <span class="sleeve-title wa-text-truncate">
-                  <hue-hop
-                    start="darkorange"
-                    end="crimson"
-                  >
-                    Pick both ends
-                  </hue-hop>
-                </span>
-              </a>
             </div>
           </div>
 
@@ -649,7 +711,7 @@
               </button>
             </div>
 
-            <div class="wa-stack wa-gap-xs">
+            <div class="studio-cta wa-stack wa-gap-m">
               <a
                 class="lit-button wa-justify-content-center"
                 id="studio-link"
@@ -659,19 +721,28 @@
                 Open in Studio
               </a>
               <ul
-                class="studio-perks wa-list-plain wa-flex-wrap wa-justify-content-center"
+                class="studio-perks wa-cluster wa-gap-m wa-justify-content-center wa-list-plain"
                 id="studio-caption"
                 aria-label="In the Studio"
               >
-                <li>Custom ends</li>
-                <li>Accents</li>
-                <li>Lift</li>
+                <li>
+                  Custom ends
+                  <wa-divider orientation="vertical"></wa-divider>
+                </li>
+                <li>
+                  Accents
+                  <wa-divider orientation="vertical"></wa-divider>
+                </li>
+                <li>
+                  Lift
+                  <wa-divider orientation="vertical"></wa-divider>
+                </li>
                 <li>Per-letter contrast</li>
               </ul>
             </div>
           </div>
 
-          <div class="desk-code wa-stack wa-gap-xs">
+          <div class="desk-code wa-stack wa-gap-s">
             <span class="readout-label">Markup</span>
             <div class="code-well">
               <pre
@@ -779,12 +850,7 @@
             <div class="wild-frame">
               <p class="mock-accent-line">
                 Now playing
-                <hue-hop
-                  hue="guava"
-                  display
-                >
-                  Aquemini
-                </hue-hop>
+                <hue-hop start="tomato">Aquemini</hue-hop>
               </p>
               <p class="mock-meta">OutKast, 1998</p>
               <div
@@ -798,7 +864,7 @@
                 <span>5:19</span>
               </p>
             </div>
-            <figcaption class="readout-label">One accented word</figcaption>
+            <figcaption class="readout-label">One color, auto end</figcaption>
           </figure>
 
           <figure class="wild-item wild-line">
@@ -818,7 +884,9 @@
 
           <figure class="wild-item wild-tags">
             <div class="wild-frame">
-              <ul class="mock-tags wa-cluster wa-gap-xs wa-list-plain">
+              <ul
+                class="mock-tags wa-cluster wa-gap-xs wa-justify-content-center wa-list-plain"
+              >
                 <li><hue-hop hue="reef">Nas</hue-hop></li>
                 <li><hue-hop hue="reef">Lauryn Hill</hue-hop></li>
                 <li class="is-selected">
@@ -856,9 +924,11 @@
               <pre
                 class="mock-term"
               ><span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯ npm run size</span>
-<span class="mock-term-out">hue-hop.js 1766 / 2048</span>
-<span class="mock-term-out">hues.css    472 / 600</span>
-<span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯</span></pre>
+<span class="mock-term-out">  hue-hop.js  1766/2048  ok</span>
+<span class="mock-term-out">  hues.css     472/600   ok</span>
+<span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯ npm test</span>
+<span class="mock-term-out">  3 passing</span>
+<span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯ <span class="mock-term-cursor"></span></span></pre>
             </div>
             <figcaption class="readout-label">Terminal prompt</figcaption>
           </figure>
@@ -880,40 +950,90 @@
           Three steps from npm to a colored heading. No framework, no config.
         </p>
         <div class="quickstart">
-          <ol class="steps wa-stack wa-gap-l wa-list-plain">
-            <li class="step wa-stack wa-gap-xs">
+          <ol class="steps wa-stack wa-gap-2xl wa-list-plain">
+            <li class="step wa-stack wa-gap-m">
               <h3 class="step-title wa-gap-m wa-align-items-baseline">
                 <span class="step-number">01</span>
                 Install
               </h3>
-              <div class="code-well">
-                <pre
-                  class="code-block"
-                ><code class="language-bash" id="qs-install">npm install hue-hop</code></pre>
-                <wa-copy-button
-                  class="code-copy"
-                  from="qs-install"
-                  copy-label="Copy install command"
+              <wa-tab-group class="install-tabs">
+                <wa-tab
+                  slot="nav"
+                  panel="npm"
                 >
-                  <wa-icon
-                    slot="copy-icon"
-                    family="pixel"
-                    name="clone"
-                  ></wa-icon>
-                  <wa-icon
-                    slot="success-icon"
-                    family="pixel"
-                    name="check"
-                  ></wa-icon>
-                  <wa-icon
-                    slot="error-icon"
-                    family="pixel"
-                    name="xmark"
-                  ></wa-icon>
-                </wa-copy-button>
-              </div>
+                  npm
+                </wa-tab>
+                <wa-tab
+                  slot="nav"
+                  panel="cdn"
+                >
+                  CDN
+                </wa-tab>
+                <wa-tab-panel name="npm">
+                  <div class="code-well">
+                    <pre
+                      class="code-block"
+                    ><code class="language-bash" id="qs-install">npm install hue-hop</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="qs-install"
+                      copy-label="Copy install command"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                </wa-tab-panel>
+                <wa-tab-panel name="cdn">
+                  <div class="code-well">
+                    <pre
+                      class="code-block"
+                    ><code class="language-html" id="qs-cdn">&lt;script
+  type="module"
+  src="https://cdn.jsdelivr.net/npm/hue-hop"
+&gt;&lt;/script&gt;</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="qs-cdn"
+                      copy-label="Copy CDN script tag"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                  <p class="install-note">
+                    No bundler. One tag in your page, so skip step 02.
+                  </p>
+                </wa-tab-panel>
+              </wa-tab-group>
             </li>
-            <li class="step wa-stack wa-gap-xs">
+            <li class="step wa-stack wa-gap-m">
               <h3 class="step-title wa-gap-m wa-align-items-baseline">
                 <span class="step-number">02</span>
                 Import
@@ -949,7 +1069,7 @@ import 'hue-hop/hues.css';</code></pre>
                 The second line is optional. It adds the seven ready-made hues.
               </p>
             </li>
-            <li class="step wa-stack wa-gap-xs">
+            <li class="step wa-stack wa-gap-m">
               <h3 class="step-title wa-gap-m wa-align-items-baseline">
                 <span class="step-number">03</span>
                 Drop One In
@@ -999,7 +1119,7 @@ import 'hue-hop/hues.css';</code></pre>
                 Go Further
               </h3>
               <a
-                class="further-all readout-label hop-link"
+                class="further-all readout-label hop-link is-quiet"
                 href="{{docs-url}}"
               >
                 All docs
@@ -1037,7 +1157,7 @@ import 'hue-hop/hues.css';</code></pre>
                       Your Own Colors
                     </span>
                     <span class="further-detail">
-                      Swap the hue for any start and end color.
+                      Set both ends, or give one and Hue Hop picks the other.
                     </span>
                   </span>
                 </a>

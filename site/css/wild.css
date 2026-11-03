@@ -236,7 +236,8 @@
 .mock-term {
   margin: 0;
   font-family: var(--font-code);
-  font-size: var(--type-small);
+  /* The longest line is about 26 characters: step the size down so it fits the narrowest frame. */
+  font-size: min(var(--type-small), 6cqi);
   line-height: var(--leading-body);
   white-space: pre;
   overflow-x: auto;
@@ -244,6 +245,14 @@
 
 .mock-term-out {
   color: var(--ink-faint);
+}
+
+.mock-term-cursor {
+  display: inline-block;
+  inline-size: 0.6em;
+  block-size: 1.1em;
+  vertical-align: text-bottom;
+  background: var(--ink-faint);
 }
 
 @media (min-width: 48rem) {

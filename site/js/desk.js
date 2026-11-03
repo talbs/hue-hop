@@ -1,11 +1,13 @@
 import { lowestLetterContrast } from './contrast.js';
-import { readSide } from './scheme.js';
+import { letterRights, readSide } from './scheme.js';
 
 import {
   LETTER_HOP,
   beatMs,
   hopLetters,
   isMotionOk,
+  longestWordLength,
+  segmentPitch,
   splitLetters,
 } from './motion.js';
 import { STUDIO_URL } from './urls.js';
@@ -93,13 +95,22 @@ export function describeStudioLink(state) {
 const desk = document.getElementById('desk');
 const live = document.getElementById('live');
 const stage = document.getElementById('stage');
+const stageBars = stage?.querySelector('.stage-eq');
 const textField = document.getElementById('desk-text');
-const sleeves = [...document.querySelectorAll('.sleeve[role="radio"]')];
-const customLink = document.getElementById('custom-link');
+const sleeves = [...document.querySelectorAll('.sleeves [role="radio"]')];
+const oneColor = document.getElementById('one-color');
+const endSlices = [...oneColor.querySelectorAll('.end-slice')].map((slice) => ({
+  slice,
+  end: slice.dataset.end,
+  picker: slice.querySelector('wa-color-picker'),
+  auto: slice.querySelector('.end-auto'),
+}));
+const oneColorSample = document.getElementById('one-color-sample');
 const driftSwitch = document.getElementById('drift-switch');
 const displaySwitch = document.getElementById('display-switch');
 const samples = document.getElementById('samples');
 const sleeveSamples = [...document.querySelectorAll('.sleeve-title hue-hop')];
+const ellipsisContext = document.createElement('canvas').getContext('2d');
 const curveFader = document.getElementById('curve');
 const shiftFader = document.getElementById('shift');
 const faders = [curveFader, shiftFader];
@@ -114,10 +125,12 @@ export function readDeskState() {
   const checked = sleeves.find(
     (sleeve) => sleeve.getAttribute('aria-checked') === 'true'
   );
+  const isOneColor = checked?.dataset.hue === 'custom';
   return {
     ...DEFAULT_STATE,
     text: textField.value,
-    hue: checked?.dataset.hue ?? DEFAULT_STATE.hue,
+    hue: isOneColor ? null : (checked?.dataset.hue ?? DEFAULT_STATE.hue),
+    ...(isOneColor && { ...customEnds(), lift: 0 }),
     curve: Number(curveFader.value),
     shift: Number(shiftFader.value),
     drift: driftSwitch.getAttribute('aria-pressed') === 'true',
@@ -130,6 +143,40 @@ function checkSleeve(hue) {
     const isChecked = sleeve.dataset.hue === hue;
     sleeve.setAttribute('aria-checked', String(isChecked));
     sleeve.tabIndex = isChecked ? 0 : -1;
+  }
+}
+
+// Tomato. Side B's is darker because the same tomato fails 4.5:1 on the light background. It follows the side until someone picks their own.
+const CUSTOM_DEFAULTS = {
+  a: { start: '#e0582b', end: '#d6337f' },
+  b: { start: '#bf4213', end: '#b43d83' },
+};
+
+function useSideDefaults() {
+  const defaults = CUSTOM_DEFAULTS[readSide()];
+  for (const { picker, end } of endSlices) {
+    if (!picker.dataset.picked) picker.value = defaults[end];
+  }
+}
+
+// Each end is a picked color or left to Hue Hop. At least one stays picked, so the last picked end's AUTO switch is disabled.
+function customEnds() {
+  const ends = {};
+  for (const { slice, end, picker } of endSlices) {
+    if (!slice.classList.contains('is-auto')) ends[end] = picker.value;
+  }
+  return ends;
+}
+
+function showOneColor() {
+  const ends = customEnds();
+  const pickedCount = Object.keys(ends).length;
+  for (const { slice, end, auto } of endSlices) {
+    const isAuto = slice.classList.contains('is-auto');
+    if (ends[end]) oneColorSample.setAttribute(end, ends[end]);
+    else oneColorSample.removeAttribute(end);
+    auto.setAttribute('aria-pressed', String(isAuto));
+    auto.disabled = !isAuto && pickedCount < 2;
   }
 }
 
@@ -170,6 +217,27 @@ function showMarkup(text) {
   }, beatMs() / 8);
 }
 
+const STEP_BARS = 12;
+
+function showStepBars(state) {
+  if (stageBars.children.length !== STEP_BARS) {
+    stageBars.replaceChildren(
+      ...Array.from({ length: STEP_BARS }, () => document.createElement('span'))
+    );
+  }
+  // Heights snap to whole segments, so no bar ends in a sliver of an LED.
+  const segment = segmentPitch(stageBars);
+  const segmentsTall = Math.floor(stageBars.clientHeight / segment);
+  [...stageBars.children].forEach((bar, index) => {
+    const progress = index / (STEP_BARS - 1);
+    const lit = Math.max(
+      1,
+      Math.round(segmentsTall * (0.2 + 0.8 * progress ** state.curve))
+    );
+    bar.style.height = `${lit * segment}px`;
+  });
+}
+
 let typingRun = 0;
 let shouldTypeText = false;
 
@@ -195,25 +263,42 @@ function typeOut(element, text, run) {
 
 let hasPendingRender = false;
 
+// A truncated title draws its ellipsis in the title's own color, so it borrows the painted color of the first letter it hides.
+function colorEllipsis(title) {
+  title.style.removeProperty('color');
+  if (title.scrollWidth <= title.clientWidth) return;
+  const hop = title.querySelector('hue-hop');
+  const titleStyle = getComputedStyle(title);
+  ellipsisContext.font = titleStyle.font;
+  const ellipsisStart =
+    title.getBoundingClientRect().right -
+    parseFloat(titleStyle.paddingInlineEnd) -
+    ellipsisContext.measureText('…').width;
+  const rights = letterRights(hop);
+  const hiddenIndex = rights.findIndex((right) => right > ellipsisStart);
+  if (hiddenIndex < 0) return;
+  const step = Math.floor((hiddenIndex * hop.hops) / rights.length);
+  title.style.color = getComputedStyle(
+    hop,
+    `::highlight(hue-hop-${step})`
+  ).color;
+}
+
 function render() {
   if (hasPendingRender) return;
   hasPendingRender = true;
   requestAnimationFrame(() => {
     hasPendingRender = false;
+    showOneColor();
     const state = readDeskState();
     writeStateTo(live, state);
     showTextInSleeves(state.text);
+    sleeveSamples.forEach((hop) => colorEllipsis(hop.parentElement));
     showMarkup(describeMarkup(state));
+    stage.style.setProperty('--letters', longestWordLength(state.text));
+    showStepBars(state);
     studioLink.href = describeStudioLink(state);
-    customLink.href = describeStudioLink({
-      ...state,
-      hue: null,
-      start: 'darkorange',
-      end: 'crimson',
-      display: false,
-      lift: 0,
-    });
-    stageHue.textContent = state.hue;
+    stageHue.textContent = state.hue ?? 'custom';
     showContrast(state);
     typingRun += 1;
     if (shouldTypeText && isMotionOk() && state.text) {
@@ -225,7 +310,15 @@ function render() {
 
 export function applyDeskState(state) {
   textField.value = state.text;
-  checkSleeve(state.hue);
+  checkSleeve(state.hue ?? 'custom');
+  if (!state.hue) {
+    for (const { slice, end, picker } of endSlices) {
+      slice.classList.toggle('is-auto', !state[end]);
+      if (!state[end]) continue;
+      picker.value = state[end];
+      picker.dataset.picked = 'true';
+    }
+  }
   curveFader.value = state.curve;
   shiftFader.value = state.shift;
   faders.forEach(showFaderValue);
@@ -272,8 +365,8 @@ function moveSleeveFocus(event) {
 
 if (desk) {
   await Promise.all(
-    ['wa-input', 'wa-slider', 'wa-random-content'].map((tag) =>
-      customElements.whenDefined(tag)
+    ['wa-color-picker', 'wa-input', 'wa-slider', 'wa-random-content'].map(
+      (tag) => customElements.whenDefined(tag)
     )
   );
   const firstText = shownSample();
@@ -292,6 +385,10 @@ if (desk) {
       render();
     });
   }
+  document.addEventListener('trysample', (event) => {
+    shouldTypeText = true;
+    applyDeskState({ ...readDeskState(), ...event.detail });
+  });
   document.getElementById('reset').addEventListener('click', () => {
     shouldTypeText = true;
     applyDeskState({ ...DEFAULT_STATE, text: firstText });
@@ -304,12 +401,35 @@ if (desk) {
     });
     sleeve.addEventListener('keydown', moveSleeveFocus);
   }
+  for (const { slice, picker, auto } of endSlices) {
+    for (const type of ['input', 'change']) {
+      picker.addEventListener(type, () => {
+        picker.dataset.picked = 'true';
+        slice.classList.remove('is-auto');
+        checkSleeve('custom');
+        render();
+      });
+    }
+    auto.addEventListener('click', () => {
+      slice.classList.toggle('is-auto');
+      checkSleeve('custom');
+      render();
+    });
+  }
+  useSideDefaults();
+  const titleSizes = new ResizeObserver((entries) => {
+    for (const { target } of entries) colorEllipsis(target);
+  });
+  sleeveSamples.forEach((hop) => titleSizes.observe(hop.parentElement));
   for (const fader of faders) {
     fader.addEventListener('input', () => {
       showFaderValue(fader);
       render();
     });
   }
-  document.addEventListener('sidechange', render);
+  document.addEventListener('sidechange', () => {
+    useSideDefaults();
+    render();
+  });
   render();
 }

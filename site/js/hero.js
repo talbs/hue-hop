@@ -6,8 +6,10 @@ import {
   hopTiming,
   isMotionOk,
   isSelecting,
+  longestWordLength,
   splitLetters,
 } from './motion.js';
+import { readSide } from './scheme.js';
 
 const title = document.querySelector('.hero-title');
 const wordmark = title.querySelector('hue-hop');
@@ -82,3 +84,77 @@ title.addEventListener('click', (event) => {
   if (event.detail !== 1 || wasHeld || isSelecting() || !isMotionOk()) return;
   hopWordmark(LETTER_HOP);
 });
+
+// The hero stage steps through the desk's sample words, one hue each, every four beats. It holds still on hover, off screen and under reduced motion.
+const demo = document.querySelector('.hero-demo');
+const demoWord = document.getElementById('hero-demo-word');
+const demoHue = document.getElementById('hero-demo-hue');
+const sampleWords = [...document.querySelectorAll('#samples span')].map(
+  (sample) => sample.textContent.trim()
+);
+const demoLeds = [...document.querySelectorAll('.hero-demo-led')];
+let demoStep = 1;
+let demoTimer;
+
+// Custom ends far apart on the wheel, which no preset spans. Each holds 4.5:1 across the whole word; Side B's are darker for the light background.
+const CUSTOM_PAIRS = [
+  { a: ['#f9875e', '#709afb'], b: ['#ad4216', '#3357b1'] },
+  { a: ['#00c8c0', '#de75b4'], b: ['#007973', '#8b2868'] },
+  { a: ['#d6a20a', '#de75b4'], b: ['#905e00', '#943171'] },
+  { a: ['#80bf59', '#4ba3f7'], b: ['#3f7b04', '#005fae'] },
+];
+
+let shownSample;
+
+function showSample(step) {
+  const shownLed = demoLeds[step % demoLeds.length];
+  const { hue, pair } = shownLed.dataset;
+  const word = sampleWords[step % sampleWords.length];
+  const [start, end] = hue ? [null, null] : CUSTOM_PAIRS[pair][readSide()];
+  shownSample = { text: word, hue: hue ?? null, start, end };
+  for (const name of ['hue', 'start', 'end']) {
+    if (shownSample[name]) demoWord.setAttribute(name, shownSample[name]);
+    else demoWord.removeAttribute(name);
+  }
+  demoHue.textContent = hue ?? `${start} → ${end}`;
+  demoWord.textContent = word;
+  demo.style.setProperty('--letters', longestWordLength(word));
+  for (const led of demoLeds) {
+    led.classList.toggle('is-lit', led === shownLed);
+  }
+}
+
+function showNextSample() {
+  if (document.hidden || !isMotionOk()) return;
+  demoStep += 1;
+  showSample(demoStep);
+  hopLetters(demoWord, LETTER_DROP);
+  demoTimer = setTimeout(showNextSample, beatMs() * 4);
+}
+
+function playDemo(isOn) {
+  clearTimeout(demoTimer);
+  if (isOn && isMotionOk()) {
+    demoTimer = setTimeout(showNextSample, beatMs() * 4);
+  }
+}
+
+if (demo && sampleWords.length && demoLeds.length) {
+  showSample(demoStep);
+  document.addEventListener('sidechange', () => showSample(demoStep));
+  demo.addEventListener('click', () => {
+    document.dispatchEvent(
+      new CustomEvent('trysample', { detail: shownSample })
+    );
+  });
+  let isVisible = false;
+  new IntersectionObserver(([entry]) => {
+    isVisible = entry.isIntersecting;
+    playDemo(isVisible);
+  }).observe(demo);
+  demo.addEventListener('pointerenter', () => playDemo(false));
+  demo.addEventListener('pointerleave', () => playDemo(isVisible));
+  document.addEventListener('visibilitychange', () =>
+    playDemo(isVisible && !document.hidden)
+  );
+}
