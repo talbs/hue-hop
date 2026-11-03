@@ -44,7 +44,6 @@
 
 /* Sits the baseline 99 of the 1000-unit em above the bottom, so the p's tail drops below it like text. */
 .wordmark {
-  --_hop-n: 6;
   block-size: 0.807em;
   inline-size: auto;
   vertical-align: -0.099em;

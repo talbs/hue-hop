@@ -25,6 +25,7 @@ const readFills = () => ({
   header: read('site/partials/header.html'),
   footer: read('site/partials/footer.html'),
   wordmark: read('site/partials/wordmark.html'),
+  'wordmark-steps': wordmarkSteps(),
   'fa-kit': FA_KIT,
   version: JSON.parse(read('package.json')).version,
   'docs-url': DOCS_URL,
@@ -48,11 +49,13 @@ function fillPage(html, navName, fills) {
 
 // The vector wordmark's letters take their fills from the element's own formula, so they step, drift and switch sides like live text.
 function wordmarkSteps() {
-  const formula = read('src/formula.css').replace(
-    '::highlight(hue-hop-K)',
-    '.wordmark path'
-  );
-  return `@media (forced-colors: none) and (prefers-contrast: no-preference) {\n${formula}}\n`;
+  const formula = read('src/formula.css');
+  const placeholder = '::highlight(hue-hop-K)';
+  if (!formula.includes(placeholder)) {
+    throw new Error(`src/formula.css no longer has ${placeholder}`);
+  }
+  const steps = formula.replace(placeholder, '.wordmark path');
+  return `@media (forced-colors: none) and (prefers-contrast: no-preference) {\n${steps}}`;
 }
 
 async function buildSite() {
@@ -79,7 +82,6 @@ async function buildSite() {
   cpSync('site/fonts', '_site/fonts', { recursive: true });
   cpSync('site/icons', '_site/icons', { recursive: true });
   cpSync('dist', '_site/dist', { recursive: true });
-  writeFileSync('_site/css/wordmark-steps.css', wordmarkSteps());
   cpSync('node_modules/microlighter/dist', '_site/js/microlighter', {
     recursive: true,
     filter: (path) => !path.endsWith('.d.ts'),
