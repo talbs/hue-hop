@@ -67,9 +67,9 @@ document.addEventListener('sidechange', () => {
 });
 
 for (const mark of document.querySelectorAll('.hop-quiet')) {
-  const hop = mark.querySelector('hue-hop');
+  const wordmark = mark.querySelector('.wordmark');
   const lightUp = () => {
-    if (isMotionOk()) lightLetters(hop);
+    if (isMotionOk()) lightLetters(wordmark);
   };
   mark.addEventListener('pointerenter', lightUp);
   mark.addEventListener('focus', () => {

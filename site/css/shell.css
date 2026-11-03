@@ -38,11 +38,19 @@
 .site-wordmark {
   grid-area: wordmark;
   justify-self: start;
-  font-family: var(--font-display);
   font-size: var(--type-lead);
-  font-weight: var(--weight-display);
-  letter-spacing: -0.01em;
   text-decoration: none;
+}
+
+/* Sits the baseline 99 of the 1000-unit em above the bottom, so the p's tail drops below it like text. */
+.wordmark {
+  block-size: 0.807em;
+  inline-size: auto;
+  vertical-align: -0.099em;
+}
+
+.wordmark path {
+  fill: currentColor;
 }
 
 .site-nav {
@@ -178,9 +186,7 @@
 }
 
 .site-footer-wordmark {
-  font-family: var(--font-display);
   font-size: var(--type-body);
-  font-weight: var(--weight-display);
   text-decoration: none;
 }
 

@@ -34,6 +34,8 @@
   font-weight: var(--weight-display);
   line-height: var(--leading-display);
   letter-spacing: -0.035em;
+  /* Closes the word gap from the font's 317 units to the vector wordmark's 210. */
+  word-spacing: -0.107em;
   /* The H's left side bearing in Onest 800, so its stem lines up with the text below. */
   margin-inline-start: -0.071em;
 }
