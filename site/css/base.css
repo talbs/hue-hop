@@ -221,6 +221,11 @@ a.lit-button {
   transition-timing-function: var(--ease-hit);
 }
 
+.lit-button:is(:disabled, [aria-disabled='true']) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .led {
   flex: none;
   width: 0.5rem;
@@ -300,6 +305,11 @@ a {
 @media (forced-colors: active) {
   .lit-button {
     border-color: ButtonText;
+  }
+
+  .lit-button:is(:disabled, [aria-disabled='true']) {
+    border-color: GrayText;
+    color: GrayText;
   }
 
   .lit-button[aria-pressed='true'] {

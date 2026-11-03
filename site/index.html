@@ -261,6 +261,7 @@
         <div
           class="stage"
           id="stage"
+          tabindex="-1"
         >
           <div
             class="stage-eq"
@@ -305,6 +306,16 @@
               Halftime
             </hue-hop>
           </p>
+          <p
+            class="stage-line readout-label"
+            id="rainbow-line"
+            hidden
+          ></p>
+          <p
+            class="wa-visually-hidden"
+            id="rainbow-news"
+            aria-live="polite"
+          ></p>
         </div>
 
         <div
@@ -1110,96 +1121,102 @@ import 'hue-hop/hues.css';</code></pre>
               </div>
             </li>
           </ol>
-          <nav aria-labelledby="further-title">
-            <div class="further-head wa-split wa-align-items-baseline">
-              <h3
-                class="further-heading"
-                id="further-title"
-              >
-                Go Further
-              </h3>
-              <a
-                class="further-all readout-label hop-link is-quiet"
-                href="{{docs-url}}"
-              >
-                All docs
-              </a>
-            </div>
-            <ol class="wa-list-plain">
-              <li>
-                <a
-                  class="further-row"
-                  href="{{repo-url}}#light-and-dark"
+          <div class="wa-stack wa-gap-xl">
+            <nav aria-labelledby="further-title">
+              <div class="further-head wa-split wa-align-items-baseline">
+                <h3
+                  class="further-heading"
+                  id="further-title"
                 >
-                  <span class="further-number">04</span>
-                  <span class="further-text wa-stack wa-gap-xs">
-                    <span
-                      class="further-title hop-link is-quiet wa-align-self-start"
-                    >
-                      Light and Dark
-                    </span>
-                    <span class="further-detail">
-                      The hues need color-scheme to show their dark side.
-                    </span>
-                  </span>
-                </a>
-              </li>
-              <li>
+                  Go Further
+                </h3>
                 <a
-                  class="further-row"
-                  href="{{repo-url}}#start-and-end"
+                  class="further-all readout-label hop-link is-quiet"
+                  href="{{docs-url}}"
                 >
-                  <span class="further-number">05</span>
-                  <span class="further-text wa-stack wa-gap-xs">
-                    <span
-                      class="further-title hop-link is-quiet wa-align-self-start"
-                    >
-                      Your Own Colors
-                    </span>
-                    <span class="further-detail">
-                      Set both ends, or give one and Hue Hop picks the other.
-                    </span>
-                  </span>
+                  All docs
                 </a>
-              </li>
-              <li>
-                <a
-                  class="further-row"
-                  href="{{repo-url}}#picking-your-own-colors"
-                >
-                  <span class="further-number">06</span>
-                  <span class="further-text wa-stack wa-gap-xs">
-                    <span
-                      class="further-title hop-link is-quiet wa-align-self-start"
-                    >
-                      Colors That Pass
+              </div>
+              <ol class="wa-list-plain">
+                <li>
+                  <a
+                    class="further-row"
+                    href="{{repo-url}}#light-and-dark"
+                  >
+                    <span class="further-number">04</span>
+                    <span class="further-text wa-stack wa-gap-xs">
+                      <span
+                        class="further-title hop-link is-quiet wa-align-self-start"
+                      >
+                        Light and Dark
+                      </span>
+                      <span class="further-detail">
+                        The hues need color-scheme to show their dark side.
+                      </span>
                     </span>
-                    <span class="further-detail">
-                      Keep your own ends readable at 4.5:1.
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="further-row"
+                    href="{{repo-url}}#start-and-end"
+                  >
+                    <span class="further-number">05</span>
+                    <span class="further-text wa-stack wa-gap-xs">
+                      <span
+                        class="further-title hop-link is-quiet wa-align-self-start"
+                      >
+                        Your Own Colors
+                      </span>
+                      <span class="further-detail">
+                        Set both ends, or give one and Hue Hop picks the other.
+                      </span>
                     </span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a
-                  class="further-row"
-                  href="{{repo-url}}#drift"
-                >
-                  <span class="further-number">07</span>
-                  <span class="further-text wa-stack wa-gap-xs">
-                    <span
-                      class="further-title hop-link is-quiet wa-align-self-start"
-                    >
-                      Drift
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="further-row"
+                    href="{{repo-url}}#picking-your-own-colors"
+                  >
+                    <span class="further-number">06</span>
+                    <span class="further-text wa-stack wa-gap-xs">
+                      <span
+                        class="further-title hop-link is-quiet wa-align-self-start"
+                      >
+                        Colors That Pass
+                      </span>
+                      <span class="further-detail">
+                        Keep your own ends readable at 4.5:1.
+                      </span>
                     </span>
-                    <span class="further-detail">
-                      Let the hues sway. It stops for reduced motion.
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="further-row"
+                    href="{{repo-url}}#drift"
+                  >
+                    <span class="further-number">07</span>
+                    <span class="further-text wa-stack wa-gap-xs">
+                      <span
+                        class="further-title hop-link is-quiet wa-align-self-start"
+                      >
+                        Drift
+                      </span>
+                      <span class="further-detail">
+                        Let the hues sway. It stops for reduced motion.
+                      </span>
                     </span>
-                  </span>
-                </a>
-              </li>
-            </ol>
-          </nav>
+                  </a>
+                </li>
+              </ol>
+            </nav>
+            <!-- prettier-ignore -->
+            <p class="further-detail">
+              Not doing: <button type="button" class="not-doing-door" id="rainbow-door">rainbow mode</button>, body copy, per-letter fonts or weights, a span per letter.
+            </p>
+          </div>
         </div>
       </section>
     </main>
