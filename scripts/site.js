@@ -67,6 +67,7 @@ async function buildSite() {
     filter: (path) => !path.endsWith('wa.js'),
   });
   cpSync('site/fonts', '_site/fonts', { recursive: true });
+  cpSync('site/icons', '_site/icons', { recursive: true });
   cpSync('dist', '_site/dist', { recursive: true });
   cpSync('node_modules/microlighter/dist', '_site/js/microlighter', {
     recursive: true,

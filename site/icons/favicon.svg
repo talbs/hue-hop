@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+  <style>
+    .s1{fill:#00769e} .s2{fill:#0064b2} .s3{fill:#214bb9} .s4{fill:#4330af}
+    @media (prefers-color-scheme: dark) {
+      .s1{fill:#85d7ff} .s2{fill:#5ebbff} .s3{fill:#6598ff} .s4{fill:#7874f6}
+    }
+  </style>
+  <rect class="s1" x="2" y="1" width="3" height="14"/>
+  <rect class="s2" x="5" y="6" width="3" height="3"/>
+  <rect class="s3" x="8" y="6" width="3" height="3"/>
+  <rect class="s4" x="11" y="1" width="3" height="14"/>
+</svg>
