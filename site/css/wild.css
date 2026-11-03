@@ -1,0 +1,293 @@
+/* Two demo-only faces, so the examples read as other people's sites. Loaded only when a demo uses them. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../fonts/fraunces-latin-soft-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  src: url('../fonts/bricolage-grotesque-latin-wdth-normal.woff2')
+    format('woff2');
+}
+
+.wild {
+  --font-serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-grotesk:
+    'Bricolage Grotesque', 'Avenir Next Condensed', var(--font-display);
+  display: grid;
+  gap: var(--space-section) var(--wa-space-l);
+}
+
+.wild-item {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: var(--space-related);
+  min-width: 0;
+}
+
+.wild-frame {
+  display: grid;
+  align-content: center;
+  gap: var(--space-related);
+  min-height: 9rem;
+  --frame-pad: var(--wa-space-l);
+  padding: var(--frame-pad) var(--frame-pad) var(--frame-pad)
+    calc(var(--frame-pad) + 2px);
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-container);
+  background: var(--stage);
+  overflow: hidden;
+  container-type: inline-size;
+}
+
+@media (hover: hover) {
+  .wild-item {
+    transition:
+      opacity var(--note-8) var(--ease-hit),
+      filter var(--note-8) var(--ease-hit),
+      translate var(--note-16) var(--ease-bounce);
+  }
+
+  .wild-frame {
+    transition: border-color var(--note-16) var(--ease-hit);
+  }
+
+  .wild-item:hover {
+    translate: 0 -3px;
+  }
+
+  .wild-item:hover .wild-frame {
+    border-color: var(--border-control);
+  }
+
+  .wild:has(.wild-item:hover) .wild-item:not(:hover) {
+    opacity: 0.45;
+    filter: saturate(0.5);
+  }
+}
+
+.wild-item figcaption {
+  color: var(--ink-faint);
+}
+
+.mock-meta {
+  color: var(--ink-faint);
+  font-size: var(--type-small);
+}
+
+.mock-kicker {
+  padding-block-end: var(--space-related);
+  border-block-end: var(--border-thin) solid var(--divider);
+}
+
+.mock-deck-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+  font-weight: 700;
+  font-variation-settings: 'SOFT' 100;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+.mock-standfirst {
+  font-family: var(--font-serif);
+  font-variation-settings: 'SOFT' 100;
+  max-width: 34rem;
+  color: var(--ink-quiet);
+  font-size: var(--type-lead);
+  line-height: var(--leading-tight);
+}
+
+.mock-year {
+  font-family: var(--font-grotesk);
+  font-size: clamp(3rem, 38cqi, 8.5rem);
+  font-weight: 800;
+  font-stretch: 75%;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.mock-runin {
+  font-family: var(--font-serif);
+  font-size: 1.0625rem;
+  color: var(--ink-quiet);
+  line-height: var(--leading-body);
+}
+
+.mock-runin hue-hop {
+  font-weight: var(--weight-strong);
+}
+
+.mock-cap {
+  float: inline-start;
+  margin: 0.06em 0.08em 0 0;
+  font-size: 3.5em;
+  font-weight: 800;
+  font-variation-settings: 'SOFT' 100;
+  line-height: 0.8;
+}
+
+.mock-accent-line {
+  font-size: clamp(1.75rem, 1.25rem + 2vw, 2.75rem);
+  font-weight: var(--weight-strong);
+  line-height: var(--leading-heading);
+  letter-spacing: -0.02em;
+}
+
+.mock-accent-line hue-hop {
+  font-weight: var(--weight-display);
+}
+
+.mock-line {
+  font-family: var(--font-grotesk);
+  font-stretch: 87.5%;
+  /* Spottieottiedopaliscious is about 10.7em wide at this weight; 9cqi keeps it on one line. */
+  font-size: clamp(1.25rem, 9cqi, 6rem);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-display);
+  letter-spacing: -0.04em;
+  overflow-wrap: anywhere;
+}
+
+.mock-tags li {
+  padding: var(--space-tight) 0.75rem;
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-pill);
+  font-size: var(--type-small);
+  font-weight: var(--weight-strong);
+}
+
+.mock-byline {
+  padding-block-start: var(--space-related);
+  border-block-start: var(--border-thin) solid var(--divider);
+  color: var(--ink-faint);
+}
+
+.mock-progress {
+  height: var(--border-thick);
+  margin-block-start: var(--space-related);
+  border-radius: var(--radius-pill);
+  background: var(--divider);
+}
+
+.mock-progress span {
+  display: block;
+  width: 50%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.mock-times {
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.mock-tags .is-selected {
+  border-color: var(--ink);
+  background: var(--surface);
+}
+
+.mock-countdown {
+  font-family: var(--font-readout);
+  font-size: calc(var(--type-readout) * 2);
+  line-height: 1;
+}
+
+/* A column per digit pair and per colon, so each unit label centers under its two digits. */
+.mock-countdown-units {
+  display: grid;
+  grid-template-columns: 2ch 1ch 2ch 1ch 2ch;
+  justify-items: center;
+  font-size: calc(var(--type-readout) * 2);
+  line-height: 1;
+}
+
+.mock-countdown-units span {
+  color: var(--ink-faint);
+  font-size: var(--type-label);
+}
+
+.mock-countdown-units span:nth-child(2) {
+  grid-column: 3;
+}
+
+.mock-countdown-units span:nth-child(3) {
+  grid-column: 5;
+}
+
+.wild-countdown .wild-frame {
+  justify-items: center;
+}
+
+/* The year and its list center as one block, still left-aligned with each other. */
+.wild-year .wild-frame {
+  justify-content: center;
+}
+
+.mock-term {
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: var(--type-small);
+  line-height: var(--leading-body);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.mock-term-out {
+  color: var(--ink-faint);
+}
+
+@media (min-width: 48rem) {
+  .wild-frame {
+    --frame-pad: var(--space-section);
+  }
+
+  .wild {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wild-deck,
+  .wild-accent,
+  .wild-line,
+  .wild-term {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 64rem) {
+  .wild {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .wild-deck {
+    grid-column: span 4;
+  }
+
+  .wild-year {
+    grid-column: span 2;
+  }
+
+  .wild-dropcap,
+  .wild-accent {
+    grid-column: span 3;
+  }
+
+  .wild-line {
+    grid-column: 1 / -1;
+  }
+
+  .wild-tags,
+  .wild-countdown,
+  .wild-term {
+    grid-column: span 2;
+  }
+}

@@ -1,0 +1,112 @@
+.quickstart {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-page);
+}
+
+.steps,
+.step {
+  min-width: 0;
+}
+
+.step-title {
+  font-size: var(--type-lead);
+  font-weight: var(--weight-strong);
+  letter-spacing: -0.01em;
+}
+
+.step-number {
+  font-family: var(--font-readout);
+  font-size: var(--type-readout);
+  font-weight: var(--weight-body);
+  color: var(--ink-faint);
+}
+
+.step-note {
+  color: var(--ink-quiet);
+  font-size: var(--type-small);
+}
+
+.code-result {
+  overflow: hidden;
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+}
+
+.code-result .code-well {
+  border-radius: 0;
+  border-block-end: var(--border-thin) solid var(--border-container);
+}
+
+.result-frame {
+  padding: var(--space-group) var(--space-group) var(--wa-space-l);
+  background: var(--stage);
+}
+
+.result-frame p {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.further-head {
+  padding-block-end: var(--space-group);
+  border-block-end: var(--border-thick) solid var(--ink);
+}
+
+.further-heading {
+  font-size: var(--type-lead);
+  font-weight: var(--weight-strong);
+  letter-spacing: -0.01em;
+}
+
+.further-row {
+  display: grid;
+  grid-template-columns: 3ch minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-related);
+  padding-block: var(--wa-space-l);
+  border-block-end: var(--border-thin) solid var(--divider);
+  text-decoration: none;
+  transition: padding-inline-start var(--note-16) var(--ease-bounce);
+}
+
+.further-number {
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  transition: color var(--note-16) var(--ease-hit);
+}
+
+.further-title {
+  font-size: var(--type-body);
+  font-weight: var(--weight-strong);
+  line-height: var(--leading-heading);
+}
+
+.further-detail {
+  color: var(--ink-quiet);
+  font-size: var(--type-small);
+  line-height: var(--leading-tight);
+}
+
+.further-row:hover {
+  padding-inline-start: var(--space-related);
+}
+
+.further-row:hover .further-number {
+  color: var(--lit);
+}
+
+.further-all {
+  color: var(--ink-quiet);
+}
+
+@media (min-width: 64rem) {
+  .quickstart {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+  }
+}

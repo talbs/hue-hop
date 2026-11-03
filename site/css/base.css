@@ -1,0 +1,325 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+[id] {
+  scroll-margin-block-start: var(--space-section);
+}
+
+body {
+  margin: 0;
+  background: var(--page);
+  font-size: var(--type-body);
+  line-height: var(--leading-body);
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: var(--leading-heading);
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.lit-button:focus-visible {
+  box-shadow: var(--depth-raised), var(--focus-glow);
+}
+
+.lit-button[aria-pressed='true']:focus-visible {
+  box-shadow: var(--depth-pressed), var(--focus-glow);
+}
+
+wa-copy-button::part(button):focus-visible,
+wa-tab:focus-visible::part(base) {
+  box-shadow: var(--focus-glow);
+}
+
+code,
+pre {
+  font-family: var(--font-code);
+  font-size: 0.9em;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+/* Seven flat dusk bands, like the element's stepped letters. The resting line and the stepped one are backgrounds in the same spot, so they swap in place. Inline-block drops the space a line break before </a> leaves inside the link. */
+.hop-link {
+  display: inline-block;
+  padding-block-end: 0.12em;
+  background-image:
+    linear-gradient(
+      90deg,
+      color-mix(in oklch, var(--link-start), var(--link-end) 0%) 0% 14.286%,
+      color-mix(in oklch, var(--link-start), var(--link-end) 17%) 14.286%
+        28.571%,
+      color-mix(in oklch, var(--link-start), var(--link-end) 33%) 28.571%
+        42.857%,
+      color-mix(in oklch, var(--link-start), var(--link-end) 50%) 42.857%
+        57.143%,
+      color-mix(in oklch, var(--link-start), var(--link-end) 67%) 57.143%
+        71.429%,
+      color-mix(in oklch, var(--link-start), var(--link-end) 83%) 71.429%
+        85.714%,
+      color-mix(in oklch, var(--link-start), var(--link-end) 100%) 85.714% 100%
+    ),
+    linear-gradient(currentColor, currentColor);
+  background-position: 0 var(--hop-link-y, 100%);
+  background-repeat: no-repeat;
+  background-size:
+    100% 0,
+    100% var(--border-thin);
+  text-decoration: none;
+  transition:
+    background-size var(--note-16) var(--ease-hit),
+    color var(--note-16) var(--ease-hit);
+}
+
+.hop-link.is-quiet {
+  background-size:
+    100% 0,
+    100% 0;
+}
+
+.hop-link:is(:hover, :focus-visible),
+.further-row:is(:hover, :focus-visible) .further-title,
+.hop-link[aria-current='page'] {
+  background-size:
+    100% var(--border-thick),
+    100% 0;
+  color: var(--ink);
+}
+
+@media (forced-colors: active) {
+  .hop-link,
+  .hop-link.is-quiet:is(:hover, :focus-visible),
+  .hop-link[aria-current='page'] {
+    text-decoration: underline;
+  }
+}
+
+.readout-label {
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  line-height: var(--leading-tight);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+}
+
+.lit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-related);
+  min-height: var(--tap);
+  padding-inline: var(--space-group);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  box-shadow: var(--depth-raised);
+  color: var(--ink-quiet);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform var(--note-16) var(--ease-bounce),
+    box-shadow var(--note-16) var(--ease-bounce),
+    background-color var(--note-16) var(--ease-hit),
+    color var(--note-16) var(--ease-hit);
+}
+
+a.lit-button {
+  text-decoration: none;
+}
+
+.lit-button-large {
+  padding-inline: var(--space-group);
+}
+
+@media (min-width: 30rem) {
+  .lit-button-large {
+    padding-inline: var(--wa-space-l);
+  }
+}
+
+.lit-button:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--depth-lifted);
+  color: var(--ink);
+}
+
+.lit-button[aria-pressed='true'] {
+  transform: translateY(1px);
+  background: var(--surface-sunken);
+  box-shadow: var(--depth-pressed);
+  color: var(--ink);
+}
+
+.lit-button:active {
+  transform: translateY(2px) scale(0.98);
+  background: var(--surface-sunken);
+  box-shadow: var(--depth-pressed);
+  color: var(--ink);
+  transition-duration: var(--note-32);
+  transition-timing-function: var(--ease-hit);
+}
+
+.led {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-control);
+  background: var(--surface-sunken);
+  transition:
+    background-color var(--note-16) var(--ease-hit),
+    border-color var(--note-16) var(--ease-hit),
+    box-shadow var(--note-16) var(--ease-hit);
+}
+
+:is(
+    .is-lit,
+    [aria-pressed='true'],
+    [aria-checked='true'],
+    [aria-selected='true'],
+    [data-state]
+  )
+  .led {
+  border-color: var(--lit);
+  background: var(--lit);
+  box-shadow: var(--lit-glow);
+  animation: led-hit var(--note-8) var(--ease-hit);
+}
+
+@keyframes led-hit {
+  30% {
+    transform: scale(1.5);
+    box-shadow: 0 0 calc(var(--glow-blur) * 2 + 4px)
+      color-mix(in oklch, var(--lit) 90%, transparent);
+  }
+}
+
+/* Same hit under another name, so a pass/check flip restarts it. */
+@keyframes led-hit-again {
+  30% {
+    transform: scale(1.5);
+    box-shadow: 0 0 calc(var(--glow-blur) * 2 + 4px)
+      color-mix(in oklch, var(--lit) 90%, transparent);
+  }
+}
+
+a {
+  transition:
+    color var(--note-16) var(--ease-hit),
+    text-decoration-thickness var(--note-16) var(--ease-hit);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* scheme.js drives the side switch: seven slats drop in over the old side. */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  /* Starts hidden so the new side can't flash in full before the slats begin. */
+  ::view-transition-new(root) {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  /* The hero wordmark rides above the slats and recolors one letter at a time, left to right. */
+  ::view-transition-group(hero-wordmark),
+  ::view-transition-old(hero-wordmark),
+  ::view-transition-new(hero-wordmark) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-new(hero-wordmark) {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+@media (forced-colors: active) {
+  .lit-button {
+    border-color: ButtonText;
+  }
+
+  .lit-button[aria-pressed='true'] {
+    border-color: Highlight;
+    outline: 2px solid Highlight;
+    outline-offset: -4px;
+  }
+
+  :is(
+      [aria-pressed='true'],
+      [aria-checked='true'],
+      [aria-selected='true'],
+      [data-state]
+    )
+    .led {
+    background: CanvasText;
+  }
+}
+
+.hop-letter {
+  display: inline-block;
+  transform-origin: 50% 80%;
+  white-space: pre;
+}

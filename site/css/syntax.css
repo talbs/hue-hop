@@ -1,0 +1,86 @@
+/* The Hue Hop syntax theme for microlighter: each token kind takes one of the seven hues, the bright end on Side A and the deep end on Side B. Every color holds 4.5:1 on its side's code well. */
+:root[data-side='a'] {
+  --syntax-tag: oklch(84% 0.098 231);
+  --syntax-keyword: oklch(84% 0.099 355);
+  --syntax-string: oklch(86% 0.182 125);
+  --syntax-property: oklch(88.6% 0.137 88);
+  --syntax-constant: oklch(84% 0.117 66);
+  --syntax-function: oklch(84% 0.152 180);
+  --syntax-variable: oklch(84% 0.088 30);
+  --syntax-type: oklch(78% 0.12 291);
+}
+
+:root[data-side='b'] {
+  --syntax-tag: oklch(46% 0.15 260);
+  --syntax-keyword: oklch(46% 0.17 350);
+  --syntax-string: oklch(46% 0.13 150);
+  --syntax-property: oklch(46% 0.13 50);
+  --syntax-constant: oklch(46% 0.16 25);
+  --syntax-function: oklch(46% 0.09 200);
+  --syntax-variable: oklch(46% 0.16 10);
+  --syntax-type: oklch(42% 0.15 291);
+}
+
+::highlight(comment),
+::highlight(quote) {
+  color: var(--ink-faint);
+}
+
+::highlight(operator),
+::highlight(punctuation) {
+  color: var(--ink-quiet);
+}
+
+::highlight(keyword),
+::highlight(storage),
+::highlight(at-rule),
+::highlight(doctype),
+::highlight(important),
+::highlight(section) {
+  color: var(--syntax-keyword);
+}
+
+::highlight(string),
+::highlight(regexp),
+::highlight(attribute-value),
+::highlight(link),
+::highlight(raw) {
+  color: var(--syntax-string);
+}
+
+::highlight(numeric),
+::highlight(boolean),
+::highlight(constant),
+::highlight(symbol),
+::highlight(character-entity),
+::highlight(anchor),
+::highlight(entity) {
+  color: var(--syntax-constant);
+}
+
+::highlight(function),
+::highlight(decorator),
+::highlight(animation) {
+  color: var(--syntax-function);
+}
+
+::highlight(type),
+::highlight(support),
+::highlight(selector) {
+  color: var(--syntax-type);
+}
+
+::highlight(variable),
+::highlight(interpolation) {
+  color: var(--syntax-variable);
+}
+
+::highlight(property),
+::highlight(key),
+::highlight(attribute-name) {
+  color: var(--syntax-property);
+}
+
+::highlight(tag) {
+  color: var(--syntax-tag);
+}
