@@ -206,6 +206,11 @@ wa-copy-button::part(success-icon) {
   overflow-wrap: anywhere;
 }
 
+.stage-line {
+  margin-block-start: var(--space-related);
+  text-transform: none;
+}
+
 .desk {
   --desk-pad: var(--space-group);
   display: grid;

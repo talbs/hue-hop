@@ -10,6 +10,7 @@ import {
   segmentPitch,
   splitLetters,
 } from './motion.js';
+import { RAINBOW_MARKUP, paintRainbow, rainbowLine } from './rainbow.js';
 import { STUDIO_URL } from './urls.js';
 
 export const DEFAULT_STATE = {
@@ -120,6 +121,10 @@ const lampState = document.getElementById('lamp-state');
 const lampDetail = document.getElementById('lamp-detail');
 const markup = document.getElementById('markup');
 const studioLink = document.getElementById('studio-link');
+const tryArea = document.getElementById('try');
+const rainbowDoor = document.getElementById('rainbow-door');
+const rainbowStageLine = document.getElementById('rainbow-line');
+const rainbowNews = document.getElementById('rainbow-news');
 
 export function readDeskState() {
   const checked = sleeves.find(
@@ -138,11 +143,14 @@ export function readDeskState() {
   };
 }
 
+// Rainbow checks no hue, so the first one keeps the group in the Tab order. Checking any real hue ends it.
 function checkSleeve(hue) {
-  for (const sleeve of sleeves) {
+  if (hue !== null) endRainbow();
+  const hasMatch = sleeves.some((sleeve) => sleeve.dataset.hue === hue);
+  for (const [index, sleeve] of sleeves.entries()) {
     const isChecked = sleeve.dataset.hue === hue;
     sleeve.setAttribute('aria-checked', String(isChecked));
-    sleeve.tabIndex = isChecked ? 0 : -1;
+    sleeve.tabIndex = isChecked || (!hasMatch && index === 0) ? 0 : -1;
   }
 }
 
@@ -185,6 +193,18 @@ function showFaderValue(fader) {
   desk.querySelector(`output[for="${fader.id}"]`).textContent = Number(
     fader.value
   ).toFixed(decimals);
+}
+
+function showStudioLink(state) {
+  if (isRainbow) {
+    studioLink.removeAttribute('href');
+    studioLink.setAttribute('aria-disabled', 'true');
+    studioLink.setAttribute('aria-describedby', 'markup');
+    return;
+  }
+  studioLink.href = describeStudioLink(state);
+  studioLink.removeAttribute('aria-disabled');
+  studioLink.setAttribute('aria-describedby', 'studio-caption');
 }
 
 function showContrast(state) {
@@ -236,6 +256,57 @@ function showStepBars(state) {
     );
     bar.style.height = `${lit * segment}px`;
   });
+}
+
+let isRainbow = false;
+let wasDriftOn = false;
+
+function showRainbowLine() {
+  const line = isRainbow ? rainbowLine(lamp.dataset.state) : '';
+  if (rainbowStageLine.textContent === line) return;
+  rainbowStageLine.textContent = line;
+  rainbowStageLine.hidden = !line;
+}
+
+// The lamp's own live region would say Pass on top of the line, so it stays quiet until this one has spoken.
+function announceRainbow() {
+  const line = rainbowStageLine.textContent;
+  rainbowNews.textContent = line ? `Rainbow. ${line}` : 'Rainbow.';
+  setTimeout(() => lampState.setAttribute('aria-live', 'polite'), beatMs());
+}
+
+function hopWhenScrolled() {
+  if (!isMotionOk()) return;
+  const hop = () => hopLetters(live, LETTER_HOP);
+  const box = tryArea.getBoundingClientRect();
+  const isScrolling = 'onscrollend' in window && Math.abs(box.top) > 1;
+  if (isScrolling) addEventListener('scrollend', hop, { once: true });
+  else hop();
+}
+
+function startRainbow() {
+  if (!isRainbow) {
+    isRainbow = true;
+    wasDriftOn = driftSwitch.getAttribute('aria-pressed') === 'true';
+  }
+  paintRainbow();
+  driftSwitch.setAttribute('aria-pressed', 'false');
+  driftSwitch.disabled = true;
+  checkSleeve(null);
+  rainbowNews.textContent = '';
+  lampState.setAttribute('aria-live', 'off');
+  render();
+  requestAnimationFrame(announceRainbow);
+  stage.focus({ preventScroll: true });
+  tryArea.scrollIntoView();
+  hopWhenScrolled();
+}
+
+function endRainbow() {
+  if (!isRainbow) return;
+  isRainbow = false;
+  driftSwitch.disabled = false;
+  driftSwitch.setAttribute('aria-pressed', String(wasDriftOn));
 }
 
 let typingRun = 0;
@@ -292,14 +363,16 @@ function render() {
     showOneColor();
     const state = readDeskState();
     writeStateTo(live, state);
+    live.toggleAttribute('data-rainbow', isRainbow);
     showTextInSleeves(state.text);
     sleeveSamples.forEach((hop) => colorEllipsis(hop.parentElement));
-    showMarkup(describeMarkup(state));
+    showMarkup(isRainbow ? RAINBOW_MARKUP : describeMarkup(state));
     stage.style.setProperty('--letters', longestWordLength(state.text));
     showStepBars(state);
-    studioLink.href = describeStudioLink(state);
-    stageHue.textContent = state.hue ?? 'custom';
+    showStudioLink(state);
+    stageHue.textContent = isRainbow ? 'Rainbow' : (state.hue ?? 'custom');
     showContrast(state);
+    showRainbowLine();
     typingRun += 1;
     if (shouldTypeText && isMotionOk() && state.text) {
       typeOut(live, state.text, typingRun);
@@ -386,6 +459,7 @@ if (desk) {
     });
   }
   document.addEventListener('trysample', (event) => {
+    endRainbow();
     shouldTypeText = true;
     applyDeskState({ ...readDeskState(), ...event.detail });
   });
@@ -416,6 +490,7 @@ if (desk) {
       render();
     });
   }
+  rainbowDoor.addEventListener('click', startRainbow);
   useSideDefaults();
   const titleSizes = new ResizeObserver((entries) => {
     for (const { target } of entries) colorEllipsis(target);

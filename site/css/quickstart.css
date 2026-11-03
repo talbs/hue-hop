@@ -150,6 +150,17 @@
   color: var(--ink-quiet);
 }
 
+/* Looks like the rest of the sentence on purpose: it's the egg. */
+.not-doing-door {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
 @media (min-width: 64rem) {
   .quickstart {
     grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
