@@ -134,18 +134,17 @@ export function hopLetters(hop, { keyframes, beats }) {
   return total;
 }
 
-export function lightLetters(hop) {
-  const spans = splitIntoLetters(hop);
-  const { step, length } = hopTiming(spans.length);
-  const lights = spans.map((span, index) =>
-    span.animate([{ filter: 'grayscale(1)' }, { filter: 'none' }], {
+export function lightLetters(wordmark) {
+  const letters = [...wordmark.querySelectorAll('path')];
+  const { step, length } = hopTiming(letters.length);
+  for (const [index, letter] of letters.entries()) {
+    letter.animate([{ filter: 'grayscale(1)' }, { filter: 'none' }], {
       duration: length,
       delay: index * step,
       easing: HOP_EASING,
       fill: 'backwards',
-    })
-  );
-  restoreTextAfter(hop, spans, lights);
+    });
+  }
 }
 
 export function longestWordLength(text) {
