@@ -4,8 +4,10 @@ const hasSupport = 'highlights' in CSS;
 
 const segmenter =
   hasSupport && new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+const forcedColors = hasSupport && matchMedia('(forced-colors: active)');
 const elementData = new WeakMap();
 const rootStyles = new WeakMap();
+const connectedHops = new Set();
 
 const colorAttributes = ['start', 'end'];
 const mostRulesPerRoot = 256;
@@ -168,8 +170,11 @@ function paint(element) {
   }
 
   const letterCount = data.ranges.length;
-  for (const [index, range] of data.ranges.entries()) {
-    highlightAt(stepAt(index, letterCount)).add(range);
+  // Under forced colors Chromium boxes every registered range in the system Highlight color, and no CSS can override it.
+  if (!forcedColors.matches) {
+    for (const [index, range] of data.ranges.entries()) {
+      highlightAt(stepAt(index, letterCount)).add(range);
+    }
   }
 
   const hops = hopsFor(letterCount);
@@ -225,6 +230,7 @@ export class HueHop extends HTMLElement {
     }
     applyColorAttributes(this);
     paint(this);
+    connectedHops.add(this);
     data.observer.observe(this, {
       characterData: true,
       childList: true,
@@ -236,8 +242,15 @@ export class HueHop extends HTMLElement {
     const data = elementData.get(this);
     if (!data) return;
     data.observer.disconnect();
+    connectedHops.delete(this);
     clearRanges(data);
   }
+}
+
+if (hasSupport) {
+  forcedColors.addEventListener('change', () => {
+    for (const hop of connectedHops) paint(hop);
+  });
 }
 
 if (!customElements.get('hue-hop')) customElements.define('hue-hop', HueHop);
