@@ -151,3 +151,23 @@ test('content changes re-step and leave no old ranges', async () => {
     assert.deepEqual(pageErrors, [], name);
   }
 });
+
+test('forced colors holds back every range until it turns off', async () => {
+  const page = await openPage('<hue-hop id="t">Alpha</hue-hop>');
+
+  await page.emulateMedia({ forcedColors: 'active' });
+  const whenTurnedOn = await rangesOf(page, '#t');
+  assert.deepEqual(whenTurnedOn.texts, []);
+  assert.equal(whenTurnedOn.hops, 5);
+
+  await page.evaluate(() => {
+    document.getElementById('t').firstChild.data = 'Echo';
+  });
+  const afterEdit = await rangesOf(page, '#t');
+  assert.deepEqual(afterEdit.texts, []);
+  assert.equal(afterEdit.hops, 4);
+
+  await page.emulateMedia({ forcedColors: 'none' });
+  const whenTurnedOff = await rangesOf(page, '#t');
+  assert.deepEqual(whenTurnedOff.texts, ['E', 'c', 'h', 'o']);
+});
