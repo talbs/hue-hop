@@ -167,6 +167,32 @@ wa-page::part(subheader) {
   display: none;
 }
 
+#reset {
+  margin-inline-end: var(--space-related);
+  padding-inline: var(--space-tight);
+  background: none;
+  box-shadow: none;
+}
+
+#reset:hover {
+  transform: none;
+  color: var(--ink);
+}
+
+#copy-html {
+  background: var(--ink);
+  color: var(--page);
+}
+
+#copy-html:hover {
+  color: var(--page);
+}
+
+#copy-html:active {
+  background: var(--ink-quiet);
+  color: var(--page);
+}
+
 .page-pick {
   display: flex;
   align-items: center;
@@ -290,9 +316,9 @@ wa-page::part(subheader) {
 }
 
 .meter-led {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: var(--space-tight);
   font-family: var(--font-readout);
   font-size: var(--type-label);
   line-height: var(--leading-tight);
@@ -300,14 +326,16 @@ wa-page::part(subheader) {
   color: var(--ink-quiet);
 }
 
-/* Holds its place when hidden, so a ratio crossing the bar doesn't shift. A fader can flip a meter's state many times a second, so it skips the hit or it would flash. */
+/* Beside the ratio rather than in line, so the ratio stays under its letter and doesn't move when it crosses the bar. A fader can flip a meter's state many times a second, so the dot skips the hit or it would flash. */
 .meter-led .led {
-  visibility: hidden;
+  display: none;
+  position: absolute;
+  inset-inline-end: calc(100% + 3px);
   animation: none;
 }
 
 .meter-led[data-state='check'] .led {
-  visibility: visible;
+  display: block;
 }
 
 .meter-led[data-state='check'] .led-value {
@@ -526,7 +554,7 @@ wa-radio[appearance='button']:state(checked) {
   line-height: var(--leading-tight);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--ink);
 }
 
 .channel > .channel-name,
@@ -543,7 +571,7 @@ wa-radio[appearance='button']:state(checked) {
 }
 
 .channel-hint {
-  font-size: var(--type-fine);
+  font-size: var(--type-label);
   line-height: var(--leading-tight);
   text-align: end;
   color: var(--ink-faint);
@@ -596,7 +624,7 @@ wa-radio[appearance='button']:state(checked) {
 }
 
 .toggle-hint {
-  font-size: var(--type-fine);
+  font-size: var(--type-label);
   color: var(--ink-faint);
 }
 
@@ -974,6 +1002,10 @@ wa-color-picker::part(color-picker) {
 
   #copy-html {
     display: inline-flex;
+  }
+
+  #reset {
+    margin-inline-end: var(--space-group);
   }
 
   .page-picks {
