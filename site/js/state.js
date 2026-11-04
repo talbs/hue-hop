@@ -1,6 +1,3 @@
-import { readSide } from './scheme.js';
-import { STUDIO_URL } from './urls.js';
-
 export const DEFAULT_STATE = {
   text: 'Halftime',
   hue: 'dusk',
@@ -57,13 +54,14 @@ export function describeMarkup(state) {
 export function describeStudioLink(state) {
   const params = new URLSearchParams();
   params.set('text', state.text);
-  if (state.hue !== DEFAULT_STATE.hue) params.set('hue', state.hue ?? 'custom');
+  if (state.hue !== DEFAULT_STATE.hue || state.start || state.end) {
+    params.set('hue', state.hue ?? 'custom');
+  }
   if (state.start) params.set('start', state.start);
   if (state.end) params.set('end', state.end);
   for (const name of changedTuning(state)) params.set(name, state[name]);
   if (state.drift) params.set('drift', '1');
   if (state.display) params.set('display', '1');
   if (state.accent) params.set('accent', state.accent);
-  params.set('scheme', readSide());
-  return `${STUDIO_URL}?${params}`;
+  return `${new URL('../studio/', import.meta.url)}?${params}`;
 }
