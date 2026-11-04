@@ -1,5 +1,5 @@
-import { lowestLetterContrast } from './contrast.js';
-import { letterRights, readSide } from './scheme.js';
+import { floorRatio, lowestLetterContrast } from './contrast.js';
+import { letterRights, readSide, whenSideChanges } from './scheme.js';
 
 import {
   LETTER_HOP,
@@ -17,6 +17,7 @@ import {
   styleFor,
 } from './state.js';
 import { fillCode } from './syntax.js';
+import { isPlainClick } from './word-trip.js';
 
 export function writeStateTo(element, state) {
   if (element.textContent !== state.text) element.textContent = state.text;
@@ -137,11 +138,11 @@ function showContrast(state) {
     lampDetail.textContent = '';
     return;
   }
-  const bar = state.display ? 3 : 4.5;
+  const bar = state.hue && state.display ? 3 : 4.5;
   const isPass = ratio >= bar;
   lamp.dataset.state = isPass ? 'pass' : 'check';
   lampState.textContent = isPass ? 'Pass' : 'Check';
-  lampDetail.textContent = `${(Math.floor(ratio * 10) / 10).toFixed(1)}:1 of ${bar}`;
+  lampDetail.textContent = `${floorRatio(ratio)}:1 of ${bar}`;
 }
 
 const STEP_BARS = 12;
@@ -343,6 +344,13 @@ if (desk) {
       render();
     });
   }
+  // The word's trip can't leave with half a word on the stage.
+  studioLink.addEventListener('click', (event) => {
+    if (!isPlainClick(event)) return;
+    typingRun += 1;
+    shouldTypeText = false;
+    live.textContent = textField.value;
+  });
   useSideDefaults();
   const titleSizes = new ResizeObserver((entries) => {
     for (const { target } of entries) colorEllipsis(target);
@@ -354,9 +362,7 @@ if (desk) {
       render();
     });
   }
-  document.addEventListener('sidechange', () => {
-    useSideDefaults();
-    render();
-  });
+  document.addEventListener('sidechange', useSideDefaults);
+  whenSideChanges(render);
   render();
 }
