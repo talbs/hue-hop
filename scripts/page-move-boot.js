@@ -2,7 +2,8 @@
 
 // A group's default animation also runs width and height, which holds it on the main thread even when they don't change.
 export function keepGroupsOnTransform({ viewTransition }) {
-  viewTransition?.ready.then(
+  if (!viewTransition?.types.has('studio-move')) return;
+  viewTransition.ready.then(
     () => {
       for (const { effect } of document.getAnimations()) {
         if (!effect?.pseudoElement?.startsWith('::view-transition-group')) {
@@ -26,9 +27,36 @@ export function keepGroupsOnTransform({ viewTransition }) {
   );
 }
 
-// A header scrolled off the page would fly in from above if it kept its names, so it stays part of the page's fade.
-export function markHeaderAway() {
-  const header = document.querySelector('.site-header');
-  const isAway = header && Math.abs(header.getBoundingClientRect().top) > 0.5;
-  document.documentElement.toggleAttribute('data-header-away', Boolean(isAway));
+export function isStudioUrl(url) {
+  return new URL(url, location.href).pathname
+    .replace(/\/$/, '')
+    .endsWith('/studio');
+}
+
+// A browser with no activation to read has only the clicked link to go on, so its Back or Forward to the Studio gets the plain fade.
+export function rememberClickedLink(event) {
+  window.lastClickedHref = event.target.closest?.('a')?.href;
+}
+
+export function markStudioMoveLeaving(event) {
+  const isLeavingStudio = isStudioUrl(location.href);
+  try {
+    if (isLeavingStudio) sessionStorage.setItem('hue-hop-left-studio', '1');
+  } catch {}
+  const destination = event.activation?.entry?.url ?? window.lastClickedHref;
+  const isGoingToStudio = destination && isStudioUrl(destination);
+  if (isLeavingStudio || isGoingToStudio) {
+    event.viewTransition?.types.add('studio-move');
+  }
+}
+
+export function markStudioMoveArriving(event) {
+  let hasLeftStudio = false;
+  try {
+    hasLeftStudio = sessionStorage.getItem('hue-hop-left-studio') === '1';
+    sessionStorage.removeItem('hue-hop-left-studio');
+  } catch {}
+  if (hasLeftStudio || isStudioUrl(location.href)) {
+    event.viewTransition?.types.add('studio-move');
+  }
 }

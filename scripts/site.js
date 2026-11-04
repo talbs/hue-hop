@@ -27,7 +27,13 @@ import {
   llmsText,
   propertyRows,
 } from './manifest.js';
-import { keepGroupsOnTransform, markHeaderAway } from './page-move-boot.js';
+import {
+  isStudioUrl,
+  keepGroupsOnTransform,
+  markStudioMoveArriving,
+  markStudioMoveLeaving,
+  rememberClickedLink,
+} from './page-move-boot.js';
 
 // Keep the kit restricted to talbs.github.io and localhost: the code ships in public HTML.
 const FA_KIT = '7ce624a355';
@@ -106,7 +112,7 @@ function readFills(manifest) {
     'agent-rules': escapeHtml(AGENT_RULES),
     'docs-nav': docsNav(DOCS_GROUPS),
     'inline-css': inlineCss(),
-    'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${keepGroupsOnTransform}\n${markHeaderAway}\naddEventListener('pageswap', markHeaderAway);\naddEventListener('pagereveal', markHeaderAway);\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>`,
+    'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${isStudioUrl}\n${rememberClickedLink}\n${markStudioMoveLeaving}\n${markStudioMoveArriving}\n${keepGroupsOnTransform}\naddEventListener('click', rememberClickedLink, true);\naddEventListener('pageswap', markStudioMoveLeaving);\naddEventListener('pagereveal', markStudioMoveArriving);\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>`,
   };
 }
 

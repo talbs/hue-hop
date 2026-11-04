@@ -40,6 +40,17 @@
       }
     </script>
     <script>
+      function markHeaderAway() {
+        const header = document.querySelector('.site-header');
+        const isAway =
+          header && Math.abs(header.getBoundingClientRect().top) > 0.5;
+        document.documentElement.toggleAttribute(
+          'data-header-away',
+          Boolean(isAway)
+        );
+      }
+      addEventListener('pageswap', markHeaderAway);
+      addEventListener('pagereveal', markHeaderAway);
       addEventListener('pagereveal', (event) => {
         let tripFrom = null;
         try {

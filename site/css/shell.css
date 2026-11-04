@@ -470,25 +470,28 @@ wa-copy-button::part(success-icon) {
     types: page-move;
   }
 
-  :root:active-view-transition-type(page-move):not([data-header-away])
-    .site-header {
+  :root:active-view-transition-type(page-move) .site-header {
     view-transition-name: site-header;
   }
 
-  /* Below 860px the docs show a menu button that pushes the header's contents aside, so they'd slide on every move to or from the docs. The bar's crossfade covers that. Nothing else moves down here. */
-  @media (min-width: 860px) {
-    :root:active-view-transition-type(page-move):not([data-header-away])
-      .site-wordmark {
+  /* The bar is the same size on every page, so it holds still while the page fades under it. */
+  :root:active-view-transition-type(page-move)::view-transition-group(
+      site-header
+    ) {
+    animation: none;
+  }
+
+  /* Only the Studio's header is wider than --measure, so this is the only move with anywhere to slide. */
+  @media (min-width: 72rem) {
+    :root:active-view-transition-type(studio-move) .site-wordmark {
       view-transition-name: site-wordmark;
     }
 
-    :root:active-view-transition-type(page-move):not([data-header-away])
-      .site-nav {
+    :root:active-view-transition-type(studio-move) .site-nav {
       view-transition-name: site-nav;
     }
 
-    :root:active-view-transition-type(page-move):not([data-header-away])
-      .side-toggle {
+    :root:active-view-transition-type(studio-move) .side-toggle {
       view-transition-name: side-toggle;
     }
   }

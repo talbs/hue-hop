@@ -1276,6 +1276,12 @@ wa-color-picker::part(color-picker) {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Only this page lets its header scroll away. A named header off the page would fly in from above, so it stays part of the fade. */
+  :root:active-view-transition-type(page-move)[data-header-away]
+    :is(.site-header, .site-wordmark, .site-nav, .side-toggle) {
+    view-transition-name: none;
+  }
+
   /* studio.js flies this group with translate and scale, because the default size animation runs on the main thread. */
   :root:active-view-transition-type(word-trip)::view-transition-group(
       studio-word
