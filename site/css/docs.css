@@ -37,6 +37,59 @@
   padding: 0;
 }
 
+/* wa-page lays out its slots only once wa.js runs. These hold each slot where it will land, so a slow load or a page move never shows the raw column of links. */
+.docs-page:not(:defined) > :is(wa-icon, .docs-drawer-title, .docs-nav) {
+  display: none;
+}
+
+.docs-page:not(:defined) > main {
+  display: block;
+  padding: var(--subheader-height) var(--gutter) 0;
+}
+
+/* The header gives up the width of the toggle that wa-page will put beside it. */
+@media (width < 860px) {
+  .docs-page:not(:defined) > .site-header {
+    margin-inline-start: calc(var(--gutter) + 23px);
+  }
+
+  .docs-page:not(:defined) .site-header-inner {
+    padding-inline-start: var(--wa-space-xs);
+  }
+
+  .docs-page:not(:defined) [data-nav='docs'] {
+    display: none;
+  }
+}
+
+@media (min-width: 860px) {
+  .docs-page:not(:defined) {
+    display: grid;
+    grid-template-columns:
+      minmax(var(--gutter), 1fr) 15rem
+      minmax(0, calc(var(--measure) - 2 * var(--gutter) - 15rem))
+      minmax(var(--gutter), 1fr);
+  }
+
+  .docs-page:not(:defined) > :is(.site-header, .site-footer) {
+    grid-column: 1 / -1;
+  }
+
+  .docs-page:not(:defined) > .docs-nav {
+    display: flex;
+    grid-column: 2;
+    align-self: start;
+    margin-block-start: var(--subheader-height);
+    padding-block: var(--wa-space-2xl);
+    padding-inline-end: var(--wa-space-xl);
+  }
+
+  .docs-page:not(:defined) > main {
+    grid-column: 3;
+    padding-inline: var(--wa-space-4xl) 0;
+  }
+}
+
 .docs-page[view='desktop'] {
   --menu-width: 15rem;
 }
