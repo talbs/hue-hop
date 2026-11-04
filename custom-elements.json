@@ -22,7 +22,7 @@
                 "text": "string"
               },
               "fieldName": "start",
-              "description": "The color of the first letter, which sets `--hop-start` on this element. Left out, it's picked from the end color."
+              "description": "The color of the first letter, which sets `--hop-start` on this element. Left out, it comes from `hue` if one is set. Otherwise it's picked from the end color."
             },
             {
               "name": "end",
@@ -30,7 +30,7 @@
                 "text": "string"
               },
               "fieldName": "end",
-              "description": "The color of the last letter, which sets `--hop-end` on this element. Left out, it's picked from the start color."
+              "description": "The color of the last letter, which sets `--hop-end` on this element. Left out, it comes from `hue` if one is set. Otherwise it's picked from the start color."
             },
             {
               "name": "drift",
