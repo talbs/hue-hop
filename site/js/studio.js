@@ -67,7 +67,6 @@ const fitResult = document.getElementById('fit-result');
 const undoButton = document.getElementById('undo-fit');
 const displayHint = document.getElementById('display-hint');
 const hueChips = [...studio.querySelectorAll('.hue-chip')];
-const accentIdeas = document.getElementById('accent-ideas');
 const codeDrawer = document.getElementById('code-drawer');
 const codeFormat = document.getElementById('code-format');
 const codeNote = document.getElementById('code-note');
@@ -92,11 +91,7 @@ function rowOf(element) {
   return element.closest('.row');
 }
 
-const accentRows = [
-  rowOf(control('accent')),
-  rowOf(accentIdeas),
-  rowOf(control('accentColor')),
-];
+const accentRows = [rowOf(control('accent')), rowOf(control('accentColor'))];
 const driftRows = [rowOf(control('range')), rowOf(control('cycle'))];
 
 const state = structuredClone(DEFAULT_STUDIO);
@@ -1149,15 +1144,11 @@ function shuffleWord() {
 
 function applyClickedEdit(target) {
   const hueChip = target.closest('.hue-chip');
-  const markChip = target.closest('.chip-mark');
   const autoButton = target.closest('.auto-button');
   const linkToggle = target.closest('.link-toggle');
   const toggle = target.closest('.toggle');
   if (hueChip) {
     pickHue(hueChip.dataset.hue);
-  } else if (markChip) {
-    state.accent = markChip.dataset.accent;
-    control('accent').value = state.accent;
   } else if (autoButton) {
     if (autoButton.getAttribute('aria-disabled') === 'true') return false;
     makeEndAuto(autoButton.dataset.end);
@@ -1180,10 +1171,6 @@ function applyClickedEdit(target) {
 
 function handleClick(event) {
   const { target } = event;
-  if (target.closest('[data-shuffle]')) {
-    accentIdeas.randomize();
-    return;
-  }
   if (target.closest('#fit-button')) {
     fitFailingSides();
     showEdit();

@@ -66,10 +66,9 @@
   --console-width: 120rem;
   --row-height: var(--tap);
   --bar-control: 2rem;
-  --field-height: 2.5rem;
   --word-size: 3.5rem;
-  --small-control: 1.75rem;
   --meter-tile: 1.5rem;
+  --meter-pad: var(--space-tight);
 }
 
 .site-header-inner {
@@ -250,8 +249,8 @@ wa-page::part(subheader) {
   display: grid;
   align-content: start;
   gap: 2px;
-  padding-block: calc(var(--space-tight) * 2 + var(--meter-tile))
-    var(--space-tight);
+  padding-block: calc(var(--meter-pad) + var(--meter-tile) + var(--space-tight))
+    var(--meter-pad);
   padding-inline-end: var(--space-related);
   background: var(--surface);
   font-family: var(--font-readout);
@@ -270,7 +269,7 @@ wa-page::part(subheader) {
   display: grid;
   align-content: start;
   gap: var(--space-tight);
-  padding: var(--space-tight) 2px;
+  padding: var(--meter-pad) 2px;
 }
 
 .meter-letter {
@@ -279,7 +278,6 @@ wa-page::part(subheader) {
   block-size: var(--meter-tile);
   border-radius: var(--radius-control);
   background: var(--preview-page);
-  box-shadow: var(--depth-pressed);
   font-size: 0.9375rem;
   font-weight: var(--weight-strong);
   line-height: 1;
@@ -537,7 +535,6 @@ wa-radio[appearance='button']:state(checked) {
   align-items: center;
   min-height: 2.25rem;
   padding-inline: var(--space-group);
-  border-block-end: var(--border-thin) solid var(--divider);
 }
 
 .channel-head {
@@ -561,10 +558,6 @@ wa-radio[appearance='button']:state(checked) {
   padding-inline: var(--space-group);
 }
 
-.row + .row {
-  border-block-start: var(--border-thin) solid var(--divider);
-}
-
 .row[hidden] {
   height: 0;
   min-height: 0;
@@ -583,10 +576,6 @@ wa-radio[appearance='button']:state(checked) {
 
 .row output,
 .page-pick output {
-  padding: var(--space-tight);
-  border-radius: var(--radius-cap);
-  background: var(--surface-sunken);
-  box-shadow: var(--depth-pressed);
   font-family: var(--font-readout);
   font-size: var(--type-label);
   line-height: var(--leading-tight);
@@ -596,7 +585,7 @@ wa-radio[appearance='button']:state(checked) {
 }
 
 .channel .lit-button {
-  min-height: var(--small-control);
+  min-height: var(--bar-control);
   padding-inline: var(--space-related);
 }
 
@@ -623,12 +612,12 @@ wa-radio[appearance='button']:state(checked) {
 
 .channel wa-input::part(input-wrapper),
 .channel wa-select::part(combobox) {
-  min-height: var(--field-height);
+  min-height: var(--bar-control);
 }
 
 .channel wa-input,
 .channel wa-select {
-  --wa-form-control-height: var(--field-height);
+  --wa-form-control-height: var(--bar-control);
   --wa-form-control-padding-inline: var(--space-related);
 }
 
@@ -729,16 +718,7 @@ wa-color-picker::part(color-picker) {
   display: inline-flex;
   align-items: center;
   gap: var(--space-related);
-  padding: var(--space-tight);
-  border-radius: var(--radius-control);
-  background: var(--surface-sunken);
-  box-shadow: var(--depth-pressed);
-}
-
-.color-field output {
-  padding: 0 var(--space-tight);
-  background: none;
-  box-shadow: none;
+  min-height: var(--bar-control);
 }
 
 .page-picker::part(trigger),
@@ -750,11 +730,16 @@ wa-color-picker::part(color-picker) {
   box-shadow: inset 0 0 0 var(--border-thin) var(--border-control);
 }
 
+.color-field wa-color-picker::part(trigger) {
+  width: var(--bar-control);
+  height: var(--bar-control);
+  border-radius: var(--radius-control);
+}
+
 .end-field {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-related);
 }
 
@@ -770,8 +755,8 @@ wa-color-picker::part(color-picker) {
 .icon-action {
   display: inline-grid;
   place-items: center;
-  min-width: var(--small-control);
-  min-height: var(--small-control);
+  min-width: var(--bar-control);
+  min-height: var(--bar-control);
   padding: 0;
   border: 0;
   border-radius: var(--radius-cap);
@@ -790,23 +775,11 @@ wa-color-picker::part(color-picker) {
   color: var(--ink-faint);
 }
 
-.suggestions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-tight);
-}
-
-.suggestions wa-random-content {
-  display: flex;
-  gap: var(--space-tight);
-}
-
 .chip {
   display: inline-flex;
   align-items: center;
   gap: var(--space-tight);
-  min-height: var(--small-control);
+  min-height: var(--bar-control);
   padding-inline: var(--space-tight);
   border: var(--border-thin) solid transparent;
   border-radius: var(--radius-control);
@@ -841,12 +814,6 @@ wa-color-picker::part(color-picker) {
   box-shadow: var(--depth-raised), var(--focus-glow);
 }
 
-.chip-mark {
-  justify-content: center;
-  min-inline-size: var(--small-control);
-  font-family: var(--font-code);
-}
-
 .row-presets {
   padding-block: var(--space-related);
 }
@@ -860,9 +827,8 @@ wa-color-picker::part(color-picker) {
 
 /* Each hue sits in a sleeve on the page color, like the landing's hue tiles. */
 .hue-chip {
-  justify-content: flex-start;
+  justify-content: center;
   min-width: 0;
-  min-height: var(--bar-control);
   border-color: var(--border-container);
   background: var(--page);
   box-shadow: var(--depth-pressed);
@@ -979,12 +945,23 @@ wa-color-picker::part(color-picker) {
   }
 }
 
+/* Below this the panels are thumbed, so their controls take the full tap size. */
+@media (width < 50rem) {
+  .channel {
+    --bar-control: var(--tap);
+  }
+
+  .row {
+    padding-block: var(--space-tight);
+  }
+}
+
 @media (min-width: 50rem) {
   :root {
     --row-height: 2.5rem;
-    --field-height: 2rem;
     --word-size: 6rem;
     --meter-tile: 2rem;
+    --meter-pad: var(--space-related);
   }
 
   .overlay-bars {
@@ -1013,9 +990,6 @@ wa-color-picker::part(color-picker) {
 
   .page-pick output {
     display: inline;
-    padding: 0;
-    background: none;
-    box-shadow: none;
     color: var(--ink-quiet);
   }
 
@@ -1045,6 +1019,7 @@ wa-color-picker::part(color-picker) {
   :root {
     --row-height: 2.25rem;
     --meter-tile: 1.75rem;
+    --meter-pad: var(--space-tight);
   }
 
   .meter-letter {
