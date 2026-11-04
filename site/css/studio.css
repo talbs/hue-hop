@@ -69,6 +69,7 @@
   --field-height: 2.5rem;
   --word-size: 3.5rem;
   --small-control: 1.75rem;
+  --meter-tile: 1.5rem;
 }
 
 .site-header-inner {
@@ -214,7 +215,6 @@ wa-page::part(subheader) {
 }
 
 .bridge {
-  border-block: var(--border-thin) solid var(--divider);
   background: var(--surface);
 }
 
@@ -236,28 +236,47 @@ wa-page::part(subheader) {
   outline-offset: -2px;
 }
 
-.meters {
+.meter-track {
   display: flex;
+  width: max-content;
   min-width: 100%;
 }
 
+.meter-keys {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  flex: none;
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  padding-block: calc(var(--space-tight) * 2 + var(--meter-tile))
+    var(--space-tight);
+  padding-inline-end: var(--space-related);
+  background: var(--surface);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  line-height: var(--leading-tight);
+  color: var(--ink-faint);
+}
+
+.meters {
+  flex: 1;
+  display: flex;
+}
+
 .meter {
-  flex: 1 0 2.25rem;
+  flex: 1 0 2.75rem;
   display: grid;
   align-content: start;
   gap: var(--space-tight);
   padding: var(--space-tight) 2px;
-  border-inline-start: var(--border-thin) solid var(--divider);
-}
-
-.meter:first-child {
-  border-inline-start: 0;
 }
 
 .meter-letter {
   display: grid;
   place-items: center;
-  min-block-size: 1.5rem;
+  block-size: var(--meter-tile);
   border-radius: var(--radius-control);
   background: var(--preview-page);
   box-shadow: var(--depth-pressed);
@@ -266,21 +285,10 @@ wa-page::part(subheader) {
   line-height: 1;
 }
 
-.meter-bar {
-  block-size: 4px;
-  border-radius: var(--radius-pill);
-}
-
-.meter-hex,
-.led-key,
-.led-value {
-  display: none;
-}
-
 .meter-leds {
-  display: flex;
+  display: grid;
   justify-content: center;
-  gap: 3px;
+  gap: 2px;
 }
 
 .meter-led {
@@ -294,27 +302,24 @@ wa-page::part(subheader) {
   color: var(--ink-quiet);
 }
 
-/* A fader can flip a meter's state many times a second, so its LED skips the hit or it would flash. */
+/* Holds its place when hidden, so a ratio crossing the bar doesn't shift. A fader can flip a meter's state many times a second, so it skips the hit or it would flash. */
 .meter-led .led {
+  visibility: hidden;
   animation: none;
 }
 
 .meter-led[data-state='check'] .led {
-  background: transparent;
-  box-shadow: none;
+  visibility: visible;
 }
 
 .meter-led[data-state='check'] .led-value {
   color: var(--check);
 }
 
-.led-key {
-  color: var(--ink-faint);
-}
-
 /* Holds "10.0", so a ratio crossing it can't change the strip's width without a remeasure. */
 .led-value {
   min-inline-size: 4ch;
+  text-align: end;
 }
 
 .meters-empty {
@@ -1003,6 +1008,7 @@ wa-color-picker::part(color-picker) {
     --row-height: 2.5rem;
     --field-height: 2rem;
     --word-size: 6rem;
+    --meter-tile: 2rem;
   }
 
   .overlay-bars {
@@ -1042,31 +1048,8 @@ wa-color-picker::part(color-picker) {
     padding-inline: var(--gutter);
   }
 
-  .meter {
-    flex: 1 0 5rem;
-    padding: var(--space-related);
-  }
-
-  /* Lines the first letter up with the panels below without making its tile wider than the rest. */
-  .meter:first-child {
-    flex-basis: calc(5rem - var(--space-related));
-    padding-inline-start: 0;
-  }
-
   .meter-letter {
-    min-block-size: 2rem;
     font-size: 1.125rem;
-  }
-
-  .meter-hex {
-    font-family: var(--font-readout);
-    font-size: var(--type-label);
-    line-height: var(--leading-tight);
-    color: var(--ink-quiet);
-  }
-
-  .led-key {
-    inline-size: 0.75rem;
   }
 
   .bridge-end {
@@ -1082,37 +1065,13 @@ wa-color-picker::part(color-picker) {
   }
 }
 
-@media (width >= 50rem) and (height >= 44rem) {
-  .meter-hex,
-  .led-key,
-  .led-value {
-    display: inline;
-  }
-
-  .meter-leds {
-    display: grid;
-    justify-content: start;
-    gap: 2px;
-  }
-}
-
-/* A short window keeps the word by dropping the meters' fine print. */
 @media (width >= 50rem) and (height < 44rem) {
   :root {
     --row-height: 2.25rem;
-  }
-
-  .meter {
-    flex-basis: 3rem;
-    padding-block: var(--space-tight);
-  }
-
-  .meter:first-child {
-    flex-basis: calc(3rem - var(--space-related));
+    --meter-tile: 1.75rem;
   }
 
   .meter-letter {
-    min-block-size: 1.75rem;
     font-size: 1rem;
   }
 
@@ -1264,10 +1223,6 @@ wa-color-picker::part(color-picker) {
 }
 
 @media (forced-colors: active) {
-  .meter-bar {
-    border: var(--border-thin) solid CanvasText;
-  }
-
   .hue-chip[aria-checked='true'] {
     border-color: Highlight;
     outline: var(--border-thick) solid Highlight;

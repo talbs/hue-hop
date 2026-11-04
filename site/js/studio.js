@@ -533,16 +533,11 @@ function makeSpan(className, { text = '', isDecorative = false } = {}) {
   return span;
 }
 
-function buildMeterLed(scheme) {
+function buildMeterLed() {
   const led = makeSpan('meter-led');
   const value = makeSpan('led-value', { isDecorative: true });
   const spoken = makeSpan('wa-visually-hidden');
-  led.append(
-    makeSpan('led-key', { text: SIDE_NAME[scheme], isDecorative: true }),
-    makeSpan('led', { isDecorative: true }),
-    value,
-    spoken
-  );
+  led.append(makeSpan('led', { isDecorative: true }), value, spoken);
   return { led, value, spoken };
 }
 
@@ -550,13 +545,11 @@ function buildMeter() {
   const meter = document.createElement('li');
   meter.className = 'meter';
   const letter = makeSpan('meter-letter');
-  const hex = makeSpan('meter-hex');
-  const leds = { dark: buildMeterLed('dark'), light: buildMeterLed('light') };
+  const leds = { dark: buildMeterLed(), light: buildMeterLed() };
   const ledGroup = makeSpan('meter-leds');
   ledGroup.append(leds.dark.led, leds.light.led);
-  const bar = makeSpan('meter-bar', { isDecorative: true });
-  meter.append(letter, bar, hex, ledGroup);
-  return { meter, letter, bar, hex, leds, color: '' };
+  meter.append(letter, ledGroup);
+  return { meter, letter, leds, color: '' };
 }
 
 function showMeterLed({ led, value, spoken }, scheme, reading) {
@@ -578,7 +571,7 @@ function showMeterLed({ led, value, spoken }, scheme, reading) {
   );
 }
 
-// Set on the letter and bar directly: a custom property on the meter restyles its whole subtree, and that dropped a fader drag on a long word below 50fps.
+// Set on the letter directly: a custom property on the meter restyles its whole subtree, and that dropped a fader drag on a long word below 50fps.
 function showMeterColor(parts, lightHex, darkHex) {
   const color =
     lightHex && darkHex
@@ -587,7 +580,6 @@ function showMeterColor(parts, lightHex, darkHex) {
   if (color === parts.color) return;
   parts.color = color;
   parts.letter.style.color = color;
-  parts.bar.style.background = color;
 }
 
 let meterParts = [];
@@ -604,12 +596,10 @@ function showMeters(stepLetters, readings) {
     meters.replaceChildren(...meterParts.map((parts) => parts.meter));
     setHidden(metersEmpty, stepLetters.length > 0);
   }
-  const scheme = shownScheme();
   for (const [index, parts] of meterParts.entries()) {
     const light = readings.light?.[index];
     const dark = readings.dark?.[index];
     setText(parts.letter, stepLetters[index]);
-    setText(parts.hex, readings[scheme]?.[index].hex ?? '');
     showMeterColor(parts, light?.hex, dark?.hex);
     showMeterLed(parts.leds.dark, 'dark', dark);
     showMeterLed(parts.leds.light, 'light', light);
