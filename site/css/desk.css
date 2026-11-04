@@ -133,19 +133,6 @@
   line-height: var(--leading-tight);
 }
 
-wa-copy-button {
-  color: var(--ink-quiet);
-}
-
-/* The pixel set is drawn on a 10-square grid; 15px puts each square on exactly 3 device pixels on 2x screens. */
-wa-copy-button wa-icon[family='pixel'] {
-  font-size: 15px;
-}
-
-wa-copy-button::part(success-icon) {
-  color: var(--lit);
-}
-
 .stage {
   position: relative;
   isolation: isolate;
@@ -216,39 +203,6 @@ wa-copy-button::part(success-icon) {
   border-radius: 0 0 var(--radius-container) var(--radius-container);
   background: var(--surface);
   box-shadow: var(--depth-panel);
-}
-
-wa-input {
-  --wa-form-control-padding-inline: var(--space-group);
-  min-width: 0;
-}
-
-/* Pressed into the desk the same way as the sleeves. */
-wa-input::part(input-wrapper) {
-  min-height: var(--tap);
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-control);
-  background: var(--stage);
-  box-shadow: var(--depth-pressed);
-}
-
-wa-input::part(input) {
-  color: var(--ink);
-  font-size: var(--type-body);
-}
-
-wa-input:hover::part(input-wrapper) {
-  border-color: var(--border-control);
-}
-
-/* Takes the selected sleeve's lit edge. The outline stays, transparent, so forced-colors mode still draws it. */
-wa-input:focus-within::part(input-wrapper) {
-  outline-color: transparent;
-  outline-offset: 0;
-  border-color: var(--lit);
-  box-shadow:
-    inset 0 0 0 var(--border-thin) var(--lit),
-    var(--lit-glow);
 }
 
 .desk-code {
@@ -388,7 +342,6 @@ wa-input:focus-within::part(input-wrapper) {
   position: absolute;
   inset-block: var(--chip-inset);
   inset-inline-end: var(--chip-inset);
-  align-items: stretch;
 }
 
 .end-slice wa-color-picker {
@@ -526,134 +479,6 @@ wa-color-picker::part(color-picker) {
   letter-spacing: -0.01em;
 }
 
-.fader {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 4.5ch;
-  align-items: end;
-  gap: var(--space-group);
-}
-
-/* One fader for the whole board. The cap is 18 along the travel and 32 across it, and its index line and grip always run across the travel, so the line points at the level. */
-wa-slider,
-wa-color-picker {
-  --cap-bevel:
-    inset 1px 1px 0 var(--edge-light), inset 0 -2px 0 var(--edge-shade);
-  --cap-index-size: var(--border-thick) 100%;
-  --cap-grip-to: to right;
-  --cap-grip-size: 70% 56%;
-  --track-size: 6px;
-  --thumb-width: 18px;
-  --thumb-height: 32px;
-}
-
-/* Web Awesome sizes the handle square, so the desk's 18 by 32 cap is stretched and re-centered on the slot. */
-wa-color-picker {
-  --slider-height: var(--track-size);
-  --slider-handle-size: var(--thumb-width);
-}
-
-wa-color-picker::part(slider) {
-  border-radius: var(--radius-pill);
-  box-shadow: var(--depth-groove);
-}
-
-wa-color-picker::part(slider-handle) {
-  block-size: var(--thumb-height);
-  translate: 0 calc((var(--thumb-width) - var(--thumb-height)) / 2);
-}
-
-wa-slider[orientation='vertical'] {
-  --cap-index-size: 100% var(--border-thick);
-  --cap-grip-to: to bottom;
-  --cap-grip-size: 56% 70%;
-  --thumb-width: 32px;
-  --thumb-height: 18px;
-}
-
-wa-slider::part(label) {
-  margin-block-end: var(--space-related);
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-quiet);
-}
-
-wa-slider::part(track) {
-  border-radius: var(--radius-pill);
-  background: var(--surface-sunken);
-  box-shadow:
-    var(--depth-groove),
-    0 1px 0 var(--edge-light);
-}
-
-wa-slider::part(indicator) {
-  transition:
-    left var(--note-8) var(--ease-bounce),
-    right var(--note-8) var(--ease-bounce);
-  border-radius: var(--radius-pill);
-  background: linear-gradient(
-    color-mix(in oklab, var(--lit), white 15%),
-    color-mix(in oklab, var(--lit), black 20%)
-  );
-  box-shadow: var(--lit-glow);
-}
-
-/* The cap: lit from the top-left, a grip of grooves, and a center index line. */
-wa-slider::part(thumb),
-wa-color-picker::part(slider-handle) {
-  border: var(--border-thin) solid
-    color-mix(in oklch, var(--border-control), var(--border-container));
-  border-radius: var(--radius-cap);
-  background:
-    linear-gradient(var(--ink-quiet), var(--ink-quiet)) center /
-      var(--cap-index-size) no-repeat,
-    repeating-linear-gradient(
-        var(--cap-grip-to),
-        transparent 0 3px,
-        var(--edge-shade) 3px 4px,
-        var(--edge-light) 4px 5px
-      )
-      center / var(--cap-grip-size) no-repeat,
-    linear-gradient(to bottom, var(--cap-top), var(--cap-bottom));
-  box-shadow: var(--cap-bevel), var(--depth-cap);
-  cursor: grab;
-  transition:
-    left var(--note-8) var(--ease-bounce),
-    right var(--note-8) var(--ease-bounce),
-    scale var(--note-16) var(--ease-bounce),
-    box-shadow var(--note-16) var(--ease-bounce),
-    filter var(--note-16) var(--ease-hit);
-}
-
-wa-slider:hover::part(thumb) {
-  filter: brightness(1.08);
-}
-
-/* Reset and arrow keys glide the cap like a motorized fader; a drag follows the pointer exactly. */
-wa-slider:state(focused)::part(thumb) {
-  box-shadow: var(--cap-bevel), var(--depth-cap), var(--focus-glow);
-}
-
-wa-slider:state(dragging)::part(thumb),
-wa-slider:state(dragging)::part(indicator) {
-  transition-property: scale, box-shadow, filter;
-}
-
-wa-slider:state(dragging)::part(thumb) {
-  cursor: grabbing;
-  scale: 1.06;
-  box-shadow: var(--cap-bevel), var(--depth-cap-lifted);
-}
-
-.fader-value {
-  padding-block-end: var(--border-thick);
-  font-family: var(--font-readout);
-  font-size: var(--type-readout);
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
 .reset-button {
   margin-inline-start: auto;
 }
@@ -700,12 +525,6 @@ wa-slider:state(dragging)::part(thumb) {
   container-type: inline-size;
 }
 
-.studio-perks li {
-  display: flex;
-  align-items: center;
-  gap: var(--wa-space-m);
-}
-
 /* The four perks need about 23rem on one line. Narrower, they pair up in two columns so no divider is left hanging at a line end. */
 @container (width < 23rem) {
   .studio-perks {
@@ -728,18 +547,6 @@ wa-slider:state(dragging)::part(thumb) {
   .sleeve:has(> [aria-checked='true']) {
     outline: 3px solid Highlight;
     outline-offset: -3px;
-  }
-
-  wa-slider::part(thumb) {
-    background: ButtonText;
-  }
-
-  wa-slider::part(track) {
-    border: var(--border-thin) solid CanvasText;
-  }
-
-  wa-slider::part(indicator) {
-    background: CanvasText;
   }
 }
 

@@ -1,4 +1,7 @@
-<footer class="site-footer">
+<footer
+  class="site-footer"
+  slot="footer"
+>
   <div class="site-footer-inner wa-stack">
     <div
       class="eq-meter"
@@ -25,7 +28,7 @@
       <p class="site-footer-mark wa-gap-m wa-align-items-baseline">
         <a
           class="site-footer-wordmark hop-quiet"
-          href="./"
+          href="{{root}}"
         >
           <hue-hop hue="dusk">{{wordmark}}</hue-hop>
         </a>
@@ -42,7 +45,7 @@
             class="hop-link is-quiet"
             href="{{docs-url}}"
           >
-            README
+            Docs
           </a>
         </li>
         <li>

@@ -1,0 +1,716 @@
+.docs-page::part(body) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.docs-page::part(main-content) {
+  max-width: calc(46rem + 2 * var(--gutter));
+}
+
+/* The 9px is the space between this 32px button's edge and its 14px icon, which puts the icon on the text edge. */
+.docs-page::part(navigation-toggle) {
+  --wa-form-control-height: 2rem;
+  align-self: flex-start;
+  margin-block-start: 0.875rem;
+  margin-inline-start: calc(var(--gutter) - 9px);
+  color: var(--ink-quiet);
+}
+
+.docs-page[view='mobile'] .site-header-inner {
+  padding-inline-start: var(--wa-space-xs);
+}
+
+/* The toggle takes the current page's room in the header, and the page's own title says where you are. */
+.docs-page[view='mobile'] [data-nav='docs'] {
+  display: none;
+}
+
+.docs-page > wa-icon,
+.docs-drawer-title {
+  padding: 0;
+}
+
+.docs-nav {
+  padding: 0;
+}
+
+.docs-page[view='desktop'] {
+  --menu-width: 15rem;
+}
+
+/* wa-page gives this part the menu's full height, so padding on the slotted nav runs past the scroll area and the bottom gets clipped. The negative margin leaves room for link focus rings. */
+.docs-page[view='desktop']::part(navigation) {
+  block-size: auto;
+  min-block-size: 100%;
+  padding-block: var(--wa-space-2xl);
+  padding-inline-end: var(--wa-space-xl);
+}
+
+.docs-page[view='desktop']::part(menu) {
+  margin-inline-start: calc(-1 * var(--wa-space-xs));
+  padding-inline-start: var(--wa-space-xs);
+}
+
+.docs-page::part(menu) {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-container) transparent;
+}
+
+.docs-nav .hop-link:not([aria-current], :hover, :focus-visible) {
+  color: var(--ink-quiet);
+}
+
+.docs-nav .hop-link {
+  font-size: var(--wa-font-size-s);
+  padding-block: var(--space-tight);
+  --hop-link-y: calc(100% - var(--space-tight));
+}
+
+.docs-meta {
+  text-transform: none;
+}
+
+.docs-meta .hop-link {
+  font-size: inherit;
+}
+
+.docs-title {
+  padding: var(--space-page) 0 0;
+}
+
+.docs-title .section-lead {
+  margin-block-end: 0;
+}
+
+.docs-wordmark,
+.example-preview :is(h1, h2),
+.wa-prose .story-line {
+  font-size: var(--type-heading);
+  font-weight: var(--weight-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+.docs-mark {
+  margin-inline-start: 0.08em;
+  font-weight: var(--weight-body);
+  color: var(--ink-quiet);
+}
+
+/* Room for the tick scale beside each section title, so it reads as the column's and not the sidebar's. */
+.docs-page[view='desktop']::part(main-content) {
+  padding-inline-start: var(--wa-space-4xl);
+}
+
+/* Every break between blocks is a multiple of one unit: 3 after a block or above an h4, 4 above an h3, 6 between sections, 7 above a group's label, which adds its own height. 3 has to clear the stage's own padding. */
+.docs-page .wa-prose {
+  --docs-unit: var(--wa-space-s);
+  max-inline-size: none;
+  color: var(--ink-quiet);
+  font-size: var(--wa-font-size-m);
+}
+
+/* Text steps down three ranks: bright here, quiet for reading, faint for row labels. */
+.docs-page
+  .wa-prose
+  :is(h1, h2, h3, h4, strong, thead th, dt:not(.readout-label)),
+.wa-prose .story-line,
+.api-table td:first-child,
+.example-bar .fader-value {
+  color: var(--ink);
+}
+
+.docs-page .wa-prose :is(.fact-list dt, .compare-table tbody th) {
+  color: var(--ink-faint);
+}
+
+@media (min-width: 48rem) {
+  .docs-page .wa-prose {
+    --docs-unit: var(--wa-space-m);
+  }
+}
+
+.wa-prose :is(p, li):not(.wa-not-prose *) {
+  max-inline-size: 60ch;
+}
+
+.docs-group,
+.docs-nav .wa-stack > .readout-label {
+  color: var(--link-start);
+}
+
+.docs-group {
+  margin-block: calc(var(--docs-unit) * 7) var(--space-related);
+}
+
+.docs-group:first-child {
+  margin-block-start: calc(var(--docs-unit) * 6);
+}
+
+.wa-prose > section + section {
+  margin-block-start: calc(var(--docs-unit) * 6);
+}
+
+/* The unlayered reset in base.css beats wa-prose's layered margins. A heading's own margin has to sit on the heading, because wa-prose's rhythm tokens are em-based. */
+.wa-prose > section > * + * {
+  margin-block-start: var(--wa-space-l);
+}
+
+.wa-prose
+  > section
+  > :where(figure, .code-well, wa-scroller, wa-callout, wa-tab-group)
+  + * {
+  margin-block-start: calc(var(--docs-unit) * 3);
+}
+
+.wa-prose > section > figure + wa-callout {
+  margin-block-start: var(--wa-space-l);
+}
+
+.wa-prose > section > :is(h2, h3, h4) {
+  margin-block-end: var(--wa-prose-rhythm-s);
+}
+
+.wa-prose > section > :is(h2, h3, h4) + * {
+  margin-block-start: 0;
+}
+
+.wa-prose > section > h2 {
+  font-size: var(--wa-font-size-2xl);
+}
+
+.wa-prose .section-title::after {
+  inset-inline-end: calc(100% + var(--space-group));
+}
+
+.wa-prose > section > h3 {
+  margin-block-start: calc(var(--docs-unit) * 4);
+  font-size: var(--wa-font-size-xl);
+  font-weight: var(--weight-heading);
+  letter-spacing: -0.012em;
+}
+
+.wa-prose > section > h2 + h3 {
+  margin-block-start: var(--wa-prose-rhythm-m);
+}
+
+.wa-prose > section > h4 {
+  margin-block-start: calc(var(--docs-unit) * 3);
+  font-size: var(--wa-font-size-l);
+  font-weight: var(--weight-heading);
+}
+
+/* The negative margins cancel the tap area's box, so it can't move its heading's wrap or height. The box stays centered on the icon so its tooltip does too, and the lift centers the icon on the capitals. */
+.heading-anchor {
+  --anchor-icon: 15px;
+  --anchor-gap: var(--space-group);
+  --anchor-target: 1.5rem;
+  --anchor-pad: calc((var(--anchor-target) - var(--anchor-icon)) / 2);
+  --anchor-icon-width: 12px;
+  --anchor-pad-inline: calc(
+    (var(--anchor-target) - var(--anchor-icon-width)) / 2
+  );
+  --anchor-offset: calc(var(--anchor-gap) - var(--anchor-pad-inline));
+  display: inline-block;
+  inline-size: var(--anchor-target);
+  margin-inline: var(--anchor-offset)
+    calc(-1 * (var(--anchor-offset) + var(--anchor-target)));
+  margin-block: calc(-1 * var(--anchor-pad));
+  padding-block: var(--anchor-pad);
+  padding-inline: var(--anchor-pad-inline);
+  color: var(--ink-faint);
+  text-decoration: none;
+  vertical-align: calc((1cap - var(--anchor-icon)) / 2);
+  opacity: 0;
+  transition:
+    opacity var(--note-16) var(--ease-hit),
+    color var(--note-16) var(--ease-hit);
+}
+
+/* The pixel set's bookmark is 8 by 10 squares, so at 15px each square is 3 device pixels on a 2x screen. */
+.heading-anchor wa-icon {
+  display: block;
+  font-size: var(--anchor-icon);
+}
+
+:is(h2, h3):hover > .heading-anchor,
+.heading-anchor:focus-visible {
+  opacity: 1;
+}
+
+.heading-anchor:hover {
+  color: var(--ink);
+}
+
+.example-panel,
+.example > .example-preview {
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-container) var(--radius-container) 0 0;
+  background: var(--stage);
+}
+
+.example > .code-well {
+  border: var(--border-thin) solid var(--border-container);
+  border-block-start: 0;
+  border-radius: 0;
+}
+
+.example > .code-well + .code-well {
+  border-block-start: var(--border-thin) solid var(--border-container);
+}
+
+.example > .code-well:last-of-type {
+  border-radius: 0 0 var(--radius-container) var(--radius-container);
+}
+
+.example-panel {
+  overflow: hidden;
+}
+
+.example-panel > wa-divider {
+  --color: var(--border-container);
+  --spacing: 0;
+}
+
+.example-preview {
+  padding: var(--wa-space-l);
+  overflow: hidden;
+  container-type: inline-size;
+  color: var(--ink);
+  font-size: var(--type-lead);
+  line-height: var(--leading-tight);
+}
+
+.example-bar {
+  --shadow-color: var(--stage);
+}
+
+.example-bar > .wa-cluster {
+  flex-wrap: nowrap;
+  padding: var(--wa-space-m) var(--wa-space-l);
+}
+
+/* The cap hangs below the slider's box, past its track. */
+.example-bar wa-slider {
+  margin-block-end: var(--cap-overhang);
+}
+
+.example-bar .fader {
+  --cap-overhang: calc((var(--thumb-height) - var(--track-size)) / 2);
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.example-bar .fader:has(wa-input) {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: var(--wa-space-l);
+}
+
+/* Hops tops out at 64, so two digits keep the field from resizing as it counts. */
+.example-bar .fader-value {
+  min-inline-size: 2ch;
+  padding-block-end: 0;
+  font-size: calc(var(--type-label) * 1.5);
+}
+
+/* Wide enough for the longest readout (Lift's 0.000, Shift's -90), so the slider never resizes mid-drag. The margin centers the digits' line on the track, less the quarter pixel those digits sit high in it. */
+.example-bar wa-slider + .fader-value {
+  min-inline-size: 5ch;
+  margin-block-end: calc(
+    var(--cap-overhang) - (1lh - var(--track-size)) / 2 - 0.25px
+  );
+}
+
+.example > figcaption {
+  margin-block-start: var(--space-related);
+}
+
+/* The strip behind the label and copy button is drawn on the grid's first row, so neither needs a wrapper. */
+.code-well:has(> .code-label) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(2.5rem, auto) auto;
+  overflow: hidden;
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-container);
+}
+
+.code-well:has(> .code-label)::before {
+  content: '';
+  grid-area: 1 / 1 / 2 / -1;
+  align-self: stretch;
+  border-block-end: var(--border-thin) solid var(--border-container);
+  background: var(--surface);
+}
+
+.wa-prose .code-label {
+  grid-area: 1 / 1;
+  align-self: center;
+  margin: 0;
+  padding-inline: var(--space-group);
+}
+
+.code-label ~ .code-copy {
+  grid-area: 1 / 2;
+  align-self: center;
+  margin: 0 var(--space-related) 0 0;
+}
+
+.code-label ~ .code-block {
+  grid-area: 2 / 1 / 3 / -1;
+}
+
+.code-well {
+  --code-action-height: 2.15rem;
+}
+
+.code-copy {
+  block-size: var(--code-action-height);
+}
+
+.code-studio {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.7rem;
+  block-size: var(--code-action-height);
+  margin-block-start: var(--space-related);
+  border-radius: var(--radius-control);
+  color: var(--ink-quiet);
+  text-decoration: none;
+}
+
+.code-studio:hover {
+  color: var(--ink);
+}
+
+.color-swatch {
+  display: inline-block;
+  inline-size: 0.75em;
+  block-size: 0.75em;
+  margin-inline-end: 0.4em;
+  border: var(--border-thin) solid var(--border-control);
+  border-radius: var(--radius-cap);
+  background: var(--color-swatch);
+  vertical-align: -0.05em;
+}
+
+.code-block.is-paste-in {
+  color: var(--ink-quiet);
+  white-space: pre-wrap;
+}
+
+.hues-table .hue-sample {
+  font-size: var(--type-lead);
+  font-weight: var(--weight-strong);
+  white-space: nowrap;
+}
+
+.example-preview > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-group);
+  font-size: var(--type-body);
+}
+
+.example-preview > header > .logo {
+  margin-inline-end: auto;
+  font-size: var(--type-lead);
+  font-weight: var(--weight-display);
+  text-decoration: none;
+}
+
+.example-preview > header > a:not(.logo) {
+  color: var(--ink-quiet);
+  font-size: var(--type-small);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.example-preview > header > a:not(.logo):hover {
+  color: var(--ink);
+}
+
+.example-preview ol,
+.example-preview > h1 + p {
+  color: var(--ink-quiet);
+  font-size: var(--type-body);
+}
+
+.example-preview ol {
+  margin-block-start: var(--space-related);
+  padding-inline-start: 0;
+  list-style-position: inside;
+}
+
+.example-preview ol > li + li {
+  margin-block-start: var(--space-related);
+}
+
+.example-preview ol > li::marker {
+  font-family: var(--font-readout);
+  font-size: calc(var(--type-label) * 1.5);
+}
+
+/* Inline-block keeps a short value whole instead of breaking it at a hyphen, and a long one still wraps inside its chip. The tighter line height keeps the chip from pushing its line taller. */
+.wa-prose code:not(pre code, table code, .wa-not-prose code) {
+  display: inline-block;
+  max-inline-size: 100%;
+  padding: 0.1em 0.35em;
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-cap);
+  background: var(--surface);
+  line-height: var(--leading-tight);
+  overflow-wrap: anywhere;
+}
+
+.wa-prose table code {
+  white-space: nowrap;
+}
+
+.api-table td:nth-child(2) {
+  white-space: nowrap;
+}
+
+/* A union like hue's lists its values as chips, so a line break never strands a separator. */
+.api-table td:nth-child(2) code:has(.type-member) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-tight);
+  white-space: normal;
+}
+
+.type-member {
+  padding: 0.1em 0.35em;
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-cap);
+  background: var(--surface);
+  white-space: nowrap;
+}
+
+wa-scroller > table {
+  min-inline-size: max(100%, 36rem);
+  border-collapse: collapse;
+}
+
+.wa-prose :is(th, td) {
+  padding: var(--space-related) var(--space-group) var(--space-related) 0;
+  border-block-end: var(--border-thin) solid var(--divider);
+  text-align: start;
+  vertical-align: top;
+}
+
+.wa-prose dt {
+  font-weight: var(--weight-strong);
+}
+
+.wa-prose dd {
+  margin: var(--space-related) 0 0;
+}
+
+.wa-prose dd + dt {
+  margin-block-start: calc(var(--docs-unit) * 2);
+}
+
+/* A drawn bullet, because the browser's own marker can't sit flush with the text edge or take a wider gap. */
+.wa-prose ul:not(.wa-list-plain, .wa-not-prose *) {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+.wa-prose ul:not(.wa-list-plain, .wa-not-prose *) > li {
+  position: relative;
+  padding-inline-start: 1.25em;
+}
+
+.wa-prose ul:not(.wa-list-plain, .wa-not-prose *) > li + li {
+  margin-block-start: var(--wa-space-s);
+}
+
+.wa-prose ul:not(.wa-list-plain, .wa-not-prose *) > li::before {
+  content: '•';
+  position: absolute;
+  inset-inline-start: 0;
+  color: var(--lit);
+}
+
+/* Bars grow in whole segments, set by wireHopMeter, so no bar ends in a sliver of an LED. */
+.hop-meter {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  align-items: end;
+  gap: var(--space-tight);
+  padding: 0 var(--wa-space-l) var(--wa-space-l);
+}
+
+.hop-meter-step {
+  display: grid;
+  gap: var(--space-related);
+}
+
+.hop-meter-bar {
+  background: currentColor;
+  mask: repeating-linear-gradient(to top, #000 0 10px, transparent 10px 14px);
+  transition: block-size var(--note-8) var(--ease-bounce);
+}
+
+.hop-meter-letter {
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  line-height: var(--leading-tight);
+  text-align: center;
+}
+
+/* The word's colors already mark this link, so it only underlines on hover and focus. */
+.wa-prose a.story-link {
+  display: inline-block;
+  padding-block-end: 0;
+  background: none;
+}
+
+.wa-prose a.story-link:is(:hover, :focus-visible) {
+  text-decoration: underline;
+}
+
+.wa-prose .story-line {
+  max-inline-size: none;
+  text-wrap: balance;
+}
+
+.wa-prose .compare-table tbody th {
+  font-weight: var(--weight-body);
+}
+
+.compare-table :is(th, td):nth-child(4) {
+  background: var(--surface);
+}
+
+.compare-table td:nth-child(4) {
+  color: var(--ink);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+
+.compare-table :is(th, td):not(:first-child) {
+  padding-inline-start: var(--space-group);
+}
+
+.compare-table td wa-icon {
+  display: block;
+}
+
+.compare-table td small {
+  display: block;
+  margin-block-start: var(--space-tight);
+  font-size: var(--type-fine);
+  line-height: var(--leading-tight);
+}
+
+.compare-table wa-icon[name='check'],
+wa-tag wa-icon[name='check'] {
+  color: var(--pass);
+}
+
+.compare-table wa-icon[name='xmark'] {
+  color: var(--check);
+}
+
+.fact-list > div {
+  display: grid;
+  gap: var(--space-tight);
+  padding-block: var(--wa-space-s);
+  border-block-end: var(--border-thin) solid var(--divider);
+}
+
+.fact-list > div:first-child {
+  padding-block-start: 0;
+}
+
+.wa-prose .fact-list dt {
+  font-weight: var(--weight-body);
+}
+
+.wa-prose .fact-list dd {
+  max-inline-size: 60ch;
+  margin: 0;
+}
+
+wa-callout.note {
+  --callout-hue: var(--link-start);
+  /* The extra space at the bottom balances the top: capitals sit lower in their line than descenders do in theirs. */
+  padding: var(--wa-space-m) var(--wa-space-l)
+    calc(var(--wa-space-m) + var(--space-tight));
+  border-color: color-mix(in oklab, var(--callout-hue) 35%, transparent);
+  border-radius: var(--radius-container);
+  background: none;
+  color: var(--ink-quiet);
+  font-size: var(--wa-font-size-m);
+  line-height: var(--leading-body);
+}
+
+wa-callout.note[variant='success'] {
+  --callout-hue: var(--pass);
+}
+
+wa-callout.note[variant='warning'] {
+  --callout-hue: var(--check);
+}
+
+wa-callout.note::part(icon) {
+  align-items: flex-start;
+  margin-inline-end: var(--wa-space-l);
+  color: var(--callout-hue);
+}
+
+wa-callout.note::part(message) {
+  max-inline-size: 72ch;
+}
+
+/* The top margin centers the 15px icon on the title's line. */
+wa-callout.note > wa-icon {
+  inline-size: 15px;
+  margin-block-start: 5px;
+  margin-inline-end: 0;
+}
+
+wa-callout.note > strong {
+  display: block;
+  margin-block-end: var(--space-tight);
+  color: var(--ink);
+}
+
+/* Commit Mono ships one weight, so a bold title would smear its code into a faux bold. */
+wa-callout.note > strong code {
+  font-weight: var(--weight-body);
+}
+
+@media (min-width: 48rem) {
+  .hop-meter {
+    padding: 0 var(--space-section) var(--space-section);
+  }
+
+  .fact-list > div {
+    grid-template-columns: 9rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-group);
+  }
+
+  .example-bar .fader:has(wa-input) {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .example-preview {
+    padding: var(--space-section);
+  }
+
+  .example-bar > .wa-cluster {
+    padding-inline: var(--space-section);
+  }
+}

@@ -117,7 +117,7 @@
               "name": "--hop-shift",
               "syntax": "<number>",
               "default": "0",
-              "description": "Turns every hue by this many degrees, written as a plain number (`30`, not `30deg`)."
+              "description": "Turns each letter's hue by this many degrees, written as a plain number (`30`, not `30deg`)."
             },
             {
               "name": "--hop-drift-range",

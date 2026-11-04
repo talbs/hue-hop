@@ -23,7 +23,20 @@ sideToggle.addEventListener('click', () => {
 markSide(readSide());
 
 // Pixel icons come from the Font Awesome kit. If it refuses (a blocked or unlisted domain, offline), fall back to Web Awesome's built-in set so no button goes blank.
-const SYSTEM_FALLBACKS = { clone: 'copy', check: 'check', xmark: 'xmark' };
+// The system set draws copy only as regular and the rest only as solid; asking for a missing variant shows a question mark.
+const SYSTEM_FALLBACKS = {
+  clone: { name: 'copy', variant: 'regular' },
+  check: { name: 'check', variant: 'solid' },
+  xmark: { name: 'xmark', variant: 'solid' },
+  bars: { name: 'bars', variant: 'solid' },
+  minus: { name: 'minus', variant: 'solid' },
+  bookmark: { name: 'bookmark', variant: 'solid' },
+  sliders: { name: 'sliders', variant: 'solid' },
+  lightbulb: { name: 'lightbulb', variant: 'solid' },
+  key: { name: 'key', variant: 'solid' },
+  'triangle-exclamation': { name: 'triangle-exclamation', variant: 'solid' },
+  'comment-dots': { name: 'comment-dots', variant: 'solid' },
+};
 
 document.addEventListener('wa-error', (event) => {
   const icon = event.target;
@@ -33,8 +46,8 @@ document.addEventListener('wa-error', (event) => {
   }
   icon.removeAttribute('family');
   icon.setAttribute('library', 'system');
-  icon.setAttribute('variant', 'regular');
-  icon.setAttribute('name', fallback);
+  icon.setAttribute('variant', fallback.variant);
+  icon.setAttribute('name', fallback.name);
 });
 
 // After the slats land, the lit LEDs relight left to right on the same hop rhythm, like a desk coming on.

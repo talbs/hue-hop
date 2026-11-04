@@ -1,0 +1,2932 @@
+<!doctype html>
+<html
+  lang="en"
+  class="wa-dark"
+  data-side="a"
+  data-fa-kit-code="{{fa-kit}}"
+>
+  <head>
+    {{head}}
+    <title>Hue Hop Docs</title>
+    <meta
+      name="description"
+      content="How to load Hue Hop, color a heading, tune the steps, and fit it into your app."
+    />
+    <link
+      rel="stylesheet"
+      href="{{root}}css/controls.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{root}}css/quickstart.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{root}}css/docs.css"
+    />
+    <script
+      type="module"
+      src="{{root}}js/docs.js"
+    ></script>
+  </head>
+  <body>
+    <wa-page
+      class="docs-page"
+      mobile-breakpoint="860"
+    >
+      {{header}}
+      <wa-icon
+        slot="navigation-toggle-icon"
+        family="pixel"
+        name="bars"
+        label="Sections"
+      ></wa-icon>
+      <p
+        slot="navigation-header"
+        class="docs-drawer-title readout-label wa-mobile-only"
+      >
+        Sections
+      </p>
+      <nav
+        slot="navigation"
+        class="docs-nav wa-stack wa-gap-xl"
+        aria-label="Docs"
+      >
+        {{docs-nav}}
+        <p class="docs-meta readout-label">
+          <a
+            class="hop-link is-quiet"
+            href="{{repo-url}}/releases"
+          >
+            v{{version}}
+          </a>
+        </p>
+      </nav>
+      <main id="main-content">
+        <div class="docs-title">
+          <h1 class="docs-wordmark">
+            <hue-hop hue="dusk">Hue Hop</hue-hop>
+            <span class="docs-mark">Docs</span>
+          </h1>
+          <p class="section-lead">
+            Every letter hops a hue. Everything about the element is on this
+            page, from the first import to the API.
+          </p>
+        </div>
+        <article class="wa-prose">
+          <p class="docs-group readout-label">Start</p>
+          <section
+            id="get-started"
+            aria-labelledby="get-started-title"
+          >
+            <h2
+              class="section-title"
+              id="get-started-title"
+            >
+              Get Started
+            </h2>
+
+            <p>
+              Three steps: load it, wrap a heading, pick colors. Working with a
+              coding assistant? Skip to
+              <a href="#build-with-ai">Build with AI</a>
+              .
+            </p>
+            <h3 id="load-it">Load It</h3>
+            <wa-tab-group class="install-tabs">
+              <wa-tab
+                slot="nav"
+                panel="npm"
+              >
+                npm
+              </wa-tab>
+              <wa-tab
+                slot="nav"
+                panel="cdn"
+              >
+                CDN
+              </wa-tab>
+              <wa-tab
+                slot="nav"
+                panel="self-host"
+              >
+                Self-host
+              </wa-tab>
+              <wa-tab-panel name="npm">
+                <div class="wa-stack wa-gap-s">
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your terminal</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-bash" id="docs-npm-install">npm install hue-hop</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="docs-npm-install"
+                      copy-label="Copy install command"
+                    ></wa-copy-button>
+                  </div>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your JavaScript</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-javascript" id="docs-npm-import">import 'hue-hop';</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="docs-npm-import"
+                      copy-label="Copy import code"
+                    ></wa-copy-button>
+                  </div>
+                  <p class="install-note">
+                    Add the seven ready-made hues with
+                    <code>import 'hue-hop/hues.css';</code>
+                    and drift with
+                    <code>import 'hue-hop/drift.css';</code>
+                    .
+                  </p>
+                </div>
+              </wa-tab-panel>
+              <wa-tab-panel name="cdn">
+                <div class="wa-stack wa-gap-s">
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your HTML</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-html" id="docs-cdn">&lt;script
+  type="module"
+  src="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hue-hop.js"
+&gt;&lt;/script&gt;
+&lt;link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hues.css"
+/&gt;
+&lt;link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/drift.css"
+/&gt;</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="docs-cdn"
+                      copy-label="Copy CDN tags"
+                    ></wa-copy-button>
+                  </div>
+                  <wa-callout
+                    class="note"
+                    variant="success"
+                    appearance="outlined"
+                    size="s"
+                  >
+                    <wa-icon
+                      slot="icon"
+                      family="pixel"
+                      name="lightbulb"
+                      label="Tip"
+                    ></wa-icon>
+                    <strong>Keep the version in the URL until 1.0.</strong>
+                    A breaking change can't reach your site until you choose to
+                    update.
+                  </wa-callout>
+                </div>
+              </wa-tab-panel>
+              <wa-tab-panel name="self-host">
+                <div class="wa-stack wa-gap-s">
+                  <p class="install-note">
+                    Copy
+                    <code>dist/hue-hop.js</code>
+                    ,
+                    <code>dist/hues.css</code>
+                    , and
+                    <code>dist/drift.css</code>
+                    from the package into your site. Load them like any other
+                    file.
+                  </p>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your HTML</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-html" id="docs-self-host">&lt;script
+  type="module"
+  src="/js/hue-hop.js"
+&gt;&lt;/script&gt;
+&lt;link
+  rel="stylesheet"
+  href="/css/hues.css"
+/&gt;
+&lt;link
+  rel="stylesheet"
+  href="/css/drift.css"
+/&gt;</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="docs-self-host"
+                      copy-label="Copy self-host tags"
+                    ></wa-copy-button>
+                  </div>
+                </div>
+              </wa-tab-panel>
+            </wa-tab-group>
+            <p>
+              The import defines
+              <code>&lt;hue-hop&gt;</code>
+              , unless something on the page already did. Types ship in the
+              package. The
+              <code>HueHop</code>
+              class is exported too, for
+              <a href="#another-tag">another tag</a>
+              .
+            </p>
+            <h3 id="wrap-a-heading">Wrap a Heading</h3>
+            <p>
+              Put the element inside the heading, around the words. Pick a look
+              with
+              <code>hue</code>
+              , which needs
+              <code>hues.css</code>
+              .
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h1 role="none">
+                  <hue-hop hue="dusk">Midnight Marauders</hue-hop>
+                </h1>
+              </div>
+            </figure>
+            <p>
+              The heading stays one piece of text. Select, find, and copy work
+              like on any heading. Kerning holds, and links inside keep working.
+              Nothing moves when the colors load.
+            </p>
+            <h3 id="pick-colors">Pick Colors</h3>
+            <p>
+              Use
+              <code>hue</code>
+              for one of the seven shipped pairs, or
+              <code>start</code>
+              and
+              <code>end</code>
+              for your own. Set only one end and Hue Hop picks the other. See
+              <a href="#hues">Hues</a>
+              and
+              <a href="#your-own-colors">Your Own Colors</a>
+              .
+            </p>
+          </section>
+          <section
+            id="build-with-ai"
+            aria-labelledby="build-with-ai-title"
+          >
+            <h2
+              class="section-title"
+              id="build-with-ai-title"
+            >
+              Build with AI
+            </h2>
+
+            <p>
+              Any coding assistant that can read a URL can add Hue Hop for you.
+              Point it at
+              <a href="{{root}}llms.txt">llms.txt</a>
+              , a short plain-text version of these docs written for assistants.
+              It has the install, the attributes, and the rules an assistant
+              gets wrong without them (headings and names only, check your own
+              ends,
+              <code>hue</code>
+              needs
+              <code>hues.css</code>
+              and a
+              <code>color-scheme</code>
+              ).
+            </p>
+            <h3 id="paste-in-prompt">Paste-In Prompt</h3>
+            <p>For a one-off. Paste it into the chat.</p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your chat</p>
+              <pre
+                class="code-block is-paste-in"
+              ><code id="docs-prompt">{{assistant-prompt}}</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-prompt"
+                copy-label="Copy prompt"
+              ></wa-copy-button>
+            </div>
+            <h3 id="project-rules">Project Rules</h3>
+            <p>
+              For every session after this one. Add it to the instructions file
+              your assistant reads on its own. Codex, Cursor, and Copilot read
+              <code>AGENTS.md</code>
+              . Claude Code reads
+              <code>CLAUDE.md</code>
+              . Add a line that says
+              <code>@AGENTS.md</code>
+              to it and Claude Code reads the same rules.
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your instructions file</p>
+              <pre
+                class="code-block is-paste-in"
+              ><code id="docs-rules">{{agent-rules}}</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-rules"
+                copy-label="Copy project rules"
+              ></wa-copy-button>
+            </div>
+            <h3 id="manifest-and-types">Manifest and Types</h3>
+            <p>
+              The package ships two files for your tools.
+              <code>custom-elements.json</code>
+              lists every attribute, property, and custom property, and the
+              package's
+              <code>customElements</code>
+              field points tools at it.
+              <code>hue-hop.d.ts</code>
+              types the element, React JSX included. See
+              <a href="#frameworks-and-editors">Frameworks and Editors</a>
+              .
+            </p>
+          </section>
+          <p class="docs-group readout-label">Use</p>
+          <section
+            id="hues"
+            aria-labelledby="hues-title"
+          >
+            <h2
+              class="section-title"
+              id="hues-title"
+            >
+              Hues
+            </h2>
+
+            <p>
+              Seven ready-made pairs ship in
+              <code>hues.css</code>
+              . Load it once, then pick one with
+              <code>hue</code>
+              . Each pair has a dark side and a light side. The names describe
+              the dark side.
+            </p>
+            <wa-scroller>
+              <table class="hues-table">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <span class="wa-visually-hidden">Sample</span>
+                    </th>
+                    <th scope="col"><code>hue</code></th>
+                    <th scope="col">Goes from (dark side)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="hue-sample">
+                      <hue-hop hue="dusk">Electric Relaxation</hue-hop>
+                    </td>
+                    <td><code>dusk</code></td>
+                    <td>pale sky to blue-violet</td>
+                  </tr>
+                  <tr>
+                    <td class="hue-sample">
+                      <hue-hop hue="reef">Aquemini</hue-hop>
+                    </td>
+                    <td><code>reef</code></td>
+                    <td>pale aqua to blue</td>
+                  </tr>
+                  <tr>
+                    <td class="hue-sample">
+                      <hue-hop hue="fern">Award Tour</hue-hop>
+                    </td>
+                    <td><code>fern</code></td>
+                    <td>lime to pine</td>
+                  </tr>
+                  <tr>
+                    <td class="hue-sample">
+                      <hue-hop hue="ember">Liquid Swords</hue-hop>
+                    </td>
+                    <td><code>ember</code></td>
+                    <td>pale amber to red</td>
+                  </tr>
+                  <tr>
+                    <td class="hue-sample">
+                      <hue-hop hue="guava">Juicy</hue-hop>
+                    </td>
+                    <td><code>guava</code></td>
+                    <td>peach to magenta</td>
+                  </tr>
+                  <tr>
+                    <td class="hue-sample">
+                      <hue-hop hue="orchid">Passin' Me By</hue-hop>
+                    </td>
+                    <td><code>orchid</code></td>
+                    <td>blush pink to aubergine</td>
+                  </tr>
+                  <tr>
+                    <td class="hue-sample">
+                      <hue-hop hue="honey">Paid in Full</hue-hop>
+                    </td>
+                    <td><code>honey</code></td>
+                    <td>butter yellow to rust</td>
+                  </tr>
+                </tbody>
+              </table>
+            </wa-scroller>
+            <p>
+              On the light side the starts are deeper, so they stay readable on
+              light pages. Flip the side switch in the header to see them.
+            </p>
+            <p>
+              Every letter of the seven hues passes 4.5:1 contrast, with drift
+              off or on at its default range. That's checked on light pages from
+              <code>#f5f5f5</code>
+              to
+              <code>#fff</code>
+              and dark pages from
+              <code>#000</code>
+              to
+              <code>#1a1a1a</code>
+              . On other backgrounds, you'll need to check them yourself. Every
+              hue also sets
+              <code>--hop-lift</code>
+              to
+              <code>0.021</code>
+              .
+            </p>
+            <wa-callout
+              class="note"
+              variant="brand"
+              appearance="outlined"
+              size="s"
+            >
+              <wa-icon
+                slot="icon"
+                family="pixel"
+                name="key"
+                label="Required"
+              ></wa-icon>
+              <strong>
+                The hues need
+                <code>color-scheme</code>
+                .
+              </strong>
+              They use
+              <code>light-dark()</code>
+              , so without a
+              <code>color-scheme</code>
+              on the page you always get the light side. See
+              <a href="#light-and-dark">Light and Dark</a>
+              .
+            </wa-callout>
+            <h3 id="display">Display</h3>
+            <p>
+              Add
+              <code>display</code>
+              for large headings. Its colors sit closer to the page color and
+              pass 3:1, the bar for large text. It isn't meant for body-size
+              text.
+              <code>display</code>
+              only works with
+              <code>hue</code>
+              . On its own it does nothing.
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h2 role="none">
+                  <hue-hop
+                    hue="orchid"
+                    display
+                  >
+                    Can I Kick It?
+                  </hue-hop>
+                </h2>
+              </div>
+            </figure>
+            <h3 id="change-one-end">Change One End</h3>
+            <p>
+              A
+              <code>start</code>
+              or
+              <code>end</code>
+              attribute wins over the hue's, and so does a
+              <code>--hop-*</code>
+              value set on the element. So you can pick a hue and change one
+              end.
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h2 role="none">
+                  <hue-hop
+                    hue="dusk"
+                    end="crimson"
+                  >
+                    Check the Rhime
+                  </hue-hop>
+                </h2>
+              </div>
+            </figure>
+            <p>
+              A changed end is your color, so its contrast is yours to check.
+              See
+              <a href="#keep-them-readable">Keep Them Readable</a>
+              .
+            </p>
+            <p>
+              <code>hues.css</code>
+              and
+              <code>drift.css</code>
+              live in a cascade layer named
+              <code>hue-hop</code>
+              , so your unlayered rules on the element always win over them. If
+              your site uses layers too (Tailwind v4 does), list
+              <code>hue-hop</code>
+              first. Then your own layers win.
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your CSS</p>
+              <pre
+                class="code-block"
+              ><code class="language-css" id="docs-hues-layers">@layer hue-hop, theme, base, components, utilities;</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-hues-layers"
+                copy-label="Copy CSS"
+              ></wa-copy-button>
+            </div>
+            <p>
+              <code>hues.css</code>
+              targets the
+              <code>hue-hop</code>
+              tag. A subclass under
+              <a href="#another-tag">another tag</a>
+              needs its own copy of the rules.
+            </p>
+          </section>
+          <section
+            id="your-own-colors"
+            aria-labelledby="your-own-colors-title"
+          >
+            <h2
+              class="section-title"
+              id="your-own-colors-title"
+            >
+              Your Own Colors
+            </h2>
+
+            <p>
+              Set
+              <code>start</code>
+              and
+              <code>end</code>
+              to any two colors.
+              <code>start</code>
+              colors the first letter and
+              <code>end</code>
+              the last, and every letter between gets one flat step on the way.
+              They set
+              <code>--hop-start</code>
+              and
+              <code>--hop-end</code>
+              on the element.
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h2 role="none">
+                  <hue-hop
+                    start="indianred"
+                    end="crimson"
+                  >
+                    Ex-Factor
+                  </hue-hop>
+                </h2>
+              </div>
+            </figure>
+            <p>
+              Any CSS color works,
+              <code>var(--brand)</code>
+              and
+              <code>light-dark()</code>
+              included. A
+              <code>var()</code>
+              that points nowhere counts as left out, so Hue Hop picks its
+              partner. A typo (
+              <code>start="tael"</code>
+              ) shows plain text. Set neither end and the text keeps its normal
+              color.
+            </p>
+            <h3 id="one-end">One End</h3>
+            <p>
+              Set only one and Hue Hop picks the other. It keeps your lightness
+              and intensity and turns the hue 50 degrees around the color wheel,
+              away from yellow. Yellow can't stay bright at a readable
+              lightness.
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h2 role="none">
+                  <hue-hop start="darkcyan">Me Myself and I</hue-hop>
+                </h2>
+              </div>
+            </figure>
+            <h3 id="as-custom-properties">As Custom Properties</h3>
+            <p>
+              Set
+              <code>--hop-start</code>
+              and
+              <code>--hop-end</code>
+              anywhere they'll inherit:
+              <code>:root</code>
+              , a class, your design tokens, or one element's
+              <code>style</code>
+              . Use them for colors shared across a site, or colors that follow
+              a theme.
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <div class="brand">
+                  <h2 role="none"><hue-hop>The World Is Yours</hue-hop></h2>
+                </div>
+              </div>
+              <style data-example-css>
+                .brand h2 {
+                  --hop-start: darkcyan;
+                  --hop-end: royalblue;
+                }
+              </style>
+            </figure>
+            <p>
+              Each new attribute value adds a small style rule to the page. For
+              a color that changes every frame, set
+              <code>--hop-start</code>
+              in
+              <code>style</code>
+              instead.
+            </p>
+            <h3 id="which-value-wins">Which Value Wins</h3>
+            <p>Strongest first. Each one beats everything below it.</p>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Always wins</dt>
+                <dd>
+                  The
+                  <code>style</code>
+                  attribute.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Beats attribute</dt>
+                <dd>
+                  An unlayered rule more specific than
+                  <code>hue-hop[start]</code>
+                  , like
+                  <code>.card h2 hue-hop</code>
+                  .
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">The attribute</dt>
+                <dd>
+                  <code>start</code>
+                  or
+                  <code>end</code>
+                  on the element.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Loses to it</dt>
+                <dd>
+                  An inherited value, a
+                  <code>hue</code>
+                  , a plain class rule, or any rule in a cascade layer.
+                </dd>
+              </div>
+            </dl>
+            <h3 id="from-javascript">From JavaScript</h3>
+            <p>
+              <code>el.start</code>
+              and
+              <code>el.end</code>
+              read and set the attributes. Setting one to
+              <code>null</code>
+              removes it. So frameworks that set properties instead of
+              attributes (Angular, Solid, Lit's
+              <code>.start=</code>
+              ) should work too.
+            </p>
+            <h3 id="keep-them-readable">Keep Them Readable</h3>
+            <p>
+              The element can't see the background, so it can't check your
+              colors for you. These rules keep both ends readable. Write your
+              ends in
+              <code>oklch()</code>
+              so you can see the lightness (the first number).
+            </p>
+            <wa-scroller>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Page</th>
+                    <th scope="col">Body text (4.5:1)</th>
+                    <th scope="col">Display (3:1)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      Light,
+                      <code>#f5f5f5</code>
+                      to
+                      <code>#fff</code>
+                    </td>
+                    <td>
+                      both ends at
+                      <code>52%</code>
+                      or darker
+                    </td>
+                    <td>
+                      both ends at
+                      <code>62%</code>
+                      or darker
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Dark,
+                      <code>#000</code>
+                      to
+                      <code>#1a1a1a</code>
+                    </td>
+                    <td>
+                      both ends at
+                      <code>65%</code>
+                      or lighter
+                    </td>
+                    <td>
+                      both ends at
+                      <code>55%</code>
+                      or lighter
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </wa-scroller>
+            <p>
+              These hold for any hue and any chroma a screen can show. Lightness
+              steps evenly from one end to the other, so if both ends pass, most
+              letters between them do too. Ends far apart on the color wheel
+              (green to violet, say) can still dip in the middle, and
+              <a href="#lift">lift</a>
+              makes that more likely. Check the middle letters.
+            </p>
+            <p>
+              On any other background, check the contrast yourself. The
+              ready-made hues go a little past these numbers, because each one
+              was measured for its own colors.
+            </p>
+            <p>
+              Yellows can't stay bright that dark. At
+              <code>52%</code>
+              , a yellow holds about half the color (OKLCH chroma) a blue or
+              pink can, so it goes dull. For a yellow start, use the display bar
+              or a dark page.
+            </p>
+            <p>
+              Or let the
+              <a
+                class="hop-link"
+                href="{{studio-url}}"
+              >
+                Studio
+              </a>
+              do it. It checks every letter against your page color, and its Fit
+              button moves the ends until every letter passes, or tells you it
+              can't.
+            </p>
+          </section>
+          <section
+            id="light-and-dark"
+            aria-labelledby="light-and-dark-title"
+          >
+            <h2
+              class="section-title"
+              id="light-and-dark-title"
+            >
+              Light and Dark
+            </h2>
+
+            <p>
+              The element has no theme logic. It reads
+              <code>--hop-*</code>
+              live, so when your theme changes them, the letters follow with no
+              re-render. Flip the side switch in the header. Examples that use a
+              <code>hue</code>
+              or
+              <code>light-dark()</code>
+              follow.
+            </p>
+            <p>
+              Pick colors per scheme in one of three ways. Tokens that already
+              flip with your theme:
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your CSS</p>
+              <pre
+                class="code-block"
+              ><code class="language-css" id="docs-flip-tokens">:root {
+  --hop-start: var(--brand-500);
+  --hop-end: var(--accent-500);
+}</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-flip-tokens"
+                copy-label="Copy CSS"
+              ></wa-copy-button>
+            </div>
+            <p>
+              A scheme rule, or a class your theme switch sets (like
+              <code>.dark</code>
+              ):
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your CSS</p>
+              <pre
+                class="code-block"
+              ><code class="language-css" id="docs-flip-scheme">:root {
+  --hop-start: teal;
+  --hop-end: royalblue;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --hop-start: aquamarine;
+    --hop-end: lightskyblue;
+  }
+}</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-flip-scheme"
+                copy-label="Copy CSS"
+              ></wa-copy-button>
+            </div>
+            <p>
+              Or
+              <code>light-dark()</code>
+              , which picks its first color on a light page and its second on a
+              dark one:
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <div class="two-sides">
+                  <h2 role="none"><hue-hop>Hey Ya!</hue-hop></h2>
+                </div>
+              </div>
+              <style data-example-css>
+                .two-sides {
+                  --hop-start: light-dark(teal, aquamarine);
+                  --hop-end: light-dark(royalblue, lightskyblue);
+                }
+              </style>
+            </figure>
+            <p>
+              <code>light-dark()</code>
+              needs
+              <code>color-scheme</code>
+              on the page (
+              <code>:root { color-scheme: light dark; }</code>
+              ). Without it you always get the light value. This page sets it,
+              which is why the example flips.
+            </p>
+            <p>
+              A Studio static export bakes in one scheme's literal colors, so it
+              won't follow a switch.
+            </p>
+          </section>
+          <section
+            id="drift"
+            aria-labelledby="drift-title"
+          >
+            <h2
+              class="section-title"
+              id="drift-title"
+            >
+              Drift
+            </h2>
+
+            <p>
+              <code>drift.css</code>
+              slowly sways the hues back and forth. Load it once (see
+              <a href="#load-it">Load It</a>
+              ), then add
+              <code>drift</code>
+              to any element. The example uses
+              <code>hue</code>
+              too, which needs
+              <code>hues.css</code>
+              .
+            </p>
+            <figure
+              class="example"
+              data-control="drift"
+            >
+              <div class="example-panel">
+                <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                  <h2 role="none">
+                    <hue-hop
+                      hue="ember"
+                      drift
+                    >
+                      Mass Appeal
+                    </hue-hop>
+                  </h2>
+                </div>
+                <wa-divider></wa-divider>
+                <wa-scroller class="example-bar">
+                  <div class="wa-cluster">
+                    <button
+                      type="button"
+                      class="lit-button"
+                      aria-pressed="true"
+                    >
+                      <span
+                        class="led"
+                        aria-hidden="true"
+                      ></span>
+                      Drift
+                    </button>
+                    <p
+                      class="readout-label"
+                      data-drift-note
+                    ></p>
+                  </div>
+                </wa-scroller>
+              </div>
+            </figure>
+            <p>Two custom properties set the sway. Both are plain numbers.</p>
+            <wa-scroller>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Property</th>
+                    <th scope="col">Default</th>
+                    <th scope="col">What it does</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>--hop-drift-range</code></td>
+                    <td><code>24</code></td>
+                    <td>How many degrees the hues sway each way.</td>
+                  </tr>
+                  <tr>
+                    <td><code>--hop-drift-cycle</code></td>
+                    <td><code>10</code></td>
+                    <td>
+                      How many seconds one full sway there and back takes.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </wa-scroller>
+            <p>
+              Drift only turns hues, and lightness holds. Contrast can still
+              shift a little as the hues turn, so leave some margin at the start
+              and end colors. Drift stops when the visitor prefers reduced
+              motion, and under forced colors and increased contrast.
+            </p>
+            <p>
+              <code>drift.css</code>
+              targets the
+              <code>hue-hop</code>
+              tag. For a subclass under
+              <a href="#another-tag">another tag</a>
+              , copy the
+              <code>hue-hop[drift]</code>
+              rule for it, inside the same media query. Keep
+              <code>var()</code>
+              out of any keyframes you write for it, or Firefox animates them in
+              jumps.
+            </p>
+          </section>
+          <section
+            id="where-it-fits"
+            aria-labelledby="where-it-fits-title"
+          >
+            <h2
+              class="section-title"
+              id="where-it-fits-title"
+            >
+              Where It Fits
+            </h2>
+
+            <p>
+              Short text that names something: a title, a name, a number. It
+              isn't meant for body copy, which gets hard to read when every
+              letter changes color. The examples use
+              <code>hue</code>
+              , which needs
+              <code>hues.css</code>
+              .
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <header>
+                  <a
+                    href="/"
+                    class="logo"
+                  >
+                    <hue-hop hue="reef">Halftime</hue-hop>
+                  </a>
+                  <a href="/tour">Tour</a>
+                  <a href="/shop">Shop</a>
+                </header>
+              </div>
+              <figcaption class="readout-label">
+                A site logo in a nav bar
+              </figcaption>
+            </figure>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <p>
+                  Words by
+                  <hue-hop hue="honey">Bonita Applebum</hue-hop>
+                </p>
+              </div>
+              <figcaption class="readout-label">
+                A byline, with only the name colored
+              </figcaption>
+            </figure>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h2 role="none"><hue-hop hue="fern">Summertime</hue-hop></h2>
+                <ol>
+                  <li>Back in the Day</li>
+                  <li>Feel Me Flow</li>
+                  <li>Jump Around</li>
+                </ol>
+              </div>
+              <figcaption class="readout-label">A playlist heading</figcaption>
+            </figure>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h1 role="none">
+                  <hue-hop
+                    hue="guava"
+                    display
+                  >
+                    Ether
+                  </hue-hop>
+                </h1>
+                <p>Review · 6 min read</p>
+              </div>
+              <figcaption class="readout-label">
+                An article title, in the display version
+              </figcaption>
+            </figure>
+            <p>
+              Links and other inline markup can sit inside, and they keep
+              working. The colors run straight across them. Keep link underlines
+              on: when only part of a heading is a link, the underline is the
+              only thing that says so (WCAG 1.4.1).
+            </p>
+          </section>
+          <p class="docs-group readout-label">Customize</p>
+          <section
+            id="tuning"
+            aria-labelledby="tuning-title"
+          >
+            <h2
+              class="section-title"
+              id="tuning-title"
+            >
+              Tuning the Ramp
+            </h2>
+            <p>
+              Three custom properties shape the steps between your two ends.
+              None of them has an attribute. Set them once, on
+              <code>:root</code>
+              or a class, and every heading under it follows. One catch: a
+              <code>hue</code>
+              sets
+              <code>--hop-lift</code>
+              on the element itself, so to change lift under a hue, set it on
+              the element. The examples set them in
+              <code>style</code>
+              so you can see the one value that changes. They also use
+              <code>hue</code>
+              , which needs
+              <code>hues.css</code>
+              .
+            </p>
+            <h3 id="curve">Curve</h3>
+            <p>
+              How the steps are spaced. At
+              <code>1</code>
+              , the default, they're even. Higher stays near the start color
+              longer. Lower gets to the end color sooner.
+            </p>
+            <figure
+              class="example"
+              data-control="curve"
+            >
+              <div class="example-panel">
+                <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                  <h2 role="none">
+                    <hue-hop
+                      hue="ember"
+                      style="--hop-curve: 1"
+                    >
+                      Step in the Arena
+                    </hue-hop>
+                  </h2>
+                </div>
+                <wa-divider></wa-divider>
+                <wa-scroller class="example-bar">
+                  <div class="wa-cluster">
+                    <div class="fader">
+                      <wa-slider
+                        id="curve-fader"
+                        label="Curve"
+                        min="0.3"
+                        max="3"
+                        step="0.1"
+                        value="1"
+                        indicator-offset="1"
+                      ></wa-slider>
+                      <output
+                        class="fader-value wa-text-end"
+                        for="curve-fader"
+                      >
+                        1.0
+                      </output>
+                    </div>
+                  </div>
+                </wa-scroller>
+              </div>
+            </figure>
+            <h3 id="lift">Lift</h3>
+            <p>
+              Extra color intensity (OKLCH chroma) for the middle letters, so
+              the blend doesn't go dull halfway. The two ends don't change. The
+              default is
+              <code>0</code>
+              , and every ready-made hue sets
+              <code>0.021</code>
+              .
+            </p>
+            <figure
+              class="example"
+              data-control="lift"
+            >
+              <div class="example-panel">
+                <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                  <h2 role="none">
+                    <hue-hop
+                      start="oklch(60% 0.12 200)"
+                      end="oklch(60% 0.12 300)"
+                      style="--hop-lift: 0"
+                    >
+                      Sky's the Limit
+                    </hue-hop>
+                  </h2>
+                </div>
+                <wa-divider></wa-divider>
+                <wa-scroller class="example-bar">
+                  <div class="wa-cluster">
+                    <div class="fader">
+                      <wa-slider
+                        id="lift-fader"
+                        label="Lift"
+                        min="0"
+                        max="0.12"
+                        step="0.001"
+                        value="0"
+                        indicator-offset="0"
+                      ></wa-slider>
+                      <output
+                        class="fader-value wa-text-end"
+                        for="lift-fader"
+                      >
+                        0.000
+                      </output>
+                    </div>
+                  </div>
+                </wa-scroller>
+              </div>
+            </figure>
+            <wa-callout
+              class="note"
+              variant="warning"
+              appearance="outlined"
+              size="s"
+            >
+              <wa-icon
+                slot="icon"
+                family="pixel"
+                name="triangle-exclamation"
+                label="Warning"
+              ></wa-icon>
+              <strong>Too much lift gets clipped.</strong>
+              Past what an sRGB screen can show, the middle letters get cut
+              back, and on a white page that can lower their contrast. Check the
+              middle letters. The
+              <a
+                class="hop-link"
+                href="{{studio-url}}"
+              >
+                Studio
+              </a>
+              checks them after the clip, so it catches this.
+            </wa-callout>
+            <h3 id="shift">Shift</h3>
+            <p>
+              Turns each letter's hue by this many degrees around the color
+              wheel. Write a plain number (
+              <code>30</code>
+              , not
+              <code>30deg</code>
+              ). The default is
+              <code>0</code>
+              . Lightness holds, so it's a quick way to try a pair in another
+              color without picking new ends.
+            </p>
+            <figure
+              class="example"
+              data-control="shift"
+            >
+              <div class="example-panel">
+                <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                  <h2 role="none">
+                    <hue-hop
+                      hue="dusk"
+                      style="--hop-shift: 0"
+                    >
+                      Around the Way Girl
+                    </hue-hop>
+                  </h2>
+                </div>
+                <wa-divider></wa-divider>
+                <wa-scroller class="example-bar">
+                  <div class="wa-cluster">
+                    <div class="fader">
+                      <wa-slider
+                        id="shift-fader"
+                        label="Shift"
+                        min="-90"
+                        max="90"
+                        step="1"
+                        value="0"
+                        indicator-offset="0"
+                      ></wa-slider>
+                      <output
+                        class="fader-value wa-text-end"
+                        for="shift-fader"
+                      >
+                        0
+                      </output>
+                    </div>
+                  </div>
+                </wa-scroller>
+              </div>
+            </figure>
+            <p>
+              Contrast can still move a little as the hues turn. A shifted
+              ready-made hue isn't the one that was measured, so check it.
+            </p>
+          </section>
+          <section
+            id="styling"
+            aria-labelledby="styling-title"
+          >
+            <h2
+              class="section-title"
+              id="styling-title"
+            >
+              Styling Around It
+            </h2>
+            <p>
+              <code>&lt;hue-hop&gt;</code>
+              is an inline element. Font, size, weight, and letter spacing work
+              on it the way they work on a
+              <code>&lt;span&gt;</code>
+              . Style the heading around it as you already do.
+            </p>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Your color</dt>
+                <dd>
+                  <code>color</code>
+                  is the exception. The letter colors paint over it, so yours
+                  only shows where the effect is off: an older browser, neither
+                  end set, forced colors, or increased contrast. Set it anyway.
+                  It's the fallback.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Selected text</dt>
+                <dd>
+                  A
+                  <code>::selection</code>
+                  rule of yours that sets
+                  <code>color</code>
+                  wins in every browser, and the letter colors come back after.
+                  Without one, Chrome and Safari keep the letter colors on the
+                  selection background. Firefox uses its own selection colors.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Gradient text</dt>
+                <dd>
+                  <code>background-clip: text</code>
+                  with a transparent fill hides the effect, because the
+                  transparent fill wins. Use one or the other.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Links inside</dt>
+                <dd>
+                  They lose their own color in every state, hover and visited
+                  included. They keep their focus ring and underline. Firefox
+                  and Safari keep the underline in the link's color. Chrome
+                  paints it in each letter's color, and
+                  <code>text-decoration-color</code>
+                  only shows under the spaces.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Your highlights</dt>
+                <dd>
+                  A search-term marker, say, paints above Hue Hop's, because
+                  every Hue Hop highlight has priority −1. See
+                  <a href="#highlights">Highlights</a>
+                  .
+                </dd>
+              </div>
+            </dl>
+            <h3 id="coloring-things-nearby">Coloring Things Nearby</h3>
+            <p>
+              Hue Hop only colors letters. To match a list marker, a badge or a
+              border, put
+              <code>--hop-start</code>
+              and
+              <code>--hop-end</code>
+              on a shared parent and use them in your own CSS.
+            </p>
+            <h4>Using Your Own Colors</h4>
+            <p>
+              Set both ends on the parent. No JavaScript, and it follows theme
+              switches.
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <div class="playlist">
+                  <h2 role="none"><hue-hop>Summertime</hue-hop></h2>
+                  <ol>
+                    <li>Back in the Day</li>
+                    <li>Feel Me Flow</li>
+                    <li>Jump Around</li>
+                  </ol>
+                </div>
+              </div>
+              <style data-example-css>
+                .playlist {
+                  --hop-start: light-dark(green, lightgreen);
+                  --hop-end: light-dark(teal, mediumaquamarine);
+                }
+
+                @media (forced-colors: none) and (prefers-contrast: no-preference) {
+                  .playlist li:nth-child(1) {
+                    --step: 0;
+                  }
+                  .playlist li:nth-child(2) {
+                    --step: 0.5;
+                  }
+                  .playlist li:nth-child(3) {
+                    --step: 1;
+                  }
+                  .playlist li::marker {
+                    color: color-mix(
+                      in oklch,
+                      var(--hop-start),
+                      var(--hop-end) calc(var(--step) * 100%)
+                    );
+                  }
+                }
+              </style>
+            </figure>
+            <p>
+              <code>--step</code>
+              is each item's place on the ramp:
+              <code>0</code>
+              is the start color,
+              <code>1</code>
+              the end. A border or badge can skip the mix and use
+              <code>var(--hop-end)</code>
+              .
+            </p>
+            <p>Three things to know before you copy this.</p>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Keep the media query</dt>
+                <dd>
+                  Without it, markers stay colored under increased contrast
+                  while the letters go plain.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Set both ends</dt>
+                <dd>
+                  The letters pick a partner for a missing end. The mix can't,
+                  so markers stay plain.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">With drift</dt>
+                <dd>Only the letters move. Markers hold still.</dd>
+              </div>
+            </dl>
+            <h4>
+              Using a
+              <code>hue</code>
+              Instead
+            </h4>
+            <p>
+              Drop the
+              <code>.playlist</code>
+              rule and run this script. A
+              <code>hue</code>
+              sets its ends on the element itself, so nothing beside it can see
+              them. The script copies them to the parent, and they still follow
+              theme switches.
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your JavaScript</p>
+              <pre
+                class="code-block"
+              ><code class="language-javascript" id="docs-copy-ends">const parent = document.querySelector('.playlist');
+const styles = getComputedStyle(parent.querySelector('hue-hop'));
+for (const name of ['--hop-start', '--hop-end']) {
+  parent.style.setProperty(name, styles.getPropertyValue(name));
+}</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-copy-ends"
+                copy-label="Copy JavaScript"
+              ></wa-copy-button>
+            </div>
+            <p>
+              Middle markers look slightly less vivid than the letters, because
+              the mix leaves out
+              <code>--hop-lift</code>
+              .
+            </p>
+          </section>
+          <p class="docs-group readout-label">Integrate</p>
+          <section
+            id="frameworks-and-editors"
+            aria-labelledby="frameworks-and-editors-title"
+          >
+            <h2
+              class="section-title"
+              id="frameworks-and-editors-title"
+            >
+              Frameworks and Editors
+            </h2>
+            <p>
+              It's a plain custom element. Plain HTML, Svelte, and Lit need
+              nothing. TypeScript and React get their types from the package.
+              Vue and Angular each need one setting.
+            </p>
+            <h3 id="typescript">TypeScript</h3>
+            <p>
+              <code>hue-hop.d.ts</code>
+              ships in the package. It adds
+              <code>&lt;hue-hop&gt;</code>
+              to
+              <code>HTMLElementTagNameMap</code>
+              , so
+              <code>document.querySelector('hue-hop')</code>
+              comes back as a
+              <code>HueHop</code>
+              . It also types the element in React JSX:
+              <code>hue</code>
+              (the seven names),
+              <code>start</code>
+              ,
+              <code>end</code>
+              ,
+              <code>drift</code>
+              , and
+              <code>display</code>
+              . Nothing to declare.
+            </p>
+            <h3 id="react">React</h3>
+            <p>
+              React needs nothing. It sets
+              <code>start</code>
+              and
+              <code>end</code>
+              as attributes or as properties, and the element reads both.
+            </p>
+            <wa-callout
+              class="note"
+              variant="neutral"
+              appearance="outlined"
+              size="s"
+            >
+              <wa-icon
+                slot="icon"
+                family="pixel"
+                name="comment-dots"
+                label="Note"
+              ></wa-icon>
+              <strong>Server rendering logs one warning in development.</strong>
+              If the element defines itself before React 18 hydrates, the
+              development build logs
+              <code>Extra attributes from the server: hops</code>
+              . Colors stay correct. If your test runner fails on console
+              errors, let that one line through.
+            </wa-callout>
+            <h3 id="vue-and-angular">Vue and Angular</h3>
+            <p>
+              Both need to be told that
+              <code>&lt;hue-hop&gt;</code>
+              isn't one of their own components. In Vue, add this to the Vue
+              plugin in
+              <code>vite.config.js</code>
+              :
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In vite.config.js</p>
+              <pre
+                class="code-block"
+              ><code class="language-javascript" id="docs-vue">vue({
+  template: { compilerOptions: { isCustomElement: tag =&gt; tag === 'hue-hop' } },
+})</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-vue"
+                copy-label="Copy Vue setting"
+              ></wa-copy-button>
+            </div>
+            <p>
+              In Angular, add
+              <code>CUSTOM_ELEMENTS_SCHEMA</code>
+              to the component that uses it:
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your Angular component</p>
+              <pre
+                class="code-block"
+              ><code class="language-typescript" id="docs-angular">@Component({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-angular"
+                copy-label="Copy Angular setting"
+              ></wa-copy-button>
+            </div>
+            <h3 id="another-tag">Another Tag</h3>
+            <p>
+              The
+              <code>HueHop</code>
+              class is exported. To use another tag, register a subclass:
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your JavaScript</p>
+              <pre
+                class="code-block"
+              ><code class="language-javascript" id="docs-another-tag">import { HueHop } from 'hue-hop';
+
+customElements.define('my-hop', class extends HueHop {});</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-another-tag"
+                copy-label="Copy JavaScript"
+              ></wa-copy-button>
+            </div>
+            <p>
+              <code>HueHop</code>
+              itself won't work here. The import already registered it, and a
+              class can only be registered once. Use one tag per page or shadow
+              root. Two tags in one root make one of them fall back to plain
+              text.
+            </p>
+            <p>
+              A subclass that defines its own
+              <code>observedAttributes</code>
+              must include
+              <code>...super.observedAttributes</code>
+              and call
+              <code>super.attributeChangedCallback()</code>
+              , or
+              <code>start</code>
+              and
+              <code>end</code>
+              stop updating.
+            </p>
+            <p>
+              <code>hues.css</code>
+              and
+              <code>drift.css</code>
+              target the
+              <code>hue-hop</code>
+              tag, so the new tag needs its own copy of their rules. See
+              <a href="#hues">Hues</a>
+              and
+              <a href="#drift">Drift</a>
+              .
+            </p>
+            <h3 id="cascade-layers">Tailwind and Cascade Layers</h3>
+            <p>
+              <code>hues.css</code>
+              and
+              <code>drift.css</code>
+              sit in a layer named
+              <code>hue-hop</code>
+              . If your site uses layers (Tailwind v4 does), list
+              <code>hue-hop</code>
+              first so your own layers win. The line to copy is under
+              <a href="#hues">Hues</a>
+              .
+            </p>
+            <h3 id="csp">Content Security Policy</h3>
+            <p>
+              The element adds its styles from JavaScript as constructed
+              stylesheets (built in script, not written into the page), not a
+              <code>&lt;style&gt;</code>
+              tag. So your policy doesn't need
+              <code>style-src 'unsafe-inline'</code>
+              for it.
+              <code>hues.css</code>
+              and
+              <code>drift.css</code>
+              are plain stylesheet files, so load them from a host your policy
+              already allows.
+            </p>
+            <h3 id="editors">Editors</h3>
+            <p>
+              <code>custom-elements.json</code>
+              describes every attribute, property, and custom property in the
+              Custom Elements Manifest format. The package's
+              <code>customElements</code>
+              field points to it, so any tool that reads the format can find it.
+            </p>
+          </section>
+          <section
+            id="testing"
+            aria-labelledby="testing-title"
+          >
+            <h2
+              class="section-title"
+              id="testing-title"
+            >
+              Testing Your App
+            </h2>
+            <h3 id="screenshot-tests">Screenshot Tests</h3>
+            <p>
+              Drift keeps moving, so screenshots of it won't match from run to
+              run. Emulate reduced motion and drift holds still. In Playwright:
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your Playwright test</p>
+              <pre
+                class="code-block"
+              ><code class="language-javascript" id="docs-reduced-motion">await page.emulateMedia({ reducedMotion: 'reduce' });</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-reduced-motion"
+                copy-label="Copy JavaScript"
+              ></wa-copy-button>
+            </div>
+            <h3 id="reading-a-color">Reading a Letter's Color</h3>
+            <p>
+              Each step has its own highlight:
+              <code>hue-hop-0</code>
+              for the first,
+              <code>hue-hop-1</code>
+              for the next, and on up. Up to 64 letters, that's one per letter.
+              Read one with
+              <code>getComputedStyle</code>
+              :
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your JavaScript</p>
+              <pre
+                class="code-block"
+              ><code class="language-javascript" id="docs-read-color">getComputedStyle(el, '::highlight(hue-hop-0)').color;</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-read-color"
+                copy-label="Copy JavaScript"
+              ></wa-copy-button>
+            </div>
+            <p>
+              The value is fixed for the current scheme. A copy of it won't
+              follow a theme switch. For colors that do, see
+              <a href="#coloring-things-nearby">Coloring Things Nearby</a>
+              . Stay below
+              <code>el.hops</code>
+              : a higher step can return a wrong color.
+            </p>
+            <h3 id="test-doms">Test DOMs</h3>
+            <p>
+              jsdom and happy-dom have no highlights, so the element goes inert
+              there. It's defined, it never draws, and it logs nothing. That's
+              what Vitest's
+              <code>jsdom</code>
+              and
+              <code>happy-dom</code>
+              environments do, checked with jsdom 30.1, happy-dom 21.0, and
+              Vitest 5.1.
+            </p>
+            <p>
+              Wiring up a DOM by hand? The element reads
+              <code>CSS</code>
+              as it loads. Copy only
+              <code>window</code>
+              ,
+              <code>document</code>
+              ,
+              <code>HTMLElement</code>
+              , and
+              <code>customElements</code>
+              onto the global and the import throws
+              <code>ReferenceError: CSS is not defined</code>
+              . Copy
+              <code>window.CSS</code>
+              too and it loads in both. On jsdom, this line before the import
+              works too:
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">Before the import</p>
+              <pre
+                class="code-block"
+              ><code class="language-javascript" id="docs-css-guard">globalThis.CSS ??= {};</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-css-guard"
+                copy-label="Copy JavaScript"
+              ></wa-copy-button>
+            </div>
+            <p>
+              <code>el.hops</code>
+              is
+              <code>0</code>
+              off the page or without support, test DOMs included. The
+              <a href="#hops">
+                <code>hops</code>
+                attribute
+              </a>
+              keeps its last value.
+            </p>
+          </section>
+          <section
+            id="before-it-loads"
+            aria-labelledby="before-it-loads-title"
+          >
+            <h2
+              class="section-title"
+              id="before-it-loads-title"
+            >
+              Before It Loads
+            </h2>
+            <p>
+              Without JavaScript, or before the element loads, the heading is
+              plain text in its normal color. When the colors arrive, nothing
+              moves, so there's no layout shift to prevent and nothing to load
+              ahead of it.
+            </p>
+            <p>
+              Older browsers show the plain heading too. The element never
+              paints a wrong color. See
+              <a href="#browser-support">Browser Support</a>
+              .
+            </p>
+          </section>
+          <p class="docs-group readout-label">Reference</p>
+          <section
+            id="api"
+            aria-labelledby="api-title"
+          >
+            <h2
+              class="section-title"
+              id="api-title"
+            >
+              API
+            </h2>
+            <p>
+              The tables come straight from
+              <code>custom-elements.json</code>
+              .
+            </p>
+            <h3 id="attributes">Attributes</h3>
+            <wa-scroller>
+              <table class="api-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Attribute</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Does</th>
+                  </tr>
+                </thead>
+                <tbody>{{attribute-rows}}</tbody>
+              </table>
+            </wa-scroller>
+            <h3 id="properties">Properties</h3>
+            <wa-scroller>
+              <table class="api-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Property</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Does</th>
+                  </tr>
+                </thead>
+                <tbody>{{property-rows}}</tbody>
+              </table>
+            </wa-scroller>
+            <h3 id="css-custom-properties">CSS Custom Properties</h3>
+            <wa-scroller>
+              <table class="api-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Property</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Default</th>
+                    <th scope="col">Does</th>
+                  </tr>
+                </thead>
+                <tbody>{{css-property-rows}}</tbody>
+              </table>
+            </wa-scroller>
+            <wa-callout
+              class="note"
+              variant="neutral"
+              appearance="outlined"
+              size="s"
+            >
+              <wa-icon
+                slot="icon"
+                family="pixel"
+                name="comment-dots"
+                label="Note"
+              ></wa-icon>
+              <strong>
+                Curve, lift, shift, drift range, and drift cycle have no
+                attributes.
+              </strong>
+              See
+              <a href="#tuning">Tuning the Ramp</a>
+              and
+              <a href="#drift">Drift</a>
+              .
+            </wa-callout>
+            <h3 id="highlights">Highlights</h3>
+            <p>
+              The colors are highlights in
+              <code>CSS.highlights</code>
+              , one per step:
+              <code>hue-hop-0</code>
+              up to
+              <code>hue-hop-63</code>
+              . Every one has priority −1, so your own highlights (a search-term
+              marker, say) paint above them. The names are public and won't
+              change.
+            </p>
+            <p>
+              <code>CSS.highlights.clear()</code>
+              removes the colors until the text changes or the element
+              reconnects. To read a letter's color, see
+              <a href="#reading-a-color">Reading a Letter's Color</a>
+              .
+            </p>
+            <h3 id="hops">
+              The
+              <code>hops</code>
+              Attribute
+            </h3>
+            <p>
+              The element writes its step count on itself, like
+              <code>hops="13"</code>
+              . Its own stylesheet reads it. You can leave it alone. The element
+              writes it when the count changes.
+            </p>
+            <p>
+              Each letter gets its own step, up to 64. Spaces don't count.
+              Longer text shares steps, so a 200-letter heading still runs the
+              whole ramp with about three letters per color. Past 64, every
+              extra step would slow each restyle on the page, theme switches and
+              drift included.
+            </p>
+            <p>
+              Type in the box to watch the count. The example uses
+              <code>hue</code>
+              , so it needs
+              <code>hues.css</code>
+              .
+            </p>
+            <figure
+              class="example"
+              data-control="hops"
+            >
+              <div class="example-panel">
+                <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                  <h2 role="none">
+                    <hue-hop hue="guava">Protect Ya Neck</hue-hop>
+                  </h2>
+                </div>
+                <wa-divider></wa-divider>
+                <wa-scroller class="example-bar">
+                  <div class="wa-cluster">
+                    <div class="fader">
+                      <div class="wa-flank:end wa-gap-m">
+                        <wa-input
+                          id="hops-text"
+                          class="wa-visually-hidden-label"
+                          label="Text"
+                          value="Protect Ya Neck"
+                          autocomplete="off"
+                          spellcheck="false"
+                        ></wa-input>
+                        <button
+                          type="button"
+                          class="lit-button"
+                        >
+                          Shuffle
+                        </button>
+                      </div>
+                      <div class="wa-cluster wa-gap-xs wa-align-items-baseline">
+                        <label
+                          class="readout-label"
+                          for="hops-count"
+                        >
+                          hops
+                        </label>
+                        <output
+                          id="hops-count"
+                          class="fader-value"
+                          for="hops-text"
+                          aria-live="polite"
+                        >
+                          13
+                        </output>
+                      </div>
+                    </div>
+                  </div>
+                </wa-scroller>
+                <wa-random-content
+                  items="1"
+                  hidden
+                >
+                  {{sample-titles}}
+                </wa-random-content>
+              </div>
+            </figure>
+            <p>
+              The code leaves
+              <code>hops</code>
+              out, like every example here, because you never write it.
+            </p>
+            <p>
+              <code>el.hops</code>
+              returns the same count as a read-only number. It's
+              <code>0</code>
+              when the element is off the page (the attribute keeps its last
+              value) or the browser lacks support. With server rendering, React
+              can warn about the attribute. See
+              <a href="#react">React</a>
+              .
+            </p>
+            <h3 id="exports">Exports</h3>
+            <p>
+              The module exports the
+              <code>HueHop</code>
+              class and defines
+              <code>&lt;hue-hop&gt;</code>
+              with it, unless something on the page already did. To register it
+              under another name, see
+              <a href="#another-tag">Another Tag</a>
+              .
+            </p>
+          </section>
+          <section
+            id="accessibility"
+            aria-labelledby="accessibility-title"
+          >
+            <h2
+              class="section-title"
+              id="accessibility-title"
+            >
+              Accessibility
+            </h2>
+            <h3 id="handled-for-you">Handled for You</h3>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Screen readers</dt>
+                <dd>
+                  Screen readers hear the text once, as words. The text is never
+                  split.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">High contrast</dt>
+                <dd>
+                  Forced colors mode turns the effect off, and so does any OS
+                  contrast setting (
+                  <code>prefers-contrast</code>
+                  other than
+                  <code>no-preference</code>
+                  ). The heading falls back to its normal color.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Reduced motion</dt>
+                <dd>Drift stops when the visitor prefers reduced motion.</dd>
+              </div>
+              <div>
+                <dt class="readout-label">Find and copy</dt>
+                <dd>
+                  Find in page, selection, and copy work as they do on any
+                  heading.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Hue contrast</dt>
+                <dd>
+                  Every letter of the seven
+                  <a href="#hues">hues</a>
+                  passes 4.5:1 on the backgrounds listed there, or 3:1 with
+                  <code>display</code>
+                  .
+                </dd>
+              </div>
+            </dl>
+            <h3 id="your-part">Your Part</h3>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Your contrast</dt>
+                <dd>
+                  Check contrast at your own ends. The element can't see the
+                  background. See
+                  <a href="#keep-them-readable">Keep Them Readable</a>
+                  .
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Link underlines</dt>
+                <dd>
+                  Keep link underlines on. When only part of a heading is a
+                  link, the underline is the only thing that says so (WCAG
+                  1.4.1).
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Where to use it</dt>
+                <dd>
+                  Use it on headings and names, not body copy. Body copy gets
+                  hard to read when every letter changes color.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Display</dt>
+                <dd>
+                  Use
+                  <code>display</code>
+                  only for large text. It passes 3:1, not 4.5:1.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Hidden text</dt>
+                <dd>
+                  Put screen-reader-only text outside the element. Inside, it
+                  still uses up hops, so the visible letters may not reach
+                  <code>--hop-end</code>
+                  .
+                </dd>
+              </div>
+            </dl>
+          </section>
+          <section
+            id="browser-support"
+            aria-labelledby="browser-support-title"
+          >
+            <h2
+              class="section-title"
+              id="browser-support-title"
+            >
+              Browser Support
+            </h2>
+            <p>
+              The colors need two things from a browser: the CSS Custom
+              Highlight API, and custom properties that work inside a highlight.
+              These versions and anything newer have both:
+            </p>
+            <ul class="wa-list-plain wa-cluster wa-gap-xs">
+              <li>
+                <wa-tag>
+                  <wa-icon
+                    family="pixel"
+                    name="check"
+                    label="Supported"
+                  ></wa-icon>
+                  Chrome 134+
+                </wa-tag>
+              </li>
+              <li>
+                <wa-tag>
+                  <wa-icon
+                    family="pixel"
+                    name="check"
+                    label="Supported"
+                  ></wa-icon>
+                  Firefox 140+
+                </wa-tag>
+              </li>
+              <li>
+                <wa-tag>
+                  <wa-icon
+                    family="pixel"
+                    name="check"
+                    label="Supported"
+                  ></wa-icon>
+                  Safari 18+
+                </wa-tag>
+              </li>
+            </ul>
+            <wa-callout
+              class="note"
+              variant="neutral"
+              appearance="outlined"
+              size="s"
+            >
+              <wa-icon
+                slot="icon"
+                family="pixel"
+                name="comment-dots"
+                label="Note"
+              ></wa-icon>
+              <strong>
+                Older browsers show the heading in its normal color.
+              </strong>
+              The element checks for
+              <code>CSS.highlights</code>
+              as it loads and does nothing without it. There's no polyfill.
+              Chrome 105 to 133 have the API but can't read custom properties
+              inside a highlight, so they show plain text too, never a wrong
+              color. Safari 17 is unmeasured.
+            </wa-callout>
+          </section>
+          <section
+            id="how-it-works"
+            aria-labelledby="how-it-works-title"
+          >
+            <h2
+              class="section-title"
+              id="how-it-works-title"
+            >
+              How It Works
+            </h2>
+            <p>
+              Hue Hop never splits your text. A word stays one element in one
+              text node, and the colors are painted over it. Here's one word
+              taken apart. Move the fader to change how its colors are spaced.
+            </p>
+            <figure
+              class="example"
+              data-control="curve"
+              data-meter
+            >
+              <div class="example-panel">
+                <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                  <h2 role="none">
+                    <hue-hop
+                      hue="dusk"
+                      style="--hop-curve: 1"
+                    >
+                      Aquemini
+                    </hue-hop>
+                  </h2>
+                </div>
+                <div
+                  class="hop-meter"
+                  aria-hidden="true"
+                ></div>
+                <wa-divider></wa-divider>
+                <wa-scroller class="example-bar">
+                  <div class="wa-cluster">
+                    <div class="fader">
+                      <wa-slider
+                        id="how-it-works-fader"
+                        label="Curve"
+                        min="0.3"
+                        max="3"
+                        step="0.1"
+                        value="1"
+                        indicator-offset="1"
+                      ></wa-slider>
+                      <output
+                        class="fader-value wa-text-end"
+                        for="how-it-works-fader"
+                      >
+                        1.0
+                      </output>
+                    </div>
+                  </div>
+                </wa-scroller>
+              </div>
+              <figcaption class="readout-label">
+                Each bar is one letter's highlight, in that letter's color
+              </figcaption>
+            </figure>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Ranges</dt>
+                <dd>
+                  The CSS Custom Highlight API paints the colors. Each letter
+                  gets a
+                  <code>StaticRange</code>
+                  over the real text node, and each step is one highlight. So
+                  there are no spans. The only thing the element adds to the DOM
+                  is its
+                  <code>hops</code>
+                  attribute.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Colors</dt>
+                <dd>
+                  Each step's color is worked out in CSS:
+                  <code>color-mix()</code>
+                  in OKLCH between the two ends, spaced by the curve, lifted in
+                  the middle, then turned by the shift and the drift. So a theme
+                  switch or a
+                  <code>--hop-*</code>
+                  change recolors the letters with no JavaScript. Read the
+                  <a href="{{repo-url}}/blob/main/src/formula.css">formula</a>
+                  in the repo.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Stylesheets</dt>
+                <dd>
+                  The styles arrive as constructed stylesheets on the document,
+                  or on the shadow root the element sits in. Each distinct
+                  <code>start</code>
+                  or
+                  <code>end</code>
+                  value becomes one rule in a sheet for that root. At 256 rules,
+                  that sheet is rebuilt from the elements still on the page.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">64 steps</dt>
+                <dd>
+                  In Chromium and Safari each restyle costs about the square of
+                  the step count, so longer text shares steps.
+                </dd>
+              </div>
+            </dl>
+          </section>
+          <section
+            id="known-limits"
+            aria-labelledby="known-limits-title"
+          >
+            <h2
+              class="section-title"
+              id="known-limits-title"
+            >
+              Known Limits
+            </h2>
+            <h3 id="limits-colors">Colors</h3>
+            <ul>
+              <li>
+                The element can't check contrast at the start and end colors, so
+                that part is up to you.
+              </li>
+              <li>
+                A typo in a color (
+                <code>start="tael"</code>
+                ) shows plain text. A
+                <code>var()</code>
+                that points nowhere counts as left out, so Hue Hop picks its
+                partner instead.
+              </li>
+              <li>
+                Ends far apart on the color wheel, and lift, can push the middle
+                letters past what an sRGB screen can show. They get clipped, by
+                an amount that depends on the colors, and on a white page that
+                can lower their contrast. Check the middle letters.
+              </li>
+              <li>
+                User stylesheets and extensions that force a text color still
+                show the colors. A highlight's
+                <code>color</code>
+                paints above the element's color,
+                <code>!important</code>
+                included.
+              </li>
+            </ul>
+            <h3 id="limits-text">Text</h3>
+            <ul>
+              <li>
+                Links inside keep their focus ring and underline. They lose
+                their own color in every state, hover and visited included.
+              </li>
+              <li>
+                Firefox and Safari keep a link's underline in the link's color.
+                Chrome paints it in each letter's color, and
+                <code>text-decoration-color</code>
+                only shows under the spaces.
+              </li>
+              <li>
+                Selected text: a
+                <code>::selection</code>
+                rule of yours that sets
+                <code>color</code>
+                wins in every browser. Without one, Chrome and Safari keep the
+                letter colors on the selection background, and Firefox uses its
+                own selection colors.
+              </li>
+              <li>
+                Find in page still shows its matches. The colors come back
+                after.
+              </li>
+              <li>Color emoji keep their own colors and use one hop each.</li>
+              <li>
+                Chrome and Firefox split a ligature's colors at the step
+                boundary. Safari paints the whole ligature in its first letter's
+                color.
+              </li>
+              <li>
+                A letter split across two elements (a base letter in one, a
+                combining mark in the next) counts as two hops.
+              </li>
+              <li>
+                The steps follow reading order, so mixed-direction text jumps
+                around visually.
+              </li>
+              <li>
+                Text in a
+                <code>&lt;slot&gt;</code>
+                inside the element isn't colored.
+              </li>
+              <li>
+                Screen-reader-only text inside the element still uses up hops,
+                so the visible letters may not reach
+                <code>--hop-end</code>
+                .
+              </li>
+              <li>
+                Gradient-text headings (
+                <code>background-clip: text</code>
+                with a transparent fill) hide the effect. The transparent fill
+                wins.
+              </li>
+            </ul>
+            <h3 id="limits-setup">Setup</h3>
+            <ul>
+              <li>
+                One tag per page or shadow root. Two tags in one root make one
+                of them fall back to plain text.
+              </li>
+              <li>
+                A subclass that defines its own
+                <code>observedAttributes</code>
+                must include
+                <code>...super.observedAttributes</code>
+                and call
+                <code>super.attributeChangedCallback()</code>
+                , or
+                <code>start</code>
+                and
+                <code>end</code>
+                stop updating.
+              </li>
+              <li>
+                <code>drift.css</code>
+                targets the
+                <code>hue-hop</code>
+                tag. Under
+                <a href="#another-tag">another tag</a>
+                , copy the
+                <code>hue-hop[drift]</code>
+                rule inside the same media query, and keep
+                <code>var()</code>
+                out of any keyframes you write for it.
+              </li>
+              <li>
+                The element's styles are constructed stylesheets, so a content
+                security policy doesn't need
+                <code>style-src 'unsafe-inline'</code>
+                for them. See
+                <a href="#csp">Content Security Policy</a>
+                .
+              </li>
+            </ul>
+          </section>
+          <section
+            id="troubleshooting"
+            aria-labelledby="troubleshooting-title"
+          >
+            <h2
+              class="section-title"
+              id="troubleshooting-title"
+            >
+              Troubleshooting
+            </h2>
+            <dl>
+              <dt>Nothing is colored.</dt>
+              <dd>
+                <ul>
+                  <li>
+                    <code>hue</code>
+                    without
+                    <code>hues.css</code>
+                    . Load it (see
+                    <a href="#load-it">Load It</a>
+                    ).
+                  </li>
+                  <li>
+                    An older browser. Below the floor the heading stays plain on
+                    purpose. See
+                    <a href="#browser-support">Browser Support</a>
+                    .
+                  </li>
+                  <li>
+                    A typo in a color (
+                    <code>start="tael"</code>
+                    ). Correcting the spelling fixes it.
+                  </li>
+                  <li>
+                    Both ends point at a
+                    <code>var()</code>
+                    that doesn't exist. One missing end is fine, because Hue Hop
+                    picks a partner. With both missing there's nothing to step.
+                    Define the variable.
+                  </li>
+                  <li>
+                    Forced colors or increased contrast is on. The effect turns
+                    off on purpose. See
+                    <a href="#accessibility">Accessibility</a>
+                    .
+                  </li>
+                  <li>
+                    Two tags in one page or shadow root, like
+                    <code>hue-hop</code>
+                    and a subclass. One falls back to plain text, so stick to
+                    one tag. See
+                    <a href="#another-tag">Another Tag</a>
+                    .
+                  </li>
+                  <li>
+                    The text is in a
+                    <code>&lt;slot&gt;</code>
+                    . Slotted text isn't colored. Put the
+                    <code>&lt;hue-hop&gt;</code>
+                    around the text where it's written, not around the slot.
+                  </li>
+                </ul>
+              </dd>
+              <dt>The dark hues don't show.</dt>
+              <dd>
+                No
+                <code>color-scheme</code>
+                on the page, so
+                <code>light-dark()</code>
+                always picks the light side. Add
+                <code>:root { color-scheme: light dark; }</code>
+                . See
+                <a href="#light-and-dark">Light and Dark</a>
+                .
+              </dd>
+              <dt>My CSS doesn't override the hue.</dt>
+              <dd>
+                <ul>
+                  <li>
+                    Your site uses cascade layers, and
+                    <code>hue-hop</code>
+                    comes later in the order. List it first. The line is under
+                    <a href="#hues">Hues</a>
+                    .
+                  </li>
+                  <li>
+                    You set
+                    <code>--hop-*</code>
+                    on a parent, like
+                    <code>:root</code>
+                    . The hue's own value on the element beats an inherited one.
+                    Set yours on the element. See
+                    <a href="#change-one-end">Change One End</a>
+                    .
+                  </li>
+                </ul>
+              </dd>
+              <dt>The middle letters look wrong.</dt>
+              <dd>
+                Ends far apart on the color wheel, or too much lift, push the
+                middle letters past what an sRGB screen can show, and they get
+                clipped. Lower the lift or bring the ends closer, then check the
+                middle letters. See
+                <a href="#lift">Lift</a>
+                .
+              </dd>
+              <dt>
+                React warns about
+                <code>hops</code>
+                .
+              </dt>
+              <dd>
+                Server rendering. The server's HTML has no
+                <code>hops</code>
+                , and the element writes it before React 18 hydrates, so the
+                development build prints
+                <code>Warning: Extra attributes from the server: hops</code>
+                . It's harmless, and the colors stay correct. If your test
+                runner fails on console errors, let that one line through. See
+                <a href="#react">React</a>
+                .
+              </dd>
+              <dt>Drift doesn't move.</dt>
+              <dd>
+                <ul>
+                  <li>
+                    <code>drift.css</code>
+                    isn't loaded. Load it (see
+                    <a href="#load-it">Load It</a>
+                    ).
+                  </li>
+                  <li>
+                    Reduced motion is on. Drift holds still on purpose, and
+                    under forced colors and increased contrast too.
+                  </li>
+                  <li>
+                    A subclass under another tag. Copy the
+                    <code>hue-hop[drift]</code>
+                    rule for it. See
+                    <a href="#drift">Drift</a>
+                    .
+                  </li>
+                </ul>
+              </dd>
+              <dt>Colors don't follow my theme switch.</dt>
+              <dd>
+                <ul>
+                  <li>
+                    A Studio static export. It bakes in one scheme's literal
+                    colors. Use tokens or
+                    <code>light-dark()</code>
+                    instead. See
+                    <a href="#light-and-dark">Light and Dark</a>
+                    .
+                  </li>
+                  <li>
+                    <code>--hop-*</code>
+                    set on
+                    <code>:root</code>
+                    in a
+                    <code>prefers-color-scheme</code>
+                    query, while your theme switches on a class. Set them under
+                    that class too.
+                  </li>
+                </ul>
+              </dd>
+            </dl>
+            <p>
+              Still stuck? Ask in Issues (see
+              <a href="#support">Support</a>
+              ).
+            </p>
+          </section>
+          <section
+            id="inspiration"
+            aria-labelledby="inspiration-title"
+          >
+            <h2
+              class="section-title"
+              id="inspiration-title"
+            >
+              Inspiration
+            </h2>
+            <p>
+              It started with the per-letter wordmark on
+              <a
+                class="story-link"
+                href="https://mdrng.com/"
+              >
+                <hue-hop
+                  start="light-dark(oklch(52% 0.17 25), oklch(74% 0.16 25))"
+                  end="light-dark(oklch(50% 0.2 310), oklch(72% 0.17 310))"
+                >
+                  mdrng.com
+                </hue-hop>
+              </a>
+              , and one idea:
+            </p>
+            <p class="story-line">
+              <hue-hop hue="dusk">
+                Each letter's color should be chosen, not smeared.
+              </hue-hop>
+            </p>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Why stepped</dt>
+                <dd>
+                  One flat color per letter is a choice you can check. Every
+                  letter's contrast is a number.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Why now</dt>
+                <dd>
+                  The CSS Custom Highlight API ships in Chrome, Firefox, and
+                  Safari. That's what lets the text stay text.
+                </dd>
+              </div>
+            </dl>
+            <h3 id="how-it-compares">How It Compares</h3>
+            <p>Against the two usual ways to do this:</p>
+            <wa-scroller>
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <span class="wa-visually-hidden">Check</span>
+                    </th>
+                    <th scope="col">Gradient text</th>
+                    <th scope="col">Per-letter spans</th>
+                    <th scope="col"><hue-hop hue="dusk">Hue Hop</hue-hop></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Select and copy as plain text
+                    </th>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                      <small>With breaks</small>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Find in page
+                    </th>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Screen reader reads words
+                    </th>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="xmark"
+                        label="No"
+                      ></wa-icon>
+                      <small>Spells letters</small>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Kerning kept
+                    </th>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="xmark"
+                        label="No"
+                      ></wa-icon>
+                      <small>WebKit: measured +24 px</small>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Forced colors mode
+                    </th>
+                    <td>Invisible or plain</td>
+                    <td>Plain text</td>
+                    <td>Plain text</td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Contrast checkable per letter
+                    </th>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="xmark"
+                        label="No"
+                      ></wa-icon>
+                      <small>Continuous</small>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                    </td>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="check"
+                        label="Yes"
+                      ></wa-icon>
+                      <small>Flat steps</small>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Extra markup
+                    </th>
+                    <td>
+                      <wa-icon
+                        family="pixel"
+                        name="minus"
+                        label="None"
+                      ></wa-icon>
+                    </td>
+                    <td>One span per letter</td>
+                    <td>One tag</td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Size
+                    </th>
+                    <td>0</td>
+                    <td>0 plus your JS</td>
+                    <td>under 2 KB</td>
+                  </tr>
+                </tbody>
+              </table>
+            </wa-scroller>
+          </section>
+          <section
+            id="support"
+            aria-labelledby="support-title"
+          >
+            <h2
+              class="section-title"
+              id="support-title"
+            >
+              Support
+            </h2>
+            <p>
+              Bugs, ideas, and questions are all welcome in
+              <a href="{{repo-url}}/issues">GitHub Issues</a>
+              .
+            </p>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Bug reports</dt>
+                <dd>
+                  A report helps most with your browser and its version, the
+                  markup, the colors, the page background, and a screenshot.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Big changes</dt>
+                <dd>
+                  Changes to the API, the formula, or the seven hues start as an
+                  issue, so you get an answer before you write code. See
+                  <a href="{{repo-url}}/blob/main/CONTRIBUTING.md">
+                    CONTRIBUTING
+                  </a>
+                  .
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Not yet checked</dt>
+                <dd>
+                  A real-Safari pass with VoiceOver, find-in-page, and print.
+                  Tried it? Tell Brian what worked and what didn't, in
+                  <a href="{{repo-url}}/issues">Issues</a>
+                  .
+                </dd>
+              </div>
+            </dl>
+            <h3 id="project">Project</h3>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Version</dt>
+                <dd>
+                  <a href="{{repo-url}}/releases">v{{version}}</a>
+                  . Pin it until 1.0.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">License</dt>
+                <dd><a href="{{repo-url}}/blob/main/LICENSE">MIT</a></dd>
+              </div>
+              <div>
+                <dt class="readout-label">Dependencies</dt>
+                <dd>None.</dd>
+              </div>
+              <div>
+                <dt class="readout-label">Size budgets</dt>
+                <dd>
+                  Gzipped:
+                  <code>hue-hop.js</code>
+                  2 KB,
+                  <code>hues.css</code>
+                  600 bytes,
+                  <code>drift.css</code>
+                  400 bytes. The package won't pack over them.
+                </dd>
+              </div>
+            </dl>
+          </section>
+        </article>
+      </main>
+      {{footer}}
+    </wa-page>
+  </body>
+</html>
