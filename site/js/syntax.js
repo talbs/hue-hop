@@ -1,3 +1,5 @@
+import { beatMs } from './motion.js';
+
 // microlighter 2.2.0 misses attributes inside <script> and <style> opening tags (ported from Tiny Tells) and plain bash commands, so add them each time it paints.
 const EMBED_TAG = /<(?:script|style)\b([^>]*)>/gi;
 const EMBED_ATTR = /([a-zA-Z_:][\w:.-]*)(?:\s*=\s*(["'])(.*?)\2)?/g;
@@ -85,7 +87,12 @@ function extraRangesForPass() {
   return passRanges;
 }
 
-if (globalThis.CSS?.highlights) {
+// Forced colors paints every highlight in the system Highlight color, which boxes the code instead of coloring it.
+const isHighlightingCode =
+  Boolean(globalThis.CSS?.highlights) &&
+  !matchMedia('(forced-colors: active)').matches;
+
+if (isHighlightingCode) {
   const setHighlight = CSS.highlights.set.bind(CSS.highlights);
   CSS.highlights.set = (name, highlight) => {
     const extraRanges = extraRangesForPass();
@@ -98,4 +105,17 @@ if (globalThis.CSS?.highlights) {
     }
     return CSS.highlights;
   };
+  import('./microlighter/microlighter.min.js');
+}
+
+// microlighter re-highlights every code block on the page per event, so one timer covers every block filled before it fires, and a fader drag highlights once it pauses.
+let highlightTimer;
+
+export function fillCode(codeElement, text) {
+  if (codeElement.textContent === text) return;
+  codeElement.textContent = text;
+  clearTimeout(highlightTimer);
+  highlightTimer = setTimeout(() => {
+    codeElement.dispatchEvent(new Event('syntax-highlight', { bubbles: true }));
+  }, beatMs() / 8);
 }

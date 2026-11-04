@@ -1,24 +1,59 @@
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  border-block-end: var(--border-thin) solid transparent;
+@keyframes header-edge {
+  to {
+    border-block-end-color: var(--divider);
+  }
+}
+
+wa-page {
+  background: var(--page);
+}
+
+wa-page [id] {
+  scroll-margin-block-start: calc(
+    var(--header-height) + var(--subheader-height) + var(--space-section)
+  );
+}
+
+wa-page::part(skip-to-content):focus-visible {
+  position: absolute;
+  z-index: 11;
+  inset-block-start: var(--space-related);
+  inset-inline-start: var(--gutter);
+  padding: var(--space-related) var(--space-group);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  color: var(--ink);
+  font-size: var(--type-small);
+  outline: var(--border-thick) solid var(--focus);
+}
+
+/* wa-page lays its slots out as padded flex rows. */
+wa-page > :is(.site-header, .site-footer) {
+  display: block;
+  padding: 0;
+}
+
+wa-page > main {
+  padding: 0;
+}
+
+/* wa-page's sticky header and subheader rows paint opaque by default, so the glass goes on the rows themselves. */
+wa-page::part(header),
+wa-page::part(subheader) {
   background: color-mix(in oklch, var(--page) 88%, transparent);
   backdrop-filter: blur(12px);
 }
 
-/* The hairline only appears once the page has scrolled under the header. */
+/* The subheader row renders even when nothing is slotted into it, so its bottom edge is the bottom of the header on every page. The hairline appears there once the page scrolls under it. */
+wa-page::part(subheader) {
+  border-block-end: var(--border-thin) solid transparent;
+}
+
 @supports (animation-timeline: scroll()) {
-  .site-header {
+  wa-page::part(subheader) {
     animation: header-edge linear both;
     animation-timeline: scroll();
     animation-range: 0 4rem;
-  }
-}
-
-@keyframes header-edge {
-  to {
-    border-block-end-color: var(--divider);
   }
 }
 
@@ -265,7 +300,7 @@
 
 /* A fader's tick scale in the margin beside each heading: a short tick every 6px, a long one every 30px. Wide screens only, where the margin has room. */
 @media (min-width: 80rem) {
-  .section-title::before {
+  .section-title::after {
     content: '';
     position: absolute;
     inset-block: 0;
@@ -382,4 +417,76 @@ wa-divider[orientation='vertical'] {
 .code-copy {
   flex: none;
   margin: var(--space-related) var(--space-related) 0 0;
+}
+
+wa-copy-button {
+  color: var(--ink-quiet);
+}
+
+/* The pixel set is drawn on a 10-square grid; 15px puts each square on exactly 3 device pixels on 2x screens. */
+wa-icon[family='pixel'] {
+  font-size: 15px;
+}
+
+wa-tooltip {
+  --wa-tooltip-background-color: var(--ink);
+  --wa-tooltip-content-color: var(--page);
+  --wa-tooltip-border-radius: var(--radius-cap);
+  --wa-tooltip-arrow-size: 4px;
+  --wa-tooltip-font-size: var(--wa-font-size-xs);
+  --wa-tooltip-line-height: var(--leading-tight);
+  --max-width: none;
+}
+
+wa-tooltip::part(body) {
+  padding: 0.4em 0.65em;
+  font-family: var(--font-body);
+  font-weight: var(--weight-strong);
+  white-space: nowrap;
+}
+
+wa-copy-button::part(success-icon) {
+  color: var(--lit);
+}
+
+/* Same-origin only: the Studio lives on another host, so a move to it stays a normal page load. The type keeps these rules away from the side switch, which scheme.js runs as its own view transition. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+    types: page-move;
+  }
+
+  :root:active-view-transition-type(page-move) .site-header {
+    view-transition-name: site-header;
+  }
+
+  :root:active-view-transition-type(page-move) .hero-title {
+    view-transition-name: none;
+  }
+
+  :root:active-view-transition-type(page-move)::view-transition-group(*) {
+    animation-duration: var(--note-8);
+    animation-timing-function: var(--ease-hit);
+  }
+
+  :root:active-view-transition-type(page-move)::view-transition-old(root) {
+    animation: page-fade-out var(--note-8) var(--ease-hit) both;
+  }
+
+  :root:active-view-transition-type(page-move)::view-transition-new(root) {
+    clip-path: none;
+    animation: page-fade-in var(--note-8) var(--ease-hit) both;
+  }
+}
+
+@keyframes page-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+  }
 }

@@ -96,9 +96,9 @@ input {
   color: inherit;
 }
 
-/* Seven flat dusk bands, like the element's stepped letters. The resting line and the stepped one are backgrounds in the same spot, so they swap in place. Inline-block drops the space a line break before </a> leaves inside the link. */
-.hop-link {
-  display: inline-block;
+/* Seven flat dusk bands, like the element's stepped letters. The resting line and the stepped one are backgrounds in the same spot, so they swap in place. */
+.hop-link,
+.wa-prose :where(a:not(.heading-anchor, .code-studio, .wa-not-prose a)) {
   padding-block-end: 0.12em;
   background-image:
     linear-gradient(
@@ -128,6 +128,10 @@ input {
     color var(--note-16) var(--ease-hit);
 }
 
+.hop-link {
+  display: inline-block;
+}
+
 .hop-link.is-quiet {
   background-size:
     100% 0,
@@ -135,9 +139,14 @@ input {
 }
 
 .hop-link:is(:hover, :focus-visible),
+.wa-prose
+  :where(a:not(.heading-anchor, .code-studio, .wa-not-prose a)):is(
+    :hover,
+    :focus-visible
+  ),
 .further-row:is(:hover, :focus-visible) .further-title,
 .hero-demo:is(:hover, :focus-visible) .hop-link,
-.hop-link[aria-current='page'] {
+.hop-link[aria-current] {
   background-size:
     100% var(--border-thick),
     100% 0;
@@ -146,8 +155,9 @@ input {
 
 @media (forced-colors: active) {
   .hop-link,
+  .wa-prose :where(a:not(.heading-anchor, .code-studio, .wa-not-prose a)),
   .hop-link.is-quiet:is(:hover, :focus-visible),
-  .hop-link[aria-current='page'] {
+  .hop-link[aria-current] {
     text-decoration: underline;
   }
 }

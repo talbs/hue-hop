@@ -10,46 +10,13 @@ import {
   segmentPitch,
   splitLetters,
 } from './motion.js';
-import { STUDIO_URL } from './urls.js';
-
-export const DEFAULT_STATE = {
-  text: 'Halftime',
-  hue: 'dusk',
-  start: null,
-  end: null,
-  curve: 1,
-  shift: 0,
-  lift: 0.021,
-  drift: false,
-  display: false,
-  accent: null,
-};
-
-// hues.css sets the lift for every hue, so only custom ends start from 0.
-function defaultLift(state) {
-  return state.hue ? DEFAULT_STATE.lift : 0;
-}
-
-function escapeHtml(text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function changedTuning(state) {
-  const defaults = { ...DEFAULT_STATE, lift: defaultLift(state) };
-  return ['curve', 'shift', 'lift'].filter(
-    (name) => state[name] !== defaults[name]
-  );
-}
-
-function styleFor(state) {
-  return changedTuning(state)
-    .map((name) => `--hop-${name}: ${state[name]}`)
-    .join('; ');
-}
+import {
+  DEFAULT_STATE,
+  describeMarkup,
+  describeStudioLink,
+  styleFor,
+} from './state.js';
+import { fillCode } from './syntax.js';
 
 export function writeStateTo(element, state) {
   if (element.textContent !== state.text) element.textContent = state.text;
@@ -62,34 +29,6 @@ export function writeStateTo(element, state) {
   const style = styleFor(state);
   if (style) element.setAttribute('style', style);
   else element.removeAttribute('style');
-}
-
-export function describeMarkup(state) {
-  const parts = ['hue-hop'];
-  for (const name of ['hue', 'start', 'end']) {
-    if (state[name]) parts.push(`${name}="${escapeHtml(state[name])}"`);
-  }
-  if (state.display) parts.push('display');
-  if (state.drift) parts.push('drift');
-  const style = styleFor(state);
-  if (style) parts.push(`style="${escapeHtml(style)}"`);
-  const element = `<${parts.join(' ')}>${escapeHtml(state.text)}</hue-hop>`;
-  if (!state.accent) return element;
-  return `${element}<span class="accent">${escapeHtml(state.accent)}</span>`;
-}
-
-export function describeStudioLink(state) {
-  const params = new URLSearchParams();
-  params.set('text', state.text);
-  if (state.hue !== DEFAULT_STATE.hue) params.set('hue', state.hue ?? 'custom');
-  if (state.start) params.set('start', state.start);
-  if (state.end) params.set('end', state.end);
-  for (const name of changedTuning(state)) params.set(name, state[name]);
-  if (state.drift) params.set('drift', '1');
-  if (state.display) params.set('display', '1');
-  if (state.accent) params.set('accent', state.accent);
-  params.set('scheme', readSide());
-  return `${STUDIO_URL}?${params}`;
 }
 
 const desk = document.getElementById('desk');
@@ -205,18 +144,6 @@ function showContrast(state) {
   lampDetail.textContent = `${(Math.floor(ratio * 10) / 10).toFixed(1)}:1 of ${bar}`;
 }
 
-// microlighter re-highlights every code block on the page per event, so a fader drag highlights once it pauses, not every frame.
-let highlightTimer;
-
-function showMarkup(text) {
-  if (markup.textContent === text) return;
-  markup.textContent = text;
-  clearTimeout(highlightTimer);
-  highlightTimer = setTimeout(() => {
-    markup.dispatchEvent(new Event('syntax-highlight', { bubbles: true }));
-  }, beatMs() / 8);
-}
-
 const STEP_BARS = 12;
 
 function showStepBars(state) {
@@ -294,7 +221,7 @@ function render() {
     writeStateTo(live, state);
     showTextInSleeves(state.text);
     sleeveSamples.forEach((hop) => colorEllipsis(hop.parentElement));
-    showMarkup(describeMarkup(state));
+    fillCode(markup, describeMarkup(state));
     stage.style.setProperty('--letters', longestWordLength(state.text));
     showStepBars(state);
     studioLink.href = describeStudioLink(state);
