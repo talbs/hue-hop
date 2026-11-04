@@ -40,9 +40,16 @@
       type="module"
       src="{{root}}js/wild.js"
     ></script>
+    <script
+      type="module"
+      src="{{root}}js/word-trip.js"
+    ></script>
   </head>
   <body>
-    <wa-page disable-navigation-toggle>
+    <wa-page
+      mobile-breakpoint="768"
+      disable-navigation-toggle
+    >
       {{header}}
       <main id="main">
         <section
@@ -615,6 +622,7 @@
                     class="wa-visually-hidden-label"
                     id="desk-text"
                     label="Text"
+                    maxlength="200"
                     value="Halftime"
                     autocomplete="off"
                     spellcheck="false"

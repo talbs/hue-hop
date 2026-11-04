@@ -28,6 +28,10 @@
       type="module"
       src="{{root}}js/docs.js"
     ></script>
+    <script
+      type="module"
+      src="{{root}}js/word-trip.js"
+    ></script>
   </head>
   <body>
     <wa-page
@@ -892,10 +896,6 @@
               <code>:root { color-scheme: light dark; }</code>
               ). Without it you always get the light value. This page sets it,
               which is why the example flips.
-            </p>
-            <p>
-              A Studio static export bakes in one scheme's literal colors, so it
-              won't follow a switch.
             </p>
           </section>
           <section
@@ -2568,25 +2568,13 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               </dd>
               <dt>Colors don't follow my theme switch.</dt>
               <dd>
-                <ul>
-                  <li>
-                    A Studio static export. It bakes in one scheme's literal
-                    colors. Use tokens or
-                    <code>light-dark()</code>
-                    instead. See
-                    <a href="#light-and-dark">Light and Dark</a>
-                    .
-                  </li>
-                  <li>
-                    <code>--hop-*</code>
-                    set on
-                    <code>:root</code>
-                    in a
-                    <code>prefers-color-scheme</code>
-                    query, while your theme switches on a class. Set them under
-                    that class too.
-                  </li>
-                </ul>
+                <code>--hop-*</code>
+                set on
+                <code>:root</code>
+                in a
+                <code>prefers-color-scheme</code>
+                query, while your theme switches on a class. Set them under that
+                class too.
               </dd>
             </dl>
             <p>

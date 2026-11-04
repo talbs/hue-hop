@@ -4,8 +4,19 @@
   }
 }
 
+/* wa-page measures these and writes them on itself just after load. Starting on the same values spares the whole page a style pass during the transition in. */
 wa-page {
   background: var(--page);
+  --banner-height: 0px;
+  --header-height: 52px;
+  --subheader-height: 1px;
+  --footer-height: 0px;
+}
+
+@media (min-width: 48rem) {
+  wa-page {
+    --header-height: 60px;
+  }
 }
 
 wa-page [id] {
@@ -245,6 +256,14 @@ wa-page::part(subheader) {
   }
 }
 
+/* Hugs its links, so it keeps one size between the Studio's width and the others' and its page move only slides. */
+@media (min-width: 23rem) {
+  .site-nav {
+    justify-self: end;
+    justify-content: flex-end;
+  }
+}
+
 /* From 368px the header fits on one line: a body-size wordmark and tighter gaps make room for the links. */
 @media (23rem <= width < 48rem) {
   .site-header-inner {
@@ -258,7 +277,6 @@ wa-page::part(subheader) {
   }
 
   .site-nav {
-    justify-content: flex-end;
     gap: var(--wa-space-s);
   }
 }
@@ -273,10 +291,6 @@ wa-page::part(subheader) {
     grid-template-areas: 'wordmark nav side';
     column-gap: var(--wa-space-xl);
     padding-block: var(--space-related);
-  }
-
-  .site-nav {
-    justify-content: flex-end;
   }
 
   .side-name {
@@ -449,15 +463,34 @@ wa-copy-button::part(success-icon) {
   color: var(--lit);
 }
 
-/* Same-origin only: the Studio lives on another host, so a move to it stays a normal page load. The type keeps these rules away from the side switch, which scheme.js runs as its own view transition. */
+/* The type keeps these rules away from the side switch, which scheme.js runs as its own view transition. */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
     types: page-move;
   }
 
-  :root:active-view-transition-type(page-move) .site-header {
+  :root:active-view-transition-type(page-move):not([data-header-away])
+    .site-header {
     view-transition-name: site-header;
+  }
+
+  /* Below 860px the docs show a menu button that pushes the header's contents aside, so they'd slide on every move to or from the docs. The bar's crossfade covers that. Nothing else moves down here. */
+  @media (min-width: 860px) {
+    :root:active-view-transition-type(page-move):not([data-header-away])
+      .site-wordmark {
+      view-transition-name: site-wordmark;
+    }
+
+    :root:active-view-transition-type(page-move):not([data-header-away])
+      .site-nav {
+      view-transition-name: site-nav;
+    }
+
+    :root:active-view-transition-type(page-move):not([data-header-away])
+      .side-toggle {
+      view-transition-name: side-toggle;
+    }
   }
 
   :root:active-view-transition-type(page-move) .hero-title {
