@@ -1,0 +1,127 @@
+<!doctype html>
+<html
+  lang="en"
+  data-side="a"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    {{side-boot}}
+    <title>Not Found · Hue Hop</title>
+    {{inline-css}}
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100dvh;
+      }
+
+      .not-found-bar {
+        width: 100%;
+        max-width: var(--measure);
+        margin-inline: auto;
+        padding: var(--space-group) var(--gutter);
+      }
+
+      .not-found-wordmark {
+        font-family: var(--font-display);
+        font-weight: var(--weight-display);
+        text-decoration: none;
+      }
+
+      .not-found {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: var(--space-group);
+        width: 100%;
+        max-width: var(--measure);
+        margin-inline: auto;
+        padding: var(--space-page) var(--gutter);
+      }
+
+      .not-found h1 {
+        font-size: var(--type-stage);
+        font-weight: var(--weight-display);
+        line-height: var(--leading-display);
+        letter-spacing: var(--tracking-display);
+      }
+
+      .not-found p {
+        color: var(--ink-quiet);
+        font-size: var(--type-lead);
+        line-height: var(--leading-tight);
+      }
+
+      .not-found ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-related);
+        margin-block-start: var(--space-group);
+        padding: 0;
+        list-style: none;
+      }
+
+      footer.not-found-bar {
+        border-block-start: var(--border-thin) solid var(--divider);
+      }
+
+      footer .readout-label {
+        text-transform: none;
+      }
+
+      @media (min-width: 48rem) {
+        :root {
+          --gutter: var(--wa-space-3xl);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="not-found-bar">
+      <a
+        class="not-found-wordmark"
+        href="{{root}}"
+      >
+        Hue Hop
+      </a>
+    </header>
+    <main class="not-found">
+      <h1>Not Found</h1>
+      <p>Nothing hops here.</p>
+      <ul>
+        <li>
+          <a
+            class="lit-button"
+            href="{{root}}"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            class="lit-button"
+            href="{{docs-url}}"
+          >
+            Docs
+          </a>
+        </li>
+        <li>
+          <a
+            class="lit-button"
+            href="{{repo-url}}"
+          >
+            GitHub
+          </a>
+        </li>
+      </ul>
+    </main>
+    <footer class="not-found-bar">
+      <p class="readout-label">v{{version}} · MIT</p>
+    </footer>
+  </body>
+</html>
