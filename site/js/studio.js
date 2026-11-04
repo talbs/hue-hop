@@ -91,7 +91,7 @@ function rowOf(element) {
   return element.closest('.row');
 }
 
-const accentRows = [rowOf(control('accent')), rowOf(control('accentColor'))];
+const accentFields = document.getElementById('accent-fields');
 const driftRows = [rowOf(control('range')), rowOf(control('cycle'))];
 
 const state = structuredClone(DEFAULT_STUDIO);
@@ -827,7 +827,7 @@ function showControlStates() {
   writeAttribute(control('accentOn'), 'aria-pressed', String(state.isAccentOn));
   writeAttribute(control('drift'), 'aria-pressed', String(state.isDriftOn));
   setHidden(displayHint, isPreset());
-  for (const row of accentRows) setHidden(row, !state.isAccentOn);
+  setHidden(accentFields, !state.isAccentOn);
   for (const row of driftRows) setHidden(row, !state.isDriftOn);
   const barGroup = control('bar');
   if (barGroup.value !== String(state.bar)) barGroup.value = String(state.bar);

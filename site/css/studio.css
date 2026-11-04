@@ -68,6 +68,7 @@
   --bar-control: 2rem;
   --word-size: 3.5rem;
   --meter-tile: 1.5rem;
+  --plate: color-mix(in oklch, var(--surface) 88%, transparent);
   --meter-pad: var(--space-tight);
 }
 
@@ -169,8 +170,8 @@ wa-page::part(subheader) {
 
 #reset {
   margin-inline-end: var(--space-related);
-  padding-inline: var(--space-tight);
-  background: none;
+  padding-inline: var(--space-related);
+  background: var(--plate);
   box-shadow: none;
 }
 
@@ -416,6 +417,19 @@ wa-page::part(subheader) {
   gap: inherit;
 }
 
+.bridge-messages {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.bridge-messages > * {
+  grid-column: 1;
+}
+
+.bridge-messages > .undo-fit {
+  grid-area: 1 / 2 / span 3;
+}
+
 .bridge-messages:not(
   :has(> :is(.bridge-note, .fit-message, .fit-result, .undo-fit):not([hidden]))
 ) {
@@ -636,6 +650,11 @@ wa-radio[appearance='button']:state(checked) {
 
 .text-field wa-input {
   flex: 1;
+}
+
+#accent-fields {
+  flex: 1;
+  min-width: 0;
 }
 
 .channel wa-input::part(input-wrapper),
@@ -1012,7 +1031,7 @@ wa-color-picker::part(color-picker) {
     gap: var(--space-group);
     padding-inline: var(--space-related);
     border-radius: var(--radius-control);
-    background: color-mix(in oklch, var(--surface) 88%, transparent);
+    background: var(--plate);
   }
 
   .page-pick {
@@ -1027,6 +1046,7 @@ wa-color-picker::part(color-picker) {
 
   .bridge-inner {
     grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+    column-gap: var(--space-group);
     padding-inline: var(--gutter);
   }
 
@@ -1034,16 +1054,35 @@ wa-color-picker::part(color-picker) {
     font-size: 1.125rem;
   }
 
+  /* Fit's messages take a line under the letters and the lamp together, so reading them costs the word as little as possible. */
   .bridge-end {
+    display: contents;
+  }
+
+  .bridge-controls {
     align-content: start;
     gap: var(--space-related);
-    padding: var(--space-related) 0 var(--space-related) var(--space-group);
-    border-block-start: 0;
-    border-inline-start: var(--border-thin) solid var(--divider);
+    padding-block: var(--space-related);
+  }
+
+  .bridge-messages {
+    grid-column: 1 / -1;
+    align-items: center;
+    gap: var(--space-tight) var(--space-group);
+    padding-block-end: var(--space-related);
   }
 
   .channels {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #strip-shape {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #strip-shape > .channel-name {
+    grid-column: 1 / -1;
   }
 }
 
@@ -1058,7 +1097,7 @@ wa-color-picker::part(color-picker) {
     font-size: 1rem;
   }
 
-  .bridge-end {
+  .bridge-controls {
     gap: var(--space-tight);
     padding-block: var(--space-tight);
   }
@@ -1130,7 +1169,7 @@ wa-color-picker::part(color-picker) {
   .channels {
     flex: 0 1 auto;
     min-height: 0;
-    grid-auto-rows: minmax(0, 1fr);
+    grid-auto-rows: minmax(0, auto);
   }
 
   .channel {
@@ -1147,33 +1186,26 @@ wa-color-picker::part(color-picker) {
 }
 
 @media (min-width: 75rem) {
+  .bridge-inner,
   .channels {
-    grid-template-columns:
-      minmax(0, 1.3fr) minmax(0, 1.15fr) minmax(0, 1fr)
-      minmax(0, 0.75fr);
+    grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 
-  /* Fit's messages sit beside the lamp, not under it, so reading them doesn't cost the word its height. */
-  .bridge-inner:has(:is(.fit-message, .fit-result):not([hidden])) {
-    grid-template-columns: minmax(0, 1fr) 44rem;
+  .bridge-strips {
+    grid-column: span 8;
   }
 
-  .bridge-end:has(:is(.fit-message, .fit-result):not([hidden])) {
-    grid-template-columns: 21rem minmax(0, 1fr);
-    align-items: start;
-    column-gap: var(--space-group);
-  }
-}
-
-@media (min-width: 75rem) and (max-width: 100rem) {
-  /* The FX panel is the narrowest, so its faders take a line of their own or they'd be too short to use. */
-  #strip-fx .row:has(wa-slider) {
-    grid-template-columns: minmax(0, 1fr) auto;
-    padding-block: var(--space-tight);
+  .bridge-controls {
+    grid-column: span 4;
   }
 
-  #strip-fx .row wa-slider {
-    grid-area: 2 / 1 / auto / -1;
+  .channel,
+  #strip-shape {
+    grid-column: span 4;
+  }
+
+  #strip-shape {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

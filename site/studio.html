@@ -859,6 +859,49 @@
                   96px
                 </output>
               </div>
+              <div class="row">
+                <div class="row-full toggle-line">
+                  <button
+                    type="button"
+                    class="lit-button toggle"
+                    name="accentOn"
+                    aria-pressed="false"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Accent
+                  </button>
+                  <div
+                    class="text-field"
+                    id="accent-fields"
+                    hidden
+                  >
+                    <wa-input
+                      class="wa-visually-hidden-label"
+                      name="accent"
+                      label="Accent mark"
+                      maxlength="200"
+                      size="s"
+                      value="."
+                    ></wa-input>
+                    <div class="color-field">
+                      <wa-color-picker
+                        class="wa-visually-hidden-label"
+                        name="accentColor"
+                        label="Accent color"
+                        size="s"
+                        without-format-toggle
+                      ></wa-color-picker>
+                      <output
+                        aria-live="off"
+                        data-for="accentColor"
+                      ></output>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
 
             <section
@@ -946,80 +989,6 @@
                 >
                   0°
                 </output>
-              </div>
-            </section>
-
-            <section
-              class="channel"
-              id="strip-fx"
-              aria-labelledby="channel-fx"
-            >
-              <h2
-                class="channel-name"
-                id="channel-fx"
-              >
-                FX
-              </h2>
-              <div class="row">
-                <div class="row-full toggle-line">
-                  <button
-                    type="button"
-                    class="lit-button toggle"
-                    name="accentOn"
-                    aria-pressed="false"
-                  >
-                    <span
-                      class="led"
-                      aria-hidden="true"
-                    ></span>
-                    Accent
-                  </button>
-                </div>
-              </div>
-              <div
-                class="row"
-                hidden
-              >
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
-                >
-                  Mark
-                </span>
-                <wa-input
-                  class="row-wide wa-visually-hidden-label"
-                  name="accent"
-                  label="Accent mark"
-                  maxlength="200"
-                  size="s"
-                  value="."
-                ></wa-input>
-              </div>
-              <div
-                class="row"
-                hidden
-              >
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
-                >
-                  Color
-                </span>
-                <div class="row-wide">
-                  <div class="color-field">
-                    <wa-color-picker
-                      class="wa-visually-hidden-label"
-                      name="accentColor"
-                      label="Accent color"
-                      size="s"
-                      without-format-toggle
-                    ></wa-color-picker>
-                    <output
-                      aria-live="off"
-                      data-for="accentColor"
-                    ></output>
-                  </div>
-                </div>
               </div>
               <div class="row">
                 <div class="row-full toggle-line">
