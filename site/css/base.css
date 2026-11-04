@@ -37,6 +37,7 @@ body {
 h1,
 h2,
 h3,
+h4,
 p,
 ul,
 ol,
@@ -46,7 +47,8 @@ figure {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   font-family: var(--font-display);
   line-height: var(--leading-heading);
   text-wrap: balance;

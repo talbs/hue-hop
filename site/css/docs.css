@@ -105,7 +105,7 @@
   padding-inline-start: var(--wa-space-4xl);
 }
 
-/* Every break between blocks is a multiple of one unit: 3 after a block, 4 above an h3, 6 between sections, 7 above a group's label, which adds its own height. 3 has to clear the stage's own padding. */
+/* Every break between blocks is a multiple of one unit: 3 after a block or above an h4, 4 above an h3, 6 between sections, 7 above a group's label, which adds its own height. 3 has to clear the stage's own padding. */
 .docs-page .wa-prose {
   --docs-unit: var(--wa-space-s);
   max-inline-size: none;
@@ -114,7 +114,9 @@
 }
 
 /* Text steps down three ranks: bright here, quiet for reading, faint for row labels. */
-.docs-page .wa-prose :is(h1, h2, h3, strong, thead th, dt:not(.readout-label)),
+.docs-page
+  .wa-prose
+  :is(h1, h2, h3, h4, strong, thead th, dt:not(.readout-label)),
 .wa-prose .story-line,
 .api-table td:first-child,
 .example-bar .fader-value {
@@ -168,11 +170,11 @@
   margin-block-start: var(--wa-space-l);
 }
 
-.wa-prose > section > :is(h2, h3) {
+.wa-prose > section > :is(h2, h3, h4) {
   margin-block-end: var(--wa-prose-rhythm-s);
 }
 
-.wa-prose > section > :is(h2, h3) + * {
+.wa-prose > section > :is(h2, h3, h4) + * {
   margin-block-start: 0;
 }
 
@@ -193,6 +195,12 @@
 
 .wa-prose > section > h2 + h3 {
   margin-block-start: var(--wa-prose-rhythm-m);
+}
+
+.wa-prose > section > h4 {
+  margin-block-start: calc(var(--docs-unit) * 3);
+  font-size: var(--wa-font-size-l);
+  font-weight: var(--weight-heading);
 }
 
 /* The negative margins cancel the tap area's box, so it can't move its heading's wrap or height. The box stays centered on the icon so its tooltip does too, and the lift centers the icon on the capitals. */
@@ -429,23 +437,23 @@
   color: var(--ink);
 }
 
-.example-preview > ol,
+.example-preview ol,
 .example-preview > h1 + p {
   color: var(--ink-quiet);
   font-size: var(--type-body);
 }
 
-.example-preview > ol {
+.example-preview ol {
   margin-block-start: var(--space-related);
   padding-inline-start: 0;
   list-style-position: inside;
 }
 
-.example-preview > ol > li + li {
+.example-preview ol > li + li {
   margin-block-start: var(--space-related);
 }
 
-.example-preview > ol > li::marker {
+.example-preview ol > li::marker {
   font-family: var(--font-readout);
   font-size: calc(var(--type-label) * 1.5);
 }

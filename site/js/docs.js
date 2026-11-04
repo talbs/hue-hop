@@ -354,32 +354,6 @@ function addColorSwatches() {
 
 addColorSwatches();
 
-// A marker isn't text, so a highlight can't reach its digits. Each marker takes one step of the heading's ramp instead, set from a stylesheet because a style on the li would show up in the copyable code.
-function stepListMarkers() {
-  const hop = document.querySelector('.example-preview:has(> ol) hue-hop');
-  if (!hop) return;
-  const sheet = new CSSStyleSheet();
-  document.adoptedStyleSheets.push(sheet);
-  const markerCount = hop
-    .closest('.example-preview')
-    .querySelectorAll(':scope > ol > li').length;
-  const paintMarkers = () => {
-    const rules = [];
-    for (let index = 0; index < markerCount; index++) {
-      const step = Math.round((index * (hop.hops - 1)) / (markerCount - 1));
-      const { color } = getComputedStyle(hop, `::highlight(hue-hop-${step})`);
-      rules.push(
-        `.example-preview > ol > li:nth-child(${index + 1})::marker { color: ${color}; }`
-      );
-    }
-    sheet.replaceSync(rules.join('\n'));
-  };
-  whenSideChanges(paintMarkers);
-  customElements.whenDefined('hue-hop').then(() => afterRepaint(paintMarkers));
-}
-
-stepListMarkers();
-
 const figures = document.querySelectorAll('figure.example');
 figures.forEach((figure, index) => addStudioLink(figure, index));
 addIconTooltipsWhenNear();

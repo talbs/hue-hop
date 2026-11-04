@@ -1359,6 +1359,123 @@
                 </dd>
               </div>
             </dl>
+            <h3 id="coloring-things-nearby">Coloring Things Nearby</h3>
+            <p>
+              Hue Hop only colors letters. To match a list marker, a badge or a
+              border, put
+              <code>--hop-start</code>
+              and
+              <code>--hop-end</code>
+              on a shared parent and use them in your own CSS.
+            </p>
+            <h4>Using Your Own Colors</h4>
+            <p>
+              Set both ends on the parent. No JavaScript, and it follows theme
+              switches.
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <div class="playlist">
+                  <h2 role="none"><hue-hop>Summertime</hue-hop></h2>
+                  <ol>
+                    <li>Back in the Day</li>
+                    <li>Feel Me Flow</li>
+                    <li>Jump Around</li>
+                  </ol>
+                </div>
+              </div>
+              <style data-example-css>
+                .playlist {
+                  --hop-start: light-dark(green, lightgreen);
+                  --hop-end: light-dark(teal, mediumaquamarine);
+                }
+
+                @media (forced-colors: none) and (prefers-contrast: no-preference) {
+                  .playlist li:nth-child(1) {
+                    --step: 0;
+                  }
+                  .playlist li:nth-child(2) {
+                    --step: 0.5;
+                  }
+                  .playlist li:nth-child(3) {
+                    --step: 1;
+                  }
+                  .playlist li::marker {
+                    color: color-mix(
+                      in oklch,
+                      var(--hop-start),
+                      var(--hop-end) calc(var(--step) * 100%)
+                    );
+                  }
+                }
+              </style>
+            </figure>
+            <p>
+              <code>--step</code>
+              is each item's place on the ramp:
+              <code>0</code>
+              is the start color,
+              <code>1</code>
+              the end. A border or badge can skip the mix and use
+              <code>var(--hop-end)</code>
+              .
+            </p>
+            <p>Three things to know before you copy this.</p>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Keep the media query</dt>
+                <dd>
+                  Without it, markers stay colored under increased contrast
+                  while the letters go plain.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Set both ends</dt>
+                <dd>
+                  The letters pick a partner for a missing end. The mix can't,
+                  so markers stay plain.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">With drift</dt>
+                <dd>Only the letters move. Markers hold still.</dd>
+              </div>
+            </dl>
+            <h4>
+              Using a
+              <code>hue</code>
+              Instead
+            </h4>
+            <p>
+              Drop the
+              <code>.playlist</code>
+              rule and run this script. A
+              <code>hue</code>
+              sets its ends on the element itself, so nothing beside it can see
+              them. The script copies them to the parent, and they still follow
+              theme switches.
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your JavaScript</p>
+              <pre
+                class="code-block"
+              ><code class="language-javascript" id="docs-copy-ends">const parent = document.querySelector('.playlist');
+const styles = getComputedStyle(parent.querySelector('hue-hop'));
+for (const name of ['--hop-start', '--hop-end']) {
+  parent.style.setProperty(name, styles.getPropertyValue(name));
+}</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-copy-ends"
+                copy-label="Copy JavaScript"
+              ></wa-copy-button>
+            </div>
+            <p>
+              Middle markers look slightly less vivid than the letters, because
+              the mix leaves out
+              <code>--hop-lift</code>
+              .
+            </p>
           </section>
           <p class="docs-group readout-label">Integrate</p>
           <section
@@ -1603,7 +1720,11 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             </div>
             <p>
               The value is fixed for the current scheme. A copy of it won't
-              follow a theme switch.
+              follow a theme switch. For colors that do, see
+              <a href="#coloring-things-nearby">Coloring Things Nearby</a>
+              . Stay below
+              <code>el.hops</code>
+              : a higher step can return a wrong color.
             </p>
             <h3 id="test-doms">Test DOMs</h3>
             <p>
