@@ -359,10 +359,6 @@ wa-page::part(subheader) {
   justify-content: space-between;
   gap: var(--space-related);
   min-height: var(--bar-control);
-  padding-inline: var(--space-related);
-  border-radius: var(--radius-control);
-  background: var(--surface-sunken);
-  box-shadow: var(--depth-pressed);
 }
 
 .lamp-readings {
@@ -395,10 +391,7 @@ wa-page::part(subheader) {
 }
 
 .bridge-messages:not(
-  :has(
-    > :is(.bridge-note, .fit-message, .fit-result, .undo-fit):not([hidden]),
-    > .bridge-badges:has(> :not([hidden]))
-  )
+  :has(> :is(.bridge-note, .fit-message, .fit-result, .undo-fit):not([hidden]))
 ) {
   display: none;
 }
@@ -457,6 +450,11 @@ wa-radio[appearance='button']:state(checked) {
   padding-inline: var(--space-group);
 }
 
+/* Keeps its place, so the bar row doesn't jump the moment a letter fails. */
+.fit-button:disabled {
+  visibility: hidden;
+}
+
 .undo-fit {
   justify-self: start;
   min-height: var(--bar-control);
@@ -472,28 +470,6 @@ wa-radio[appearance='button']:state(checked) {
   transform: none;
   background: var(--surface-raised);
   box-shadow: var(--depth-raised);
-  color: var(--ink-quiet);
-}
-
-.bridge-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-tight);
-}
-
-.bridge-badges:has(> [hidden]) {
-  display: none;
-}
-
-.badge {
-  padding: 0.125rem var(--space-related);
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-cap);
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  line-height: var(--leading-tight);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--ink-quiet);
 }
 

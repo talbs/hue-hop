@@ -59,7 +59,7 @@ const lampReadings = {
   light: document.getElementById('lamp-b'),
 };
 const lampSpoken = document.getElementById('lamp-spoken');
-const restBadge = document.getElementById('rest-badge');
+const restNote = document.getElementById('rest-note');
 const shiftNote = document.getElementById('shift-note');
 const fitButton = document.getElementById('fit-button');
 const fitMessage = document.getElementById('fit-message');
@@ -683,7 +683,7 @@ function showLamp(readings) {
 }
 
 function showBridgeNotes() {
-  setHidden(restBadge, !state.isDriftOn);
+  setHidden(restNote, !state.isDriftOn);
   setHidden(shiftNote, state.shift === 0);
   setText(shiftNote, `Shift ${state.shift}°: hues differ from your ends.`);
 }
@@ -726,11 +726,13 @@ function showFitControls(hasFailure) {
   setHidden(fitMessage, !fitNotice);
   setHidden(fitResult, !lastFit);
   setHidden(undoButton, !lastFit);
-  if (hadFitFocus && fitButton.disabled && lastFit) {
-    undoButton.focus({ preventScroll: true });
-  }
-  if (hadUndoFocus && !lastFit && !fitButton.disabled) {
-    fitButton.focus({ preventScroll: true });
+  if ((hadFitFocus && !hasFailure) || (hadUndoFocus && !lastFit)) {
+    const nextFocus = lastFit
+      ? undoButton
+      : hasFailure
+        ? fitButton
+        : control('bar');
+    nextFocus.focus({ preventScroll: true });
   }
   if (fitNotice === fitNoticeShown && lastFit === lastFitShown) return;
   fitNoticeShown = fitNotice;
