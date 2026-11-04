@@ -1,0 +1,1360 @@
+<!doctype html>
+<html
+  lang="en"
+  class="wa-dark"
+  data-side="a"
+  data-fa-kit-code="{{fa-kit}}"
+>
+  <head>
+    {{head}}
+    <script>
+      {
+        const sideOfScheme = new Map([
+          ['a', 'a'],
+          ['b', 'b'],
+          ['dark', 'a'],
+          ['light', 'b'],
+        ]);
+        const scheme = new URLSearchParams(location.search).get('scheme');
+        if (sideOfScheme.has(scheme)) showSide(sideOfScheme.get(scheme));
+      }
+    </script>
+    <script>
+      {
+        const freeWord = () =>
+          document.documentElement.toggleAttribute('data-word-freed', true);
+        addEventListener(
+          'error',
+          ({ target }) => {
+            if (target.localName === 'script') freeWord();
+          },
+          true
+        );
+        // A stalled script would otherwise hold the first paint for as long as it stalls.
+        setTimeout(() => {
+          for (const script of document.querySelectorAll('script[blocking]')) {
+            script.removeAttribute('blocking');
+          }
+          freeWord();
+        }, 2000);
+      }
+    </script>
+    <script>
+      addEventListener('pagereveal', (event) => {
+        let tripFrom = null;
+        try {
+          tripFrom = JSON.parse(sessionStorage.getItem('hue-hop-word-trip'));
+          sessionStorage.removeItem('hue-hop-word-trip');
+        } catch {}
+        if (!tripFrom || !event.viewTransition) return;
+        const word = document.getElementById('hop');
+        const isColored = matchMedia(
+          '(forced-colors: none) and (prefers-contrast: no-preference)'
+        ).matches;
+        const isReady = word?.closest('[data-painted]') && word.hops > 0;
+        if (!isColored || !isReady) return;
+        word.style.viewTransitionName = 'studio-word';
+        event.viewTransition.types.add('word-trip');
+        event.viewTransition.ready.then(
+          () =>
+            document.dispatchEvent(
+              new CustomEvent('wordtrip', { detail: tripFrom })
+            ),
+          () => {}
+        );
+        event.viewTransition.finished.then(() => {
+          word.style.viewTransitionName = '';
+        });
+      });
+    </script>
+    <title>Hue Hop Studio</title>
+    <meta
+      name="description"
+      content="Make a pair of your own, check every letter on your light and dark pages, and copy the code."
+    />
+    <link
+      rel="preload"
+      href="{{root}}fonts/onest-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="stylesheet"
+      href="{{root}}css/controls.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{root}}css/studio.css"
+    />
+    <link
+      rel="modulepreload"
+      href="{{root}}js/color.js"
+    />
+    <link
+      rel="modulepreload"
+      href="{{root}}js/contrast.js"
+    />
+    <link
+      rel="modulepreload"
+      href="{{root}}js/state.js"
+    />
+    <link
+      rel="modulepreload"
+      href="{{root}}js/studio-color.js"
+    />
+    <link
+      rel="modulepreload"
+      href="{{root}}js/studio-url.js"
+    />
+    <script
+      type="module"
+      src="{{root}}js/studio-wa.js"
+    ></script>
+    <script
+      type="module"
+      src="{{root}}js/studio.js"
+      blocking="render"
+    ></script>
+  </head>
+  <body>
+    <wa-page
+      mobile-breakpoint="768"
+      disable-navigation-toggle
+      disable-sticky="header subheader"
+    >
+      {{header}}
+      <main
+        id="main"
+        class="studio"
+      >
+        <h1 class="wa-visually-hidden">Hue Hop Studio</h1>
+        <div class="head">
+          <section
+            class="monitor"
+            aria-label="Preview"
+          >
+            <div class="overlay">
+              <div class="overlay-bars console-width">
+                <div
+                  class="float-bar page-picks"
+                  role="group"
+                  aria-label="Page colors"
+                >
+                  <div class="page-pick">
+                    <span
+                      class="readout-label"
+                      aria-hidden="true"
+                    >
+                      A
+                    </span>
+                    <wa-color-picker
+                      class="wa-visually-hidden-label page-picker"
+                      name="darkPage"
+                      label="Side A page color"
+                      size="s"
+                      value="#141416"
+                      without-format-toggle
+                    ></wa-color-picker>
+                    <output
+                      aria-live="off"
+                      data-for="darkPage"
+                    >
+                      #141416
+                    </output>
+                  </div>
+                  <div class="page-pick">
+                    <span
+                      class="readout-label"
+                      aria-hidden="true"
+                    >
+                      B
+                    </span>
+                    <wa-color-picker
+                      class="wa-visually-hidden-label page-picker"
+                      name="lightPage"
+                      label="Side B page color"
+                      size="s"
+                      value="#f7f7f5"
+                      without-format-toggle
+                    ></wa-color-picker>
+                    <output
+                      aria-live="off"
+                      data-for="lightPage"
+                    >
+                      #f7f7f5
+                    </output>
+                  </div>
+                </div>
+                <div
+                  class="float-bar"
+                  role="group"
+                  aria-label="Actions"
+                >
+                  <button
+                    type="button"
+                    class="lit-button"
+                    id="reset"
+                  >
+                    Reset
+                  </button>
+                  <button
+                    type="button"
+                    class="lit-button"
+                    data-drawer="open code-drawer"
+                  >
+                    Code
+                  </button>
+                  <button
+                    type="button"
+                    class="lit-button"
+                    id="copy-link"
+                  >
+                    Copy Link
+                  </button>
+                  <button
+                    type="button"
+                    class="lit-button"
+                    id="copy-html"
+                  >
+                    Copy HTML
+                  </button>
+                </div>
+              </div>
+            </div>
+            <figure class="stage">
+              <figcaption class="wa-visually-hidden">Preview</figcaption>
+              <div class="stage-art">
+                <wa-random-content
+                  id="samples"
+                  items="1"
+                  hidden
+                >
+                  {{sample-titles}}
+                </wa-random-content>
+                <span
+                  class="stage-word hero-title"
+                  id="wordmark"
+                >
+                  <hue-hop
+                    id="hop"
+                    hue="dusk"
+                  ></hue-hop>
+                  <script>
+                    {
+                      const linkedWord = new URLSearchParams(
+                        location.search
+                      ).get('text');
+                      const samples =
+                        document.getElementById('samples').children;
+                      const sample =
+                        samples[Math.floor(Math.random() * samples.length)];
+                      document.getElementById('hop').textContent =
+                        linkedWord?.trim() ? linkedWord : sample.textContent;
+                    }
+                  </script>
+                  <span
+                    class="accent"
+                    id="accent-mark"
+                    hidden
+                  >
+                    .
+                  </span>
+                </span>
+              </div>
+            </figure>
+          </section>
+
+          <section
+            class="bridge"
+            aria-labelledby="bridge-title"
+          >
+            <h2
+              class="wa-visually-hidden"
+              id="bridge-title"
+            >
+              Letters
+            </h2>
+            <div class="bridge-inner console-width">
+              <div
+                class="bridge-strips"
+                role="region"
+                aria-label="Letter colors and contrast"
+              >
+                <ol
+                  class="meters wa-list-plain"
+                  id="meters"
+                ></ol>
+                <p
+                  class="meters-empty"
+                  id="meters-empty"
+                  hidden
+                >
+                  Type some text to check it.
+                </p>
+              </div>
+              <div class="bridge-end">
+                <div class="bridge-controls">
+                  <div class="lamp">
+                    <span
+                      class="readout-label"
+                      aria-hidden="true"
+                    >
+                      Contrast
+                    </span>
+                    <span
+                      class="lamp-readings"
+                      aria-hidden="true"
+                    >
+                      <span
+                        class="lamp-reading"
+                        id="lamp-a"
+                        data-state="pass"
+                      >
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        <span class="lamp-text">A Pass 4.9</span>
+                      </span>
+                      <span
+                        class="lamp-divider"
+                        aria-hidden="true"
+                      >
+                        ·
+                      </span>
+                      <span
+                        class="lamp-reading"
+                        id="lamp-b"
+                        data-state="pass"
+                      >
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        <span class="lamp-text">B Pass 4.8</span>
+                      </span>
+                    </span>
+                    <output
+                      class="wa-visually-hidden"
+                      id="lamp-spoken"
+                      aria-live="polite"
+                      aria-atomic="true"
+                    >
+                      Contrast: side A passes at 4.9, side B passes at 4.8.
+                    </output>
+                  </div>
+                  <div class="bar-row">
+                    <wa-radio-group
+                      class="wa-visually-hidden-label"
+                      name="bar"
+                      label="Contrast bar"
+                      orientation="horizontal"
+                      size="s"
+                      value="4.5"
+                    >
+                      <wa-radio
+                        appearance="button"
+                        value="4.5"
+                      >
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        4.5:1
+                      </wa-radio>
+                      <wa-radio
+                        appearance="button"
+                        value="3"
+                      >
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        3:1 large
+                      </wa-radio>
+                    </wa-radio-group>
+                    <button
+                      type="button"
+                      class="lit-button fit-button"
+                      id="fit-button"
+                      disabled
+                    >
+                      Fit
+                    </button>
+                  </div>
+                </div>
+                <div class="bridge-messages">
+                  <p class="bridge-badges">
+                    <span
+                      class="badge"
+                      id="rest-badge"
+                      hidden
+                    >
+                      At rest
+                    </span>
+                  </p>
+                  <p
+                    class="bridge-note"
+                    id="shift-note"
+                    hidden
+                  ></p>
+                  <p
+                    class="fit-message"
+                    id="fit-message"
+                    role="status"
+                    hidden
+                  ></p>
+                  <p
+                    class="fit-result"
+                    id="fit-result"
+                    aria-live="polite"
+                    hidden
+                  ></p>
+                  <button
+                    type="button"
+                    class="lit-button undo-fit"
+                    id="undo-fit"
+                    hidden
+                  >
+                    Undo
+                    <span class="wa-visually-hidden">the fit</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="desk">
+          <form
+            class="channels console-width"
+            id="controls"
+          >
+            <section
+              class="channel"
+              id="strip-hue"
+              aria-labelledby="channel-hue"
+            >
+              <div class="channel-head">
+                <h2
+                  class="channel-name"
+                  id="channel-hue"
+                >
+                  Hue
+                </h2>
+                <div class="toggle-line">
+                  <span
+                    class="toggle-hint"
+                    id="display-hint"
+                    hidden
+                  >
+                    Only with a preset
+                  </span>
+                  <button
+                    type="button"
+                    class="lit-button toggle"
+                    name="display"
+                    aria-pressed="false"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Display
+                  </button>
+                </div>
+              </div>
+              <div class="row row-presets">
+                <div
+                  class="hue-grid"
+                  role="radiogroup"
+                  aria-labelledby="channel-hue"
+                >
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="true"
+                    data-hue="dusk"
+                    aria-describedby="route-dusk"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    <hue-hop hue="dusk">dusk</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="reef"
+                    aria-describedby="route-reef"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    <hue-hop hue="reef">reef</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="fern"
+                    aria-describedby="route-fern"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    <hue-hop hue="fern">fern</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="ember"
+                    aria-describedby="route-ember"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    <hue-hop hue="ember">ember</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="guava"
+                    aria-describedby="route-guava"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    <hue-hop hue="guava">guava</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="orchid"
+                    aria-describedby="route-orchid"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    <hue-hop hue="orchid">orchid</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="honey"
+                    aria-describedby="route-honey"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    <hue-hop hue="honey">honey</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="custom"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Custom
+                  </button>
+                </div>
+                <span
+                  class="wa-visually-hidden"
+                  id="route-dusk"
+                >
+                  dusk: pale sky to blue-violet in dark mode
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="route-reef"
+                >
+                  reef: pale aqua to blue in dark mode
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="route-fern"
+                >
+                  fern: lime to pine in dark mode
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="route-ember"
+                >
+                  ember: pale amber to red in dark mode
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="route-guava"
+                >
+                  guava: peach to magenta in dark mode
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="route-orchid"
+                >
+                  orchid: blush pink to aubergine in dark mode
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="route-honey"
+                >
+                  honey: butter yellow to rust in dark mode
+                </span>
+              </div>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Start
+                </span>
+                <div class="row-wide end-field">
+                  <div class="color-field">
+                    <wa-color-picker
+                      class="wa-visually-hidden-label"
+                      name="start"
+                      label="Start color"
+                      size="s"
+                      value="#85d7ff"
+                      without-format-toggle
+                    ></wa-color-picker>
+                    <output
+                      aria-live="off"
+                      data-for="start"
+                    >
+                      #85d7ff
+                    </output>
+                    <button
+                      type="button"
+                      class="icon-action link-toggle"
+                      data-end="start"
+                      hidden
+                    >
+                      <wa-icon
+                        family="pixel"
+                        name="link"
+                        label="Dark start linked to light"
+                      ></wa-icon>
+                    </button>
+                    <span
+                      class="auto-tag"
+                      data-end="start"
+                      hidden
+                    >
+                      picked
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    class="lit-button auto-button"
+                    data-end="start"
+                    aria-label="Auto start"
+                  >
+                    Auto
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  End
+                </span>
+                <div class="row-wide end-field">
+                  <div class="color-field">
+                    <wa-color-picker
+                      class="wa-visually-hidden-label"
+                      name="end"
+                      label="End color"
+                      size="s"
+                      value="#7874f6"
+                      without-format-toggle
+                    ></wa-color-picker>
+                    <output
+                      aria-live="off"
+                      data-for="end"
+                    >
+                      #7874f6
+                    </output>
+                    <button
+                      type="button"
+                      class="icon-action link-toggle"
+                      data-end="end"
+                      hidden
+                    >
+                      <wa-icon
+                        family="pixel"
+                        name="link"
+                        label="Dark end linked to light"
+                      ></wa-icon>
+                    </button>
+                    <span
+                      class="auto-tag"
+                      data-end="end"
+                      hidden
+                    >
+                      picked
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    class="lit-button auto-button"
+                    data-end="end"
+                    aria-label="Auto end"
+                  >
+                    Auto
+                  </button>
+                </div>
+                <span
+                  class="wa-visually-hidden"
+                  id="auto-reason"
+                >
+                  One end has to stay set.
+                </span>
+              </div>
+            </section>
+
+            <section
+              class="channel"
+              id="strip-type"
+              aria-labelledby="channel-type"
+            >
+              <div class="channel-head">
+                <h2
+                  class="channel-name"
+                  id="channel-type"
+                >
+                  Type
+                </h2>
+                <p class="channel-hint">Font, weight, size: preview only</p>
+              </div>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Text
+                </span>
+                <div class="row-wide text-field">
+                  <wa-input
+                    class="wa-visually-hidden-label"
+                    name="text"
+                    label="Text"
+                    maxlength="200"
+                    size="s"
+                    value="Juicy"
+                    autocomplete="off"
+                    spellcheck="false"
+                  ></wa-input>
+                  <button
+                    type="button"
+                    class="lit-button"
+                    id="shuffle"
+                  >
+                    Shuffle
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Font
+                </span>
+                <wa-select
+                  class="row-wide wa-visually-hidden-label"
+                  name="font"
+                  label="Font"
+                  size="s"
+                  value="onest"
+                >
+                  <wa-icon
+                    slot="expand-icon"
+                    family="pixel"
+                    name="angle-down"
+                  ></wa-icon>
+                  <wa-option value="onest">Onest</wa-option>
+                  <wa-option value="dm-sans">DM Sans</wa-option>
+                  <wa-option value="instrument">Instrument Sans</wa-option>
+                  <wa-option value="funnel">Funnel Sans</wa-option>
+                  <wa-option value="host">Host Grotesk</wa-option>
+                  <wa-option value="golos">Golos Text</wa-option>
+                  <wa-option value="rethink">Rethink Sans</wa-option>
+                  <wa-option value="geist">Geist</wa-option>
+                  <wa-option value="mona">Mona Sans</wa-option>
+                </wa-select>
+              </div>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Weight
+                </span>
+                <wa-slider
+                  class="wa-visually-hidden-label"
+                  name="weight"
+                  label="Weight"
+                  size="s"
+                  min="100"
+                  max="900"
+                  step="10"
+                  value="700"
+                ></wa-slider>
+                <output
+                  aria-live="off"
+                  data-for="weight"
+                >
+                  700
+                </output>
+              </div>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Size
+                </span>
+                <wa-slider
+                  class="wa-visually-hidden-label"
+                  name="size"
+                  label="Size"
+                  size="s"
+                  min="12"
+                  max="200"
+                  step="1"
+                  value="96"
+                ></wa-slider>
+                <output
+                  aria-live="off"
+                  data-for="size"
+                >
+                  96px
+                </output>
+              </div>
+            </section>
+
+            <section
+              class="channel"
+              id="strip-shape"
+              aria-labelledby="channel-shape"
+            >
+              <h2
+                class="channel-name"
+                id="channel-shape"
+              >
+                Shape
+              </h2>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Curve
+                </span>
+                <wa-slider
+                  class="wa-visually-hidden-label"
+                  name="curve"
+                  label="Curve"
+                  size="s"
+                  min="-2"
+                  max="2"
+                  step="0.05"
+                  value="0"
+                  indicator-offset="0"
+                ></wa-slider>
+                <output
+                  aria-live="off"
+                  data-for="curve"
+                >
+                  ×1.00
+                </output>
+              </div>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Lift
+                </span>
+                <wa-slider
+                  class="wa-visually-hidden-label"
+                  name="lift"
+                  label="Lift"
+                  size="s"
+                  min="-0.06"
+                  max="0.12"
+                  step="0.001"
+                  value="0.021"
+                  indicator-offset="0"
+                ></wa-slider>
+                <output
+                  aria-live="off"
+                  data-for="lift"
+                >
+                  0.021
+                </output>
+              </div>
+              <div class="row">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Shift
+                </span>
+                <wa-slider
+                  class="wa-visually-hidden-label"
+                  name="shift"
+                  label="Shift"
+                  size="s"
+                  min="-180"
+                  max="180"
+                  step="1"
+                  value="0"
+                  indicator-offset="0"
+                ></wa-slider>
+                <output
+                  aria-live="off"
+                  data-for="shift"
+                >
+                  0°
+                </output>
+              </div>
+            </section>
+
+            <section
+              class="channel"
+              id="strip-fx"
+              aria-labelledby="channel-fx"
+            >
+              <h2
+                class="channel-name"
+                id="channel-fx"
+              >
+                FX
+              </h2>
+              <div class="row">
+                <div class="row-full toggle-line">
+                  <button
+                    type="button"
+                    class="lit-button toggle"
+                    name="accentOn"
+                    aria-pressed="false"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Accent
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+                hidden
+              >
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Mark
+                </span>
+                <wa-input
+                  class="row-wide wa-visually-hidden-label"
+                  name="accent"
+                  label="Accent mark"
+                  maxlength="200"
+                  size="s"
+                  value="."
+                ></wa-input>
+              </div>
+              <div
+                class="row"
+                hidden
+              >
+                <span class="readout-label">Try</span>
+                <div class="row-wide suggestions">
+                  <wa-random-content
+                    id="accent-ideas"
+                    items="3"
+                  >
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="."
+                      aria-label="Period"
+                    >
+                      .
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="·"
+                      aria-label="Middle dot"
+                    >
+                      ·
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="*"
+                      aria-label="Asterisk"
+                    >
+                      *
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="+"
+                      aria-label="Plus"
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="!"
+                      aria-label="Exclamation"
+                    >
+                      !
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="°"
+                      aria-label="Degree"
+                    >
+                      °
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="/"
+                      aria-label="Slash"
+                    >
+                      /
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="_"
+                      aria-label="Underscore"
+                    >
+                      _
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="×"
+                      aria-label="Times"
+                    >
+                      ×
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="’"
+                      aria-label="Apostrophe"
+                    >
+                      ’
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent=":"
+                      aria-label="Colon"
+                    >
+                      :
+                    </button>
+                    <button
+                      type="button"
+                      class="chip chip-mark"
+                      data-accent="~"
+                      aria-label="Tilde"
+                    >
+                      ~
+                    </button>
+                  </wa-random-content>
+                  <button
+                    type="button"
+                    class="icon-action"
+                    data-shuffle
+                  >
+                    <wa-icon
+                      family="pixel"
+                      name="arrow-right-arrow-left"
+                      label="Shuffle marks"
+                    ></wa-icon>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+                hidden
+              >
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Color
+                </span>
+                <div class="row-wide">
+                  <div class="color-field">
+                    <wa-color-picker
+                      class="wa-visually-hidden-label"
+                      name="accentColor"
+                      label="Accent color"
+                      size="s"
+                      without-format-toggle
+                    ></wa-color-picker>
+                    <output
+                      aria-live="off"
+                      data-for="accentColor"
+                    ></output>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="row-full toggle-line">
+                  <button
+                    type="button"
+                    class="lit-button toggle"
+                    name="drift"
+                    aria-pressed="false"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Drift
+                  </button>
+                </div>
+              </div>
+              <div
+                class="row"
+                hidden
+              >
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Range
+                </span>
+                <wa-slider
+                  class="wa-visually-hidden-label"
+                  name="range"
+                  label="Drift range"
+                  size="s"
+                  min="4"
+                  max="90"
+                  step="1"
+                  value="24"
+                ></wa-slider>
+                <output
+                  aria-live="off"
+                  data-for="range"
+                >
+                  ±24°
+                </output>
+              </div>
+              <div
+                class="row"
+                hidden
+              >
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Cycle
+                </span>
+                <wa-slider
+                  class="wa-visually-hidden-label"
+                  name="cycle"
+                  label="Drift cycle"
+                  size="s"
+                  min="2"
+                  max="30"
+                  step="0.5"
+                  value="10"
+                ></wa-slider>
+                <output
+                  aria-live="off"
+                  data-for="cycle"
+                >
+                  10s
+                </output>
+              </div>
+            </section>
+          </form>
+        </div>
+
+        <wa-drawer
+          id="code-drawer"
+          label="Code"
+          placement="end"
+          without-header
+        >
+          <section
+            class="code-plate"
+            aria-labelledby="code-title"
+          >
+            <div class="channel-head">
+              <h2
+                class="channel-name"
+                id="code-title"
+              >
+                Code
+              </h2>
+              <button
+                type="button"
+                class="icon-action"
+                data-drawer="close"
+              >
+                <wa-icon
+                  family="pixel"
+                  name="xmark"
+                  label="Close"
+                ></wa-icon>
+              </button>
+            </div>
+            <div class="code-bar">
+              <wa-radio-group
+                class="wa-visually-hidden-label"
+                id="code-format"
+                label="Code format"
+                orientation="horizontal"
+                size="s"
+                value="html"
+              >
+                <wa-radio
+                  appearance="button"
+                  value="html"
+                >
+                  HTML
+                </wa-radio>
+                <wa-radio
+                  appearance="button"
+                  value="css"
+                >
+                  CSS
+                </wa-radio>
+              </wa-radio-group>
+            </div>
+            <p
+              class="code-note"
+              id="code-note"
+            ></p>
+            <div
+              class="code-well"
+              id="code-html"
+            >
+              <pre
+                class="code-block"
+              ><code class="language-html" id="snippet-html"></code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="snippet-html"
+                copy-label="Copy HTML"
+              >
+                <wa-icon
+                  slot="copy-icon"
+                  family="pixel"
+                  name="clone"
+                ></wa-icon>
+                <wa-icon
+                  slot="success-icon"
+                  family="pixel"
+                  name="check"
+                ></wa-icon>
+                <wa-icon
+                  slot="error-icon"
+                  family="pixel"
+                  name="xmark"
+                ></wa-icon>
+              </wa-copy-button>
+            </div>
+            <div
+              class="code-well"
+              id="code-css"
+              hidden
+            >
+              <pre
+                class="code-block"
+              ><code class="language-css" id="snippet-css"></code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="snippet-css"
+                copy-label="Copy CSS"
+              >
+                <wa-icon
+                  slot="copy-icon"
+                  family="pixel"
+                  name="clone"
+                ></wa-icon>
+                <wa-icon
+                  slot="success-icon"
+                  family="pixel"
+                  name="check"
+                ></wa-icon>
+                <wa-icon
+                  slot="error-icon"
+                  family="pixel"
+                  name="xmark"
+                ></wa-icon>
+              </wa-copy-button>
+            </div>
+          </section>
+        </wa-drawer>
+
+        <div
+          class="probes"
+          aria-hidden="true"
+        >
+          <hue-hop data-scheme="light">
+            <i data-end="start"></i>
+            <i data-end="end"></i>
+          </hue-hop>
+          <hue-hop data-scheme="dark">
+            <i data-end="start"></i>
+            <i data-end="end"></i>
+          </hue-hop>
+          <span id="color-reader"></span>
+        </div>
+      </main>
+    </wa-page>
+  </body>
+</html>

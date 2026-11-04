@@ -1,0 +1,1302 @@
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 1000;
+  src: url('../fonts/dm-sans-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Instrument Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url('../fonts/instrument-sans-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Funnel Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 800;
+  src: url('../fonts/funnel-sans-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Host Grotesk';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 800;
+  src: url('../fonts/host-grotesk-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Golos Text';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url('../fonts/golos-text-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Rethink Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 800;
+  src: url('../fonts/rethink-sans-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../fonts/geist-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Mona Sans';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url('../fonts/mona-sans-latin-wght-normal.woff2') format('woff2');
+}
+
+:root {
+  --console-width: 120rem;
+  --row-height: var(--tap);
+  --bar-control: 2rem;
+  --field-height: 2.5rem;
+  --word-size: 3.5rem;
+  --small-control: 1.75rem;
+}
+
+.site-header-inner {
+  max-width: var(--console-width);
+}
+
+/* The other pages draw this hairline once the page scrolls. The console mostly doesn't scroll, so it stays on. */
+wa-page::part(subheader) {
+  animation: none;
+  border-block-end-color: var(--divider);
+}
+
+.console-width {
+  width: 100%;
+  max-width: var(--console-width);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.studio {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Page color drags restyle everything under these, so they stay off the panels. */
+.head {
+  --page-dark: #141416;
+  --page-light: #f7f7f5;
+  --preview-page: var(--page-dark);
+}
+
+[data-side='b'] .head {
+  --preview-page: var(--page-light);
+}
+
+/* Rows, buttons and the drawer's wells all set a display of their own, which would beat the attribute. */
+.studio [hidden] {
+  display: none;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  min-height: 44svh;
+  background: var(--page);
+}
+
+/* Wherever the panels can't fit beside the word, it and its meters stay in view while the panels scroll beneath them. Any shorter and the pinned head would leave no room for the panels, so it scrolls away with the page. */
+@media (width < 50rem) and (height >= 34rem),
+  (width < 75rem) and (height >= 34rem) and (height < 56rem) {
+  .head {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 2;
+  }
+
+  /* studio.js replaces this with the head's real height once it runs. */
+  html {
+    scroll-padding-block-start: calc(max(44svh, 18rem) + 1rem);
+  }
+}
+
+.monitor {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
+}
+
+.overlay {
+  padding-block: var(--space-tight);
+  border-block-end: var(--border-thin) solid var(--divider);
+}
+
+.overlay-bars {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-related);
+  padding-inline: var(--space-related);
+}
+
+.float-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-tight);
+}
+
+.float-bar .lit-button {
+  min-height: var(--bar-control);
+  padding-inline: var(--space-related);
+}
+
+#copy-html,
+.page-pick output {
+  display: none;
+}
+
+.page-pick {
+  display: flex;
+  align-items: center;
+  gap: var(--space-tight);
+}
+
+/* The page color is the author's, so the word's stage doesn't follow the site's tokens. */
+.stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  margin: 0;
+  padding: var(--space-related);
+  min-height: 5rem;
+  overflow: hidden;
+  background: var(--preview-page);
+  container-type: size;
+}
+
+.stage-art {
+  display: flex;
+  justify-content: safe center;
+  width: 100%;
+}
+
+.stage-word {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-display);
+  font-size: calc(min(var(--word-size), 100cqh / 1.2) * var(--word-fit, 1));
+  font-weight: var(--weight-heading);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-display);
+  white-space: pre;
+}
+
+/* Browsers that can't hold the first paint for studio.js would show the word before its colors and fit are on. */
+:root:not([data-word-freed]) .studio:not([data-painted]) .stage-word {
+  visibility: hidden;
+}
+
+/* Names the word so the side switch's letter reveal runs here too. */
+.hero-title {
+  view-transition-name: hero-wordmark;
+}
+
+.bridge {
+  border-block: var(--border-thin) solid var(--divider);
+  background: var(--surface);
+}
+
+.bridge-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding-inline: var(--space-related);
+}
+
+.bridge-strips {
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-color: var(--border-control) transparent;
+  scrollbar-width: thin;
+}
+
+.bridge-strips:focus-visible {
+  outline-offset: -2px;
+}
+
+.meters {
+  display: flex;
+  min-width: 100%;
+}
+
+.meter {
+  flex: 1 0 2.25rem;
+  display: grid;
+  align-content: start;
+  gap: var(--space-tight);
+  padding: var(--space-tight) 2px;
+  border-inline-start: var(--border-thin) solid var(--divider);
+}
+
+.meter:first-child {
+  border-inline-start: 0;
+}
+
+.meter-letter {
+  display: grid;
+  place-items: center;
+  min-block-size: 1.5rem;
+  border-radius: var(--radius-control);
+  background: var(--preview-page);
+  box-shadow: var(--depth-pressed);
+  font-size: 0.9375rem;
+  font-weight: var(--weight-strong);
+  line-height: 1;
+}
+
+.meter-bar {
+  block-size: 4px;
+  border-radius: var(--radius-pill);
+}
+
+.meter-hex,
+.led-key,
+.led-value {
+  display: none;
+}
+
+.meter-leds {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+}
+
+.meter-led {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-tight);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  line-height: var(--leading-tight);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-quiet);
+}
+
+/* A fader can flip a meter's state many times a second, so its LED skips the hit or it would flash. */
+.meter-led .led {
+  animation: none;
+}
+
+.meter-led[data-state='check'] .led {
+  background: transparent;
+  box-shadow: none;
+}
+
+.meter-led[data-state='check'] .led-value {
+  color: var(--check);
+}
+
+.led-key {
+  color: var(--ink-faint);
+}
+
+/* Holds "10.0", so a ratio crossing it can't change the strip's width without a remeasure. */
+.led-value {
+  min-inline-size: 4ch;
+}
+
+.meters-empty {
+  padding: var(--space-related);
+  font-size: var(--type-fine);
+  color: var(--ink-faint);
+}
+
+.bridge-end {
+  display: grid;
+  gap: var(--space-tight);
+  padding-block: var(--space-tight);
+  border-block-start: var(--border-thin) solid var(--divider);
+}
+
+[data-state='pass'] {
+  --lit: var(--pass);
+}
+
+[data-state='check'] {
+  --lit: var(--check);
+}
+
+[data-state='check'] .led {
+  animation-name: led-hit-again;
+}
+
+[data-state='off'] .led {
+  border-color: var(--border-control);
+  background: var(--surface-sunken);
+  box-shadow: none;
+}
+
+.lamp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-related);
+  min-height: var(--bar-control);
+  padding-inline: var(--space-related);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  box-shadow: var(--depth-pressed);
+}
+
+.lamp-readings {
+  display: flex;
+  align-items: center;
+  gap: var(--space-related);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.lamp-reading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-tight);
+}
+
+.lamp-divider {
+  color: var(--ink-faint);
+}
+
+.bridge-controls,
+.bridge-messages {
+  display: grid;
+  gap: inherit;
+}
+
+.bridge-messages:not(
+  :has(
+    > :is(.bridge-note, .fit-message, .fit-result, .undo-fit):not([hidden]),
+    > .bridge-badges:has(> :not([hidden]))
+  )
+) {
+  display: none;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-tight);
+}
+
+wa-radio-group::part(form-control-input) {
+  flex-wrap: nowrap;
+  gap: var(--space-tight);
+}
+
+wa-radio[appearance='button'] {
+  --wa-form-control-height: var(--bar-control);
+  margin: 0;
+  padding-inline: var(--space-related);
+  border-color: transparent;
+  border-radius: var(--radius-control);
+  background-color: var(--surface-raised);
+  box-shadow: var(--depth-raised);
+  color: var(--ink-quiet);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    box-shadow var(--note-16) var(--ease-bounce),
+    background-color var(--note-16) var(--ease-hit),
+    color var(--note-16) var(--ease-hit);
+}
+
+wa-radio[appearance='button']::part(label) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-tight);
+}
+
+wa-radio[appearance='button']:hover {
+  box-shadow: var(--depth-lifted);
+  color: var(--ink);
+}
+
+wa-radio[appearance='button']:state(checked) {
+  background-color: var(--surface-sunken);
+  box-shadow: var(--depth-pressed);
+  color: var(--ink);
+}
+
+.fit-button {
+  min-height: var(--bar-control);
+  padding-inline: var(--space-group);
+}
+
+.undo-fit {
+  justify-self: start;
+  min-height: var(--bar-control);
+  padding-inline: var(--space-related);
+}
+
+.lit-button:is(:disabled, [aria-disabled='true']) {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.lit-button:is(:disabled, [aria-disabled='true']):is(:hover, :active) {
+  transform: none;
+  background: var(--surface-raised);
+  box-shadow: var(--depth-raised);
+  color: var(--ink-quiet);
+}
+
+.bridge-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-tight);
+}
+
+.bridge-badges:has(> [hidden]) {
+  display: none;
+}
+
+.badge {
+  padding: 0.125rem var(--space-related);
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-cap);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  line-height: var(--leading-tight);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-quiet);
+}
+
+.bridge-note,
+.fit-message,
+.fit-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-tight) var(--space-related);
+  font-size: var(--type-fine);
+  line-height: var(--leading-tight);
+  color: var(--ink-quiet);
+}
+
+.fit-change {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-tight);
+  font-variant-numeric: tabular-nums;
+}
+
+.fit-swatch {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  border-radius: var(--radius-cap);
+  box-shadow: inset 0 0 0 var(--border-thin) var(--border-control);
+}
+
+.desk {
+  padding-block: var(--space-group);
+}
+
+.channels {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-group);
+}
+
+/* A squeezed panel would otherwise shrink its rows until they overlap, and never scroll. */
+.channel {
+  display: grid;
+  grid-auto-rows: max-content;
+  align-content: start;
+  min-width: 0;
+  padding-block-end: var(--space-tight);
+  border-radius: var(--radius-container);
+  background: var(--surface);
+  box-shadow: var(--depth-panel);
+}
+
+.channel-name {
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  font-weight: 400;
+  line-height: var(--leading-tight);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.channel > .channel-name,
+.channel-head {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding-inline: var(--space-group);
+  border-block-end: var(--border-thin) solid var(--divider);
+}
+
+.channel-head {
+  justify-content: space-between;
+  gap: var(--space-related);
+}
+
+.channel-hint {
+  font-size: var(--type-fine);
+  line-height: var(--leading-tight);
+  text-align: end;
+  color: var(--ink-faint);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) 3.5rem;
+  align-items: center;
+  gap: var(--space-related);
+  min-height: var(--row-height);
+  padding-inline: var(--space-group);
+}
+
+.row + .row {
+  border-block-start: var(--border-thin) solid var(--divider);
+}
+
+.row[hidden] {
+  height: 0;
+  min-height: 0;
+  opacity: 0;
+  overflow: clip;
+}
+
+.row-wide {
+  grid-column: span 2;
+  min-width: 0;
+}
+
+.row-full {
+  grid-column: 1 / -1;
+}
+
+.row output,
+.page-pick output {
+  padding: var(--space-tight);
+  border-radius: var(--radius-cap);
+  background: var(--surface-sunken);
+  box-shadow: var(--depth-pressed);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  line-height: var(--leading-tight);
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.channel .lit-button {
+  min-height: var(--small-control);
+  padding-inline: var(--space-related);
+}
+
+.toggle-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-related);
+}
+
+.toggle-hint {
+  font-size: var(--type-fine);
+  color: var(--ink-faint);
+}
+
+.text-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-related);
+}
+
+.text-field wa-input {
+  flex: 1;
+}
+
+.channel wa-input::part(input-wrapper),
+.channel wa-select::part(combobox) {
+  min-height: var(--field-height);
+}
+
+.channel wa-input,
+.channel wa-select {
+  --wa-form-control-height: var(--field-height);
+  --wa-form-control-padding-inline: var(--space-related);
+}
+
+.channel wa-input::part(input) {
+  font-size: var(--type-small);
+}
+
+.channel wa-select::part(combobox) {
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+  background: var(--stage);
+  box-shadow: var(--depth-pressed);
+  color: var(--ink);
+  font-size: var(--type-small);
+}
+
+.channel wa-select::part(display-input) {
+  color: var(--ink);
+  font-size: var(--type-small);
+}
+
+.channel wa-select:hover::part(combobox) {
+  border-color: var(--border-control);
+}
+
+.channel wa-select:focus-within::part(combobox) {
+  outline-color: transparent;
+  outline-offset: 0;
+  border-color: var(--lit);
+  box-shadow:
+    inset 0 0 0 var(--border-thin) var(--lit),
+    var(--lit-glow);
+}
+
+wa-select::part(listbox) {
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  box-shadow: var(--depth-lifted);
+}
+
+wa-option {
+  --wa-form-control-activated-color: var(--surface-sunken);
+  --current-text-color: var(--ink);
+  color: var(--ink-quiet);
+  font-size: var(--type-small);
+}
+
+wa-color-picker {
+  --wa-form-control-background-color: var(--stage);
+  --wa-form-control-border-color: var(--border-container);
+  --wa-form-control-border-radius: var(--radius-control);
+}
+
+wa-color-picker::part(trigger) {
+  border: var(--border-thin) solid var(--border-control);
+  border-radius: var(--radius-control);
+}
+
+wa-color-picker::part(input) {
+  border-radius: var(--radius-control);
+  box-shadow: var(--depth-pressed);
+  font-family: var(--font-code);
+}
+
+wa-color-picker::part(preview) {
+  border-radius: var(--radius-control);
+  box-shadow: var(--depth-pressed);
+}
+
+wa-color-picker::part(grid) {
+  border-radius: var(--radius-control) var(--radius-control) 0 0;
+}
+
+wa-color-picker::part(grid-handle) {
+  border: var(--border-thick) solid var(--ink);
+  box-shadow: var(--depth-cap);
+}
+
+wa-color-picker::part(eyedropper-button__base) {
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  box-shadow: var(--depth-raised);
+  color: var(--ink-quiet);
+}
+
+wa-color-picker::part(color-picker) {
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-container);
+  background: var(--surface);
+  box-shadow:
+    var(--depth-panel),
+    0 12px 32px rgb(0 0 0 / 0.35);
+}
+
+.color-field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-related);
+  padding: var(--space-tight);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  box-shadow: var(--depth-pressed);
+}
+
+.color-field output {
+  padding: 0 var(--space-tight);
+  background: none;
+  box-shadow: none;
+}
+
+.page-picker::part(trigger),
+.color-field wa-color-picker::part(trigger) {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0;
+  border-radius: var(--radius-cap);
+  box-shadow: inset 0 0 0 var(--border-thin) var(--border-control);
+}
+
+.end-field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-related);
+}
+
+.auto-tag {
+  padding-inline-end: var(--space-tight);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.icon-action {
+  display: inline-grid;
+  place-items: center;
+  min-width: var(--small-control);
+  min-height: var(--small-control);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-cap);
+  background: none;
+  color: var(--ink-quiet);
+  cursor: pointer;
+  transition: color var(--note-16) var(--ease-hit);
+}
+
+.icon-action:hover,
+.link-toggle[data-linked='true'] {
+  color: var(--ink);
+}
+
+.link-toggle[data-linked='false'] {
+  color: var(--ink-faint);
+}
+
+.suggestions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-tight);
+}
+
+.suggestions wa-random-content {
+  display: flex;
+  gap: var(--space-tight);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-tight);
+  min-height: var(--small-control);
+  padding-inline: var(--space-tight);
+  border: var(--border-thin) solid transparent;
+  border-radius: var(--radius-control);
+  background: var(--surface-raised);
+  box-shadow: var(--depth-raised);
+  color: var(--ink-quiet);
+  font-size: var(--type-fine);
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform var(--note-16) var(--ease-bounce),
+    box-shadow var(--note-16) var(--ease-bounce),
+    border-color var(--note-16) var(--ease-hit),
+    color var(--note-16) var(--ease-hit);
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--depth-lifted);
+  color: var(--ink);
+}
+
+.chip:active {
+  transform: translateY(1px) scale(0.98);
+  background: var(--surface-sunken);
+  box-shadow: var(--depth-pressed);
+  transition-duration: var(--note-32);
+  transition-timing-function: var(--ease-hit);
+}
+
+.chip:focus-visible {
+  box-shadow: var(--depth-raised), var(--focus-glow);
+}
+
+.chip-mark {
+  justify-content: center;
+  min-inline-size: var(--small-control);
+  font-family: var(--font-code);
+}
+
+.row-presets {
+  padding-block: var(--space-related);
+}
+
+.hue-grid {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4.25rem, 1fr));
+  gap: var(--space-tight);
+}
+
+/* Each hue sits in a sleeve on the page color, like the landing's hue tiles. */
+.hue-chip {
+  justify-content: flex-start;
+  min-width: 0;
+  min-height: var(--bar-control);
+  border-color: var(--border-container);
+  background: var(--page);
+  box-shadow: var(--depth-pressed);
+  font-weight: var(--weight-heading);
+  overflow: hidden;
+}
+
+.hue-chip:hover {
+  border-color: var(--border-control);
+  box-shadow: var(--depth-pressed);
+}
+
+.hue-chip[data-hue='custom'] {
+  border-style: dashed;
+  background: transparent;
+  box-shadow: none;
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hue-chip[aria-checked='true'] {
+  border-color: var(--lit);
+  border-style: solid;
+  box-shadow:
+    inset 0 0 0 var(--border-thin) var(--lit),
+    var(--lit-glow);
+  color: var(--ink);
+  animation: sleeve-drop var(--note-8) var(--ease-bounce);
+}
+
+@keyframes sleeve-drop {
+  from {
+    transform: translateY(-4px);
+  }
+}
+
+#code-drawer {
+  --size: 36rem;
+}
+
+#code-drawer::part(dialog) {
+  background: var(--page);
+}
+
+#code-drawer::part(body) {
+  padding: var(--space-group);
+}
+
+.code-plate {
+  display: grid;
+  border-radius: var(--radius-container);
+  background: var(--surface);
+  box-shadow: var(--depth-panel);
+}
+
+.code-bar {
+  padding: var(--space-related) var(--space-group);
+  border-block-end: var(--border-thin) solid var(--divider);
+}
+
+.code-note {
+  margin: var(--space-group) var(--space-group) 0;
+  font-size: var(--type-fine);
+  line-height: var(--leading-tight);
+  color: var(--ink-faint);
+}
+
+.code-plate .code-well {
+  margin: var(--space-group);
+}
+
+.code-plate .code-block {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Hidden copies of the element that resolve each scheme's start and end colors for the checker and the code. */
+.probes {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+/* Forced colors would otherwise hand the probes back system colors, and those reads are kept for good. */
+.probes,
+.probes * {
+  forced-color-adjust: none;
+}
+
+.probes hue-hop[data-scheme='light'] {
+  color-scheme: light;
+}
+
+.probes hue-hop[data-scheme='dark'] {
+  color-scheme: dark;
+}
+
+.probes i[data-end='start'] {
+  color: var(--hop-start, transparent);
+}
+
+.probes i[data-end='end'] {
+  color: var(--hop-end, transparent);
+}
+
+@media (min-width: 28rem) {
+  .hue-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 50rem) {
+  :root {
+    --row-height: 2.5rem;
+    --field-height: 2rem;
+    --word-size: 6rem;
+  }
+
+  .overlay-bars {
+    padding-inline: var(--gutter);
+  }
+
+  .float-bar .lit-button {
+    padding-inline: var(--space-group);
+  }
+
+  #copy-html {
+    display: inline-flex;
+  }
+
+  .page-picks {
+    gap: var(--space-group);
+    padding-inline: var(--space-related);
+    border-radius: var(--radius-control);
+    background: color-mix(in oklch, var(--surface) 88%, transparent);
+  }
+
+  .page-pick {
+    min-height: var(--bar-control);
+    gap: var(--space-related);
+  }
+
+  .page-pick output {
+    display: inline;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--ink-quiet);
+  }
+
+  .bridge-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
+    padding-inline: var(--gutter);
+  }
+
+  .meter {
+    flex: 1 0 5rem;
+    padding: var(--space-related);
+  }
+
+  /* Lines the first letter up with the panels below without making its tile wider than the rest. */
+  .meter:first-child {
+    flex-basis: calc(5rem - var(--space-related));
+    padding-inline-start: 0;
+  }
+
+  .meter-letter {
+    min-block-size: 2rem;
+    font-size: 1.125rem;
+  }
+
+  .meter-hex {
+    font-family: var(--font-readout);
+    font-size: var(--type-label);
+    line-height: var(--leading-tight);
+    color: var(--ink-quiet);
+  }
+
+  .led-key {
+    inline-size: 0.75rem;
+  }
+
+  .bridge-end {
+    align-content: start;
+    gap: var(--space-related);
+    padding: var(--space-related) 0 var(--space-related) var(--space-group);
+    border-block-start: 0;
+    border-inline-start: var(--border-thin) solid var(--divider);
+  }
+
+  .channels {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+@media (width >= 50rem) and (height >= 44rem) {
+  .meter-hex,
+  .led-key,
+  .led-value {
+    display: inline;
+  }
+
+  .meter-leds {
+    display: grid;
+    justify-content: start;
+    gap: 2px;
+  }
+}
+
+/* A short window keeps the word by dropping the meters' fine print. */
+@media (width >= 50rem) and (height < 44rem) {
+  :root {
+    --row-height: 2.25rem;
+  }
+
+  .meter {
+    flex-basis: 3rem;
+    padding-block: var(--space-tight);
+  }
+
+  .meter:first-child {
+    flex-basis: calc(3rem - var(--space-related));
+  }
+
+  .meter-letter {
+    min-block-size: 1.75rem;
+    font-size: 1rem;
+  }
+
+  .bridge-end {
+    gap: var(--space-tight);
+    padding-block: var(--space-tight);
+  }
+}
+
+/* With room both ways the console fills the window and the page never scrolls: the word gives way first, then the panels scroll inside themselves. The meters and messages never shrink. Two rows of panels need a taller window than one. */
+@media (width >= 75rem) and (height >= 34rem),
+  (width >= 50rem) and (height >= 56rem) {
+  wa-page::part(page) {
+    height: 100dvh;
+  }
+
+  wa-page::part(body) {
+    height: 100%;
+    min-height: 0;
+    align-items: stretch;
+  }
+
+  wa-page::part(main),
+  wa-page::part(main-content) {
+    min-height: 0;
+    height: 100%;
+  }
+
+  .studio {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Clip, not hidden: a scroll container would lose its flex minimum in Firefox, and a focused Undo could scroll it. */
+  .head {
+    flex: 1 1 9rem;
+    min-height: auto;
+    overflow: clip;
+  }
+
+  .monitor {
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .overlay {
+    position: absolute;
+    z-index: 1;
+    inset: var(--space-group) 0 auto;
+    padding: 0;
+    border: 0;
+    pointer-events: none;
+  }
+
+  .float-bar {
+    pointer-events: auto;
+  }
+
+  .stage {
+    min-height: 0;
+    padding: calc(
+        var(--space-group) + var(--bar-control) + var(--space-related)
+      )
+      var(--gutter) var(--space-related);
+  }
+
+  .desk {
+    flex: 0 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .channels {
+    flex: 0 1 auto;
+    min-height: 0;
+    grid-auto-rows: minmax(0, 1fr);
+  }
+
+  .channel {
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-color: var(--border-control) transparent;
+    scrollbar-width: thin;
+  }
+
+  /* shell.css gives every id in the page a 70px scroll margin, which clips the last row in a thin panel. */
+  .channel [id] {
+    scroll-margin-block-start: 0;
+  }
+}
+
+@media (min-width: 75rem) {
+  .channels {
+    grid-template-columns:
+      minmax(0, 1.3fr) minmax(0, 1.15fr) minmax(0, 1fr)
+      minmax(0, 0.75fr);
+  }
+
+  /* Fit's messages sit beside the lamp, not under it, so reading them doesn't cost the word its height. */
+  .bridge-inner:has(:is(.fit-message, .fit-result):not([hidden])) {
+    grid-template-columns: minmax(0, 1fr) 44rem;
+  }
+
+  .bridge-end:has(:is(.fit-message, .fit-result):not([hidden])) {
+    grid-template-columns: 21rem minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--space-group);
+  }
+}
+
+@media (min-width: 75rem) and (max-width: 100rem) {
+  /* The FX panel is the narrowest, so its faders take a line of their own or they'd be too short to use. */
+  #strip-fx .row:has(wa-slider) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding-block: var(--space-tight);
+  }
+
+  #strip-fx .row wa-slider {
+    grid-area: 2 / 1 / auto / -1;
+  }
+}
+
+/* The reveal runs only once the Studio is up, so the closed rows don't play it at page load. */
+@media (prefers-reduced-motion: no-preference) {
+  .row {
+    interpolate-size: allow-keywords;
+    transition:
+      height var(--note-8) var(--ease-hit),
+      min-height var(--note-8) var(--ease-hit),
+      opacity var(--note-16) var(--ease-hit) var(--note-16),
+      display var(--note-8) allow-discrete;
+  }
+
+  .row[hidden] {
+    transition:
+      opacity var(--note-16) var(--ease-hit),
+      height var(--note-8) var(--ease-hit),
+      min-height var(--note-8) var(--ease-hit),
+      display var(--note-8) allow-discrete;
+  }
+
+  @starting-style {
+    .studio[data-ready] .row:not([hidden]) {
+      height: 0;
+      min-height: 0;
+      opacity: 0;
+    }
+  }
+}
+
+@media (forced-colors: active) {
+  .meter-bar {
+    border: var(--border-thin) solid CanvasText;
+  }
+
+  .hue-chip[aria-checked='true'] {
+    border-color: Highlight;
+    outline: var(--border-thick) solid Highlight;
+    outline-offset: -4px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* studio.js flies this group with translate and scale, because the default size animation runs on the main thread. */
+  :root:active-view-transition-type(word-trip)::view-transition-group(
+      studio-word
+    ) {
+    animation: none;
+    transform-origin: 0 0;
+  }
+
+  /* Safari's picture of the old word leaves out its colors, so the new word makes the whole trip by itself. */
+  :root:active-view-transition-type(word-trip)::view-transition-old(
+      studio-word
+    ) {
+    animation: none;
+    opacity: 0;
+  }
+
+  :root:active-view-transition-type(word-trip)::view-transition-new(
+      studio-word
+    ) {
+    animation: none;
+    width: 100%;
+    height: 100%;
+  }
+}
