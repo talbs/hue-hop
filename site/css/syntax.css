@@ -21,66 +21,66 @@
   --syntax-type: oklch(42% 0.15 291);
 }
 
-::highlight(comment),
-::highlight(quote) {
+pre > code::highlight(comment),
+pre > code::highlight(quote) {
   color: var(--ink-faint);
 }
 
-::highlight(operator),
-::highlight(punctuation) {
+pre > code::highlight(operator),
+pre > code::highlight(punctuation) {
   color: var(--ink-quiet);
 }
 
-::highlight(keyword),
-::highlight(storage),
-::highlight(at-rule),
-::highlight(doctype),
-::highlight(important),
-::highlight(section) {
+pre > code::highlight(keyword),
+pre > code::highlight(storage),
+pre > code::highlight(at-rule),
+pre > code::highlight(doctype),
+pre > code::highlight(important),
+pre > code::highlight(section) {
   color: var(--syntax-keyword);
 }
 
-::highlight(string),
-::highlight(regexp),
-::highlight(attribute-value),
-::highlight(link),
-::highlight(raw) {
+pre > code::highlight(string),
+pre > code::highlight(regexp),
+pre > code::highlight(attribute-value),
+pre > code::highlight(link),
+pre > code::highlight(raw) {
   color: var(--syntax-string);
 }
 
-::highlight(numeric),
-::highlight(boolean),
-::highlight(constant),
-::highlight(symbol),
-::highlight(character-entity),
-::highlight(anchor),
-::highlight(entity) {
+pre > code::highlight(numeric),
+pre > code::highlight(boolean),
+pre > code::highlight(constant),
+pre > code::highlight(symbol),
+pre > code::highlight(character-entity),
+pre > code::highlight(anchor),
+pre > code::highlight(entity) {
   color: var(--syntax-constant);
 }
 
-::highlight(function),
-::highlight(decorator),
-::highlight(animation) {
+pre > code::highlight(function),
+pre > code::highlight(decorator),
+pre > code::highlight(animation) {
   color: var(--syntax-function);
 }
 
-::highlight(type),
-::highlight(support),
-::highlight(selector) {
+pre > code::highlight(type),
+pre > code::highlight(support),
+pre > code::highlight(selector) {
   color: var(--syntax-type);
 }
 
-::highlight(variable),
-::highlight(interpolation) {
+pre > code::highlight(variable),
+pre > code::highlight(interpolation) {
   color: var(--syntax-variable);
 }
 
-::highlight(property),
-::highlight(key),
-::highlight(attribute-name) {
+pre > code::highlight(property),
+pre > code::highlight(key),
+pre > code::highlight(attribute-name) {
   color: var(--syntax-property);
 }
 
-::highlight(tag) {
+pre > code::highlight(tag) {
   color: var(--syntax-tag);
 }

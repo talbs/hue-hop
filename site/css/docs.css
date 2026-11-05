@@ -42,6 +42,13 @@
   display: none;
 }
 
+/* Until Web Awesome upgrades them, every panel shows, and the ones that close afterwards pull the page up. Without it they all stay open, so no install steps are lost. */
+@media (scripting: enabled) {
+  .docs-page:not(:defined, .is-without-wa) wa-tab-panel:not(:first-of-type) {
+    display: none;
+  }
+}
+
 .docs-page:not(:defined) > main {
   display: block;
   padding: var(--subheader-height) var(--gutter) 0;

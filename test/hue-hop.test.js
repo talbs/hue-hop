@@ -1,11 +1,13 @@
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
+
+const engine = { chromium, firefox, webkit }[process.env.BROWSER ?? 'chromium'];
 
 let browser;
 
 before(async () => {
-  browser = await chromium.launch();
+  browser = await engine.launch();
 });
 
 after(async () => {

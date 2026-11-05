@@ -4,13 +4,19 @@
   }
 }
 
+/* wa-page writes its footer's height here and nothing reads it. Left inheriting, that one write restyles the whole page. */
+@property --footer-height {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
 /* wa-page measures these and writes them on itself just after load. Starting on the same values spares the whole page a style pass during the transition in. */
 wa-page {
   background: var(--page);
   --banner-height: 0px;
   --header-height: 52px;
   --subheader-height: 1px;
-  --footer-height: 0px;
 }
 
 @media (min-width: 48rem) {

@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/talbs/hue-hop.git"
   },
-  "homepage": "https://github.com/talbs/hue-hop#readme",
+  "homepage": "https://talbs.github.io/hue-hop/",
   "bugs": "https://github.com/talbs/hue-hop/issues",
   "exports": {
     ".": {
@@ -40,8 +40,13 @@
   "files": [
     "dist",
     "hue-hop.d.ts",
-    "custom-elements.json"
+    "custom-elements.json",
+    "CHANGELOG.md"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "engines": {
     "node": ">=22"
   },
@@ -50,7 +55,7 @@
     "size": "node scripts/size.js",
     "pretest": "npm run build",
     "test": "prettier --check . --ignore-path .gitignore --ignore-path \"$(git rev-parse --git-path info/exclude)\" && node --test 'test/*.test.js'",
-    "prepack": "npm run build && npm run size",
+    "prepack": "npm run build && npm run size && node scripts/changelog.js",
     "format": "prettier --write . --ignore-path .gitignore --ignore-path \"$(git rev-parse --git-path info/exclude)\"",
     "prepublishOnly": "npm test",
     "site": "npm run build && node scripts/site.js",

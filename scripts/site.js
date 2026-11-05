@@ -1,18 +1,34 @@
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdirSync, rmSync, watch, writeFileSync } from 'node:fs';
+import {
+  cpSync,
+  mkdirSync,
+  readdirSync,
+  rmSync,
+  watch,
+  writeFileSync,
+} from 'node:fs';
 import { dirname } from 'node:path';
 import * as esbuild from 'esbuild';
 import { SITE_URL } from '../site/js/urls.js';
 import { checkAnchors } from './anchors.js';
 import { DOCS_LINKS, LLMS_RULES } from './copy.js';
 import { llmsText } from './manifest.js';
-import { PAGES, read, readFills, renderPage } from './pages.js';
+import {
+  PAGES,
+  read,
+  readFills,
+  renderPage,
+  SOCIAL_IMAGE_FILE,
+} from './pages.js';
+import { renderSocialImage } from './social-image.js';
 
 const SERVE_PORT = 4174;
 const isServing = process.argv.includes('--serve');
 
 const WA_CHUNK = /webawesome\/dist\/chunks\/chunk\.\w+\.js$/;
 const WA_ELEMENT = /customElement\("(wa-[a-z-]+)"\)/;
+
+const BUNDLED_SCRIPTS = ['wa.js', 'studio-wa.js'];
 
 function readElementsInBundle(metafile) {
   const elements = new Set();
@@ -43,6 +59,22 @@ function forThisBuild(entry) {
   return isServing && entry.root === SITE_URL ? { ...entry, root: '/' } : entry;
 }
 
+async function minify(source, loader) {
+  const { code } = await esbuild.transform(source, { loader, minify: true });
+  return code;
+}
+
+async function writeMinifiedScripts() {
+  mkdirSync('_site/js', { recursive: true });
+  for (const file of readdirSync('site/js')) {
+    if (BUNDLED_SCRIPTS.includes(file)) continue;
+    writeFileSync(
+      `_site/js/${file}`,
+      await minify(read(`site/js/${file}`), 'js')
+    );
+  }
+}
+
 async function buildSite() {
   rmSync('_site', { recursive: true, force: true });
   mkdirSync('_site');
@@ -70,11 +102,7 @@ async function buildSite() {
   writeFileSync('_site/llms.txt', llms);
   console.log('wrote _site/llms.txt');
 
-  cpSync('site/css', '_site/css', { recursive: true });
-  cpSync('site/js', '_site/js', {
-    recursive: true,
-    filter: (path) => !path.endsWith('wa.js'),
-  });
+  await writeMinifiedScripts();
   cpSync('site/fonts', '_site/fonts', { recursive: true });
   cpSync('site/icons', '_site/icons', { recursive: true });
   cpSync('dist', '_site/dist', { recursive: true });
@@ -110,17 +138,30 @@ async function buildSite() {
         "@import '@awesome.me/webawesome/dist/styles/layers.css';",
         "@import '@awesome.me/webawesome/dist/styles/themes/default.css';",
         "@import '@awesome.me/webawesome/dist/styles/utilities.css';",
+        "@import './dist/hues.css';",
+        "@import './dist/drift.css';",
       ].join('\n'),
       resolveDir: '.',
       loader: 'css',
     },
-    outfile: '_site/css/webawesome.css',
+    outfile: '_site/css/vendor.css',
     bundle: true,
     minify: true,
     logLevel: 'warning',
   });
 
-  console.log('wrote _site/css, _site/js, _site/fonts, _site/dist');
+  console.log('wrote _site/css/vendor.css, _site/js, _site/fonts, _site/dist');
+
+  // Only link unfurlers read it, so a local rebuild skips launching a browser on every save.
+  if (!isServing) {
+    await renderSocialImage({
+      wordmark: fills.wordmark,
+      wordmarkSteps: fills['wordmark-steps'],
+      surface: fills['dark-surface'],
+      outputPath: `_site/${SOCIAL_IMAGE_FILE}`,
+    });
+    console.log(`wrote _site/${SOCIAL_IMAGE_FILE}`);
+  }
 
   const { 'docs.html': docsHtml, ...otherPages } = builtPages;
   const anchorCount = checkAnchors({

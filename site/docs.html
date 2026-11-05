@@ -7,23 +7,6 @@
 >
   <head>
     {{head}}
-    <title>Hue Hop Docs</title>
-    <meta
-      name="description"
-      content="How to load Hue Hop, color a heading, tune the steps, and fit it into your app."
-    />
-    <link
-      rel="stylesheet"
-      href="{{root}}css/controls.css"
-    />
-    <link
-      rel="stylesheet"
-      href="{{root}}css/quickstart.css"
-    />
-    <link
-      rel="stylesheet"
-      href="{{root}}css/docs.css"
-    />
     <script
       type="module"
       src="{{root}}js/docs.js"
@@ -38,6 +21,12 @@
       class="docs-page"
       mobile-breakpoint="860"
     >
+      <script>
+        // wa-page starts in its desktop view and corrects itself a frame after measuring, which jumps the whole page on a phone.
+        if (innerWidth < 860) {
+          document.currentScript.parentElement.setAttribute('view', 'mobile');
+        }
+      </script>
       {{header}}
       <wa-icon
         slot="navigation-toggle-icon"

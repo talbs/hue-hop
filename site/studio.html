@@ -78,19 +78,6 @@
         });
       });
     </script>
-    <title>Hue Hop Studio</title>
-    <meta
-      name="description"
-      content="Make a pair of your own, check every letter on your light and dark pages, and copy the code."
-    />
-    <link
-      rel="stylesheet"
-      href="{{root}}css/controls.css"
-    />
-    <link
-      rel="stylesheet"
-      href="{{root}}css/studio.css"
-    />
     <link
       rel="modulepreload"
       href="{{root}}js/color.js"
@@ -111,6 +98,10 @@
       rel="modulepreload"
       href="{{root}}js/studio-url.js"
     />
+    <script
+      type="module"
+      src="{{root}}js/wa.js"
+    ></script>
     <script
       type="module"
       src="{{root}}js/studio-wa.js"
@@ -557,7 +548,7 @@
                         class="end-auto auto-button readout-label"
                         data-end="start"
                         aria-pressed="false"
-                        aria-label="Let Hue Hop pick the start"
+                        aria-label="Auto: let Hue Hop pick the start"
                       >
                         <span
                           class="led"
@@ -600,7 +591,7 @@
                         class="end-auto auto-button readout-label"
                         data-end="end"
                         aria-pressed="false"
-                        aria-label="Let Hue Hop pick the end"
+                        aria-label="Auto: let Hue Hop pick the end"
                       >
                         <span
                           class="led"

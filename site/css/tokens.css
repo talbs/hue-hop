@@ -1,7 +1,9 @@
+/* Optional paints once, so Web Awesome's later repaint can't record larger text and push LCP back.
+   Fast links and repeat visits get Onest. A slow first visit gets the fallback and never swaps. */
 @font-face {
   font-family: 'Onest';
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
   font-weight: 100 900;
   src: url('../fonts/onest-latin-ext-wght-normal.woff2') format('woff2');
   unicode-range:
@@ -13,7 +15,7 @@
 @font-face {
   font-family: 'Onest';
   font-style: normal;
-  font-display: swap;
+  font-display: optional;
   font-weight: 100 900;
   src: url('../fonts/onest-latin-wght-normal.woff2') format('woff2');
   unicode-range:

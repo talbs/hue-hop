@@ -4,6 +4,16 @@
   content="width=device-width, initial-scale=1"
 />
 {{side-boot}}
+<title>{{page-title}}</title>
+<meta
+  name="description"
+  content="{{page-description}}"
+/>
+<meta
+  name="theme-color"
+  content="{{dark-surface}}"
+/>
+{{link-card}}
 <link
   rel="preload"
   href="{{root}}fonts/onest-latin-wght-normal.woff2"
@@ -33,41 +43,21 @@
   href="{{root}}icons/apple-touch-icon.png"
 />
 <link
-  rel="stylesheet"
-  href="{{root}}css/webawesome.css"
+  rel="preconnect"
+  href="https://ka-p.fontawesome.com"
+  crossorigin
 />
 <link
   rel="stylesheet"
-  href="{{root}}dist/hues.css"
+  href="{{root}}css/vendor.css"
 />
-<link
-  rel="stylesheet"
-  href="{{root}}dist/drift.css"
-/>
-<link
-  rel="stylesheet"
-  href="{{root}}css/tokens.css"
-/>
-<link
-  rel="stylesheet"
-  href="{{root}}css/base.css"
-/>
-<link
-  rel="stylesheet"
-  href="{{root}}css/shell.css"
-/>
+<style>
+  {{page-css}}
+</style>
 <style>
   {{wordmark-steps}}
 </style>
-<link
-  rel="stylesheet"
-  href="{{root}}css/syntax.css"
-/>
 {{element-script}}
-<script
-  type="module"
-  src="{{root}}js/wa.js"
-></script>
 <script
   type="module"
   src="{{root}}js/shell.js"
