@@ -174,3 +174,23 @@ export function splitLetters(text) {
     isBlank: isBlankLetter(segment),
   }));
 }
+
+// One letter per 64th note, so the stage types on the same beat as the rest of the motion.
+export function typeOut(element, text, onFinish) {
+  const letters = splitLetters(text).map(({ letter }) => letter);
+  const letterMs = beatMs() / 16;
+  let shownCount = 0;
+  let nextLetterTimer;
+  const typeNext = () => {
+    shownCount += 1;
+    element.textContent = letters.slice(0, shownCount).join('');
+    if (shownCount < letters.length) {
+      nextLetterTimer = setTimeout(typeNext, letterMs);
+    } else {
+      onFinish?.();
+    }
+  };
+  element.textContent = '';
+  typeNext();
+  return () => clearTimeout(nextLetterTimer);
+}

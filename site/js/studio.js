@@ -11,6 +11,7 @@ import {
   isBlankLetter,
   isMotionOk,
   splitLetters,
+  typeOut,
 } from './motion.js';
 import { whenSideChanges } from './scheme.js';
 import { escapeHtml } from './state.js';
@@ -466,6 +467,8 @@ let wordFit = 1;
 
 // Preview only: the copied code keeps the real size, the stage just shrinks it to fit.
 function fitWordToStage() {
+  // A fit resizes the stage, so the observer asks again mid-type. Measuring half a word would undo the fit, so typing refits when it finishes instead.
+  if (hop.textContent !== wordInUse()) return;
   const width = wordmark.getBoundingClientRect().width;
   if (width === 0) return;
   const fit = Math.min(stageArt.clientWidth / (width / wordFit), 1);
@@ -957,6 +960,9 @@ function showCode() {
   setText(selfHostNote, writeSelfHostNote());
 }
 
+let stopTyping = () => {};
+let shouldTypeWord = false;
+
 function paint() {
   // First, because reading a color after the writes below would force a style pass.
   const stepLetters = lettersPerStep(lettersOfWord());
@@ -966,6 +972,11 @@ function paint() {
   }
 
   showWord();
+  stopTyping();
+  if (shouldTypeWord && isMotionOk()) {
+    stopTyping = typeOut(hop, wordInUse(), fitWordToStage);
+  }
+  shouldTypeWord = false;
   showPageColors();
   showMeters(stepLetters, readings);
   showLamp(readings);
@@ -1175,6 +1186,7 @@ function shuffleWord() {
   state.text = shownSample();
   sampleWord = null;
   control('text').value = state.text;
+  shouldTypeWord = true;
 }
 
 function applyClickedEdit(target) {
@@ -1274,6 +1286,7 @@ function resetStudio() {
   samples.randomize();
   sampleWord = shownSample();
   writeFieldsFromState();
+  shouldTypeWord = true;
   showEdit();
 }
 
