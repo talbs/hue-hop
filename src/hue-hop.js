@@ -69,19 +69,20 @@ function ownTextNodes(element) {
 
 function sheetText(tag, longest) {
   const stepRules = [];
-  const stepNames = [];
+  const stepSelectors = [];
   for (let step = 0; step < longest; step++) {
     const name = `::highlight(${highlightName(step)})`;
+    const selector = `${tag}${name},${tag} *${name}`;
     stepRules.push(
-      `${name}{--_hop-i:${step}}`,
+      `${selector}{--_hop-i:${step}}`,
       `${tag}[hops='${step + 1}']{--_hop-n:${step + 1}}`
     );
-    stepNames.push(name);
+    stepSelectors.push(selector);
   }
   return (
     '@media (forced-colors: none) and (prefers-contrast: no-preference){' +
     stepRules.join('') +
-    formula.replace('::highlight(hue-hop-K)', stepNames.join(',')) +
+    formula.replace('::highlight(hue-hop-K)', stepSelectors.join(',')) +
     '}'
   );
 }
