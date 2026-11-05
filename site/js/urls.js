@@ -1,6 +1,6 @@
 export const REPO_URL = 'https://github.com/talbs/hue-hop';
 
-export const SITE_URL = 'https://talbs.github.io/hue-hop/';
+export const SITE_URL = 'https://huehop.dev/';
 
 export const DOCS_URL = '{{root}}docs/';
 

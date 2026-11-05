@@ -15,7 +15,7 @@ import {
 } from './page-move-boot.js';
 import { SOCIAL_IMAGE_SIZE } from './social-image.js';
 
-// Keep the kit restricted to talbs.github.io and localhost: the code ships in public HTML.
+// Keep the kit restricted to huehop.dev and localhost: the code ships in public HTML.
 const FA_KIT = '7ce624a355';
 
 // Inline: a page can reach its first paint before a stylesheet's copy of this rule registers, and then it gets no transition.
