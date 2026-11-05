@@ -141,6 +141,11 @@
   padding: var(--space-page) 0 0;
 }
 
+/* Lines the wordmark up with the sidebar's first label. */
+.docs-page[view='desktop'] .docs-title {
+  padding-block-start: var(--wa-space-2xl);
+}
+
 .docs-title .section-lead {
   margin-block-end: 0;
 }
