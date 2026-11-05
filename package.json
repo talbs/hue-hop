@@ -49,9 +49,9 @@
     "build": "node scripts/build.js",
     "size": "node scripts/size.js",
     "pretest": "npm run build",
-    "test": "prettier --check . --ignore-path .gitignore --ignore-path .git/info/exclude && node --test 'test/*.test.js'",
+    "test": "prettier --check . --ignore-path .gitignore --ignore-path \"$(git rev-parse --git-path info/exclude)\" && node --test 'test/*.test.js'",
     "prepack": "npm run build && npm run size",
-    "format": "prettier --write . --ignore-path .gitignore --ignore-path .git/info/exclude",
+    "format": "prettier --write . --ignore-path .gitignore --ignore-path \"$(git rev-parse --git-path info/exclude)\"",
     "prepublishOnly": "npm test",
     "site": "npm run build && node scripts/site.js",
     "serve": "npm run build && node scripts/site.js --serve"
