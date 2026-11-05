@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { before, test } from 'node:test';
 import { PAGES, readFills, renderPage } from '../scripts/pages.js';
 
-const SITE_URL = 'https://talbs.github.io/hue-hop/';
+const SITE_URL = 'https://huehop.dev/';
 
 const pages = [
   ['_site/index.html', SITE_URL],

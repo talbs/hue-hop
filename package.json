@@ -19,7 +19,7 @@
     "type": "git",
     "url": "git+https://github.com/talbs/hue-hop.git"
   },
-  "homepage": "https://talbs.github.io/hue-hop/",
+  "homepage": "https://huehop.dev/",
   "bugs": "https://github.com/talbs/hue-hop/issues",
   "exports": {
     ".": {
