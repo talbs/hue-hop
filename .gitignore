@@ -3,3 +3,4 @@ dist/
 .env
 .claude/plans/
 _site/
+.claude/worktrees/
