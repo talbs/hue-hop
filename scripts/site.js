@@ -27,11 +27,28 @@ import {
   llmsText,
   propertyRows,
 } from './manifest.js';
+import {
+  isStudioUrl,
+  keepGroupsOnTransform,
+  markStudioMoveArriving,
+  markStudioMoveLeaving,
+  rememberClickedLink,
+} from './page-move-boot.js';
 
 // Keep the kit restricted to talbs.github.io and localhost: the code ships in public HTML.
 const FA_KIT = '7ce624a355';
 
 const SERVE_PORT = 4174;
+
+// Inline: a page can reach its first paint before a stylesheet's copy of this rule registers, and then it gets no transition.
+const VIEW_TRANSITION_RULE = `<style>
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+      types: page-move;
+    }
+  }
+</style>`;
 
 const PAGES = [
   { source: 'index.html', output: 'index.html', root: './', navName: 'home' },
@@ -41,6 +58,12 @@ const PAGES = [
     root: '../',
     navName: 'docs',
   },
+  {
+    source: 'studio.html',
+    output: 'studio/index.html',
+    root: '../',
+    navName: 'studio',
+  },
   { source: '404.html', output: '404.html', root: SITE_URL, navName: '404' },
 ];
 
@@ -49,6 +72,8 @@ const WA_THEME =
 const WA_SCALE_TOKEN =
   /--wa-(?:space|border-radius|line-height)-[\w-]+:[^;]+;/g;
 const FONT_FACE = /@font-face\s*\{[^}]*\}\s*/g;
+const WA_CHUNK = /webawesome\/dist\/chunks\/chunk\.\w+\.js$/;
+const WA_ELEMENT = /customElement\("(wa-[a-z-]+)"\)/;
 
 const read = (path) => readFileSync(path, 'utf8');
 
@@ -97,7 +122,7 @@ function readFills(manifest) {
     'agent-rules': escapeHtml(AGENT_RULES),
     'docs-nav': docsNav(DOCS_GROUPS),
     'inline-css': inlineCss(),
-    'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n</script>`,
+    'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${isStudioUrl}\n${rememberClickedLink}\n${markStudioMoveLeaving}\n${markStudioMoveArriving}\n${keepGroupsOnTransform}\naddEventListener('click', rememberClickedLink, true);\naddEventListener('pageswap', markStudioMoveLeaving);\naddEventListener('pagereveal', markStudioMoveArriving);\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>\n${VIEW_TRANSITION_RULE}`,
   };
 }
 
@@ -148,6 +173,30 @@ function closeUpPunctuation(html) {
     .replace(SPACE_INSIDE_TAG_END, '$1');
 }
 
+function readElementsInBundle(metafile) {
+  const elements = new Set();
+  for (const path of Object.keys(metafile.inputs)) {
+    if (!WA_CHUNK.test(path)) continue;
+    const element = read(path).match(WA_ELEMENT)?.[1];
+    if (element) elements.add(element);
+  }
+  return elements;
+}
+
+// Registering a tag twice throws, so the Studio's bundle leaves out every element wa.js already registers.
+function skipElements(elements) {
+  return {
+    name: 'skip-elements',
+    setup(build) {
+      build.onLoad({ filter: WA_CHUNK }, ({ path }) => {
+        const element = read(path).match(WA_ELEMENT)?.[1];
+        if (!elements.has(element)) return undefined;
+        return { contents: '', loader: 'js' };
+      });
+    },
+  };
+}
+
 async function buildSite() {
   rmSync('_site', { recursive: true, force: true });
   mkdirSync('_site');
@@ -171,7 +220,7 @@ async function buildSite() {
     version: fills.version,
     cdnVersion: fills['cdn-version'],
     siteUrl: SITE_URL,
-    studioUrl: STUDIO_URL,
+    studioUrl: `${SITE_URL}studio/`,
     rules: LLMS_RULES,
     docsLinks: DOCS_LINKS,
   });
@@ -191,12 +240,23 @@ async function buildSite() {
     filter: (path) => !path.endsWith('.d.ts'),
   });
 
-  await esbuild.build({
+  const { metafile: waMetafile } = await esbuild.build({
     entryPoints: ['site/js/wa.js'],
     outfile: '_site/js/wa.js',
     bundle: true,
     format: 'esm',
     minify: true,
+    metafile: true,
+    logLevel: 'warning',
+  });
+
+  await esbuild.build({
+    entryPoints: ['site/js/studio-wa.js'],
+    outfile: '_site/js/studio-wa.js',
+    bundle: true,
+    format: 'esm',
+    minify: true,
+    plugins: [skipElements(readElementsInBundle(waMetafile))],
     logLevel: 'warning',
   });
 

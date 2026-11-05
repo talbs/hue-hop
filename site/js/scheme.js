@@ -55,6 +55,7 @@ function letterEdges(wordmark) {
   const hop = wordmark?.querySelector('hue-hop');
   if (!hop) return [];
   const box = wordmark.getBoundingClientRect();
+  if (box.width === 0) return [];
   return letterRights(hop).map((right) => (right - box.left) / box.width);
 }
 
@@ -92,6 +93,14 @@ function letterFrames(edges, { step, length, total }) {
   });
   frames.push({ clipPath: 'inset(0 0 0 0)', offset: 1 });
   return frames;
+}
+
+// sidechange fires before an animated flip puts the new side on, so anything that reads colors or reports the side waits for this.
+export function whenSideChanges(callback) {
+  new MutationObserver(callback).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-side'],
+  });
 }
 
 export function setSide(side) {

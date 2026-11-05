@@ -1,10 +1,9 @@
-import { lowestLetterContrast } from './contrast.js';
-import { letterRights, readSide } from './scheme.js';
+import { floorRatio, lowestLetterContrast } from './contrast.js';
+import { letterRights, readSide, whenSideChanges } from './scheme.js';
 
 import {
-  LETTER_HOP,
   beatMs,
-  hopLetters,
+  catchSoftStop,
   isMotionOk,
   longestWordLength,
   segmentPitch,
@@ -17,6 +16,7 @@ import {
   styleFor,
 } from './state.js';
 import { fillCode } from './syntax.js';
+import { isPlainClick } from './word-trip.js';
 
 export function writeStateTo(element, state) {
   if (element.textContent !== state.text) element.textContent = state.text;
@@ -137,11 +137,11 @@ function showContrast(state) {
     lampDetail.textContent = '';
     return;
   }
-  const bar = state.display ? 3 : 4.5;
+  const bar = state.hue && state.display ? 3 : 4.5;
   const isPass = ratio >= bar;
   lamp.dataset.state = isPass ? 'pass' : 'check';
   lampState.textContent = isPass ? 'Pass' : 'Check';
-  lampDetail.textContent = `${(Math.floor(ratio * 10) / 10).toFixed(1)}:1 of ${bar}`;
+  lampDetail.textContent = `${floorRatio(ratio)}:1 of ${bar}`;
 }
 
 const STEP_BARS = 12;
@@ -167,11 +167,6 @@ function showStepBars(state) {
 
 let typingRun = 0;
 let shouldTypeText = false;
-
-function hopSleeve(sleeve) {
-  if (!isMotionOk()) return;
-  hopLetters(sleeve.querySelector('.sleeve-title hue-hop'), LETTER_HOP);
-}
 
 // One letter per 64th note, so the stage types on the same beat as the rest of the motion.
 function typeOut(element, text, run) {
@@ -323,7 +318,6 @@ if (desk) {
   for (const sleeve of sleeves) {
     sleeve.addEventListener('click', () => {
       checkSleeve(sleeve.dataset.hue);
-      hopSleeve(sleeve);
       render();
     });
     sleeve.addEventListener('keydown', moveSleeveFocus);
@@ -343,6 +337,13 @@ if (desk) {
       render();
     });
   }
+  // The word's trip can't leave with half a word on the stage.
+  studioLink.addEventListener('click', (event) => {
+    if (!isPlainClick(event)) return;
+    typingRun += 1;
+    shouldTypeText = false;
+    live.textContent = textField.value;
+  });
   useSideDefaults();
   const titleSizes = new ResizeObserver((entries) => {
     for (const { target } of entries) colorEllipsis(target);
@@ -350,13 +351,13 @@ if (desk) {
   sleeveSamples.forEach((hop) => titleSizes.observe(hop.parentElement));
   for (const fader of faders) {
     fader.addEventListener('input', () => {
+      const [stop, reach] = fader === curveFader ? [1, 0.1] : [0, 4];
+      catchSoftStop(fader, stop, reach);
       showFaderValue(fader);
       render();
     });
   }
-  document.addEventListener('sidechange', () => {
-    useSideDefaults();
-    render();
-  });
+  document.addEventListener('sidechange', useSideDefaults);
+  whenSideChanges(render);
   render();
 }

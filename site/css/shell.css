@@ -4,8 +4,19 @@
   }
 }
 
+/* wa-page measures these and writes them on itself just after load. Starting on the same values spares the whole page a style pass during the transition in. */
 wa-page {
   background: var(--page);
+  --banner-height: 0px;
+  --header-height: 52px;
+  --subheader-height: 1px;
+  --footer-height: 0px;
+}
+
+@media (min-width: 48rem) {
+  wa-page {
+    --header-height: 60px;
+  }
 }
 
 wa-page [id] {
@@ -245,6 +256,14 @@ wa-page::part(subheader) {
   }
 }
 
+/* Hugs its links, so it keeps one size between the Studio's width and the others' and its page move only slides. */
+@media (min-width: 23rem) {
+  .site-nav {
+    justify-self: end;
+    justify-content: flex-end;
+  }
+}
+
 /* From 368px the header fits on one line: a body-size wordmark and tighter gaps make room for the links. */
 @media (23rem <= width < 48rem) {
   .site-header-inner {
@@ -258,7 +277,6 @@ wa-page::part(subheader) {
   }
 
   .site-nav {
-    justify-content: flex-end;
     gap: var(--wa-space-s);
   }
 }
@@ -273,10 +291,6 @@ wa-page::part(subheader) {
     grid-template-areas: 'wordmark nav side';
     column-gap: var(--wa-space-xl);
     padding-block: var(--space-related);
-  }
-
-  .site-nav {
-    justify-content: flex-end;
   }
 
   .side-name {
@@ -419,13 +433,128 @@ wa-divider[orientation='vertical'] {
   margin: var(--space-related) var(--space-related) 0 0;
 }
 
+.code-well {
+  --code-action-height: 2.15rem;
+}
+
+/* The strip behind the label and copy button is drawn on the grid's first row, so neither needs a wrapper. */
+.code-well:has(> .code-label) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(2.5rem, auto) auto;
+  overflow: hidden;
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-container);
+}
+
+.code-well:has(> .code-label)::before {
+  content: '';
+  grid-area: 1 / 1 / 2 / -1;
+  align-self: stretch;
+  border-block-end: var(--border-thin) solid var(--border-container);
+  background: var(--surface);
+}
+
+.code-label,
+.wa-prose .code-label {
+  grid-area: 1 / 1;
+  align-self: center;
+  margin: 0;
+  padding-inline: var(--space-group);
+}
+
+.code-label ~ .code-copy {
+  grid-area: 1 / 2;
+  display: flex;
+  align-self: center;
+  block-size: var(--code-action-height);
+  margin: 0;
+  font-size: 1rem;
+}
+
+.code-label ~ .code-block {
+  grid-area: 2 / 1 / 3 / -1;
+}
+
+.step-title {
+  font-size: var(--type-lead);
+  font-weight: var(--weight-strong);
+  letter-spacing: -0.01em;
+}
+
+.install-tabs {
+  --indicator-color: var(--lit);
+  --track-color: var(--divider);
+  --track-width: var(--border-thin);
+}
+
+.install-tabs wa-tab::part(base) {
+  padding: var(--space-related) var(--wa-space-s);
+  color: var(--ink-faint);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color var(--note-16) var(--ease-hit);
+}
+
+.install-tabs::part(tabs) {
+  gap: 0;
+}
+
+.install-tabs wa-tab:hover::part(base) {
+  color: var(--ink-quiet);
+}
+
+.install-tabs wa-tab[aria-selected='true']::part(base) {
+  color: var(--ink);
+}
+
+.install-tabs::part(body) {
+  padding-block-start: var(--space-group);
+}
+
+.install-tabs wa-tab-panel {
+  --padding: 0;
+}
+
+.install-note {
+  margin-block-start: var(--space-group);
+  color: var(--ink-quiet);
+  font-size: var(--type-small);
+}
+
+.code-result {
+  overflow: hidden;
+  border: var(--border-thin) solid var(--border-container);
+  border-radius: var(--radius-control);
+}
+
+.code-result .code-well {
+  border-radius: 0;
+  border-block-end: var(--border-thin) solid var(--border-container);
+}
+
+.result-frame {
+  padding: var(--space-group) var(--space-group) var(--wa-space-l);
+  background: var(--stage);
+}
+
+.result-frame p {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
 wa-copy-button {
   color: var(--ink-quiet);
 }
 
-/* The pixel set is drawn on a 10-square grid; 15px puts each square on exactly 3 device pixels on 2x screens. */
+/* One size for every pixel icon. The set is drawn on a 10-square grid, so 15px makes each square 3 device pixels on 2x screens; sizes in between make the squares uneven. */
 wa-icon[family='pixel'] {
   font-size: 15px;
+  shape-rendering: crispEdges;
 }
 
 wa-tooltip {
@@ -449,15 +578,32 @@ wa-copy-button::part(success-icon) {
   color: var(--lit);
 }
 
-/* Same-origin only: the Studio lives on another host, so a move to it stays a normal page load. The type keeps these rules away from the side switch, which scheme.js runs as its own view transition. */
+/* The type keeps these rules away from the side switch, which scheme.js runs as its own view transition. */
 @media (prefers-reduced-motion: no-preference) {
-  @view-transition {
-    navigation: auto;
-    types: page-move;
-  }
-
   :root:active-view-transition-type(page-move) .site-header {
     view-transition-name: site-header;
+  }
+
+  /* The bar is the same size on every page, so it holds still while the page fades under it. */
+  :root:active-view-transition-type(page-move)::view-transition-group(
+      site-header
+    ) {
+    animation: none;
+  }
+
+  /* Only the Studio's header is wider than --measure, so this is the only move with anywhere to slide. */
+  @media (min-width: 72rem) {
+    :root:active-view-transition-type(studio-move) .site-wordmark {
+      view-transition-name: site-wordmark;
+    }
+
+    :root:active-view-transition-type(studio-move) .site-nav {
+      view-transition-name: site-nav;
+    }
+
+    :root:active-view-transition-type(studio-move) .side-toggle {
+      view-transition-name: side-toggle;
+    }
   }
 
   :root:active-view-transition-type(page-move) .hero-title {

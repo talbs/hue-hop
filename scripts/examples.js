@@ -38,9 +38,9 @@ function findPreviewMarkup(figureBody) {
 function copyButton(id, label) {
   return [
     `<wa-copy-button class="code-copy" from="${id}" copy-label="${label}">`,
-    '<wa-icon slot="copy-icon" family="pixel" name="clone"></wa-icon>',
-    '<wa-icon slot="success-icon" family="pixel" name="check"></wa-icon>',
-    '<wa-icon slot="error-icon" family="pixel" name="xmark"></wa-icon>',
+    '<wa-icon slot="copy-icon" canvas="auto" family="pixel" name="clone"></wa-icon>',
+    '<wa-icon slot="success-icon" canvas="auto" family="pixel" name="check"></wa-icon>',
+    '<wa-icon slot="error-icon" canvas="auto" family="pixel" name="xmark"></wa-icon>',
     '</wa-copy-button>',
   ].join('\n');
 }

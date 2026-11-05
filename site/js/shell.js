@@ -6,7 +6,7 @@ import {
   lightLetters,
   segmentPitch,
 } from './motion.js';
-import { readSide, setSide, slatTiming } from './scheme.js';
+import { setSide, slatTiming } from './scheme.js';
 
 const sideToggle = document.getElementById('side-toggle');
 
@@ -20,7 +20,7 @@ sideToggle.addEventListener('click', () => {
   markSide(side);
 });
 
-markSide(readSide());
+markSide(document.documentElement.dataset.side);
 
 // Pixel icons come from the Font Awesome kit. If it refuses (a blocked or unlisted domain, offline), fall back to Web Awesome's built-in set so no button goes blank.
 // The system set draws copy only as regular and the rest only as solid; asking for a missing variant shows a question mark.
@@ -36,6 +36,9 @@ const SYSTEM_FALLBACKS = {
   key: { name: 'key', variant: 'solid' },
   'triangle-exclamation': { name: 'triangle-exclamation', variant: 'solid' },
   'comment-dots': { name: 'comment-dots', variant: 'solid' },
+  'angle-down': { name: 'chevron-down', variant: 'solid' },
+  'arrow-right-arrow-left': { name: 'up-down', variant: 'solid' },
+  link: { name: 'thumbtack', variant: 'solid' },
 };
 
 document.addEventListener('wa-error', (event) => {

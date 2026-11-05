@@ -1,4 +1,5 @@
 import { codeFromPreview } from './example-code.js';
+import { whenSideChanges } from './scheme.js';
 import { DEFAULT_STATE, defaultLift, describeStudioLink } from './state.js';
 import { fillCode } from './syntax.js';
 
@@ -70,6 +71,7 @@ function watchSections() {
 function createPixelIcon(name, label) {
   const icon = document.createElement('wa-icon');
   icon.setAttribute('family', 'pixel');
+  icon.setAttribute('canvas', 'auto');
   icon.setAttribute('name', name);
   icon.setAttribute('label', label);
   return icon;
@@ -238,14 +240,6 @@ function wireHopsReadout(figure) {
     showFieldText();
   });
   customElements.whenDefined('hue-hop').then(() => afterRepaint(showHops));
-}
-
-// The sidechange event fires before the new side is applied, so computed colors are only current once the attribute has changed.
-function whenSideChanges(callback) {
-  new MutationObserver(callback).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-side'],
-  });
 }
 
 const METER_SEGMENTS = 7;
