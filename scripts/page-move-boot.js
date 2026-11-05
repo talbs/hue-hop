@@ -16,7 +16,8 @@ export function keepGroupsOnTransform({ viewTransition }) {
         const heightChange = Math.abs(
           parseFloat(from.height) - parseFloat(to.height)
         );
-        if (!(widthChange < 0.5 && heightChange < 0.5)) continue;
+        // A few pixels is a font still settling on the new page, and animating it would pull the group off the compositor while that page loads.
+        if (!(widthChange < 8 && heightChange < 8)) continue;
         effect.setKeyframes([
           { transform: from.transform, easing: from.easing },
           { transform: to.transform },

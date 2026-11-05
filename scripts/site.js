@@ -40,6 +40,16 @@ const FA_KIT = '7ce624a355';
 
 const SERVE_PORT = 4174;
 
+// Inline: a page can reach its first paint before a stylesheet's copy of this rule registers, and then it gets no transition.
+const VIEW_TRANSITION_RULE = `<style>
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+      types: page-move;
+    }
+  }
+</style>`;
+
 const PAGES = [
   { source: 'index.html', output: 'index.html', root: './', navName: 'home' },
   {
@@ -112,7 +122,7 @@ function readFills(manifest) {
     'agent-rules': escapeHtml(AGENT_RULES),
     'docs-nav': docsNav(DOCS_GROUPS),
     'inline-css': inlineCss(),
-    'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${isStudioUrl}\n${rememberClickedLink}\n${markStudioMoveLeaving}\n${markStudioMoveArriving}\n${keepGroupsOnTransform}\naddEventListener('click', rememberClickedLink, true);\naddEventListener('pageswap', markStudioMoveLeaving);\naddEventListener('pagereveal', markStudioMoveArriving);\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>`,
+    'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${isStudioUrl}\n${rememberClickedLink}\n${markStudioMoveLeaving}\n${markStudioMoveArriving}\n${keepGroupsOnTransform}\naddEventListener('click', rememberClickedLink, true);\naddEventListener('pageswap', markStudioMoveLeaving);\naddEventListener('pagereveal', markStudioMoveArriving);\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>\n${VIEW_TRANSITION_RULE}`,
   };
 }
 
