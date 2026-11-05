@@ -5,7 +5,13 @@ import {
   parseComputedColor,
 } from './color.js';
 import { floorRatio, isColorModeOn } from './contrast.js';
-import { beatMs, isBlankLetter, splitLetters } from './motion.js';
+import {
+  beatMs,
+  catchSoftStop,
+  isBlankLetter,
+  isMotionOk,
+  splitLetters,
+} from './motion.js';
 import { whenSideChanges } from './scheme.js';
 import { escapeHtml } from './state.js';
 import {
@@ -33,8 +39,9 @@ import { fillCode } from './syntax.js';
 const SCHEMES = ['dark', 'light'];
 const ENDS = ['start', 'end'];
 const SCHEME_OF_SIDE = { a: 'dark', b: 'light' };
-const SIDE_NAME = { dark: 'A', light: 'B' };
+const SCHEME_NAME = { dark: 'Dark', light: 'Light' };
 const COPIED_MS = 1500;
+const CODE_LINE_LENGTH = 48;
 const ADDRESS_DELAY_MS = 250;
 // A dotted eighth, about 500ms, so a fader drag speaks once it stops.
 const SPOKEN_DELAY_MS = beatMs() * 0.75;
@@ -54,10 +61,9 @@ const meters = document.getElementById('meters');
 const metersEmpty = document.getElementById('meters-empty');
 const head = document.querySelector('.head');
 const bridgeStrips = document.querySelector('.bridge-strips');
-const lampReadings = {
-  dark: document.getElementById('lamp-a'),
-  light: document.getElementById('lamp-b'),
-};
+const lampStatus = document.getElementById('lamp-status');
+const lampHeadline = lampStatus.querySelector('.lamp-text');
+const lampDetail = document.querySelector('.lamp-detail');
 const lampSpoken = document.getElementById('lamp-spoken');
 const restNote = document.getElementById('rest-note');
 const shiftNote = document.getElementById('shift-note');
@@ -65,34 +71,32 @@ const fitButton = document.getElementById('fit-button');
 const fitMessage = document.getElementById('fit-message');
 const fitResult = document.getElementById('fit-result');
 const undoButton = document.getElementById('undo-fit');
-const displayHint = document.getElementById('display-hint');
 const hueChips = [...studio.querySelectorAll('.hue-chip')];
 const codeDrawer = document.getElementById('code-drawer');
-const codeFormat = document.getElementById('code-format');
-const codeNote = document.getElementById('code-note');
+const htmlTab = document.getElementById('code-html-tab');
+const codeInstall = document.getElementById('code-install');
+const importSnippet = document.getElementById('studio-npm-import');
+const cdnSnippet = document.getElementById('studio-cdn');
+const selfHostSnippet = document.getElementById('studio-self-host');
+const selfHostNote = document.getElementById('code-self-host-note');
+const bareSnippet = document.getElementById('snippet-bare');
 const htmlSnippet = document.getElementById('snippet-html');
 const cssSnippet = document.getElementById('snippet-css');
-const codeWells = {
-  html: document.getElementById('code-html'),
-  css: document.getElementById('code-css'),
-};
-const copyHtmlButton = document.getElementById('copy-html');
 const copyLinkButton = document.getElementById('copy-link');
-const COPY_LABELS = new Map([
-  [copyHtmlButton, 'Copy HTML'],
-  [copyLinkButton, 'Copy Link'],
-]);
+const copyLinkTip = document.getElementById('copy-link-tip');
+const codeRoute = document.getElementById('code-route');
 
 function control(name) {
   return studio.querySelector(`[name="${name}"]`);
 }
 
-function rowOf(element) {
-  return element.closest('.row');
-}
-
 const accentFields = document.getElementById('accent-fields');
-const driftRows = [rowOf(control('range')), rowOf(control('cycle'))];
+const glideParts = [
+  wordmark,
+  document.querySelector('.bridge-inner'),
+  document.getElementById('controls'),
+];
+const driftRow = control('range').closest('.row');
 
 const state = structuredClone(DEFAULT_STUDIO);
 let links = null;
@@ -292,7 +296,7 @@ function makePartner(which) {
   const link = links[which];
   if (!link.source) return;
   const partnerScheme = otherScheme(link.source);
-  const sourceText = link.picked ?? state[which][link.source];
+  const sourceText = link.picked;
   const source = readCssColor(sourceText);
   const pageLuminance = pageLuminanceOf(partnerScheme);
   if (!source || pageLuminance === null) return;
@@ -327,8 +331,8 @@ function pickEnd(which, value) {
     link.isLinked = false;
   } else if (link.isLinked) {
     link.source = scheme;
+    link.picked = value;
   }
-  if (link.source === scheme) link.picked = value;
   state[which][scheme] = value;
   if (link.isLinked) makePartner(which);
 }
@@ -337,18 +341,6 @@ function makeEndAuto(which) {
   switchToCustom();
   if (state[otherEndOf(which)] === null) return;
   state[which] = null;
-}
-
-function toggleLink(which) {
-  const link = links[which];
-  if (link.isLinked) {
-    link.isLinked = false;
-    return;
-  }
-  link.isLinked = true;
-  link.source ??= shownScheme();
-  link.picked = state[which][link.source];
-  makePartner(which);
 }
 
 function remakeLinkedPartners() {
@@ -366,7 +358,7 @@ function autoEndNow() {
 
 function describeUnreached(schemes, hasChanges) {
   const pages = schemes.map(
-    (scheme) => `Side ${SIDE_NAME[scheme]} (${pageColorOf(scheme)})`
+    (scheme) => `${SCHEME_NAME[scheme]} (${pageColorOf(scheme)})`
   );
   const ending = hasChanges ? '' : ' Nothing changed.';
   return `Can’t reach ${state.bar}:1 on ${pages.join(' or ')}.${ending}`;
@@ -528,8 +520,9 @@ function makeSpan(className, { text = '', isDecorative = false } = {}) {
   return span;
 }
 
-function buildMeterLed() {
+function buildMeterLed(scheme) {
   const led = makeSpan('meter-led');
+  led.dataset.scheme = scheme;
   const value = makeSpan('led-value', { isDecorative: true });
   const spoken = makeSpan('wa-visually-hidden');
   led.append(makeSpan('led', { isDecorative: true }), value, spoken);
@@ -540,7 +533,7 @@ function buildMeter() {
   const meter = document.createElement('li');
   meter.className = 'meter';
   const letter = makeSpan('meter-letter');
-  const leds = { dark: buildMeterLed(), light: buildMeterLed() };
+  const leds = { dark: buildMeterLed('dark'), light: buildMeterLed('light') };
   const ledGroup = makeSpan('meter-leds');
   ledGroup.append(leds.dark.led, leds.light.led);
   meter.append(letter, ledGroup);
@@ -548,7 +541,7 @@ function buildMeter() {
 }
 
 function showMeterLed({ led, value, spoken }, scheme, reading) {
-  const sideName = `Side ${SIDE_NAME[scheme]}`;
+  const sideName = SCHEME_NAME[scheme];
   if (!reading) {
     writeAttribute(led, 'data-state', 'off');
     setText(value, '—');
@@ -648,32 +641,48 @@ function speakLampSoon(sentence) {
   }, SPOKEN_DELAY_MS);
 }
 
+function writeLampHeadline(passing, failing) {
+  if (failing.length === SCHEMES.length) return 'Contrast Fails';
+  if (failing.length) return `Contrast Fails on ${SCHEME_NAME[failing[0]]}`;
+  if (!passing.length) return 'Contrast Not Measured';
+  return state.bar === 3 ? 'Contrast Passes for Large Text' : 'Contrast Passes';
+}
+
+function writeLampDetail(lowestRatios, unmeasured) {
+  if (!lowestRatios.length) return '';
+  const missing = unmeasured.map(
+    (scheme) => `${SCHEME_NAME[scheme]} not measured`
+  );
+  return [...lowestRatios, ...missing, `Min ${state.bar}`].join(' · ');
+}
+
 function showLamp(readings) {
   const spokenSides = [];
+  const passing = [];
+  const failing = [];
+  const unmeasured = [];
+  const lowestRatios = [];
   for (const scheme of SCHEMES) {
-    const reading = lampReadings[scheme];
-    const text = reading.querySelector('.lamp-text');
-    const sideName = `side ${SIDE_NAME[scheme]}`;
     if (!readings[scheme]) {
-      writeAttribute(reading, 'data-state', 'off');
-      setText(text, `${SIDE_NAME[scheme]} —`);
-      spokenSides.push(`${sideName} not measured`);
+      unmeasured.push(scheme);
+      spokenSides.push(`${scheme} not measured`);
       continue;
     }
     const lowest = lowestRatio(readings[scheme]);
     const isPassing = lowest >= state.bar;
     const ratioText = floorRatio(lowest);
-    writeAttribute(reading, 'data-state', isPassing ? 'pass' : 'check');
-    setText(
-      text,
-      `${SIDE_NAME[scheme]} ${isPassing ? 'Pass' : 'Check'} ${ratioText}`
-    );
+    (isPassing ? passing : failing).push(scheme);
+    lowestRatios.push(`${SCHEME_NAME[scheme]} ${ratioText}`);
     spokenSides.push(
       isPassing
-        ? `${sideName} passes at ${ratioText}`
-        : `${sideName} fails at ${ratioText} of ${state.bar}`
+        ? `${scheme} passes at ${ratioText}`
+        : `${scheme} fails at ${ratioText} of ${state.bar}`
     );
   }
+  const lampState = failing.length ? 'check' : passing.length ? 'pass' : 'off';
+  writeAttribute(lampStatus, 'data-state', lampState);
+  setText(lampHeadline, writeLampHeadline(passing, failing));
+  setText(lampDetail, writeLampDetail(lowestRatios, unmeasured));
   speakLampSoon(`Contrast: ${spokenSides.join(', ')}.`);
 }
 
@@ -690,7 +699,7 @@ function writeFitChange(change) {
   const after = makeSpan('fit-swatch', { isDecorative: true });
   after.style.background = change.newText;
   line.append(
-    `Side ${SIDE_NAME[change.scheme]} ${change.which} `,
+    `${SCHEME_NAME[change.scheme]} ${change.which} `,
     before,
     ' → ',
     after,
@@ -726,7 +735,7 @@ function showFitControls(hasFailure) {
       ? undoButton
       : hasFailure
         ? fitButton
-        : control('bar');
+        : control('text');
     nextFocus.focus({ preventScroll: true });
   }
   if (fitNotice === fitNoticeShown && lastFit === lastFitShown) return;
@@ -740,6 +749,7 @@ function showPickerColor(picker, color) {
   const hex = toHex(clipToScreen(color));
   // Marked so the picker's own echo of a value set here isn't read as a pick.
   writeAttribute(picker, 'data-shown', hex);
+  if (picker.value !== hex) picker.style.setProperty('--swatch-color', hex);
   if (picker.value !== hex) picker.value = hex;
   return hex;
 }
@@ -756,26 +766,25 @@ function showOutput(name, text) {
 function showEndPickers() {
   const scheme = shownScheme();
   const ends = readEnds(scheme);
-  const sideName = `side ${SIDE_NAME[scheme]}`;
   for (const which of ENDS) {
     const isAuto = !isPreset() && state[which] === null;
     const isOtherAuto = !isPreset() && state[otherEndOf(which)] === null;
     const endName = which === 'start' ? 'Start' : 'End';
     const picker = control(which);
+    picker.closest('.color-field').classList.toggle('is-auto', isAuto);
     const color = ends?.[which];
     showOutput(which, color ? showPickerColor(picker, color) : '');
     writeAttribute(
       picker,
       'label',
       isAuto
-        ? `${endName} color, picked by Hue Hop, ${sideName}`
-        : `${endName} color, ${sideName}`
+        ? `${endName} color, picked by Hue Hop, ${scheme}`
+        : `${endName} color, ${scheme}`
     );
-    setHidden(studio.querySelector(`.auto-tag[data-end="${which}"]`), !isAuto);
     const autoButton = studio.querySelector(
       `.auto-button[data-end="${which}"]`
     );
-    setHidden(autoButton, isAuto);
+    writeAttribute(autoButton, 'aria-pressed', String(isAuto));
     writeAttribute(autoButton, 'aria-disabled', String(isOtherAuto));
     writeAttribute(
       autoButton,
@@ -788,30 +797,8 @@ function showEndPickers() {
       isOtherAuto ? 'auto-reason' : null
     );
   }
-  writeAttribute(control('accentColor'), 'label', `Accent color, ${sideName}`);
-}
-
-function showLinkToggles() {
-  for (const which of ENDS) {
-    const toggle = studio.querySelector(`.link-toggle[data-end="${which}"]`);
-    const isShown = !isPreset() && state[which] !== null;
-    setHidden(toggle, !isShown);
-    if (!isShown) continue;
-    const { isLinked, source } = links[which];
-    const sourceScheme = source ?? shownScheme();
-    const partnerSide = `Side ${SIDE_NAME[otherScheme(sourceScheme)]}`;
-    const sourceSide = `side ${SIDE_NAME[sourceScheme]}`;
-    const icon = toggle.querySelector('wa-icon');
-    writeAttribute(icon, 'name', isLinked ? 'link' : 'minus');
-    writeAttribute(
-      icon,
-      'label',
-      isLinked
-        ? `${partnerSide} ${which} linked to ${sourceSide}`
-        : `${partnerSide} ${which} unlinked from ${sourceSide}`
-    );
-    writeAttribute(toggle, 'data-linked', String(isLinked));
-  }
+  writeAttribute(control('accentColor'), 'label', `Accent color, ${scheme}`);
+  writeAttribute(control('page'), 'label', `Background, ${scheme}`);
 }
 
 function showControlStates() {
@@ -822,15 +809,12 @@ function showControlStates() {
     if (chip.tabIndex !== tabIndex) chip.tabIndex = tabIndex;
   }
   const displayToggle = control('display');
-  displayToggle.disabled = !isPreset();
+  setHidden(displayToggle, !isPreset());
   writeAttribute(displayToggle, 'aria-pressed', String(isDisplayOn()));
   writeAttribute(control('accentOn'), 'aria-pressed', String(state.isAccentOn));
   writeAttribute(control('drift'), 'aria-pressed', String(state.isDriftOn));
-  setHidden(displayHint, isPreset());
   setHidden(accentFields, !state.isAccentOn);
-  for (const row of driftRows) setHidden(row, !state.isDriftOn);
-  const barGroup = control('bar');
-  if (barGroup.value !== String(state.bar)) barGroup.value = String(state.bar);
+  setHidden(driftRow, !state.isDriftOn);
 }
 
 function showReadouts() {
@@ -842,11 +826,9 @@ function showReadouts() {
   showOutput('shift', `${state.shift}°`);
   showOutput('range', `±${state.range}°`);
   showOutput('cycle', `${state.cycle}s`);
-  showOutput('darkPage', state.pageA);
-  showOutput('lightPage', state.pageB);
+  showOutput('page', pageColorOf(scheme));
   showOutput('accentColor', state.accentColor[scheme]);
-  showPickerText('darkPage', state.pageA);
-  showPickerText('lightPage', state.pageB);
+  showPickerText('page', pageColorOf(scheme));
   showPickerText('accentColor', state.accentColor[scheme]);
 }
 
@@ -868,11 +850,24 @@ function writeHopHtml() {
   const style = styleText();
   if (style) attributes.push(`style="${style}"`);
 
-  const tag = ['hue-hop', ...attributes].join(' ');
-  const hopHtml = `<${tag}>${escapeHtml(wordInUse())}</hue-hop>`;
+  return writeHopMarkup(attributes);
+}
+
+function writeHopMarkup(attributes) {
+  const word = escapeHtml(wordInUse());
+  const oneLineTag = ['hue-hop', ...attributes].join(' ');
+  const oneLine = `<${oneLineTag}>${word}</hue-hop>`;
+  const hopHtml =
+    oneLine.length > CODE_LINE_LENGTH
+      ? `<hue-hop\n  ${attributes.join('\n  ')}\n>${word}</hue-hop>`
+      : oneLine;
   if (!state.isAccentOn) return hopHtml;
   const accentColor = escapeHtml(writeColorPair(state.accentColor));
   return `${hopHtml}<span class="accent" style="color: ${accentColor}">${escapeHtml(state.accent)}</span>`;
+}
+
+function writeBareHopHtml() {
+  return writeHopMarkup(state.isDriftOn ? ['drift'] : []);
 }
 
 function endPairForCss(which) {
@@ -883,13 +878,22 @@ function endPairForCss(which) {
   };
 }
 
+function writeEndDeclaration(which, color) {
+  const line = `--hop-${which}: ${color};`;
+  if (line.length <= CODE_LINE_LENGTH) return line;
+  const inner = color
+    .slice('light-dark('.length, -1)
+    .replace('), ', '),\n    ');
+  return `--hop-${which}: light-dark(\n    ${inner}\n  );`;
+}
+
 function writeHopCss() {
   const lines = ['color-scheme: light dark;'];
   for (const which of ENDS) {
     const pair = endPairForCss(which);
     lines.push(
       pair
-        ? `--hop-${which}: ${writeColorPair(pair)};`
+        ? writeEndDeclaration(which, writeColorPair(pair))
         : `/* --hop-${which} not set: Hue Hop picks it from the other end. */`
     );
   }
@@ -907,21 +911,50 @@ function writeHopCss() {
   return `:root {\n  ${lines.join('\n  ')}\n}`;
 }
 
-function writeCodeNote() {
-  const addOns = [];
-  if (isPreset()) addOns.push('hue-hop/hues.css');
-  if (state.isDriftOn) addOns.push('hue-hop/drift.css');
-  const needs = ['hue-hop', ...addOns].join(' and ');
-  const cssTab = isPreset()
-    ? 'The CSS tab sets the same colors without hues.css.'
-    : 'The CSS tab sets the same colors on :root or your tokens.';
-  return `Needs ${needs}. ${cssTab} Your page needs color-scheme: light dark, or it only shows the light colors.`;
+function writeHtmlTab() {
+  return isPreset() ? `${state.hue} preset` : 'On the element';
+}
+
+function stylesheetsNeeded() {
+  const names = [];
+  if (isPreset() && codeRoute.active !== 'stylesheet') names.push('hues.css');
+  if (state.isDriftOn) names.push('drift.css');
+  return names;
+}
+
+function writeImports() {
+  const lines = ["import 'hue-hop';"];
+  for (const name of stylesheetsNeeded()) {
+    lines.push(`import 'hue-hop/${name}';`);
+  }
+  return lines.join('\n');
+}
+
+function writeScriptTags(folder, cssFolder) {
+  const tags = [
+    `<script\n  type="module"\n  src="${folder}hue-hop.js"\n></script>`,
+  ];
+  for (const name of stylesheetsNeeded()) {
+    tags.push(`<link\n  rel="stylesheet"\n  href="${cssFolder}${name}"\n/>`);
+  }
+  return tags.join('\n');
+}
+
+function writeSelfHostNote() {
+  const files = ['hue-hop.js', ...stylesheetsNeeded()].join(' and ');
+  return `Copy ${files} from the package's dist folder into your site.`;
 }
 
 function showCode() {
+  setText(htmlTab, writeHtmlTab());
   fillCode(htmlSnippet, writeHopHtml());
   fillCode(cssSnippet, writeHopCss());
-  setText(codeNote, writeCodeNote());
+  fillCode(bareSnippet, writeBareHopHtml());
+  fillCode(importSnippet, writeImports());
+  const cdnFolder = `https://cdn.jsdelivr.net/npm/${codeInstall.dataset.cdn}/dist/`;
+  fillCode(cdnSnippet, writeScriptTags(cdnFolder, cdnFolder));
+  fillCode(selfHostSnippet, writeScriptTags('/js/', '/css/'));
+  setText(selfHostNote, writeSelfHostNote());
 }
 
 function paint() {
@@ -942,7 +975,6 @@ function paint() {
   );
   showFitControls(hasFailure);
   showEndPickers();
-  showLinkToggles();
   showControlStates();
   showReadouts();
   if (codeDrawer.open) showCode();
@@ -1065,9 +1097,6 @@ const FIELD_WRITERS = {
     state.font = value;
     showWeightRange();
   },
-  bar(value) {
-    state.bar = Number(value);
-  },
   curve(value) {
     state.curve = Number((2 ** Number(value)).toFixed(2));
   },
@@ -1082,25 +1111,30 @@ for (const name of ['weight', 'size', 'shift', 'range', 'cycle']) {
   };
 }
 
-const DISCRETE_CONTROLS = ['wa-radio-group', 'wa-select'];
-
 function pickColor(name, value) {
   if (name === 'start' || name === 'end') {
     pickEnd(name, value);
   } else if (name === 'accentColor') {
     state.accentColor[shownScheme()] = value;
   } else {
-    if (name === 'darkPage') state.pageA = value;
+    if (shownScheme() === 'dark') state.pageA = value;
     else state.pageB = value;
     remakeLinkedPartners();
   }
+}
+
+function catchNeutralStop(field, name) {
+  if (name === 'curve') catchSoftStop(field, 0, 0.1);
+  else if (name === 'lift')
+    catchSoftStop(field, defaultLiftFor(state.hue), 0.004);
+  else if (name === 'shift') catchSoftStop(field, 0, 4);
 }
 
 function updateSetting(event) {
   const field = event.target.closest('[name]');
   if (!field) return;
   const name = field.getAttribute('name');
-  if (DISCRETE_CONTROLS.includes(field.localName) && event.type === 'input') {
+  if (field.localName === 'wa-select' && event.type === 'input') {
     return;
   }
 
@@ -1109,6 +1143,7 @@ function updateSetting(event) {
     if (!CSS.supports('color', field.value)) return;
     pickColor(name, field.value);
   } else if (name in FIELD_WRITERS) {
+    catchNeutralStop(field, name);
     FIELD_WRITERS[name](field.value);
     if (name === 'accent' && event.type === 'change') {
       field.value = state.accent;
@@ -1145,18 +1180,17 @@ function shuffleWord() {
 function applyClickedEdit(target) {
   const hueChip = target.closest('.hue-chip');
   const autoButton = target.closest('.auto-button');
-  const linkToggle = target.closest('.link-toggle');
   const toggle = target.closest('.toggle');
   if (hueChip) {
     pickHue(hueChip.dataset.hue);
   } else if (autoButton) {
     if (autoButton.getAttribute('aria-disabled') === 'true') return false;
-    makeEndAuto(autoButton.dataset.end);
-    if (document.activeElement === autoButton) {
-      control(autoButton.dataset.end).focus();
+    const which = autoButton.dataset.end;
+    if (autoButton.getAttribute('aria-pressed') === 'true') {
+      pickEnd(which, control(which).value);
+    } else {
+      makeEndAuto(which);
     }
-  } else if (linkToggle) {
-    toggleLink(linkToggle.dataset.end);
   } else if (toggle) {
     toggleSetting(toggle.getAttribute('name'));
   } else if (target.closest('#shuffle')) {
@@ -1169,6 +1203,30 @@ function applyClickedEdit(target) {
   return true;
 }
 
+function readGlideTops() {
+  return glideParts.map((part) => part.getBoundingClientRect().top);
+}
+
+// Layout changes once, then each part slides from where it was. Transforms stay smooth where animating the height would lay out the panels and refit the word on every frame.
+function glideFrom(oldTops) {
+  if (!isMotionOk()) return;
+  const easing = getComputedStyle(document.documentElement).getPropertyValue(
+    '--ease-hit'
+  );
+  for (const part of glideParts) {
+    for (const animation of part.getAnimations()) animation.cancel();
+  }
+  const newTops = readGlideTops();
+  for (const [index, part] of glideParts.entries()) {
+    const distance = oldTops[index] - newTops[index];
+    if (Math.abs(distance) < 1) continue;
+    part.animate(
+      { transform: [`translateY(${distance}px)`, 'translateY(0)'] },
+      { duration: beatMs() / 2, easing }
+    );
+  }
+}
+
 function handleClick(event) {
   const { target } = event;
   if (target.closest('#fit-button')) {
@@ -1176,9 +1234,14 @@ function handleClick(event) {
     showEdit();
     return;
   }
+  const oldTops = target.closest('button[name="drift"]')
+    ? readGlideTops()
+    : null;
   if (!applyClickedEdit(target)) return;
   forgetFit();
   showEdit();
+  // render() paints on the next frame, and this runs right after it, before anything shows.
+  if (oldTops) requestAnimationFrame(() => glideFrom(oldTops));
 }
 
 const HUE_KEY_STEPS = {
@@ -1215,38 +1278,24 @@ function resetStudio() {
 }
 
 let copiedTimer;
-let copiedButton = null;
-
-function restoreCopiedButton() {
-  if (!copiedButton) return;
-  copiedButton.textContent = COPY_LABELS.get(copiedButton);
-  copiedButton.style.minInlineSize = '';
-  copiedButton = null;
+function showCopyState(iconName, label) {
+  writeAttribute(copyLinkButton.querySelector('wa-icon'), 'name', iconName);
+  writeAttribute(copyLinkButton, 'aria-label', label);
+  setText(copyLinkTip, label);
 }
 
-function confirmCopy(button, shownLabel, spoken) {
+function confirmCopy(iconName, shownLabel, spoken) {
   clearTimeout(copiedTimer);
-  restoreCopiedButton();
-  copiedButton = button;
-  button.style.minInlineSize = `${button.offsetWidth}px`;
-  button.textContent = shownLabel;
+  showCopyState(iconName, shownLabel);
+  copyLinkTip.open = true;
   clearTimeout(lampSpeechTimer);
   lampSpeechTimer = null;
   lampSpoken.textContent = `${spoken} ${lampSentence}`;
   copiedTimer = setTimeout(() => {
-    restoreCopiedButton();
+    showCopyState('link', 'Copy link');
+    copyLinkTip.open = false;
     if (lampSpeechTimer === null) writeLampSpokenQuietly(lampSentence);
   }, COPIED_MS);
-}
-
-async function copyHtml() {
-  try {
-    await navigator.clipboard.writeText(writeHopHtml());
-  } catch {
-    codeDrawer.open = true;
-    return;
-  }
-  confirmCopy(copyHtmlButton, 'Copied', 'HTML copied.');
 }
 
 async function copyLink() {
@@ -1259,13 +1308,13 @@ async function copyLink() {
   } catch {
     replaceAddress(params);
     confirmCopy(
-      copyLinkButton,
-      'Copy failed',
+      'xmark',
+      'Couldn’t copy. It’s in the address bar.',
       'Couldn’t copy. The link is in the address bar.'
     );
     return;
   }
-  confirmCopy(copyLinkButton, 'Copied', 'Link copied.');
+  confirmCopy('check', 'Copied', 'Link copied.');
 }
 
 // Keeps a control focused from below out from behind the pinned head. Fit's messages can make the head any height, and CSS can't read it.
@@ -1274,11 +1323,6 @@ function keepFocusClearOfHead() {
   document.documentElement.style.scrollPaddingBlockStart = isPinned
     ? `calc(${head.offsetHeight}px + 1rem)`
     : '';
-}
-
-function showCodeFormat() {
-  codeWells.html.hidden = codeFormat.value !== 'html';
-  codeWells.css.hidden = codeFormat.value !== 'css';
 }
 
 function flyWordIn({ detail: tripFrom }) {
@@ -1307,7 +1351,6 @@ await Promise.all(
     'wa-input',
     'wa-select',
     'wa-slider',
-    'wa-radio-group',
     'wa-random-content',
     'wa-drawer',
   ].map((tag) => customElements.whenDefined(tag))
@@ -1326,10 +1369,11 @@ document
   .getElementById('controls')
   .addEventListener('submit', (event) => event.preventDefault());
 document.getElementById('reset').addEventListener('click', resetStudio);
-copyHtmlButton.addEventListener('click', copyHtml);
 copyLinkButton.addEventListener('click', copyLink);
-codeFormat.addEventListener('change', showCodeFormat);
 codeDrawer.addEventListener('wa-show', showCode);
+codeRoute.addEventListener('wa-tab-show', () =>
+  requestAnimationFrame(showCode)
+);
 isColorModeOn.addEventListener('change', render);
 
 document.addEventListener('sidechange', ({ detail }) => {

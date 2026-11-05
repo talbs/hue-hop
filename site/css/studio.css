@@ -64,12 +64,13 @@
 
 :root {
   --console-width: 120rem;
-  --row-height: var(--tap);
-  --bar-control: 2rem;
+  --panel-radius: 0.625rem;
+  --stage-inset: var(--space-section);
   --word-size: 3.5rem;
   --meter-tile: 1.5rem;
-  --plate: color-mix(in oklch, var(--surface) 88%, transparent);
   --meter-pad: var(--space-tight);
+  /* The panels sit this far from the window on every side, so the header lines up with them. */
+  --gutter: var(--space-group);
 }
 
 .site-header-inner {
@@ -105,7 +106,7 @@ wa-page::part(subheader) {
   --preview-page: var(--page-light);
 }
 
-/* Rows, buttons and the drawer's wells all set a display of their own, which would beat the attribute. */
+/* Rows and buttons set a display of their own, which would beat the attribute. */
 .studio [hidden] {
   display: none;
 }
@@ -119,7 +120,7 @@ wa-page::part(subheader) {
 
 /* Wherever the panels can't fit beside the word, it and its meters stay in view while the panels scroll beneath them. Any shorter and the pinned head would leave no room for the panels, so it scrolls away with the page. */
 @media (width < 50rem) and (height >= 34rem),
-  (width < 75rem) and (height >= 34rem) and (height < 56rem) {
+  (50rem <= width < 60rem) and (44rem <= height < 56rem) {
   .head {
     position: sticky;
     inset-block-start: 0;
@@ -141,21 +142,7 @@ wa-page::part(subheader) {
 }
 
 .overlay {
-  padding-block: var(--space-tight);
-  border-block-end: var(--border-thin) solid var(--divider);
-}
-
-.overlay-bars {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-related);
-  padding-inline: var(--space-related);
-}
-
-.float-bar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-tight);
+  padding-block: var(--space-group) var(--space-related);
 }
 
 .float-bar .lit-button {
@@ -163,35 +150,14 @@ wa-page::part(subheader) {
   padding-inline: var(--space-related);
 }
 
-#copy-html,
 .page-pick output {
   display: none;
 }
 
-#reset {
-  margin-inline-end: var(--space-related);
-  padding-inline: var(--space-related);
-  background: var(--plate);
-  box-shadow: none;
-}
-
-#reset:hover {
-  transform: none;
-  color: var(--ink);
-}
-
-#copy-html {
-  background: var(--ink);
-  color: var(--page);
-}
-
-#copy-html:hover {
-  color: var(--page);
-}
-
-#copy-html:active {
-  background: var(--ink-quiet);
-  color: var(--page);
+#copy-link {
+  justify-content: center;
+  inline-size: var(--bar-control);
+  padding-inline: 0;
 }
 
 .page-pick {
@@ -206,7 +172,7 @@ wa-page::part(subheader) {
   grid-template-columns: minmax(0, 1fr);
   place-items: center;
   margin: 0;
-  padding: var(--space-related);
+  padding: var(--space-related) var(--stage-inset);
   min-height: 5rem;
   overflow: hidden;
   background: var(--preview-page);
@@ -240,14 +206,10 @@ wa-page::part(subheader) {
   view-transition-name: hero-wordmark;
 }
 
-.bridge {
-  background: var(--surface);
-}
-
 .bridge-inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  padding-inline: var(--space-related);
+  padding-inline: var(--gutter);
 }
 
 .bridge-strips {
@@ -262,41 +224,19 @@ wa-page::part(subheader) {
   outline-offset: -2px;
 }
 
-.meter-track {
-  display: flex;
-  width: max-content;
-  min-width: 100%;
-}
-
-.meter-keys {
-  position: sticky;
-  inset-inline-start: 0;
-  z-index: 1;
-  flex: none;
-  display: grid;
-  align-content: start;
-  gap: 2px;
-  padding-block: calc(var(--meter-pad) + var(--meter-tile) + var(--space-tight))
-    var(--meter-pad);
-  padding-inline-end: var(--space-related);
-  background: var(--surface);
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  line-height: var(--leading-tight);
-  color: var(--ink-faint);
-}
-
 .meters {
-  flex: 1;
   display: flex;
+  gap: var(--space-tight);
+  width: max-content;
 }
 
 .meter {
-  flex: 1 0 2.75rem;
+  flex: none;
+  inline-size: 2.75rem;
   display: grid;
   align-content: start;
-  gap: var(--space-tight);
-  padding: var(--meter-pad) 2px;
+  gap: var(--space-related);
+  padding-block: var(--meter-pad);
 }
 
 .meter-letter {
@@ -305,6 +245,7 @@ wa-page::part(subheader) {
   block-size: var(--meter-tile);
   border-radius: var(--radius-control);
   background: var(--preview-page);
+  box-shadow: inset 0 0 0 var(--border-thin) var(--divider);
   font-size: 0.9375rem;
   font-weight: var(--weight-strong);
   line-height: 1;
@@ -312,31 +253,35 @@ wa-page::part(subheader) {
 
 .meter-leds {
   display: grid;
-  justify-content: center;
-  gap: 2px;
+  justify-items: center;
 }
 
 .meter-led {
-  position: relative;
-  display: inline-flex;
+  display: flex;
+  flex-direction: column-reverse;
   align-items: center;
+  gap: var(--space-tight);
   font-family: var(--font-readout);
-  font-size: var(--type-label);
+  font-size: var(--type-fine);
   line-height: var(--leading-tight);
   font-variant-numeric: tabular-nums;
   color: var(--ink-quiet);
 }
 
-/* Beside the ratio rather than in line, so the ratio stays under its letter and doesn't move when it crosses the bar. A fader can flip a meter's state many times a second, so the dot skips the hit or it would flash. */
-.meter-led .led {
+/* Each letter keeps both ratios for screen readers, and shows only the one for the background on view. */
+[data-side='a'] .meter-led[data-scheme='light'] > :not(.wa-visually-hidden),
+[data-side='b'] .meter-led[data-scheme='dark'] > :not(.wa-visually-hidden) {
   display: none;
-  position: absolute;
-  inset-inline-end: calc(100% + 3px);
+}
+
+/* Keeps its place under the ratio, so the strip doesn't jump when a letter crosses the bar. A fader can flip a meter's state many times a second, so the dot skips the hit or it would flash. */
+.meter-led .led {
+  visibility: hidden;
   animation: none;
 }
 
 .meter-led[data-state='check'] .led {
-  display: block;
+  visibility: visible;
 }
 
 .meter-led[data-state='check'] .led-value {
@@ -346,11 +291,11 @@ wa-page::part(subheader) {
 /* Holds "10.0", so a ratio crossing it can't change the strip's width without a remeasure. */
 .led-value {
   min-inline-size: 4ch;
-  text-align: end;
+  text-align: center;
 }
 
 .meters-empty {
-  padding: var(--space-related);
+  padding-block: var(--meter-pad);
   font-size: var(--type-fine);
   color: var(--ink-faint);
 }
@@ -358,29 +303,10 @@ wa-page::part(subheader) {
 .bridge-end {
   display: grid;
   gap: var(--space-tight);
-  padding-block: var(--space-tight);
-  border-block-start: var(--border-thin) solid var(--divider);
+  padding-block: var(--space-tight) var(--space-group);
 }
 
-[data-state='pass'] {
-  --lit: var(--pass);
-}
-
-[data-state='check'] {
-  --lit: var(--check);
-}
-
-[data-state='check'] .led {
-  animation-name: led-hit-again;
-}
-
-[data-state='off'] .led {
-  border-color: var(--border-control);
-  background: var(--surface-sunken);
-  box-shadow: none;
-}
-
-.lamp {
+.lamp-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -388,27 +314,30 @@ wa-page::part(subheader) {
   min-height: var(--bar-control);
 }
 
-.lamp-readings {
-  display: flex;
-  align-items: center;
-  gap: var(--space-related);
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.lamp-report {
+  display: grid;
+  gap: var(--space-tight);
+  min-width: 0;
+}
+
+.lamp-detail {
+  font-size: var(--type-fine);
+  line-height: var(--leading-tight);
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-  color: var(--ink);
+  color: var(--ink-quiet);
 }
 
 .lamp-reading {
   display: flex;
   align-items: center;
-  gap: var(--space-tight);
+  gap: var(--space-related);
 }
 
-.lamp-divider {
-  color: var(--ink-faint);
+.lamp-text {
+  font-size: var(--type-small);
+  font-weight: var(--weight-strong);
+  line-height: var(--leading-tight);
+  color: var(--ink);
 }
 
 .bridge-controls,
@@ -436,81 +365,19 @@ wa-page::part(subheader) {
   display: none;
 }
 
-.bar-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-tight);
-}
-
-wa-radio-group::part(form-control-input) {
-  flex-wrap: nowrap;
-  gap: var(--space-tight);
-}
-
-wa-radio[appearance='button'] {
-  --wa-form-control-height: var(--bar-control);
-  margin: 0;
-  padding-inline: var(--space-related);
-  border-color: transparent;
-  border-radius: var(--radius-control);
-  background-color: var(--surface-raised);
-  box-shadow: var(--depth-raised);
-  color: var(--ink-quiet);
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  transition:
-    box-shadow var(--note-16) var(--ease-bounce),
-    background-color var(--note-16) var(--ease-hit),
-    color var(--note-16) var(--ease-hit);
-}
-
-wa-radio[appearance='button']::part(label) {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-tight);
-}
-
-wa-radio[appearance='button']:hover {
-  box-shadow: var(--depth-lifted);
-  color: var(--ink);
-}
-
-wa-radio[appearance='button']:state(checked) {
-  background-color: var(--surface-sunken);
-  box-shadow: var(--depth-pressed);
-  color: var(--ink);
-}
-
 .fit-button {
   min-height: var(--bar-control);
   padding-inline: var(--space-group);
 }
 
-/* Keeps its place, so the bar row doesn't jump the moment a letter fails. */
 .fit-button:disabled {
-  visibility: hidden;
+  display: none;
 }
 
 .undo-fit {
   justify-self: start;
   min-height: var(--bar-control);
   padding-inline: var(--space-related);
-}
-
-.lit-button:is(:disabled, [aria-disabled='true']) {
-  opacity: 0.45;
-  cursor: default;
-}
-
-.lit-button:is(:disabled, [aria-disabled='true']):is(:hover, :active) {
-  transform: none;
-  background: var(--surface-raised);
-  box-shadow: var(--depth-raised);
-  color: var(--ink-quiet);
 }
 
 .bridge-note,
@@ -540,34 +407,32 @@ wa-radio[appearance='button']:state(checked) {
 }
 
 .desk {
-  padding-block: var(--space-group);
+  padding-block: var(--space-related) var(--gutter);
 }
 
 .channels {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-group);
+  gap: var(--wa-space-l);
 }
 
 /* A squeezed panel would otherwise shrink its rows until they overlap, and never scroll. */
 .channel {
   display: grid;
   grid-auto-rows: max-content;
-  align-content: start;
+  align-content: space-between;
+  row-gap: var(--wa-space-s);
   min-width: 0;
-  padding-block-end: var(--space-tight);
-  border-radius: var(--radius-container);
+  padding: var(--space-group);
+  border-radius: var(--panel-radius);
   background: var(--surface);
   box-shadow: var(--depth-panel);
 }
 
 .channel-name {
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  font-weight: 400;
+  font-size: var(--type-body);
+  font-weight: var(--weight-strong);
   line-height: var(--leading-tight);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--ink);
 }
 
@@ -575,8 +440,6 @@ wa-radio[appearance='button']:state(checked) {
 .channel-head {
   display: flex;
   align-items: center;
-  min-height: 2.25rem;
-  padding-inline: var(--space-group);
 }
 
 .channel-head {
@@ -585,26 +448,17 @@ wa-radio[appearance='button']:state(checked) {
 }
 
 .channel-hint {
-  font-size: var(--type-label);
+  font-size: var(--type-fine);
   line-height: var(--leading-tight);
-  text-align: end;
-  color: var(--ink-faint);
+  color: var(--ink-quiet);
 }
 
 .row {
   display: grid;
-  grid-template-columns: 3rem minmax(0, 1fr) 3.5rem;
+  grid-template-columns: 3.5rem minmax(0, 1fr) 3.5rem;
   align-items: center;
-  gap: var(--space-related);
-  min-height: var(--row-height);
-  padding-inline: var(--space-group);
-}
-
-.row[hidden] {
-  height: 0;
-  min-height: 0;
-  opacity: 0;
-  overflow: clip;
+  gap: var(--wa-space-s);
+  min-height: var(--bar-control);
 }
 
 .row-wide {
@@ -619,33 +473,19 @@ wa-radio[appearance='button']:state(checked) {
 .row output,
 .page-pick output {
   font-family: var(--font-readout);
-  font-size: var(--type-label);
+  font-size: var(--type-fine);
   line-height: var(--leading-tight);
   text-align: end;
   font-variant-numeric: tabular-nums;
   color: var(--ink);
 }
 
+.row > output {
+  font-size: var(--type-small);
+}
+
 .channel .lit-button {
   min-height: var(--bar-control);
-  padding-inline: var(--space-related);
-}
-
-.toggle-line {
-  display: flex;
-  align-items: center;
-  gap: var(--space-related);
-}
-
-.toggle-hint {
-  font-size: var(--type-label);
-  color: var(--ink-faint);
-}
-
-.text-field {
-  display: flex;
-  align-items: center;
-  gap: var(--space-related);
 }
 
 .text-field wa-input {
@@ -653,23 +493,29 @@ wa-radio[appearance='button']:state(checked) {
 }
 
 #accent-fields {
-  flex: 1;
+  flex: 1 1 9rem;
   min-width: 0;
 }
 
-.channel wa-input::part(input-wrapper),
-.channel wa-select::part(combobox) {
+.drift-row {
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  column-gap: var(--wa-space-l);
+}
+
+.drift-half {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-related);
   min-height: var(--bar-control);
 }
 
-.channel wa-input,
 .channel wa-select {
-  --wa-form-control-height: var(--bar-control);
-  --wa-form-control-padding-inline: var(--space-related);
+  --wa-form-control-padding-inline: var(--space-group);
 }
 
-.channel wa-input::part(input) {
-  font-size: var(--type-small);
+.channel wa-select::part(combobox) {
+  min-height: var(--bar-control);
 }
 
 .channel wa-select::part(combobox) {
@@ -678,12 +524,12 @@ wa-radio[appearance='button']:state(checked) {
   background: var(--stage);
   box-shadow: var(--depth-pressed);
   color: var(--ink);
-  font-size: var(--type-small);
+  font-size: var(--type-body);
 }
 
 .channel wa-select::part(display-input) {
   color: var(--ink);
-  font-size: var(--type-small);
+  font-size: var(--type-body);
 }
 
 .channel wa-select:hover::part(combobox) {
@@ -713,54 +559,6 @@ wa-option {
   font-size: var(--type-small);
 }
 
-wa-color-picker {
-  --wa-form-control-background-color: var(--stage);
-  --wa-form-control-border-color: var(--border-container);
-  --wa-form-control-border-radius: var(--radius-control);
-}
-
-wa-color-picker::part(trigger) {
-  border: var(--border-thin) solid var(--border-control);
-  border-radius: var(--radius-control);
-}
-
-wa-color-picker::part(input) {
-  border-radius: var(--radius-control);
-  box-shadow: var(--depth-pressed);
-  font-family: var(--font-code);
-}
-
-wa-color-picker::part(preview) {
-  border-radius: var(--radius-control);
-  box-shadow: var(--depth-pressed);
-}
-
-wa-color-picker::part(grid) {
-  border-radius: var(--radius-control) var(--radius-control) 0 0;
-}
-
-wa-color-picker::part(grid-handle) {
-  border: var(--border-thick) solid var(--ink);
-  box-shadow: var(--depth-cap);
-}
-
-wa-color-picker::part(eyedropper-button__base) {
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-control);
-  background: var(--surface-raised);
-  box-shadow: var(--depth-raised);
-  color: var(--ink-quiet);
-}
-
-wa-color-picker::part(color-picker) {
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-container);
-  background: var(--surface);
-  box-shadow:
-    var(--depth-panel),
-    0 12px 32px rgb(0 0 0 / 0.35);
-}
-
 .color-field {
   display: inline-flex;
   align-items: center;
@@ -768,35 +566,49 @@ wa-color-picker::part(color-picker) {
   min-height: var(--bar-control);
 }
 
-.page-picker::part(trigger),
-.color-field wa-color-picker::part(trigger) {
+.page-picker {
+  --swatch-gap: 3px;
+}
+
+.page-picker::part(trigger) {
   width: 1.5rem;
   height: 1.5rem;
-  border: 0;
-  border-radius: var(--radius-cap);
-  box-shadow: inset 0 0 0 var(--border-thin) var(--border-control);
 }
 
 .color-field wa-color-picker::part(trigger) {
   width: var(--bar-control);
   height: var(--bar-control);
-  border-radius: var(--radius-control);
 }
 
-.end-field {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+/* Stays tall enough for the hex and Auto stacked beside it. */
+.end-field wa-color-picker::part(trigger) {
+  width: var(--tap);
+  height: var(--tap);
+}
+
+.end-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
   gap: var(--space-related);
 }
 
-.auto-tag {
-  padding-inline-end: var(--space-tight);
-  font-family: var(--font-readout);
+.end-block {
+  min-width: 0;
+}
+
+.end-facts {
+  min-width: 0;
+}
+
+.end-facts output {
+  min-height: 1.25rem;
+  line-height: 1.25rem;
+}
+
+.end-facts .end-auto {
+  gap: var(--space-tight);
+  min-height: 1.25rem;
   font-size: var(--type-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
 }
 
 .icon-action {
@@ -813,13 +625,8 @@ wa-color-picker::part(color-picker) {
   transition: color var(--note-16) var(--ease-hit);
 }
 
-.icon-action:hover,
-.link-toggle[data-linked='true'] {
+.icon-action:hover {
   color: var(--ink);
-}
-
-.link-toggle[data-linked='false'] {
-  color: var(--ink-faint);
 }
 
 .chip {
@@ -827,7 +634,7 @@ wa-color-picker::part(color-picker) {
   align-items: center;
   gap: var(--space-tight);
   min-height: var(--bar-control);
-  padding-inline: var(--space-tight);
+  padding-inline: var(--space-related);
   border: var(--border-thin) solid transparent;
   border-radius: var(--radius-control);
   background: var(--surface-raised);
@@ -861,15 +668,11 @@ wa-color-picker::part(color-picker) {
   box-shadow: var(--depth-raised), var(--focus-glow);
 }
 
-.row-presets {
-  padding-block: var(--space-related);
-}
-
 .hue-grid {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(4.25rem, 1fr));
-  gap: var(--space-tight);
+  gap: var(--space-related);
 }
 
 /* Each hue sits in a sleeve on the page color, like the landing's hue tiles. */
@@ -877,9 +680,10 @@ wa-color-picker::part(color-picker) {
   justify-content: center;
   min-width: 0;
   border-color: var(--border-container);
-  background: var(--page);
+  background: var(--stage);
   box-shadow: var(--depth-pressed);
-  font-weight: var(--weight-heading);
+  font-size: var(--type-body);
+  font-weight: var(--weight-strong);
   overflow: hidden;
 }
 
@@ -924,33 +728,43 @@ wa-color-picker::part(color-picker) {
 }
 
 #code-drawer::part(body) {
-  padding: var(--space-group);
-}
-
-.code-plate {
   display: grid;
-  border-radius: var(--radius-container);
-  background: var(--surface);
-  box-shadow: var(--depth-panel);
+  align-content: start;
+  gap: var(--space-section);
+  padding: var(--wa-space-l) var(--space-section) var(--space-section);
 }
 
-.code-bar {
-  padding: var(--space-related) var(--space-group);
-  border-block-end: var(--border-thin) solid var(--divider);
+.code-step {
+  min-width: 0;
 }
 
-.code-note {
-  margin: var(--space-group) var(--space-group) 0;
-  font-size: var(--type-fine);
-  line-height: var(--leading-tight);
-  color: var(--ink-faint);
+#code-install {
+  padding-block-start: var(--space-section);
+  border-block-start: var(--border-thin) solid var(--divider);
 }
 
-.code-plate .code-well {
-  margin: var(--space-group);
+#code-title {
+  font-size: var(--type-lead);
 }
 
-.code-plate .code-block {
+#code-drawer .step-title {
+  font-size: var(--type-body);
+}
+
+#code-drawer .install-note {
+  margin: 0;
+}
+
+#code-drawer wa-tab-panel > .wa-stack {
+  gap: var(--space-group);
+}
+
+#code-drawer .code-well {
+  border-radius: var(--panel-radius);
+}
+
+#code-drawer .code-block {
+  font-size: var(--type-small);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -992,51 +806,42 @@ wa-color-picker::part(color-picker) {
   }
 }
 
-/* Below this the panels are thumbed, so their controls take the full tap size. */
 @media (width < 50rem) {
   .channel {
     --bar-control: var(--tap);
   }
 
-  .row {
-    padding-block: var(--space-tight);
+  /* The verdict and its numbers share one line where the report spans the window. */
+  .lamp-report {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-tight) var(--space-group);
   }
 }
 
 @media (min-width: 50rem) {
   :root {
-    --row-height: 2.5rem;
+    --gutter: var(--space-section);
+    --stage-inset: var(--wa-space-3xl);
     --word-size: 6rem;
     --meter-tile: 2rem;
-    --meter-pad: var(--space-related);
-  }
-
-  .overlay-bars {
-    padding-inline: var(--gutter);
+    --meter-pad: var(--space-group);
   }
 
   .float-bar .lit-button {
     padding-inline: var(--space-group);
   }
 
-  #copy-html {
-    display: inline-flex;
-  }
-
-  #reset {
-    margin-inline-end: var(--space-group);
-  }
-
-  .page-picks {
-    gap: var(--space-group);
-    padding-inline: var(--space-related);
-    border-radius: var(--radius-control);
-    background: var(--plate);
-  }
-
   .page-pick {
     min-height: var(--bar-control);
     gap: var(--space-related);
+    padding-inline: var(--wa-space-s);
+    border-radius: var(--radius-control);
+    background: var(--surface);
+    box-shadow: var(--depth-panel);
   }
 
   .page-pick output {
@@ -1045,13 +850,34 @@ wa-color-picker::part(color-picker) {
   }
 
   .bridge-inner {
-    grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
-    column-gap: var(--space-group);
-    padding-inline: var(--gutter);
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--wa-space-l);
   }
 
   .meter-letter {
     font-size: 1.125rem;
+  }
+
+  .lamp-line {
+    align-items: start;
+    justify-content: flex-end;
+    gap: var(--space-group);
+  }
+
+  .lamp-report {
+    justify-items: end;
+    gap: var(--space-related);
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  /* Shares the letter strip's two rows: the verdict beside the tiles, the numbers beside the ratios. */
+  .lamp-reading {
+    min-block-size: var(--meter-tile);
+  }
+
+  .fit-button {
+    order: -1;
   }
 
   /* Fit's messages take a line under the letters and the lamp together, so reading them costs the word as little as possible. */
@@ -1062,7 +888,7 @@ wa-color-picker::part(color-picker) {
   .bridge-controls {
     align-content: start;
     gap: var(--space-related);
-    padding-block: var(--space-related);
+    padding-block: var(--space-group);
   }
 
   .bridge-messages {
@@ -1072,6 +898,35 @@ wa-color-picker::part(color-picker) {
     padding-block-end: var(--space-related);
   }
 
+  .channel {
+    padding: var(--wa-space-l);
+  }
+
+  /* Overhangs the head, so all three titles sit on one line at the panel's inset. */
+  .channel-head .lit-button {
+    margin-block: calc((1lh - var(--bar-control)) / 2);
+  }
+
+  .channel-head,
+  .channel > .channel-name {
+    padding-block-end: var(--space-tight);
+  }
+
+  /* The chips take Hue's spare height, so its gaps match the other panels. */
+  #strip-hue {
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    align-content: stretch;
+  }
+
+  .row-presets {
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .row-presets .hue-grid {
+    grid-auto-rows: 1fr;
+  }
+
   .channels {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1079,6 +934,7 @@ wa-color-picker::part(color-picker) {
   #strip-shape {
     grid-column: 1 / -1;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-section);
   }
 
   #strip-shape > .channel-name {
@@ -1088,7 +944,6 @@ wa-color-picker::part(color-picker) {
 
 @media (width >= 50rem) and (height < 44rem) {
   :root {
-    --row-height: 2.25rem;
     --meter-tile: 1.75rem;
     --meter-pad: var(--space-tight);
   }
@@ -1104,7 +959,8 @@ wa-color-picker::part(color-picker) {
 }
 
 /* With room both ways the console fills the window and the page never scrolls: the word gives way first, then the panels scroll inside themselves. The meters and messages never shrink. Two rows of panels need a taller window than one. */
-@media (width >= 75rem) and (height >= 34rem),
+@media (width >= 60rem),
+  (width >= 50rem) and (height < 44rem),
   (width >= 50rem) and (height >= 56rem) {
   wa-page::part(page) {
     height: 100dvh;
@@ -1141,9 +997,8 @@ wa-color-picker::part(color-picker) {
   .overlay {
     position: absolute;
     z-index: 1;
-    inset: var(--space-group) 0 auto;
+    inset: var(--gutter) 0 auto;
     padding: 0;
-    border: 0;
     pointer-events: none;
   }
 
@@ -1153,10 +1008,8 @@ wa-color-picker::part(color-picker) {
 
   .stage {
     min-height: 0;
-    padding: calc(
-        var(--space-group) + var(--bar-control) + var(--space-related)
-      )
-      var(--gutter) var(--space-related);
+    padding: calc(var(--gutter) + var(--bar-control) + var(--space-related))
+      var(--stage-inset) var(--space-related);
   }
 
   .desk {
@@ -1186,17 +1039,8 @@ wa-color-picker::part(color-picker) {
 }
 
 @media (min-width: 75rem) {
-  .bridge-inner,
   .channels {
     grid-template-columns: repeat(12, minmax(0, 1fr));
-  }
-
-  .bridge-strips {
-    grid-column: span 8;
-  }
-
-  .bridge-controls {
-    grid-column: span 4;
   }
 
   .channel,
@@ -1209,29 +1053,64 @@ wa-color-picker::part(color-picker) {
   }
 }
 
-/* The reveal runs only once the Studio is up, so the closed rows don't play it at page load. */
-@media (prefers-reduced-motion: no-preference) {
-  .row {
-    interpolate-size: allow-keywords;
-    transition:
-      height var(--note-8) var(--ease-hit),
-      min-height var(--note-8) var(--ease-hit),
-      opacity var(--note-16) var(--ease-hit) var(--note-16),
-      display var(--note-8) allow-discrete;
+/* Too short to stack the panels under the word without shrinking it, so they take a scrolling column beside it. */
+@media (width >= 75rem) and (height < 50rem),
+  (60rem <= width < 75rem) and (height < 56rem),
+  (50rem <= width < 60rem) and (height < 44rem) {
+  .studio {
+    flex-direction: row;
   }
 
-  .row[hidden] {
-    transition:
-      opacity var(--note-16) var(--ease-hit),
-      height var(--note-8) var(--ease-hit),
-      min-height var(--note-8) var(--ease-hit),
-      display var(--note-8) allow-discrete;
+  .head {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .desk {
+    flex: none;
+    inline-size: calc(26rem + var(--gutter));
+    padding: var(--gutter) var(--gutter) var(--gutter) 0;
+    overflow-y: auto;
+  }
+
+  .channels {
+    flex: none;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    padding-inline: 0;
+  }
+
+  .channel,
+  #strip-shape {
+    grid-column: auto;
+    grid-template-columns: minmax(0, 1fr);
+    overflow-y: visible;
+  }
+}
+
+@media (50rem <= width < 60rem) and (height < 44rem) {
+  .page-pick .readout-label,
+  .page-pick output {
+    display: none;
+  }
+
+  .bridge-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bridge-messages {
+    grid-column: auto;
+  }
+}
+
+/* The reveal runs only once the Studio is up, so the closed rows don't play it at page load. */
+@media (prefers-reduced-motion: no-preference) {
+  .row:not([hidden]) {
+    transition: opacity var(--note-16) var(--ease-hit);
   }
 
   @starting-style {
     .studio[data-ready] .row:not([hidden]) {
-      height: 0;
-      min-height: 0;
       opacity: 0;
     }
   }

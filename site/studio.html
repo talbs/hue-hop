@@ -84,13 +84,6 @@
       content="Make a pair of your own, check every letter on your light and dark pages, and copy the code."
     />
     <link
-      rel="preload"
-      href="{{root}}fonts/onest-latin-wght-normal.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
       rel="stylesheet"
       href="{{root}}css/controls.css"
     />
@@ -146,68 +139,30 @@
             aria-label="Preview"
           >
             <div class="overlay">
-              <div class="overlay-bars console-width">
-                <div
-                  class="float-bar page-picks"
-                  role="group"
-                  aria-label="Page colors"
-                >
-                  <span
-                    class="readout-label"
-                    aria-hidden="true"
-                  >
-                    Page
-                  </span>
+              <div class="console-width wa-split wa-gap-xs wa-flex-nowrap">
+                <div class="float-bar wa-cluster wa-gap-xs wa-flex-nowrap">
                   <div class="page-pick">
                     <span
                       class="readout-label"
                       aria-hidden="true"
                     >
-                      A
+                      Background
                     </span>
                     <wa-color-picker
                       class="wa-visually-hidden-label page-picker"
-                      name="darkPage"
-                      label="Side A page color"
+                      name="page"
+                      label="Background, dark"
                       size="s"
                       value="#141416"
                       without-format-toggle
                     ></wa-color-picker>
                     <output
                       aria-live="off"
-                      data-for="darkPage"
+                      data-for="page"
                     >
                       #141416
                     </output>
                   </div>
-                  <div class="page-pick">
-                    <span
-                      class="readout-label"
-                      aria-hidden="true"
-                    >
-                      B
-                    </span>
-                    <wa-color-picker
-                      class="wa-visually-hidden-label page-picker"
-                      name="lightPage"
-                      label="Side B page color"
-                      size="s"
-                      value="#f7f7f5"
-                      without-format-toggle
-                    ></wa-color-picker>
-                    <output
-                      aria-live="off"
-                      data-for="lightPage"
-                    >
-                      #f7f7f5
-                    </output>
-                  </div>
-                </div>
-                <div
-                  class="float-bar"
-                  role="group"
-                  aria-label="Actions"
-                >
                   <button
                     type="button"
                     class="lit-button"
@@ -215,26 +170,40 @@
                   >
                     Reset
                   </button>
-                  <button
-                    type="button"
-                    class="lit-button"
-                    data-drawer="open code-drawer"
-                  >
-                    Code
-                  </button>
+                </div>
+                <div
+                  class="float-bar wa-cluster wa-gap-xs wa-flex-nowrap"
+                  role="group"
+                  aria-label="Actions"
+                >
                   <button
                     type="button"
                     class="lit-button"
                     id="copy-link"
+                    aria-label="Copy link"
                   >
-                    Copy Link
+                    <wa-icon
+                      canvas="auto"
+                      family="pixel"
+                      name="link"
+                    ></wa-icon>
                   </button>
+                  <wa-tooltip
+                    id="copy-link-tip"
+                    for="copy-link"
+                  >
+                    Copy link
+                  </wa-tooltip>
                   <button
                     type="button"
-                    class="lit-button"
-                    id="copy-html"
+                    class="lit-button is-lit"
+                    data-drawer="open code-drawer"
                   >
-                    Copy HTML
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Code
                   </button>
                 </div>
               </div>
@@ -282,10 +251,7 @@
             </figure>
           </section>
 
-          <section
-            class="bridge"
-            aria-labelledby="bridge-title"
-          >
+          <section aria-labelledby="bridge-title">
             <h2
               class="wa-visually-hidden"
               id="bridge-title"
@@ -298,19 +264,10 @@
                 role="region"
                 aria-label="Letter colors and contrast"
               >
-                <div class="meter-track">
-                  <div
-                    class="meter-keys"
-                    aria-hidden="true"
-                  >
-                    <span>A</span>
-                    <span>B</span>
-                  </div>
-                  <ol
-                    class="meters wa-list-plain"
-                    id="meters"
-                  ></ol>
-                </div>
+                <ol
+                  class="meters wa-list-plain"
+                  id="meters"
+                ></ol>
                 <p
                   class="meters-empty"
                   id="meters-empty"
@@ -321,85 +278,27 @@
               </div>
               <div class="bridge-end">
                 <div class="bridge-controls">
-                  <div class="lamp">
-                    <span
-                      class="readout-label"
-                      aria-hidden="true"
-                    >
-                      Contrast
-                    </span>
-                    <span
-                      class="lamp-readings"
-                      aria-hidden="true"
-                    >
+                  <div class="lamp-line">
+                    <div class="lamp-report">
                       <span
                         class="lamp-reading"
-                        id="lamp-a"
+                        id="lamp-status"
                         data-state="pass"
-                      >
-                        <span
-                          class="led"
-                          aria-hidden="true"
-                        ></span>
-                        <span class="lamp-text">A Pass 4.9</span>
-                      </span>
-                      <span
-                        class="lamp-divider"
                         aria-hidden="true"
                       >
-                        ·
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        <span class="lamp-text">Contrast Passes</span>
                       </span>
                       <span
-                        class="lamp-reading"
-                        id="lamp-b"
-                        data-state="pass"
+                        class="lamp-detail"
+                        aria-hidden="true"
                       >
-                        <span
-                          class="led"
-                          aria-hidden="true"
-                        ></span>
-                        <span class="lamp-text">B Pass 4.8</span>
+                        Dark 4.9 · Light 4.8 · Min 4.5
                       </span>
-                    </span>
-                    <output
-                      class="wa-visually-hidden"
-                      id="lamp-spoken"
-                      aria-live="polite"
-                      aria-atomic="true"
-                    >
-                      Contrast: side A passes at 4.9, side B passes at 4.8.
-                    </output>
-                  </div>
-                  <div class="bar-row">
-                    <wa-radio-group
-                      class="wa-visually-hidden-label"
-                      name="bar"
-                      label="Contrast bar"
-                      orientation="horizontal"
-                      size="s"
-                      value="4.5"
-                    >
-                      <wa-radio
-                        appearance="button"
-                        value="4.5"
-                      >
-                        <span
-                          class="led"
-                          aria-hidden="true"
-                        ></span>
-                        4.5:1
-                      </wa-radio>
-                      <wa-radio
-                        appearance="button"
-                        value="3"
-                      >
-                        <span
-                          class="led"
-                          aria-hidden="true"
-                        ></span>
-                        3:1 large
-                      </wa-radio>
-                    </wa-radio-group>
+                    </div>
                     <button
                       type="button"
                       class="lit-button fit-button"
@@ -409,6 +308,14 @@
                       Fit
                     </button>
                   </div>
+                  <output
+                    class="wa-visually-hidden"
+                    id="lamp-spoken"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
+                    Contrast: dark passes at 4.9, light passes at 4.8.
+                  </output>
                 </div>
                 <div class="bridge-messages">
                   <p
@@ -468,27 +375,18 @@
                 >
                   Hue
                 </h2>
-                <div class="toggle-line">
+                <button
+                  type="button"
+                  class="lit-button toggle"
+                  name="display"
+                  aria-pressed="false"
+                >
                   <span
-                    class="toggle-hint"
-                    id="display-hint"
-                    hidden
-                  >
-                    Only with a preset
-                  </span>
-                  <button
-                    type="button"
-                    class="lit-button toggle"
-                    name="display"
-                    aria-pressed="false"
-                  >
-                    <span
-                      class="led"
-                      aria-hidden="true"
-                    ></span>
-                    Display
-                  </button>
-                </div>
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  Display
+                </button>
               </div>
               <div class="row row-presets">
                 <div
@@ -626,110 +524,92 @@
                   honey: butter yellow to rust in dark mode
                 </span>
               </div>
-              <div class="row">
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
-                >
-                  Start
-                </span>
-                <div class="row-wide end-field">
-                  <div class="color-field">
-                    <wa-color-picker
-                      class="wa-visually-hidden-label"
-                      name="start"
-                      label="Start color"
-                      size="s"
-                      value="#85d7ff"
-                      without-format-toggle
-                    ></wa-color-picker>
-                    <output
-                      aria-live="off"
-                      data-for="start"
-                    >
-                      #85d7ff
-                    </output>
-                    <button
-                      type="button"
-                      class="icon-action link-toggle"
-                      data-end="start"
-                      hidden
-                    >
-                      <wa-icon
-                        family="pixel"
-                        name="link"
-                        label="Dark start linked to light"
-                      ></wa-icon>
-                    </button>
-                    <span
-                      class="auto-tag"
-                      data-end="start"
-                      hidden
-                    >
-                      picked
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    class="lit-button auto-button"
-                    data-end="start"
-                    aria-label="Auto start"
+              <div class="row end-row">
+                <div class="end-block wa-stack wa-gap-xs">
+                  <span
+                    class="readout-label"
+                    aria-hidden="true"
                   >
-                    Auto
-                  </button>
+                    Start
+                  </span>
+                  <div class="end-field wa-cluster wa-gap-s wa-flex-nowrap">
+                    <div class="color-field">
+                      <wa-color-picker
+                        class="wa-visually-hidden-label"
+                        name="start"
+                        label="Start color"
+                        size="s"
+                        value="#85d7ff"
+                        without-format-toggle
+                      ></wa-color-picker>
+                    </div>
+                    <div
+                      class="end-facts wa-stack wa-gap-2xs wa-align-items-start"
+                    >
+                      <output
+                        aria-live="off"
+                        data-for="start"
+                      >
+                        #85d7ff
+                      </output>
+                      <button
+                        type="button"
+                        class="end-auto auto-button readout-label"
+                        data-end="start"
+                        aria-pressed="false"
+                        aria-label="Let Hue Hop pick the start"
+                      >
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        Auto
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
-                >
-                  End
-                </span>
-                <div class="row-wide end-field">
-                  <div class="color-field">
-                    <wa-color-picker
-                      class="wa-visually-hidden-label"
-                      name="end"
-                      label="End color"
-                      size="s"
-                      value="#7874f6"
-                      without-format-toggle
-                    ></wa-color-picker>
-                    <output
-                      aria-live="off"
-                      data-for="end"
-                    >
-                      #7874f6
-                    </output>
-                    <button
-                      type="button"
-                      class="icon-action link-toggle"
-                      data-end="end"
-                      hidden
-                    >
-                      <wa-icon
-                        family="pixel"
-                        name="link"
-                        label="Dark end linked to light"
-                      ></wa-icon>
-                    </button>
-                    <span
-                      class="auto-tag"
-                      data-end="end"
-                      hidden
-                    >
-                      picked
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    class="lit-button auto-button"
-                    data-end="end"
-                    aria-label="Auto end"
+                <div class="end-block wa-stack wa-gap-xs">
+                  <span
+                    class="readout-label"
+                    aria-hidden="true"
                   >
-                    Auto
-                  </button>
+                    End
+                  </span>
+                  <div class="end-field wa-cluster wa-gap-s wa-flex-nowrap">
+                    <div class="color-field">
+                      <wa-color-picker
+                        class="wa-visually-hidden-label"
+                        name="end"
+                        label="End color"
+                        size="s"
+                        value="#7874f6"
+                        without-format-toggle
+                      ></wa-color-picker>
+                    </div>
+                    <div
+                      class="end-facts wa-stack wa-gap-2xs wa-align-items-start"
+                    >
+                      <output
+                        aria-live="off"
+                        data-for="end"
+                      >
+                        #7874f6
+                      </output>
+                      <button
+                        type="button"
+                        class="end-auto auto-button readout-label"
+                        data-end="end"
+                        aria-pressed="false"
+                        aria-label="Let Hue Hop pick the end"
+                      >
+                        <span
+                          class="led"
+                          aria-hidden="true"
+                        ></span>
+                        Auto
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 <span
                   class="wa-visually-hidden"
@@ -752,7 +632,9 @@
                 >
                   Type
                 </h2>
-                <p class="channel-hint">Font, weight, size: preview only</p>
+                <p class="channel-hint wa-text-end">
+                  Font, weight, size: preview only
+                </p>
               </div>
               <div class="row">
                 <span
@@ -761,7 +643,9 @@
                 >
                   Text
                 </span>
-                <div class="row-wide text-field">
+                <div
+                  class="row-wide text-field wa-cluster wa-gap-xs wa-flex-nowrap"
+                >
                   <wa-input
                     class="wa-visually-hidden-label"
                     name="text"
@@ -797,6 +681,7 @@
                 >
                   <wa-icon
                     slot="expand-icon"
+                    canvas="auto"
                     family="pixel"
                     name="angle-down"
                   ></wa-icon>
@@ -825,7 +710,7 @@
                   size="s"
                   min="100"
                   max="900"
-                  step="10"
+                  step="100"
                   value="700"
                 ></wa-slider>
                 <output
@@ -858,49 +743,6 @@
                 >
                   96px
                 </output>
-              </div>
-              <div class="row">
-                <div class="row-full toggle-line">
-                  <button
-                    type="button"
-                    class="lit-button toggle"
-                    name="accentOn"
-                    aria-pressed="false"
-                  >
-                    <span
-                      class="led"
-                      aria-hidden="true"
-                    ></span>
-                    Accent
-                  </button>
-                  <div
-                    class="text-field"
-                    id="accent-fields"
-                    hidden
-                  >
-                    <wa-input
-                      class="wa-visually-hidden-label"
-                      name="accent"
-                      label="Accent mark"
-                      maxlength="200"
-                      size="s"
-                      value="."
-                    ></wa-input>
-                    <div class="color-field">
-                      <wa-color-picker
-                        class="wa-visually-hidden-label"
-                        name="accentColor"
-                        label="Accent color"
-                        size="s"
-                        without-format-toggle
-                      ></wa-color-picker>
-                      <output
-                        aria-live="off"
-                        data-for="accentColor"
-                      ></output>
-                    </div>
-                  </div>
-                </div>
               </div>
             </section>
 
@@ -991,7 +833,7 @@
                 </output>
               </div>
               <div class="row">
-                <div class="row-full toggle-line">
+                <div class="row-full wa-cluster wa-gap-xs">
                   <button
                     type="button"
                     class="lit-button toggle"
@@ -1004,61 +846,99 @@
                     ></span>
                     Drift
                   </button>
+                  <button
+                    type="button"
+                    class="lit-button toggle"
+                    name="accentOn"
+                    aria-pressed="false"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Accent
+                  </button>
+                  <div
+                    class="text-field wa-cluster wa-gap-xs wa-flex-nowrap"
+                    id="accent-fields"
+                    hidden
+                  >
+                    <wa-input
+                      class="wa-visually-hidden-label"
+                      name="accent"
+                      label="Accent mark"
+                      maxlength="200"
+                      size="s"
+                      value="."
+                    ></wa-input>
+                    <div class="color-field">
+                      <wa-color-picker
+                        class="wa-visually-hidden-label"
+                        name="accentColor"
+                        label="Accent color"
+                        size="s"
+                        without-format-toggle
+                      ></wa-color-picker>
+                      <output
+                        aria-live="off"
+                        data-for="accentColor"
+                      ></output>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div
-                class="row"
+                class="row drift-row"
                 hidden
               >
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
-                >
-                  Range
-                </span>
-                <wa-slider
-                  class="wa-visually-hidden-label"
-                  name="range"
-                  label="Drift range"
-                  size="s"
-                  min="4"
-                  max="90"
-                  step="1"
-                  value="24"
-                ></wa-slider>
-                <output
-                  aria-live="off"
-                  data-for="range"
-                >
-                  ±24°
-                </output>
-              </div>
-              <div
-                class="row"
-                hidden
-              >
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
-                >
-                  Cycle
-                </span>
-                <wa-slider
-                  class="wa-visually-hidden-label"
-                  name="cycle"
-                  label="Drift cycle"
-                  size="s"
-                  min="2"
-                  max="30"
-                  step="0.5"
-                  value="10"
-                ></wa-slider>
-                <output
-                  aria-live="off"
-                  data-for="cycle"
-                >
-                  10s
-                </output>
+                <div class="drift-half">
+                  <span
+                    class="readout-label"
+                    aria-hidden="true"
+                  >
+                    Range
+                  </span>
+                  <wa-slider
+                    class="wa-visually-hidden-label"
+                    name="range"
+                    label="Drift range"
+                    size="s"
+                    min="4"
+                    max="90"
+                    step="1"
+                    value="24"
+                  ></wa-slider>
+                  <output
+                    aria-live="off"
+                    data-for="range"
+                  >
+                    ±24°
+                  </output>
+                </div>
+                <div class="drift-half">
+                  <span
+                    class="readout-label"
+                    aria-hidden="true"
+                  >
+                    Cycle
+                  </span>
+                  <wa-slider
+                    class="wa-visually-hidden-label"
+                    name="cycle"
+                    label="Drift cycle"
+                    size="s"
+                    min="2"
+                    max="30"
+                    step="0.5"
+                    value="10"
+                  ></wa-slider>
+                  <output
+                    aria-live="off"
+                    data-for="cycle"
+                  >
+                    10s
+                  </output>
+                </div>
               </div>
             </section>
           </form>
@@ -1070,115 +950,354 @@
           placement="end"
           without-header
         >
+          <div class="channel-head">
+            <h2
+              class="channel-name"
+              id="code-title"
+            >
+              Add This to Your Page
+            </h2>
+            <button
+              type="button"
+              class="icon-action"
+              data-drawer="close"
+            >
+              <wa-icon
+                canvas="auto"
+                family="pixel"
+                name="xmark"
+                label="Close"
+              ></wa-icon>
+            </button>
+          </div>
           <section
-            class="code-plate"
+            class="code-step wa-stack wa-gap-l"
             aria-labelledby="code-title"
           >
-            <div class="channel-head">
-              <h2
-                class="channel-name"
-                id="code-title"
-              >
-                Code
-              </h2>
-              <button
-                type="button"
-                class="icon-action"
-                data-drawer="close"
-              >
-                <wa-icon
-                  family="pixel"
-                  name="xmark"
-                  label="Close"
-                ></wa-icon>
-              </button>
-            </div>
-            <div class="code-bar">
-              <wa-radio-group
-                class="wa-visually-hidden-label"
-                id="code-format"
-                label="Code format"
-                orientation="horizontal"
-                size="s"
-                value="html"
-              >
-                <wa-radio
-                  appearance="button"
-                  value="html"
-                >
-                  HTML
-                </wa-radio>
-                <wa-radio
-                  appearance="button"
-                  value="css"
-                >
-                  CSS
-                </wa-radio>
-              </wa-radio-group>
-            </div>
-            <p
-              class="code-note"
-              id="code-note"
-            ></p>
-            <div
-              class="code-well"
-              id="code-html"
+            <wa-tab-group
+              class="install-tabs"
+              id="code-route"
             >
-              <pre
-                class="code-block"
-              ><code class="language-html" id="snippet-html"></code></pre>
-              <wa-copy-button
-                class="code-copy"
-                from="snippet-html"
-                copy-label="Copy HTML"
+              <wa-tab
+                slot="nav"
+                panel="element"
+                id="code-html-tab"
               >
-                <wa-icon
-                  slot="copy-icon"
-                  family="pixel"
-                  name="clone"
-                ></wa-icon>
-                <wa-icon
-                  slot="success-icon"
-                  family="pixel"
-                  name="check"
-                ></wa-icon>
-                <wa-icon
-                  slot="error-icon"
-                  family="pixel"
-                  name="xmark"
-                ></wa-icon>
-              </wa-copy-button>
-            </div>
-            <div
-              class="code-well"
-              id="code-css"
-              hidden
-            >
-              <pre
-                class="code-block"
-              ><code class="language-css" id="snippet-css"></code></pre>
-              <wa-copy-button
-                class="code-copy"
-                from="snippet-css"
-                copy-label="Copy CSS"
+                On the element
+              </wa-tab>
+              <wa-tab
+                slot="nav"
+                panel="stylesheet"
               >
-                <wa-icon
-                  slot="copy-icon"
-                  family="pixel"
-                  name="clone"
-                ></wa-icon>
-                <wa-icon
-                  slot="success-icon"
-                  family="pixel"
-                  name="check"
-                ></wa-icon>
-                <wa-icon
-                  slot="error-icon"
-                  family="pixel"
-                  name="xmark"
-                ></wa-icon>
-              </wa-copy-button>
+                In your CSS
+              </wa-tab>
+              <wa-tab-panel name="element">
+                <div class="wa-stack wa-gap-s">
+                  <p class="install-note">
+                    Set
+                    <code>color-scheme: light dark</code>
+                    on your page, or the dark colors won't show.
+                  </p>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your HTML</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-html" id="snippet-html"></code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="snippet-html"
+                      copy-label="Copy HTML"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                </div>
+              </wa-tab-panel>
+              <wa-tab-panel name="stylesheet">
+                <div class="wa-stack wa-gap-s">
+                  <p class="install-note">
+                    Put this on
+                    <code>:root</code>
+                    or your own tokens, then use the plain element below.
+                  </p>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your CSS</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-css" id="snippet-css"></code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="snippet-css"
+                      copy-label="Copy CSS"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your HTML</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-html" id="snippet-bare"></code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="snippet-bare"
+                      copy-label="Copy HTML"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                </div>
+              </wa-tab-panel>
+            </wa-tab-group>
+          </section>
+          <section
+            class="code-step wa-stack wa-gap-l"
+            id="code-install"
+            data-cdn="{{cdn-version}}"
+            aria-labelledby="code-install-title"
+          >
+            <div class="wa-stack wa-gap-2xs">
+              <h3
+                class="step-title"
+                id="code-install-title"
+              >
+                Install Hue Hop
+              </h3>
+              <p class="install-note">
+                Skip this if it's already on your site.
+              </p>
             </div>
+            <wa-tab-group class="install-tabs">
+              <wa-tab
+                slot="nav"
+                panel="npm"
+              >
+                npm
+              </wa-tab>
+              <wa-tab
+                slot="nav"
+                panel="cdn"
+              >
+                CDN
+              </wa-tab>
+              <wa-tab
+                slot="nav"
+                panel="self-host"
+              >
+                Self-host
+              </wa-tab>
+              <wa-tab-panel name="npm">
+                <div class="wa-stack wa-gap-s">
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your terminal</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-bash" id="studio-npm-install">npm install hue-hop</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="studio-npm-install"
+                      copy-label="Copy install command"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your JavaScript</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-javascript" id="studio-npm-import">import 'hue-hop';
+import 'hue-hop/hues.css';
+import 'hue-hop/drift.css';</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="studio-npm-import"
+                      copy-label="Copy import code"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                </div>
+              </wa-tab-panel>
+              <wa-tab-panel name="cdn">
+                <div class="wa-stack wa-gap-s">
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your HTML</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-html" id="studio-cdn">&lt;script
+  type="module"
+  src="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hue-hop.js"
+&gt;&lt;/script&gt;
+&lt;link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hues.css"
+/&gt;
+&lt;link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/drift.css"
+/&gt;</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="studio-cdn"
+                      copy-label="Copy CDN tags"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                </div>
+              </wa-tab-panel>
+              <wa-tab-panel name="self-host">
+                <div class="wa-stack wa-gap-s">
+                  <p
+                    class="install-note"
+                    id="code-self-host-note"
+                  ></p>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your HTML</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-html" id="studio-self-host">&lt;script
+  type="module"
+  src="/js/hue-hop.js"
+&gt;&lt;/script&gt;
+&lt;link
+  rel="stylesheet"
+  href="/css/hues.css"
+/&gt;
+&lt;link
+  rel="stylesheet"
+  href="/css/drift.css"
+/&gt;</code></pre>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="studio-self-host"
+                      copy-label="Copy self-host tags"
+                    >
+                      <wa-icon
+                        slot="copy-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="clone"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="success-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="check"
+                      ></wa-icon>
+                      <wa-icon
+                        slot="error-icon"
+                        canvas="auto"
+                        family="pixel"
+                        name="xmark"
+                      ></wa-icon>
+                    </wa-copy-button>
+                  </div>
+                </div>
+              </wa-tab-panel>
+            </wa-tab-group>
           </section>
         </wa-drawer>
 
