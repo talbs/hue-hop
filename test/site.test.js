@@ -8,4 +8,10 @@ test('the 404 renders the element from any path', () => {
   const entry = PAGES.find((page) => page.source === '404.html');
   const html = renderPage(entry, readFills(manifest));
   assert.doesNotMatch(html, /(?:href|src)="\.\.?\//);
+  assert.match(html, /<hue-hop[\s>]/);
+  assert.match(
+    html,
+    /<script type="module">[\s\S]*?customElements\.define\(["']hue-hop["']/
+  );
+  assert.doesNotMatch(html, /src="[^"]*dist\/hue-hop\.js"/);
 });

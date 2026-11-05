@@ -9,6 +9,7 @@ import { llmsText } from './manifest.js';
 import { PAGES, read, readFills, renderPage } from './pages.js';
 
 const SERVE_PORT = 4174;
+const isServing = process.argv.includes('--serve');
 
 const WA_CHUNK = /webawesome\/dist\/chunks\/chunk\.\w+\.js$/;
 const WA_ELEMENT = /customElement\("(wa-[a-z-]+)"\)/;
@@ -37,6 +38,11 @@ function skipElements(elements) {
   };
 }
 
+// Served locally, the 404's absolute root would load the deployed site's files, not this checkout's.
+function forThisBuild(entry) {
+  return isServing && entry.root === SITE_URL ? { ...entry, root: '/' } : entry;
+}
+
 async function buildSite() {
   rmSync('_site', { recursive: true, force: true });
   mkdirSync('_site');
@@ -47,7 +53,7 @@ async function buildSite() {
   for (const entry of PAGES) {
     const outputPath = `_site/${entry.output}`;
     mkdirSync(dirname(outputPath), { recursive: true });
-    builtPages[entry.source] = renderPage(entry, fills);
+    builtPages[entry.source] = renderPage(forThisBuild(entry), fills);
     writeFileSync(outputPath, builtPages[entry.source]);
     console.log('wrote', outputPath);
   }
@@ -156,4 +162,4 @@ async function serveAndWatch() {
 }
 
 await buildSite();
-if (process.argv.includes('--serve')) await serveAndWatch();
+if (isServing) await serveAndWatch();

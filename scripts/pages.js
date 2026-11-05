@@ -40,14 +40,15 @@ export const PAGES = [
     root: '../',
     navName: 'studio',
   },
-  { source: '404.html', output: '404.html', root: SITE_URL, navName: '404' },
+  {
+    source: '404.html',
+    output: '404.html',
+    root: SITE_URL,
+    navName: '404',
+    // Called at render time: the dev server rebuilds the element while this module stays loaded.
+    fills: () => ({ 'element-script': inlineElementScript() }),
+  },
 ];
-
-const WA_THEME =
-  'node_modules/@awesome.me/webawesome/dist/styles/themes/default.css';
-const WA_SCALE_TOKEN =
-  /--wa-(?:space|border-radius|line-height)-[\w-]+:[^;]+;/g;
-const FONT_FACE = /@font-face\s*\{[^}]*\}\s*/g;
 
 export const read = (path) => readFileSync(path, 'utf8');
 
@@ -65,12 +66,9 @@ function docsNav(groups) {
   return groupBlocks.join('\n');
 }
 
-// For the 404 page, which loads no stylesheets or fonts: GitHub Pages serves it at any path, so a relative link can't resolve. tokens.css aliases Web Awesome's scale, which normally arrives with webawesome.css.
-function inlineCss() {
-  const waScale = read(WA_THEME).match(WA_SCALE_TOKEN).join('\n');
-  const tokens = read('site/css/tokens.css').replace(FONT_FACE, '');
-  const base = read('site/css/base.css');
-  return `<style>\n:root {\n${waScale}\n}\n${tokens}\n${base}</style>`;
+// The 404's stage renders even if a module request to the site is slow.
+function inlineElementScript() {
+  return `<script type="module">\n${read('dist/hue-hop.js')}\n</script>`;
 }
 
 export function readFills(manifest) {
@@ -95,7 +93,8 @@ export function readFills(manifest) {
     'assistant-prompt': escapeHtml(ASSISTANT_PROMPT),
     'agent-rules': escapeHtml(AGENT_RULES),
     'docs-nav': docsNav(DOCS_GROUPS),
-    'inline-css': inlineCss(),
+    'element-script':
+      '<script type="module" src="{{root}}dist/hue-hop.js"></script>',
     'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${isStudioUrl}\n${rememberClickedLink}\n${markStudioMoveLeaving}\n${markStudioMoveArriving}\n${keepGroupsOnTransform}\naddEventListener('click', rememberClickedLink, true);\naddEventListener('pageswap', markStudioMoveLeaving);\naddEventListener('pagereveal', markStudioMoveArriving);\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>\n${VIEW_TRANSITION_RULE}`,
   };
 }
@@ -107,7 +106,8 @@ function fillPage(html, navName, fills) {
   while (page !== previous) {
     previous = page;
     for (const [name, text] of Object.entries(fills)) {
-      page = page.replaceAll(`{{${name}}}`, text);
+      // A function, because a fill can be minified JavaScript, and a string replacement would read its $ sequences as patterns.
+      page = page.replaceAll(`{{${name}}}`, () => text);
     }
   }
   const leftover = page.match(/\{\{[\w-]+\}\}/);
@@ -149,6 +149,10 @@ function closeUpPunctuation(html) {
 
 export function renderPage(entry, fills) {
   const source = read(`site/${entry.source}`);
-  const page = fillPage(source, entry.navName, { ...fills, root: entry.root });
+  const page = fillPage(source, entry.navName, {
+    ...fills,
+    root: entry.root,
+    ...entry.fills?.(),
+  });
   return fillCopyButtons(compileExamples(closeUpPunctuation(page)));
 }

@@ -1,0 +1,139 @@
+.lost {
+  padding-block-end: var(--space-page);
+}
+
+/* The size floors at 1.5rem and the path wraps at its slashes, because a long path at the landing's rule shrinks to 6px on a phone. */
+.lost .stage-text {
+  font-size: max(
+    1.5rem,
+    min(var(--stage-max, var(--type-stage)), 100cqi / (var(--letters, 1) * 0.6))
+  );
+}
+
+.lost .stage {
+  min-height: 14rem;
+}
+
+.lost .accent {
+  margin-inline-start: 0.15em;
+  color: var(--ink);
+}
+
+.lost-desk {
+  display: grid;
+  gap: var(--wa-space-l);
+  padding: var(--space-group);
+  border: var(--border-thin) solid transparent;
+  border-radius: 0 0 var(--radius-container) var(--radius-container);
+  background: var(--surface);
+  box-shadow: var(--depth-panel);
+}
+
+.lost-line {
+  color: var(--ink);
+  font-size: var(--type-lead);
+  line-height: var(--leading-tight);
+}
+
+.lost-controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-related);
+}
+
+.lost-controls .lit-button {
+  justify-content: center;
+}
+
+@media (min-width: 30rem) {
+  .lost-controls {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 50rem) {
+  .lost-controls {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .lost-controls .shuffle-button {
+    margin-inline-start: auto;
+  }
+}
+
+.tracklist {
+  margin: var(--space-section) 0 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: var(--border-thin) solid var(--divider);
+}
+
+.track-row {
+  display: grid;
+  grid-template-columns: 3ch minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-related);
+  padding-block: var(--space-group);
+  border-block-end: var(--border-thin) solid var(--divider);
+  color: inherit;
+  text-decoration: none;
+}
+
+.track-row > * {
+  transition: transform var(--note-16) var(--ease-bounce);
+}
+
+.track-number {
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  transition:
+    transform var(--note-16) var(--ease-bounce),
+    color var(--note-16) var(--ease-hit);
+}
+
+.track-title {
+  justify-self: start;
+  font-size: var(--type-lead);
+  font-weight: var(--weight-strong);
+  line-height: var(--leading-heading);
+}
+
+a.track-row:hover > * {
+  transform: translateX(var(--space-related));
+}
+
+a.track-row:hover .track-number {
+  color: var(--lit);
+}
+
+a.track-row:hover .track-title {
+  background-size:
+    100% var(--border-thick),
+    100% 0;
+  color: var(--ink);
+}
+
+/* An unbroken path in the 404 row would otherwise widen the whole page on a phone. */
+.track-path {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  text-align: end;
+}
+
+@media (max-width: 49.99rem) {
+  .track-row {
+    grid-template-columns: 3ch minmax(0, 1fr);
+  }
+
+  .track-path {
+    grid-column: 2;
+    text-align: start;
+  }
+}
+
+.track-missing {
+  color: var(--ink-faint);
+}

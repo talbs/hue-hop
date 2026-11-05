@@ -1,135 +1,273 @@
 <!doctype html>
 <html
   lang="en"
+  class="wa-dark"
   data-side="a"
+  data-fa-kit-code="{{fa-kit}}"
 >
   <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
-    {{side-boot}}
+    {{head}}
     <title>Not Found · Hue Hop</title>
-    {{inline-css}}
-    <style>
-      body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100dvh;
-      }
-
-      .not-found-bar {
-        width: 100%;
-        max-width: var(--measure);
-        margin-inline: auto;
-        padding: var(--space-group) var(--gutter);
-      }
-
-      .not-found-wordmark {
-        font-family: var(--font-display);
-        font-weight: var(--weight-display);
-        text-decoration: none;
-      }
-
-      .not-found {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: var(--space-group);
-        width: 100%;
-        max-width: var(--measure);
-        margin-inline: auto;
-        padding: var(--space-page) var(--gutter);
-      }
-
-      .not-found h1 {
-        font-size: var(--type-stage);
-        font-weight: var(--weight-display);
-        line-height: var(--leading-display);
-        letter-spacing: var(--tracking-display);
-      }
-
-      .not-found p {
-        color: var(--ink-quiet);
-        font-size: var(--type-lead);
-        line-height: var(--leading-tight);
-      }
-
-      .not-found ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: var(--space-related);
-        margin-block-start: var(--space-group);
-        padding: 0;
-        list-style: none;
-      }
-
-      footer.not-found-bar {
-        border-block-start: var(--border-thin) solid var(--divider);
-      }
-
-      footer .readout-label {
-        text-transform: none;
-      }
-
-      @media (min-width: 48rem) {
-        :root {
-          --gutter: var(--wa-space-3xl);
-        }
-      }
-    </style>
+    <meta
+      name="description"
+      content="This page doesn’t exist. The hues do."
+    />
+    <meta
+      name="robots"
+      content="noindex"
+    />
+    <link
+      rel="stylesheet"
+      href="{{root}}css/desk.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{root}}css/lost.css"
+    />
+    <script
+      type="module"
+      src="{{root}}js/lost.js"
+    ></script>
   </head>
   <body>
-    <header class="not-found-bar">
-      <a
-        class="not-found-wordmark"
-        href="{{root}}"
-      >
-        Hue Hop
-      </a>
-    </header>
-    <main class="not-found">
-      <h1>Not Found</h1>
-      <p>Nothing hops here.</p>
-      <ul>
-        <li>
-          <a
-            class="lit-button"
-            href="{{root}}"
+    <wa-page
+      mobile-breakpoint="768"
+      disable-navigation-toggle
+    >
+      {{header}}
+      <main id="main">
+        <section
+          class="section lost"
+          aria-labelledby="lost-title"
+        >
+          <h1
+            class="wa-visually-hidden"
+            id="lost-title"
           >
-            Home
-          </a>
-        </li>
-        <li>
-          <a
-            class="lit-button"
-            href="{{docs-url}}"
+            Page not found
+          </h1>
+
+          <div
+            class="stage"
+            id="stage"
+            style="--letters: 13"
           >
-            Docs
-          </a>
-        </li>
-        <li>
-          <a
-            class="lit-button"
-            href="{{studio-url}}"
+            <div
+              class="stage-eq"
+              aria-hidden="true"
+            >
+              <span style="height: 8%"></span>
+              <span style="height: 16%"></span>
+              <span style="height: 25%"></span>
+              <span style="height: 33%"></span>
+              <span style="height: 41%"></span>
+              <span style="height: 50%"></span>
+              <span style="height: 58%"></span>
+              <span style="height: 66%"></span>
+              <span style="height: 75%"></span>
+              <span style="height: 83%"></span>
+              <span style="height: 91%"></span>
+              <span style="height: 100%"></span>
+            </div>
+            <div
+              class="stage-readout readout-label wa-cluster wa-gap-xs"
+              data-state="off"
+            >
+              <span
+                class="stage-hue"
+                id="stage-hue"
+              >
+                ember
+              </span>
+              <span
+                class="led"
+                aria-hidden="true"
+              ></span>
+              <output>404 not found</output>
+            </div>
+            <!-- A line break here would render as a space before the ?, and the build only closes that up before plain punctuation. -->
+            <!-- prettier-ignore -->
+            <p class="stage-text" dir="ltr"><hue-hop hue="ember" id="lost-path">/docs/whatver</hue-hop><span class="accent">?</span></p>
+          </div>
+
+          <div class="lost-desk">
+            <p class="lost-line">
+              Not a hidden track. Never cut. The tracklist is below.
+            </p>
+            <div class="wa-stack wa-gap-xs">
+              <span
+                class="readout-label"
+                id="hues-label"
+              >
+                Hues
+              </span>
+              <div
+                class="lost-controls"
+                role="radiogroup"
+                aria-labelledby="hues-label"
+                id="hue-pills"
+              >
+                <button
+                  type="button"
+                  role="radio"
+                  class="lit-button"
+                  data-hue="dusk"
+                  aria-checked="false"
+                >
+                  <span
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  dusk
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="lit-button"
+                  data-hue="reef"
+                  aria-checked="false"
+                >
+                  <span
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  reef
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="lit-button"
+                  data-hue="fern"
+                  aria-checked="false"
+                >
+                  <span
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  fern
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="lit-button"
+                  data-hue="ember"
+                  aria-checked="true"
+                >
+                  <span
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  ember
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="lit-button"
+                  data-hue="guava"
+                  aria-checked="false"
+                >
+                  <span
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  guava
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="lit-button"
+                  data-hue="orchid"
+                  aria-checked="false"
+                >
+                  <span
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  orchid
+                </button>
+                <button
+                  type="button"
+                  role="radio"
+                  class="lit-button"
+                  data-hue="honey"
+                  aria-checked="false"
+                >
+                  <span
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  honey
+                </button>
+                <button
+                  type="button"
+                  class="lit-button shuffle-button"
+                  id="shuffle"
+                >
+                  Shuffle
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <ol
+            class="tracklist"
+            aria-label="Pages that exist"
           >
-            Studio
-          </a>
-        </li>
-        <li>
-          <a
-            class="lit-button"
-            href="{{repo-url}}"
-          >
-            GitHub
-          </a>
-        </li>
-      </ul>
-    </main>
-    <footer class="not-found-bar">
-      <p class="readout-label">v{{version}} · MIT</p>
-    </footer>
+            <li>
+              <a
+                class="track-row"
+                href="{{root}}"
+              >
+                <span class="track-number">01</span>
+                <span class="track-title hop-link is-quiet">Home</span>
+                <span class="track-path readout-label">/</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="track-row"
+                href="{{docs-url}}"
+              >
+                <span class="track-number">02</span>
+                <span class="track-title hop-link is-quiet">Docs</span>
+                <span class="track-path readout-label">/docs/</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="track-row"
+                href="{{studio-url}}"
+              >
+                <span class="track-number">03</span>
+                <span class="track-title hop-link is-quiet">Studio</span>
+                <span class="track-path readout-label">/studio/</span>
+              </a>
+            </li>
+            <li>
+              <a
+                class="track-row"
+                href="{{repo-url}}"
+              >
+                <span class="track-number">04</span>
+                <span class="track-title hop-link is-quiet">GitHub</span>
+                <span class="track-path readout-label">github.com</span>
+              </a>
+            </li>
+            <li class="track-row track-missing">
+              <span class="track-number">404</span>
+              <span class="track-title">This Page</span>
+              <span
+                class="track-path readout-label"
+                id="track-path"
+                aria-hidden="true"
+              >
+                /docs/whatver
+              </span>
+            </li>
+          </ol>
+        </section>
+      </main>
+      {{footer}}
+    </wa-page>
   </body>
 </html>
