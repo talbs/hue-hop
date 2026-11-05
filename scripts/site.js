@@ -139,6 +139,7 @@ async function serveAndWatch() {
     servedir: '_site',
     host: '127.0.0.1',
     port: SERVE_PORT,
+    fallback: '_site/404.html',
   });
   console.log(
     `serving http://localhost:${SERVE_PORT}/ (reload after each rebuild)`
