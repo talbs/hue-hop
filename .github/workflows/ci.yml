@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  test:
+  browsers:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -24,3 +24,10 @@ jobs:
       - run: BROWSER=${{ matrix.browser }} npm test
       - if: matrix.browser == 'chromium'
         run: npm run size
+
+  test:
+    needs: browsers
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: '[ "${{ needs.browsers.result }}" = success ]'
