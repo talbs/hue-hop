@@ -2,12 +2,11 @@ import { floorRatio, lowestLetterContrast } from './contrast.js';
 import { letterRights, readSide, whenSideChanges } from './scheme.js';
 
 import {
-  beatMs,
   catchSoftStop,
   isMotionOk,
   longestWordLength,
   segmentPitch,
-  splitLetters,
+  typeOut,
 } from './motion.js';
 import {
   DEFAULT_STATE,
@@ -166,23 +165,8 @@ function showStepBars(state) {
   });
 }
 
-let typingRun = 0;
+let stopTyping = () => {};
 let shouldTypeText = false;
-
-// One letter per 64th note, so the stage types on the same beat as the rest of the motion.
-function typeOut(element, text, run) {
-  const letters = splitLetters(text).map(({ letter }) => letter);
-  const letterMs = beatMs() / 16;
-  let shownCount = 0;
-  const typeNext = () => {
-    if (run !== typingRun) return;
-    shownCount += 1;
-    element.textContent = letters.slice(0, shownCount).join('');
-    if (shownCount < letters.length) setTimeout(typeNext, letterMs);
-  };
-  element.textContent = '';
-  typeNext();
-}
 
 let hasPendingRender = false;
 
@@ -223,9 +207,9 @@ function render() {
     studioLink.href = describeStudioLink(state);
     stageHue.textContent = state.hue ?? 'custom';
     showContrast(state);
-    typingRun += 1;
+    stopTyping();
     if (shouldTypeText && isMotionOk() && state.text) {
-      typeOut(live, state.text, typingRun);
+      stopTyping = typeOut(live, state.text);
     }
     shouldTypeText = false;
   });
@@ -340,7 +324,7 @@ if (desk) {
   // The word's trip can't leave with half a word on the stage.
   studioLink.addEventListener('click', (event) => {
     if (!isPlainClick(event)) return;
-    typingRun += 1;
+    stopTyping();
     shouldTypeText = false;
     live.textContent = textField.value;
   });
