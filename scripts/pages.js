@@ -45,8 +45,7 @@ export const PAGES = [
     output: '404.html',
     root: SITE_URL,
     navName: '404',
-    // Called at render time: the dev server rebuilds the element while this module stays loaded.
-    fills: () => ({ 'element-script': inlineElementScript() }),
+    fills: { 'element-script': '{{inline-element-script}}' },
   },
 ];
 
@@ -64,11 +63,6 @@ function docsNav(groups) {
     );
   }
   return groupBlocks.join('\n');
-}
-
-// The 404's stage renders even if a module request to the site is slow.
-function inlineElementScript() {
-  return `<script type="module">\n${read('dist/hue-hop.js')}\n</script>`;
 }
 
 export function readFills(manifest) {
@@ -95,6 +89,8 @@ export function readFills(manifest) {
     'docs-nav': docsNav(DOCS_GROUPS),
     'element-script':
       '<script type="module" src="{{root}}dist/hue-hop.js"></script>',
+    // The 404's stage renders even if a module request to the site is slow.
+    'inline-element-script': `<script type="module">\n${read('dist/hue-hop.js')}\n</script>`,
     'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${isStudioUrl}\n${rememberClickedLink}\n${markStudioMoveLeaving}\n${markStudioMoveArriving}\n${keepGroupsOnTransform}\naddEventListener('click', rememberClickedLink, true);\naddEventListener('pageswap', markStudioMoveLeaving);\naddEventListener('pagereveal', markStudioMoveArriving);\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>\n${VIEW_TRANSITION_RULE}`,
   };
 }
@@ -152,7 +148,7 @@ export function renderPage(entry, fills) {
   const page = fillPage(source, entry.navName, {
     ...fills,
     root: entry.root,
-    ...entry.fills?.(),
+    ...entry.fills,
   });
   return fillCopyButtons(compileExamples(closeUpPunctuation(page)));
 }

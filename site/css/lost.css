@@ -11,12 +11,12 @@
 }
 
 .lost .stage {
+  row-gap: var(--space-group);
   min-height: 14rem;
 }
 
 .lost .accent {
   margin-inline-start: 0.15em;
-  color: var(--ink);
 }
 
 .lost-desk {
@@ -30,7 +30,6 @@
 }
 
 .lost-line {
-  color: var(--ink);
   font-size: var(--type-lead);
   line-height: var(--leading-tight);
 }
@@ -41,8 +40,10 @@
   gap: var(--space-related);
 }
 
+/* The grid's equal columns have to fit "orchid", and at the button's full padding they push past the desk's edge. */
 .lost-controls .lit-button {
   justify-content: center;
+  padding-inline: var(--space-tight);
 }
 
 @media (min-width: 30rem) {
@@ -51,10 +52,15 @@
   }
 }
 
-@media (min-width: 50rem) {
+/* The eight pills need this much width for one row. Any narrower and Shuffle wraps onto a row of its own. */
+@media (min-width: 57rem) {
   .lost-controls {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  .lost-controls .lit-button {
+    padding-inline: var(--space-group);
   }
 
   .lost-controls .shuffle-button {
@@ -63,15 +69,13 @@
 }
 
 .tracklist {
-  margin: var(--space-section) 0 0;
-  padding: 0;
-  list-style: none;
+  margin-block-start: var(--space-section);
   border-block-start: var(--border-thin) solid var(--divider);
 }
 
 .track-row {
   display: grid;
-  grid-template-columns: 3ch minmax(0, 1fr) auto;
+  grid-template-columns: 3ch auto minmax(0, 1fr);
   align-items: baseline;
   gap: var(--space-related);
   padding-block: var(--space-group);
@@ -107,13 +111,6 @@ a.track-row:hover > * {
 
 a.track-row:hover .track-number {
   color: var(--lit);
-}
-
-a.track-row:hover .track-title {
-  background-size:
-    100% var(--border-thick),
-    100% 0;
-  color: var(--ink);
 }
 
 /* An unbroken path in the 404 row would otherwise widen the whole page on a phone. */

@@ -24,10 +24,6 @@
       rel="stylesheet"
       href="{{root}}css/lost.css"
     />
-    <script
-      type="module"
-      src="{{root}}js/lost.js"
-    ></script>
   </head>
   <body>
     <wa-page
@@ -210,7 +206,7 @@
           </div>
 
           <ol
-            class="tracklist"
+            class="tracklist wa-list-plain"
             aria-label="Pages that exist"
           >
             <li>
@@ -269,5 +265,11 @@
       </main>
       {{footer}}
     </wa-page>
+    <!-- Down here and async so the visitor's path lands without waiting for the head's modules, which run first otherwise. -->
+    <script
+      type="module"
+      async
+      src="{{root}}js/lost.js"
+    ></script>
   </body>
 </html>

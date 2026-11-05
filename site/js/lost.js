@@ -1,3 +1,4 @@
+import { longestWordLength } from './motion.js';
 import { SITE_URL } from './urls.js';
 
 const STAGE_CAP = 48;
@@ -27,10 +28,7 @@ function showPathOnStage(path) {
   }
   lostPath.append(remainder);
 
-  const longestSegment = Math.max(
-    remainder.length,
-    ...segments.map((segment) => segment.length)
-  );
+  const longestSegment = longestWordLength(stageCopy.replaceAll('/', ' '));
   stage.style.setProperty('--letters', longestSegment + 1);
   trackPath.textContent = path;
 }

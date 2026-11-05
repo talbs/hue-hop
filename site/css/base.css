@@ -157,6 +157,7 @@ input {
     :focus-visible
   ),
 .further-row:is(:hover, :focus-visible) .further-title,
+a.track-row:is(:hover, :focus-visible) .track-title,
 .hero-demo:is(:hover, :focus-visible) .hop-link,
 .hop-link[aria-current] {
   background-size:
