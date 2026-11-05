@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import * as esbuild from 'esbuild';
 import { readSide, showSide } from '../site/js/scheme.js';
 import { escapeHtml } from '../site/js/state.js';
 import { DOCS_URL, REPO_URL, SITE_URL, STUDIO_URL } from '../site/js/urls.js';
@@ -12,6 +13,7 @@ import {
   markStudioMoveLeaving,
   rememberClickedLink,
 } from './page-move-boot.js';
+import { SOCIAL_IMAGE_SIZE } from './social-image.js';
 
 // Keep the kit restricted to talbs.github.io and localhost: the code ships in public HTML.
 const FA_KIT = '7ce624a355';
@@ -27,29 +29,67 @@ const VIEW_TRANSITION_RULE = `<style>
 </style>`;
 
 export const PAGES = [
-  { source: 'index.html', output: 'index.html', root: './', navName: 'home' },
+  {
+    source: 'index.html',
+    output: 'index.html',
+    root: './',
+    navName: 'home',
+    stylesheets: ['desk.css', 'wild.css', 'quickstart.css'],
+    url: SITE_URL,
+    title: 'Hue Hop',
+    description:
+      'Give each letter of a heading or name its own color, stepped from one color to another.',
+  },
   {
     source: 'docs.html',
     output: 'docs/index.html',
     root: '../',
     navName: 'docs',
+    stylesheets: ['docs.css'],
+    url: `${SITE_URL}docs/`,
+    title: 'Hue Hop Docs',
+    description:
+      'How to load Hue Hop, color a heading, tune the steps, and fit it into your app.',
   },
   {
     source: 'studio.html',
     output: 'studio/index.html',
     root: '../',
     navName: 'studio',
+    stylesheets: ['studio.css'],
+    url: `${SITE_URL}studio/`,
+    title: 'Hue Hop Studio',
+    description:
+      'Make a pair of your own, check every letter on your light and dark pages, and copy the code.',
   },
   {
     source: '404.html',
     output: '404.html',
     root: SITE_URL,
     navName: '404',
-    fills: { 'element-script': '{{inline-element-script}}' },
+    stylesheets: ['desk.css', 'lost.css'],
+    title: 'Not Found · Hue Hop',
+    description: 'This page doesn’t exist. The hues do.',
+    fills: { 'element-script': '{{inline-element-script}}', 'link-card': '' },
   },
 ];
 
+const SHARED_STYLESHEETS = [
+  'tokens.css',
+  'base.css',
+  'shell.css',
+  'syntax.css',
+  'controls.css',
+];
+
+export const SOCIAL_IMAGE_FILE = 'social.png';
+const SOCIAL_IMAGE_ALT =
+  'The Hue Hop wordmark on a dark background, each letter one step from sky blue to violet.';
+
 export const read = (path) => readFileSync(path, 'utf8');
+
+const readDarkSurface = () =>
+  read('site/css/tokens.css').match(/--surface: (#\w+);/)[1];
 
 function docsNav(groups) {
   const groupBlocks = [];
@@ -75,6 +115,12 @@ export function readFills(manifest) {
     wordmark: read('site/partials/wordmark.html'),
     'sample-titles': read('site/partials/sample-titles.html'),
     'wordmark-steps': wordmarkSteps(),
+    'link-card': read('site/partials/link-card.html'),
+    'dark-surface': readDarkSurface(),
+    'social-image-url': `${SITE_URL}${SOCIAL_IMAGE_FILE}`,
+    'social-image-width': String(SOCIAL_IMAGE_SIZE.width),
+    'social-image-height': String(SOCIAL_IMAGE_SIZE.height),
+    'social-image-alt': escapeHtml(SOCIAL_IMAGE_ALT),
     'fa-kit': FA_KIT,
     version,
     'cdn-version': `hue-hop@${major}.${minor}`,
@@ -143,11 +189,27 @@ function closeUpPunctuation(html) {
     .replace(SPACE_INSIDE_TAG_END, '$1');
 }
 
+// Inline, so a first paint waits on one stylesheet instead of several. The sheets' font paths are relative to site/css, which an inlined copy no longer is.
+function pageCss(stylesheets) {
+  const sources = [...SHARED_STYLESHEETS, ...stylesheets].map((file) =>
+    read(`site/css/${file}`)
+  );
+  const { code } = esbuild.transformSync(sources.join('\n'), {
+    loader: 'css',
+    minify: true,
+  });
+  return code.replaceAll('../fonts/', '{{root}}fonts/');
+}
+
 export function renderPage(entry, fills) {
   const source = read(`site/${entry.source}`);
   const page = fillPage(source, entry.navName, {
     ...fills,
     root: entry.root,
+    'page-css': pageCss(entry.stylesheets),
+    'page-url': entry.url,
+    'page-title': escapeHtml(entry.title),
+    'page-description': escapeHtml(entry.description),
     ...entry.fills,
   });
   return fillCopyButtons(compileExamples(closeUpPunctuation(page)));

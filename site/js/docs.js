@@ -4,6 +4,23 @@ import { DEFAULT_STATE, defaultLift, describeStudioLink } from './state.js';
 import { fillCode } from './syntax.js';
 
 const page = document.querySelector('wa-page');
+
+let hasUserScrolled = false;
+for (const type of ['wheel', 'pointerdown', 'keydown']) {
+  addEventListener(type, () => (hasUserScrolled = true), {
+    once: true,
+    passive: true,
+  });
+}
+
+// Web Awesome is the page's heaviest file and nothing in the first paint needs it, so the text and fonts get the network first.
+await new Promise(afterRepaint);
+try {
+  await import('./wa.js');
+} catch {
+  page.classList.add('is-without-wa');
+}
+
 const sidebarLinks = [...document.querySelectorAll('.docs-nav a[href^="#"]')];
 const sections = [...document.querySelectorAll('article > section')];
 
@@ -359,3 +376,13 @@ for (const figure of document.querySelectorAll('figure[data-control]')) {
   else wireFader(figure);
   if ('meter' in figure.dataset) wireHopMeter(figure);
 }
+
+// Web Awesome's upgrades change the page's height after the browser has already jumped to the linked section.
+function reachLinkedSection() {
+  const target = document.getElementById(location.hash.slice(1));
+  if (target && !hasUserScrolled)
+    target.scrollIntoView({ behavior: 'instant' });
+}
+
+const { type: navigationType } = performance.getEntriesByType('navigation')[0];
+if (navigationType === 'navigate') afterRepaint(reachLinkedSection);

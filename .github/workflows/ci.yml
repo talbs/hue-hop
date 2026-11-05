@@ -6,8 +6,12 @@ on:
   pull_request:
 
 jobs:
-  test:
+  browsers:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -15,7 +19,15 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps --only-shell chromium
-      - run: npm test
-      - run: npm run site
-      - run: npm run size
+      # Chromium in every job: the site build renders the social image with it.
+      - run: npx playwright install --with-deps --only-shell chromium ${{ matrix.browser }}
+      - run: BROWSER=${{ matrix.browser }} npm test
+      - if: matrix.browser == 'chromium'
+        run: npm run size
+
+  test:
+    needs: browsers
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: '[ "${{ needs.browsers.result }}" = success ]'

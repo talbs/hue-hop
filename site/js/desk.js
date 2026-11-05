@@ -83,6 +83,7 @@ function checkSleeve(hue) {
     sleeve.setAttribute('aria-checked', String(isChecked));
     sleeve.tabIndex = isChecked ? 0 : -1;
   }
+  oneColor.inert = hue !== 'custom';
 }
 
 // Tomato. Side B's is darker because the same tomato fails 4.5:1 on the light background. It follows the side until someone picks their own.
@@ -279,7 +280,6 @@ function moveSleeveFocus(event) {
   }
   event.preventDefault();
   checkSleeve(next.dataset.hue);
-  hopSleeve(next);
   next.focus();
   next.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   render();
