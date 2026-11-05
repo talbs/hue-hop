@@ -2,9 +2,8 @@ import { floorRatio, lowestLetterContrast } from './contrast.js';
 import { letterRights, readSide, whenSideChanges } from './scheme.js';
 
 import {
-  LETTER_HOP,
   beatMs,
-  hopLetters,
+  catchSoftStop,
   isMotionOk,
   longestWordLength,
   segmentPitch,
@@ -169,11 +168,6 @@ function showStepBars(state) {
 let typingRun = 0;
 let shouldTypeText = false;
 
-function hopSleeve(sleeve) {
-  if (!isMotionOk()) return;
-  hopLetters(sleeve.querySelector('.sleeve-title hue-hop'), LETTER_HOP);
-}
-
 // One letter per 64th note, so the stage types on the same beat as the rest of the motion.
 function typeOut(element, text, run) {
   const letters = splitLetters(text).map(({ letter }) => letter);
@@ -324,7 +318,6 @@ if (desk) {
   for (const sleeve of sleeves) {
     sleeve.addEventListener('click', () => {
       checkSleeve(sleeve.dataset.hue);
-      hopSleeve(sleeve);
       render();
     });
     sleeve.addEventListener('keydown', moveSleeveFocus);
@@ -358,6 +351,8 @@ if (desk) {
   sleeveSamples.forEach((hop) => titleSizes.observe(hop.parentElement));
   for (const fader of faders) {
     fader.addEventListener('input', () => {
+      const [stop, reach] = fader === curveFader ? [1, 0.1] : [0, 4];
+      catchSoftStop(fader, stop, reach);
       showFaderValue(fader);
       render();
     });

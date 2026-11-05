@@ -9,12 +9,6 @@
   min-width: 0;
 }
 
-.step-title {
-  font-size: var(--type-lead);
-  font-weight: var(--weight-strong);
-  letter-spacing: -0.01em;
-}
-
 .step-number {
   font-family: var(--font-readout);
   font-size: var(--type-readout);
@@ -25,71 +19,6 @@
 .step-note {
   color: var(--ink-quiet);
   font-size: var(--type-small);
-}
-
-.install-tabs {
-  --indicator-color: var(--lit);
-  --track-color: var(--divider);
-  --track-width: var(--border-thin);
-}
-
-.install-tabs wa-tab::part(base) {
-  padding: var(--space-related) var(--wa-space-s);
-  color: var(--ink-faint);
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  transition: color var(--note-16) var(--ease-hit);
-}
-
-.install-tabs::part(tabs) {
-  gap: 0;
-}
-
-.install-tabs wa-tab:hover::part(base) {
-  color: var(--ink-quiet);
-}
-
-.install-tabs wa-tab[aria-selected='true']::part(base) {
-  color: var(--ink);
-}
-
-.install-tabs::part(body) {
-  padding-block-start: var(--space-group);
-}
-
-.install-tabs wa-tab-panel {
-  --padding: 0;
-}
-
-.install-note {
-  margin-block-start: var(--space-group);
-  color: var(--ink-quiet);
-  font-size: var(--type-small);
-}
-
-.code-result {
-  overflow: hidden;
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-control);
-}
-
-.code-result .code-well {
-  border-radius: 0;
-  border-block-end: var(--border-thin) solid var(--border-container);
-}
-
-.result-frame {
-  padding: var(--space-group) var(--space-group) var(--wa-space-l);
-  background: var(--stage);
-}
-
-.result-frame p {
-  font-size: clamp(2rem, 1.5rem + 2vw, 3rem);
-  font-weight: var(--weight-heading);
-  line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display);
 }
 
 .further-head {
@@ -115,7 +44,13 @@
 
 /* The row's contents slide on hover without changing width, so the text never rewraps. */
 .further-row > * {
-  transition: translate var(--note-16) var(--ease-bounce);
+  transition: transform var(--note-16) var(--ease-bounce);
+}
+
+@media (hover: hover) {
+  .further-row > * {
+    will-change: transform;
+  }
 }
 
 .further-number {
@@ -123,7 +58,9 @@
   font-size: var(--type-label);
   letter-spacing: 0.08em;
   color: var(--ink-faint);
-  transition: color var(--note-16) var(--ease-hit);
+  transition:
+    transform var(--note-16) var(--ease-bounce),
+    color var(--note-16) var(--ease-hit);
 }
 
 .further-title {
@@ -139,7 +76,7 @@
 }
 
 .further-row:hover > * {
-  translate: var(--space-related) 0;
+  transform: translateX(var(--space-related));
 }
 
 .further-row:hover .further-number {

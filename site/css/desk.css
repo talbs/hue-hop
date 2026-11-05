@@ -349,34 +349,6 @@
   min-block-size: 0;
 }
 
-/* Each end's AUTO switch works like the desk's toggles: LED lit means Hue Hop picks that end. */
-.end-auto {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--ink-faint);
-  font-size: 9px;
-  cursor: pointer;
-}
-
-.end-auto .led {
-  width: 0.375rem;
-  height: 0.375rem;
-}
-
-.end-auto[aria-pressed='true'] {
-  color: var(--ink);
-}
-
-.end-auto:disabled {
-  cursor: default;
-  opacity: 0.5;
-}
-
 .sleeve-custom:not(:has(> [aria-checked='true'])) .end-auto {
   display: none;
 }
@@ -399,6 +371,7 @@
 
 /* Resting strips ignore clicks, so a click lands on the tile and opens them. */
 .sleeve-custom:not(:has(> [aria-checked='true'])) .one-color {
+  --swatch-gap: 0px;
   gap: var(--space-tight);
   pointer-events: none;
 }
@@ -408,63 +381,6 @@
   wa-color-picker::part(trigger) {
   inline-size: 6px;
   opacity: 0.6;
-}
-
-.end-slice.is-auto wa-color-picker::part(trigger) {
-  border-style: dashed;
-  background: none;
-}
-
-.end-slice.is-auto wa-color-picker::part(trigger)::before {
-  display: none;
-}
-
-wa-color-picker {
-  --wa-form-control-background-color: var(--stage);
-  --wa-form-control-border-color: var(--border-container);
-  --wa-form-control-border-radius: var(--radius-control);
-}
-
-wa-color-picker::part(trigger) {
-  border: var(--border-thin) solid var(--border-control);
-  border-radius: var(--radius-control);
-}
-
-wa-color-picker::part(input) {
-  border-radius: var(--radius-control);
-  box-shadow: var(--depth-pressed);
-  font-family: var(--font-code);
-}
-
-wa-color-picker::part(preview) {
-  border-radius: var(--radius-control);
-  box-shadow: var(--depth-pressed);
-}
-
-wa-color-picker::part(grid) {
-  border-radius: var(--radius-control) var(--radius-control) 0 0;
-}
-
-wa-color-picker::part(grid-handle) {
-  border: var(--border-thick) solid var(--ink);
-  box-shadow: var(--depth-cap);
-}
-
-wa-color-picker::part(eyedropper-button__base) {
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-control);
-  background: var(--surface-raised);
-  box-shadow: var(--depth-raised);
-  color: var(--ink-quiet);
-}
-
-wa-color-picker::part(color-picker) {
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-container);
-  background: var(--surface);
-  box-shadow:
-    var(--depth-panel),
-    0 12px 32px rgb(0 0 0 / 0.35);
 }
 
 .sleeve-name {
@@ -486,24 +402,6 @@ wa-color-picker::part(color-picker) {
 .lamp-led {
   width: 0.625rem;
   height: 0.625rem;
-}
-
-[data-state='pass'] {
-  --lit: var(--pass);
-}
-
-[data-state='check'] {
-  --lit: var(--check);
-}
-
-[data-state='check'] .led {
-  animation-name: led-hit-again;
-}
-
-[data-state='off'] .led {
-  border-color: var(--border-control);
-  background: var(--surface-sunken);
-  box-shadow: none;
 }
 
 .lamp-state {

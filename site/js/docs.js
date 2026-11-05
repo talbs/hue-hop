@@ -71,6 +71,7 @@ function watchSections() {
 function createPixelIcon(name, label) {
   const icon = document.createElement('wa-icon');
   icon.setAttribute('family', 'pixel');
+  icon.setAttribute('canvas', 'auto');
   icon.setAttribute('name', name);
   icon.setAttribute('label', label);
   return icon;

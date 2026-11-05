@@ -73,6 +73,16 @@ a:hover {
   outline-offset: 2px;
 }
 
+::selection {
+  background: color-mix(in oklch, var(--lit) 35%, transparent);
+  color: var(--ink);
+}
+
+wa-input::part(input)::selection {
+  background: color-mix(in oklch, var(--lit) 35%, transparent);
+  color: var(--ink);
+}
+
 .lit-button:focus-visible {
   box-shadow: var(--depth-raised), var(--focus-glow);
 }
@@ -201,13 +211,9 @@ a.lit-button {
   text-decoration: none;
 }
 
-.lit-button-large {
-  padding-inline: var(--space-group);
-}
-
-@media (min-width: 30rem) {
-  .lit-button-large {
-    padding-inline: var(--wa-space-l);
+@media (min-width: 50rem) {
+  .lit-button {
+    min-height: var(--bar-control);
   }
 }
 
@@ -275,6 +281,24 @@ a.lit-button {
     box-shadow: 0 0 calc(var(--glow-blur) * 2 + 4px)
       color-mix(in oklch, var(--lit) 90%, transparent);
   }
+}
+
+[data-state='pass'] {
+  --lit: var(--pass);
+}
+
+[data-state='check'] {
+  --lit: var(--check);
+}
+
+[data-state='check'] .led {
+  animation-name: led-hit-again;
+}
+
+[data-state='off'] .led {
+  border-color: var(--border-control);
+  background: var(--surface-sunken);
+  box-shadow: none;
 }
 
 a {

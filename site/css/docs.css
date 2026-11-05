@@ -347,14 +347,8 @@
 }
 
 /* The cap hangs below the slider's box, past its track. */
-.example-bar wa-slider {
-  margin-block-end: var(--cap-overhang);
-}
-
 .example-bar .fader {
-  --cap-overhang: calc((var(--thumb-height) - var(--track-size)) / 2);
   flex: 1;
-  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 .example-bar .fader:has(wa-input) {
@@ -366,59 +360,10 @@
 /* Hops tops out at 64, so two digits keep the field from resizing as it counts. */
 .example-bar .fader-value {
   min-inline-size: 2ch;
-  padding-block-end: 0;
-  font-size: calc(var(--type-label) * 1.5);
-}
-
-/* Wide enough for the longest readout (Lift's 0.000, Shift's -90), so the slider never resizes mid-drag. The margin centers the digits' line on the track, less the quarter pixel those digits sit high in it. */
-.example-bar wa-slider + .fader-value {
-  min-inline-size: 5ch;
-  margin-block-end: calc(
-    var(--cap-overhang) - (1lh - var(--track-size)) / 2 - 0.25px
-  );
 }
 
 .example > figcaption {
   margin-block-start: var(--space-related);
-}
-
-/* The strip behind the label and copy button is drawn on the grid's first row, so neither needs a wrapper. */
-.code-well:has(> .code-label) {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: minmax(2.5rem, auto) auto;
-  overflow: hidden;
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-container);
-}
-
-.code-well:has(> .code-label)::before {
-  content: '';
-  grid-area: 1 / 1 / 2 / -1;
-  align-self: stretch;
-  border-block-end: var(--border-thin) solid var(--border-container);
-  background: var(--surface);
-}
-
-.wa-prose .code-label {
-  grid-area: 1 / 1;
-  align-self: center;
-  margin: 0;
-  padding-inline: var(--space-group);
-}
-
-.code-label ~ .code-copy {
-  grid-area: 1 / 2;
-  align-self: center;
-  margin: 0 var(--space-related) 0 0;
-}
-
-.code-label ~ .code-block {
-  grid-area: 2 / 1 / 3 / -1;
-}
-
-.code-well {
-  --code-action-height: 2.15rem;
 }
 
 .code-copy {

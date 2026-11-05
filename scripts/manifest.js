@@ -2,7 +2,7 @@ import { escapeHtml } from '../site/js/state.js';
 
 const FENCE = '```';
 const NO_VALUE_ICON =
-  '<wa-icon family="pixel" name="minus" label="None"></wa-icon>';
+  '<wa-icon canvas="auto" family="pixel" name="minus" label="None"></wa-icon>';
 
 function readElement(manifest) {
   return manifest.modules[0].declarations[0];

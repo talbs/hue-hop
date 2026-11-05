@@ -6,6 +6,12 @@ export function isBlankLetter(text) {
   return blankPattern.test(text);
 }
 
+// Only a drag catches, so arrow keys can still step through the stop.
+export function catchSoftStop(fader, stop, reach) {
+  if (!fader.matches(':state(dragging)')) return;
+  if (Math.abs(Number(fader.value) - stop) <= reach) fader.value = stop;
+}
+
 export function isSelecting() {
   return !document.getSelection().isCollapsed;
 }
