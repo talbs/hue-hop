@@ -30,6 +30,8 @@
     "./hues.css": "./dist/hues.css",
     "./package.json": "./package.json"
   },
+  "main": "./dist/hue-hop.js",
+  "types": "./hue-hop.d.ts",
   "sideEffects": [
     "./dist/hue-hop.js",
     "./dist/*.css"
@@ -47,8 +49,12 @@
     "access": "public",
     "provenance": true
   },
-  "engines": {
-    "node": ">=22"
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22",
+      "onFail": "error"
+    }
   },
   "scripts": {
     "build": "node scripts/build.js",
