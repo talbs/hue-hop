@@ -13,7 +13,7 @@ export async function renderSocialImage({
   const page = await browser.newPage({ viewport: SOCIAL_IMAGE_SIZE });
   await page.setContent(`<!doctype html>
 <style>
-  ${readFileSync('dist/hues.css', 'utf8')}
+  ${readFileSync('src/hues.css', 'utf8')}
   ${wordmarkSteps}
   :root {
     color-scheme: dark;

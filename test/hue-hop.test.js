@@ -21,6 +21,66 @@ async function openPage(html) {
   return page;
 }
 
+test('a hue colors the element with only the script loaded', async () => {
+  const rows = [
+    ['hue-hop', 'Nas', false],
+    ['my-hop', 'Nas', false],
+    ['hue-hop', '<svg></svg>', false],
+    ['own-root', 'Nas', true],
+  ];
+  for (const [tag, content, hasOwnRoot] of rows) {
+    const page = await openPage(
+      `<${tag} id="t" hue="dusk">${content}</${tag}>`
+    );
+    const ends = await page.evaluate(
+      async ([tag, hasOwnRoot]) => {
+        if (!customElements.get(tag)) {
+          class Subclass extends customElements.get('hue-hop') {
+            constructor() {
+              super();
+              if (hasOwnRoot) {
+                this.attachShadow({ mode: 'open' }).innerHTML = '<slot></slot>';
+              }
+            }
+          }
+          customElements.define(tag, Subclass);
+        }
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+        const style = getComputedStyle(document.getElementById('t'));
+        return [
+          style.getPropertyValue('--hop-start'),
+          style.getPropertyValue('--hop-end'),
+        ];
+      },
+      [tag, hasOwnRoot]
+    );
+    assert.ok(ends[0].includes('oklch'), `${tag} ${content} start: ${ends[0]}`);
+    assert.ok(ends[1].includes('oklch'), `${tag} ${content} end: ${ends[1]}`);
+  }
+});
+
+test('page css beats a hue, and a hue beats inherited values', async () => {
+  const hop = '<hue-hop id="t" class="x" hue="dusk">Nas</hue-hop>';
+  const rows = [
+    ['layered rule', '@layer theme { hue-hop { --hop-start: red } }', 'red'],
+    ['layered utility', '@layer utilities { .x { --hop-start: red } }', 'red'],
+    ['unlayered rule', 'hue-hop { --hop-start: red }', 'red'],
+    ['unlayered :root', ':root { --hop-start: red }', 'oklch'],
+    ['layered :root', '@layer theme { :root { --hop-start: red } }', 'oklch'],
+  ];
+  for (const [name, css, expected] of rows) {
+    const page = await openPage(`<style>${css}</style>${hop}`);
+    const start = await page.evaluate(async () => {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      return getComputedStyle(document.getElementById('t')).getPropertyValue(
+        '--hop-start'
+      );
+    });
+    assert.ok(start.includes(expected), `${name}: ${start}`);
+  }
+});
+
 async function rangesOf(page, selector) {
   return page.evaluate(async (selector) => {
     const nextFrame = () =>

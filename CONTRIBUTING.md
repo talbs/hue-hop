@@ -14,7 +14,7 @@ npm test
 
 `npm run serve` builds the site into `_site/` and serves it at `http://localhost:4174/` (use `localhost`, not `127.0.0.1`: the Font Awesome kit only allows `localhost`). It rebuilds when anything in `site/` or `src/` changes, so reload to see it. `npm run site` builds without serving. That's what the Pages deploy runs.
 
-`npm run size` checks the gzipped sizes. The core (`dist/hue-hop.js`) has a 2 KB budget, and the build fails over it. Each CSS add-on has its own budget in `scripts/size.js`.
+`npm run size` checks the gzipped sizes. The core (`dist/hue-hop.js`) has a 2.5 KB budget, and the build fails over it. `drift.css` has its own budget in `scripts/size.js`.
 
 ## Browsers
 
@@ -44,7 +44,7 @@ After that, every release goes like this:
    npm version minor --no-git-tag-version
    ```
 
-2. Run the checks. `npm pack --dry-run` should list nine files. Anything else means `files` in `package.json` is leaking.
+2. Run the checks. `npm pack --dry-run` should list eight files. Anything else means `files` in `package.json` is leaking.
 
    ```sh
    npm test
@@ -71,12 +71,11 @@ After that, every release goes like this:
 
    ```sh
    curl -s -o /dev/null -w '%{http_code}\n' https://cdn.jsdelivr.net/npm/hue-hop@0.1/dist/hue-hop.js
-   curl -s -o /dev/null -w '%{http_code}\n' https://cdn.jsdelivr.net/npm/hue-hop@0.1/dist/hues.css
    curl -s -o /dev/null -w '%{http_code}\n' https://cdn.jsdelivr.net/npm/hue-hop@0.1/dist/drift.css
    curl -sL -o /dev/null -w '%{http_code}\n' https://unpkg.com/hue-hop@0.1/dist/hue-hop.js
    ```
 
-7. Paste the CDN tab from the docs into a blank HTML file and open it. If you see color, it worked.
+7. Paste the CDN tab from the docs into a blank HTML file, add `<hue-hop hue="dusk">Test</hue-hop>` below it, and open it. If you see color, it worked.
 
 ## Design changes
 

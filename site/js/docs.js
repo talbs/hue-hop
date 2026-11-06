@@ -1,6 +1,11 @@
 import { codeFromPreview } from './example-code.js';
 import { whenSideChanges } from './scheme.js';
-import { DEFAULT_STATE, defaultLift, describeStudioLink } from './state.js';
+import {
+  DEFAULT_STATE,
+  decimalsIn,
+  defaultLift,
+  describeStudioLink,
+} from './state.js';
 import { fillCode } from './syntax.js';
 
 const page = document.querySelector('wa-page');
@@ -186,10 +191,6 @@ function previewHopIn(figure) {
   return figure.querySelector('.example-preview hue-hop');
 }
 
-function decimalsIn(step) {
-  return String(step).split('.')[1]?.length ?? 0;
-}
-
 function wireFader(figure) {
   const name = figure.dataset.control;
   const fader = figure.querySelector('.fader wa-slider');
@@ -313,7 +314,7 @@ function studioLinkFor(hop) {
     end: hop.getAttribute('end'),
     curve: readTuning(hop, 'curve', DEFAULT_STATE.curve),
     shift: readTuning(hop, 'shift', DEFAULT_STATE.shift),
-    lift: readTuning(hop, 'lift', defaultLift({ hue })),
+    lift: readTuning(hop, 'lift', defaultLift(hue)),
     drift: hop.hasAttribute('drift'),
     display: hop.hasAttribute('display'),
   });

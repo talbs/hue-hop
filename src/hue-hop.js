@@ -1,4 +1,5 @@
 import formula from './formula.css';
+import hues from './hues.css';
 
 const hasSupport = 'highlights' in CSS;
 
@@ -8,6 +9,8 @@ const forcedColors = hasSupport && matchMedia('(forced-colors: active)');
 const elementData = new WeakMap();
 const rootStyles = new WeakMap();
 const connectedHops = new Set();
+// Page CSS beats a :host rule even from inside a cascade layer, and a :host rule beats inherited values.
+const hueSheet = hasSupport && new CSSStyleSheet();
 
 const colorAttributes = ['start', 'end'];
 const mostRulesPerRoot = 256;
@@ -87,6 +90,12 @@ function sheetText(tag, longest) {
   );
 }
 
+function adoptOnce(root, sheet) {
+  if (!root.adoptedStyleSheets.includes(sheet)) {
+    root.adoptedStyleSheets.push(sheet);
+  }
+}
+
 function rootStyleFor(root) {
   let rootStyle = rootStyles.get(root);
   if (!rootStyle) {
@@ -101,11 +110,23 @@ function rootStyleFor(root) {
   }
   // Some hosts reassign adoptedStyleSheets on update, dropping the sheets.
   for (const sheet of [rootStyle.sheet, rootStyle.attributeSheet]) {
-    if (!root.adoptedStyleSheets.includes(sheet)) {
-      root.adoptedStyleSheets.push(sheet);
-    }
+    adoptOnce(root, sheet);
   }
   return rootStyle;
+}
+
+function adoptHues(element) {
+  let root = element.shadowRoot;
+  if (!root) {
+    try {
+      root = element.attachShadow({ mode: 'open' });
+    } catch {
+      // A subclass's closed root can't be reached, so it goes without the hues.
+      return;
+    }
+    root.append(document.createElement('slot'));
+  }
+  adoptOnce(root, hueSheet);
 }
 
 function writeAttributeRules(element, rootStyle) {
@@ -221,6 +242,7 @@ export class HueHop extends HTMLElement {
   connectedCallback() {
     for (const name of colorAttributes) replayEarlyProperty(this, name);
     if (!hasSupport) return;
+    adoptHues(this);
     let data = elementData.get(this);
     if (!data) {
       data = {
@@ -249,6 +271,7 @@ export class HueHop extends HTMLElement {
 }
 
 if (hasSupport) {
+  hueSheet.replaceSync(hues);
   forcedColors.addEventListener('change', () => {
     for (const hop of connectedHops) paint(hop);
   });

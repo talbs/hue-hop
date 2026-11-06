@@ -11,9 +11,13 @@ export const DEFAULT_STATE = {
   accent: null,
 };
 
-// hues.css sets the lift for every hue, so only custom ends start from 0.
-export function defaultLift(state) {
-  return state.hue ? DEFAULT_STATE.lift : 0;
+// A hue sets the lift, so only custom ends start from 0.
+export function defaultLift(hue) {
+  return hue && hue !== 'custom' ? DEFAULT_STATE.lift : 0;
+}
+
+export function decimalsIn(step) {
+  return String(step).split('.')[1]?.length ?? 0;
 }
 
 export function escapeHtml(text) {
@@ -25,7 +29,7 @@ export function escapeHtml(text) {
 }
 
 function changedTuning(state) {
-  const defaults = { ...DEFAULT_STATE, lift: defaultLift(state) };
+  const defaults = { ...DEFAULT_STATE, lift: defaultLift(state.hue) };
   return ['curve', 'shift', 'lift'].filter(
     (name) => state[name] !== defaults[name]
   );

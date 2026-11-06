@@ -27,7 +27,6 @@
       "default": "./dist/hue-hop.js"
     },
     "./drift.css": "./dist/drift.css",
-    "./hues.css": "./dist/hues.css",
     "./package.json": "./package.json"
   },
   "main": "./dist/hue-hop.js",

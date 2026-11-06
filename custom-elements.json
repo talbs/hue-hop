@@ -44,7 +44,7 @@
               "type": {
                 "text": "'dusk' | 'reef' | 'fern' | 'ember' | 'guava' | 'orchid' | 'honey'"
               },
-              "description": "Picks a ready-made look from `hues.css`."
+              "description": "Picks one of the seven ready-made color pairs."
             },
             {
               "name": "display",

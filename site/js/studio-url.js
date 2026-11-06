@@ -1,5 +1,5 @@
 import { isBlankLetter } from './motion.js';
-import { DEFAULT_STATE } from './state.js';
+import { DEFAULT_STATE, defaultLift } from './state.js';
 
 const PRESET_HUES = [
   'dusk',
@@ -66,10 +66,6 @@ export const DEFAULT_STUDIO = {
   cycle: 10,
   side: null,
 };
-
-export function defaultLiftFor(hue) {
-  return hue === 'custom' ? 0 : DEFAULT_STUDIO.lift;
-}
 
 // A link with display on and no bar is judged at 3:1, same as the landing that sent it.
 export function defaultBarFor(isDisplayOn) {
@@ -191,7 +187,7 @@ export function readStudioParams(search, { isColor }) {
   if (hue) state.hue = hue;
   if (start) state.start = start;
   if (end) state.end = end;
-  if (isCustom) state.lift = defaultLiftFor(hue);
+  if (isCustom) state.lift = defaultLift(hue);
 
   for (const name of Object.keys(NUMBER_RANGES)) {
     const value = readNumber(params, name);
@@ -243,7 +239,7 @@ export function writeStudioParams(state) {
   if (state.start) params.set('start', writeColorPair(state.start));
   if (state.end) params.set('end', writeColorPair(state.end));
   setIfChanged('curve', state.curve, DEFAULT_STUDIO.curve);
-  setIfChanged('lift', state.lift, defaultLiftFor(state.hue));
+  setIfChanged('lift', state.lift, defaultLift(state.hue));
   setIfChanged('shift', state.shift, DEFAULT_STUDIO.shift);
   if (state.isDriftOn) params.set('drift', '1');
   if (isDisplayOn) params.set('display', '1');

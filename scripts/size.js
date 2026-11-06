@@ -3,9 +3,8 @@ import { gzipSync } from 'node:zlib';
 import { basename } from 'node:path';
 
 const budgets = {
-  'dist/hue-hop.js': 2048,
+  'dist/hue-hop.js': 2560,
   'dist/drift.css': 400,
-  'dist/hues.css': 600,
 };
 
 let isOverBudget = false;
