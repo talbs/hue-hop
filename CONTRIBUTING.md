@@ -26,7 +26,7 @@ Never commit `dist/`. It's built on `npm pack` and `npm publish` (the `prepack` 
 
 ## Changelog
 
-Pull requests don't edit `CHANGELOG.md`. The release pull request writes the new version's section from everything merged since the last tag.
+Pull requests don't edit `CHANGELOG.md`. The release pull request writes the new version's section from the package changes merged since the last tag. Site changes stay out, because they deploy on merge and don't ship in the package.
 
 ## Releasing
 
@@ -34,7 +34,7 @@ npm trusts `release.yml` to publish, so releases need no token. If that connecti
 
 Every release goes like this:
 
-1. Open the release pull request from `main`. Bump the version, using `minor` for anything that changes names or defaults while on 0.x, and `patch` for the rest. Then write the `CHANGELOG.md` section for that version, dated today, from what merged since the last tag. The site reads the version from `package.json` at build, so the footer, `llms.txt` and the CDN snippet follow on the next deploy.
+1. Open the release pull request from `main`. Bump the version, using `minor` for anything that changes names or defaults while on 0.x, and `patch` for the rest. Then write the `CHANGELOG.md` section for that version, dated today, from the package changes merged since the last tag. The site reads the version from `package.json` at build, so the footer, `llms.txt` and the CDN snippet follow on the next deploy.
 
    ```sh
    npm version minor --no-git-tag-version
