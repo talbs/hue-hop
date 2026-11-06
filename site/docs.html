@@ -2338,6 +2338,14 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 inside the element isn't colored.
               </li>
               <li>
+                Safari can leave letters plain if they're hidden inside the hop
+                and shown later, or if
+                <code>content-visibility</code>
+                is on the hop itself. Hide the hop with
+                <code>display: none</code>
+                or hide an ancestor. Those recolor when they show.
+              </li>
+              <li>
                 Screen-reader-only text inside the element still uses up hops,
                 so the visible letters may not reach
                 <code>--hop-end</code>

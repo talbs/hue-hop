@@ -11,6 +11,20 @@ const rootStyles = new WeakMap();
 const connectedHops = new Set();
 // Page CSS beats a :host rule even from inside a cascade layer, and a :host rule beats inherited values.
 const hueSheet = hasSupport && new CSSStyleSheet();
+// Safari 26.6 never paints a range added while its text has no box (display: none, content-visibility, a closed details) until it's added again.
+const boxWatcher =
+  hasSupport &&
+  new IntersectionObserver((entries) => {
+    for (const { target, boundingClientRect } of entries) {
+      const data = elementData.get(target);
+      const hasBox = boundingClientRect.width > 0;
+      if (hasBox) {
+        if (data.hadNoBox) paint(target);
+        boxWatcher.unobserve(target);
+      }
+      data.hadNoBox = !hasBox;
+    }
+  });
 
 const colorAttributes = ['start', 'end'];
 const mostRulesPerRoot = 256;
@@ -208,6 +222,8 @@ function paint(element) {
     rootStyle.longest = hops;
     rootStyle.sheet.replaceSync(sheetText(element.localName, hops));
   }
+
+  boxWatcher.observe(element);
 }
 
 export class HueHop extends HTMLElement {
@@ -265,6 +281,8 @@ export class HueHop extends HTMLElement {
     const data = elementData.get(this);
     if (!data) return;
     data.observer.disconnect();
+    boxWatcher.unobserve(this);
+    data.hadNoBox = false;
     connectedHops.delete(this);
     clearRanges(data);
   }
