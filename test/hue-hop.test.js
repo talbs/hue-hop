@@ -214,6 +214,73 @@ test('content changes re-step and leave no old ranges', async () => {
   }
 });
 
+test('only a hop that had no box when it registered registers again', async () => {
+  const hop = '<hue-hop>Alpha</hue-hop>';
+  const below = '<div style="height: 3000px"></div>';
+  const rows = [
+    [
+      'content-visibility: auto, offscreen',
+      `${below}<div id="w" style="content-visibility: auto">${hop}</div>`,
+      (w) => w.scrollIntoView(),
+      true,
+    ],
+    [
+      'content-visibility: hidden',
+      `<div id="w" style="content-visibility: hidden">${hop}</div>`,
+      (w) => {
+        w.style.contentVisibility = 'visible';
+      },
+      true,
+    ],
+    [
+      'display: none',
+      `<div id="w" style="display: none">${hop}</div>`,
+      (w) => {
+        w.style.display = 'block';
+      },
+      true,
+    ],
+    [
+      'closed details',
+      `<details id="w">${hop}</details>`,
+      (w) => {
+        w.open = true;
+      },
+      true,
+    ],
+    [
+      'below the fold, with a box',
+      `${below}<div id="w">${hop}</div>`,
+      (w) => w.scrollIntoView(),
+      false,
+    ],
+    ['in view', `<div id="w">${hop}</div>`, () => {}, false],
+  ];
+  for (const [name, html, reveal, isRegisteredAgain] of rows) {
+    const page = await openPage(html);
+    const { kept, total } = await page.evaluate(`(async () => {
+      const settle = async () => {
+        for (let frame = 0; frame < 10; frame++) {
+          await new Promise((resolve) => requestAnimationFrame(resolve));
+        }
+      };
+      const liveRanges = () =>
+        [...CSS.highlights.values()].flatMap((highlight) => [...highlight]);
+      await settle();
+      const before = liveRanges();
+      (${reveal})(document.getElementById('w'));
+      await settle();
+      const after = liveRanges();
+      return {
+        kept: before.filter((range) => after.includes(range)).length,
+        total: after.length,
+      };
+    })()`);
+    assert.equal(total, 5, name);
+    assert.equal(kept, isRegisteredAgain ? 0 : 5, name);
+  }
+});
+
 test('forced colors holds back every range until it turns off', async () => {
   const page = await openPage('<hue-hop id="t">Alpha</hue-hop>');
 
