@@ -65,6 +65,7 @@ export const DOCS_GROUPS = [
       ['Troubleshooting', '#troubleshooting'],
       ['Inspiration', '#inspiration'],
       ['Support', '#support'],
+      ['Colophon', '#colophon'],
     ],
   ],
 ];
