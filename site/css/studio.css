@@ -160,6 +160,11 @@ wa-page::part(subheader) {
   padding-inline: 0;
 }
 
+#copy-link wa-icon[name='check'] {
+  border-radius: var(--radius-pill);
+  animation: led-hit var(--note-8) var(--ease-hit);
+}
+
 .page-pick {
   display: flex;
   align-items: center;
@@ -185,15 +190,32 @@ wa-page::part(subheader) {
   width: 100%;
 }
 
+@property --word-unfit-size {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
 .stage-word {
+  --word-unfit-size: min(var(--word-size), 100cqh / 1.2);
   display: inline-flex;
   align-items: baseline;
   font-family: var(--font-display);
-  font-size: calc(min(var(--word-size), 100cqh / 1.2) * var(--word-fit, 1));
+  font-size: calc(var(--word-unfit-size) * var(--word-fit, 1));
   font-weight: var(--weight-heading);
   line-height: 1.2;
   letter-spacing: var(--tracking-display);
   white-space: pre;
+}
+
+.studio[data-ready] .stage-word {
+  transition:
+    font-size var(--note-8) var(--ease-bounce),
+    font-weight var(--note-8) var(--ease-hit);
+}
+
+.studio:has(wa-slider:state(dragging)) .stage-word {
+  transition: none;
 }
 
 /* Browsers that can't hold the first paint for studio.js would show the word before its colors and fit are on. */
@@ -276,12 +298,13 @@ wa-page::part(subheader) {
 
 /* Keeps its place under the ratio, so the strip doesn't jump when a letter crosses the bar. A fader can flip a meter's state many times a second, so the dot skips the hit or it would flash. */
 .meter-led .led {
-  visibility: hidden;
+  opacity: 0;
   animation: none;
+  transition: opacity var(--note-16) var(--ease-hit);
 }
 
 .meter-led[data-state='check'] .led {
-  visibility: visible;
+  opacity: 1;
 }
 
 .meter-led[data-state='check'] .led-value {
@@ -292,6 +315,7 @@ wa-page::part(subheader) {
 .led-value {
   min-inline-size: 4ch;
   text-align: center;
+  transition: color var(--note-16) var(--ease-hit);
 }
 
 .meters-empty {
@@ -372,6 +396,8 @@ wa-page::part(subheader) {
 
 .fit-button:disabled {
   display: none;
+  opacity: 0;
+  transition-duration: var(--note-32);
 }
 
 .undo-fit {
@@ -995,19 +1021,6 @@ wa-option {
 
   .bridge-messages {
     grid-column: auto;
-  }
-}
-
-/* The reveal runs only once the Studio is up, so the closed rows don't play it at page load. */
-@media (prefers-reduced-motion: no-preference) {
-  .row:not([hidden]) {
-    transition: opacity var(--note-16) var(--ease-hit);
-  }
-
-  @starting-style {
-    .studio[data-ready] .row:not([hidden]) {
-      opacity: 0;
-    }
   }
 }
 

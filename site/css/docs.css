@@ -561,15 +561,26 @@ wa-scroller > table {
   grid-auto-flow: column;
   align-items: end;
   gap: var(--space-tight);
-  padding: 0 var(--wa-space-l) var(--wa-space-l);
+  /* The tallest bar is 7 segments of 14px, per docs.js. Reserved so bars rising and bouncing can't move the page. */
+  --bar-track: 98px;
+  --meter-pad: var(--wa-space-l);
+  min-block-size: calc(
+    var(--bar-track) + var(--space-related) + var(--type-label) *
+      var(--leading-tight) + var(--meter-pad)
+  );
+  padding: 0 var(--meter-pad) var(--meter-pad);
 }
 
 .hop-meter-step {
   display: grid;
+  grid-template-rows: var(--bar-track) auto;
   gap: var(--space-related);
+  transition: color var(--note-16) var(--ease-hit);
 }
 
 .hop-meter-bar {
+  align-self: end;
+  block-size: 0;
   background: currentColor;
   mask: repeating-linear-gradient(to top, #000 0 10px, transparent 10px 14px);
   transition: block-size var(--note-8) var(--ease-bounce);
@@ -707,7 +718,7 @@ wa-callout.note > strong code {
 
 @media (min-width: 48rem) {
   .hop-meter {
-    padding: 0 var(--space-section) var(--space-section);
+    --meter-pad: var(--space-section);
   }
 
   .fact-list > div {

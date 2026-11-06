@@ -75,11 +75,11 @@
   line-height: var(--leading-tight);
 }
 
-.further-row:hover > * {
+.further-row:is(:hover, :focus-within) > * {
   transform: translateX(var(--space-related));
 }
 
-.further-row:hover .further-number {
+.further-row:is(:hover, :focus-within) .further-number {
   color: var(--lit);
 }
 

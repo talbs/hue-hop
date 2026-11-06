@@ -332,4 +332,8 @@ if (desk) {
   document.addEventListener('sidechange', useSideDefaults);
   whenSideChanges(render);
   render();
+  // Custom ends open at load shouldn't drop in. Only ones opened afterwards animate.
+  requestAnimationFrame(() =>
+    setTimeout(() => desk.toggleAttribute('data-ready', true))
+  );
 }

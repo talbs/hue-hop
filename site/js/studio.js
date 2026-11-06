@@ -40,11 +40,11 @@ const SCHEMES = ['dark', 'light'];
 const ENDS = ['start', 'end'];
 const SCHEME_OF_SIDE = { a: 'dark', b: 'light' };
 const SCHEME_NAME = { dark: 'Dark', light: 'Light' };
-const COPIED_MS = 1500;
 const CODE_LINE_LENGTH = 48;
 const ADDRESS_DELAY_MS = 250;
 // A dotted eighth, about 500ms, so a fader drag speaks once it stops.
 const SPOKEN_DELAY_MS = beatMs() * 0.75;
+const COPIED_MS = beatMs() * 2;
 
 const studio = document.querySelector('.studio');
 const stageArt = document.querySelector('.stage-art');
@@ -464,9 +464,16 @@ let wordFit = 1;
 function fitWordToStage() {
   // A fit resizes the stage, so the observer asks again mid-type. Measuring half a word would undo the fit, so typing refits when it finishes instead.
   if (hop.textContent !== wordInUse()) return;
-  const width = wordmark.getBoundingClientRect().width;
+  const { width } = wordmark.getBoundingClientRect();
   if (width === 0) return;
-  const fit = Math.min(stageArt.clientWidth / (width / wordFit), 1);
+  // The size may be mid-glide, so this works from the width per pixel of size and the size before the fit, neither of which glides.
+  const wordStyle = getComputedStyle(wordmark);
+  const widthPerSizePixel = width / parseFloat(wordStyle.fontSize);
+  const unfitSize = parseFloat(wordStyle.getPropertyValue('--word-unfit-size'));
+  const fit = Math.min(
+    stageArt.clientWidth / (widthPerSizePixel * unfitSize),
+    1
+  );
   if (Math.abs(fit - wordFit) < 0.001) return;
   wordFit = fit;
   wordmark.style.setProperty('--word-fit', fit);
@@ -1083,6 +1090,7 @@ function updateSetting(event) {
   if (field.localName === 'wa-select' && event.type === 'input') {
     return;
   }
+  const wasShifted = state.shift !== 0;
 
   if (field.localName === 'wa-color-picker') {
     if (field.value === field.dataset.shown) return;
@@ -1097,8 +1105,12 @@ function updateSetting(event) {
   } else {
     return;
   }
+  // Only crossing zero shows or hides the shift note, so the rest of a drag measures nothing.
+  const isShifted = state.shift !== 0;
+  const oldTops = isShifted !== wasShifted ? readGlideTops() : null;
   forgetFit();
   showEdit();
+  if (oldTops) glideAfterRender(oldTops);
 }
 
 function toggleSetting(name) {
@@ -1174,21 +1186,25 @@ function glideFrom(oldTops) {
   }
 }
 
+// render() paints on the next frame, and this runs right after it, before anything shows.
+function glideAfterRender(oldTops) {
+  requestAnimationFrame(() => glideFrom(oldTops));
+}
+
 function handleClick(event) {
   const { target } = event;
+  const growsHead = target.closest(
+    'button[name="drift"], button[name="accentOn"], #fit-button, #undo-fit'
+  );
+  const oldTops = growsHead ? readGlideTops() : null;
   if (target.closest('#fit-button')) {
     fitFailingSides();
-    showEdit();
-    return;
+  } else {
+    if (!applyClickedEdit(target)) return;
+    forgetFit();
   }
-  const oldTops = target.closest('button[name="drift"]')
-    ? readGlideTops()
-    : null;
-  if (!applyClickedEdit(target)) return;
-  forgetFit();
   showEdit();
-  // render() paints on the next frame, and this runs right after it, before anything shows.
-  if (oldTops) requestAnimationFrame(() => glideFrom(oldTops));
+  if (oldTops) glideAfterRender(oldTops);
 }
 
 const HUE_KEY_STEPS = {
@@ -1226,6 +1242,7 @@ function resetStudio() {
 }
 
 let copiedTimer;
+let isCopyTipHeld = false;
 function showCopyState(iconName, label) {
   writeAttribute(copyLinkButton.querySelector('wa-icon'), 'name', iconName);
   writeAttribute(copyLinkButton, 'aria-label', label);
@@ -1240,13 +1257,14 @@ function confirmCopy(iconName, shownLabel, spoken) {
   lampSpeechTimer = null;
   lampSpoken.textContent = `${spoken} ${lampSentence}`;
   copiedTimer = setTimeout(() => {
-    showCopyState('link', 'Copy link');
+    isCopyTipHeld = false;
     copyLinkTip.open = false;
     if (lampSpeechTimer === null) writeLampSpokenQuietly(lampSentence);
   }, COPIED_MS);
 }
 
 async function copyLink() {
+  isCopyTipHeld = true;
   flushAddress();
   const params = shareParams();
   try {
@@ -1317,7 +1335,17 @@ document
   .getElementById('controls')
   .addEventListener('submit', (event) => event.preventDefault());
 document.getElementById('reset').addEventListener('click', resetStudio);
-copyLinkButton.addEventListener('click', copyLink);
+// Capture, so the hold is on before the tooltip's own click listener closes it.
+copyLinkButton.addEventListener('click', copyLink, { capture: true });
+// The tooltip closes on press and again on click. A close still running when the copy opens it for "Copied" would leave it hidden, so none get to start.
+copyLinkTip.addEventListener('wa-hide', (event) => {
+  if (isCopyTipHeld || copyLinkButton.matches(':active')) {
+    event.preventDefault();
+  }
+});
+copyLinkTip.addEventListener('wa-after-hide', () => {
+  if (!isCopyTipHeld) showCopyState('link', 'Copy link');
+});
 codeDrawer.addEventListener('wa-show', showCode);
 isColorModeOn.addEventListener('change', render);
 
@@ -1335,6 +1363,10 @@ whenSideChanges(render);
 new ResizeObserver(() => requestAnimationFrame(fitWordToStage)).observe(
   stageArt
 );
+// A heavier weight is wider, and the fit can't see that until the weight has landed.
+wordmark.addEventListener('transitionend', (event) => {
+  if (event.propertyName === 'font-weight') fitWordToStage();
+});
 new ResizeObserver(showStripScroll).observe(bridgeStrips);
 new ResizeObserver(keepFocusClearOfHead).observe(head);
 document.fonts.addEventListener('loadingdone', fitWordToStage);
