@@ -749,12 +749,13 @@
                 Shape
               </h2>
               <div class="row">
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
+                <a
+                  class="tuning-link readout-label hop-link is-quiet"
+                  href="{{docs-url}}#curve"
+                  aria-label="Curve docs"
                 >
                   Curve
-                </span>
+                </a>
                 <wa-slider
                   class="wa-visually-hidden-label"
                   name="curve"
@@ -774,12 +775,13 @@
                 </output>
               </div>
               <div class="row">
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
+                <a
+                  class="tuning-link readout-label hop-link is-quiet"
+                  href="{{docs-url}}#lift"
+                  aria-label="Lift docs"
                 >
                   Lift
-                </span>
+                </a>
                 <wa-slider
                   class="wa-visually-hidden-label"
                   name="lift"
@@ -799,12 +801,13 @@
                 </output>
               </div>
               <div class="row">
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
+                <a
+                  class="tuning-link readout-label hop-link is-quiet"
+                  href="{{docs-url}}#shift"
+                  aria-label="Shift docs"
                 >
                   Shift
-                </span>
+                </a>
                 <wa-slider
                   class="wa-visually-hidden-label"
                   name="shift"
@@ -965,132 +968,43 @@
             class="code-step wa-stack wa-gap-l"
             aria-labelledby="code-title"
           >
-            <wa-tab-group
-              class="install-tabs"
-              id="code-route"
-            >
-              <wa-tab
-                slot="nav"
-                panel="element"
-                id="code-html-tab"
-              >
-                On the element
-              </wa-tab>
-              <wa-tab
-                slot="nav"
-                panel="stylesheet"
-              >
-                In your CSS
-              </wa-tab>
-              <wa-tab-panel name="element">
-                <div class="wa-stack wa-gap-s">
-                  <p class="install-note">
-                    Set
-                    <code>color-scheme: light dark</code>
-                    on your page, or the dark colors won't show.
-                  </p>
-                  <div class="code-well">
-                    <p class="code-label readout-label">In your HTML</p>
-                    <pre
-                      class="code-block"
-                    ><code class="language-html" id="snippet-html"></code></pre>
-                    <wa-copy-button
-                      class="code-copy"
-                      from="snippet-html"
-                      copy-label="Copy HTML"
-                    >
-                      <wa-icon
-                        slot="copy-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="clone"
-                      ></wa-icon>
-                      <wa-icon
-                        slot="success-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="check"
-                      ></wa-icon>
-                      <wa-icon
-                        slot="error-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="xmark"
-                      ></wa-icon>
-                    </wa-copy-button>
-                  </div>
-                </div>
-              </wa-tab-panel>
-              <wa-tab-panel name="stylesheet">
-                <div class="wa-stack wa-gap-s">
-                  <p class="install-note">
-                    Put this on
-                    <code>:root</code>
-                    or your own tokens, then use the plain element below.
-                  </p>
-                  <div class="code-well">
-                    <p class="code-label readout-label">In your CSS</p>
-                    <pre
-                      class="code-block"
-                    ><code class="language-css" id="snippet-css"></code></pre>
-                    <wa-copy-button
-                      class="code-copy"
-                      from="snippet-css"
-                      copy-label="Copy CSS"
-                    >
-                      <wa-icon
-                        slot="copy-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="clone"
-                      ></wa-icon>
-                      <wa-icon
-                        slot="success-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="check"
-                      ></wa-icon>
-                      <wa-icon
-                        slot="error-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="xmark"
-                      ></wa-icon>
-                    </wa-copy-button>
-                  </div>
-                  <div class="code-well">
-                    <p class="code-label readout-label">In your HTML</p>
-                    <pre
-                      class="code-block"
-                    ><code class="language-html" id="snippet-bare"></code></pre>
-                    <wa-copy-button
-                      class="code-copy"
-                      from="snippet-bare"
-                      copy-label="Copy HTML"
-                    >
-                      <wa-icon
-                        slot="copy-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="clone"
-                      ></wa-icon>
-                      <wa-icon
-                        slot="success-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="check"
-                      ></wa-icon>
-                      <wa-icon
-                        slot="error-icon"
-                        canvas="auto"
-                        family="pixel"
-                        name="xmark"
-                      ></wa-icon>
-                    </wa-copy-button>
-                  </div>
-                </div>
-              </wa-tab-panel>
-            </wa-tab-group>
+            <div class="wa-stack wa-gap-s">
+              <p class="install-note">
+                Set
+                <code>color-scheme: light dark</code>
+                on your page, or the dark colors won't show.
+              </p>
+              <div class="code-well">
+                <p class="code-label readout-label">In your HTML</p>
+                <pre
+                  class="code-block"
+                ><code class="language-html" id="snippet-html"></code></pre>
+                <wa-copy-button
+                  class="code-copy"
+                  from="snippet-html"
+                  copy-label="Copy HTML"
+                >
+                  <wa-icon
+                    slot="copy-icon"
+                    canvas="auto"
+                    family="pixel"
+                    name="clone"
+                  ></wa-icon>
+                  <wa-icon
+                    slot="success-icon"
+                    canvas="auto"
+                    family="pixel"
+                    name="check"
+                  ></wa-icon>
+                  <wa-icon
+                    slot="error-icon"
+                    canvas="auto"
+                    family="pixel"
+                    name="xmark"
+                  ></wa-icon>
+                </wa-copy-button>
+              </div>
+            </div>
           </section>
           <section
             class="code-step wa-stack wa-gap-l"
@@ -1165,7 +1079,6 @@
                     <pre
                       class="code-block"
                     ><code class="language-javascript" id="studio-npm-import">import 'hue-hop';
-import 'hue-hop/hues.css';
 import 'hue-hop/drift.css';</code></pre>
                     <wa-copy-button
                       class="code-copy"
@@ -1204,10 +1117,6 @@ import 'hue-hop/drift.css';</code></pre>
   type="module"
   src="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hue-hop.js"
 &gt;&lt;/script&gt;
-&lt;link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hues.css"
-/&gt;
 &lt;link
   rel="stylesheet"
   href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/drift.css"
@@ -1253,10 +1162,6 @@ import 'hue-hop/drift.css';</code></pre>
   type="module"
   src="/js/hue-hop.js"
 &gt;&lt;/script&gt;
-&lt;link
-  rel="stylesheet"
-  href="/css/hues.css"
-/&gt;
 &lt;link
   rel="stylesheet"
   href="/css/drift.css"

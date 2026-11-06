@@ -53,6 +53,18 @@ wa-slider::part(label) {
   color: var(--ink-quiet);
 }
 
+.tuning-link {
+  position: relative;
+  justify-self: start;
+}
+
+/* A 24px target without moving the label or its underline. */
+.tuning-link::after {
+  content: '';
+  position: absolute;
+  inset: -6px -4px;
+}
+
 /* With no label above it, the track's own top margin would push it off center. */
 wa-slider.wa-visually-hidden-label::part(slider) {
   margin-block-start: 0;
@@ -190,7 +202,6 @@ wa-color-picker::part(color-picker) {
   border: 0;
   background: none;
   color: var(--ink-faint);
-  font-size: 9px;
   cursor: pointer;
 }
 
@@ -247,7 +258,7 @@ wa-input {
   min-width: 0;
 }
 
-/* Pressed into the desk the same way as the sleeves. */
+/* Pressed into the desk the same way as the hue chips. */
 wa-input::part(input-wrapper) {
   min-height: var(--tap);
   border: var(--border-thin) solid var(--border-container);
@@ -275,7 +286,7 @@ wa-input:hover::part(input-wrapper) {
   border-color: var(--border-control);
 }
 
-/* Takes the selected sleeve's lit edge. The outline stays, transparent, so forced-colors mode still draws it. */
+/* Takes the selected hue chip's lit edge. The outline stays, transparent, so forced-colors mode still draws it. */
 wa-input:focus-within::part(input-wrapper) {
   outline-color: transparent;
   outline-offset: 0;

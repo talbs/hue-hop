@@ -14,7 +14,7 @@ import {
   typeOut,
 } from './motion.js';
 import { whenSideChanges } from './scheme.js';
-import { escapeHtml } from './state.js';
+import { defaultLift, escapeHtml } from './state.js';
 import {
   autoPartnerOf,
   formatOklch,
@@ -28,7 +28,6 @@ import {
 } from './studio-color.js';
 import {
   defaultBarFor,
-  defaultLiftFor,
   DEFAULT_STUDIO,
   FONTS,
   readStudioParams,
@@ -74,18 +73,14 @@ const fitResult = document.getElementById('fit-result');
 const undoButton = document.getElementById('undo-fit');
 const hueChips = [...studio.querySelectorAll('.hue-chip')];
 const codeDrawer = document.getElementById('code-drawer');
-const htmlTab = document.getElementById('code-html-tab');
 const codeInstall = document.getElementById('code-install');
 const importSnippet = document.getElementById('studio-npm-import');
 const cdnSnippet = document.getElementById('studio-cdn');
 const selfHostSnippet = document.getElementById('studio-self-host');
 const selfHostNote = document.getElementById('code-self-host-note');
-const bareSnippet = document.getElementById('snippet-bare');
 const htmlSnippet = document.getElementById('snippet-html');
-const cssSnippet = document.getElementById('snippet-css');
 const copyLinkButton = document.getElementById('copy-link');
 const copyLinkTip = document.getElementById('copy-link-tip');
-const codeRoute = document.getElementById('code-route');
 
 function control(name) {
   return studio.querySelector(`[name="${name}"]`);
@@ -434,7 +429,7 @@ function styleText() {
   if (state.curve !== DEFAULT_STUDIO.curve) {
     lines.push(`--hop-curve: ${state.curve}`);
   }
-  if (state.lift !== defaultLiftFor(state.hue)) {
+  if (state.lift !== defaultLift(state.hue)) {
     lines.push(`--hop-lift: ${state.lift}`);
   }
   if (state.shift !== DEFAULT_STUDIO.shift) {
@@ -853,10 +848,6 @@ function writeHopHtml() {
   const style = styleText();
   if (style) attributes.push(`style="${style}"`);
 
-  return writeHopMarkup(attributes);
-}
-
-function writeHopMarkup(attributes) {
   const word = escapeHtml(wordInUse());
   const oneLineTag = ['hue-hop', ...attributes].join(' ');
   const oneLine = `<${oneLineTag}>${word}</hue-hop>`;
@@ -869,60 +860,8 @@ function writeHopMarkup(attributes) {
   return `${hopHtml}<span class="accent" style="color: ${accentColor}">${escapeHtml(state.accent)}</span>`;
 }
 
-function writeBareHopHtml() {
-  return writeHopMarkup(state.isDriftOn ? ['drift'] : []);
-}
-
-function endPairForCss(which) {
-  if (!isPreset()) return state[which];
-  return {
-    light: formatOklch(readPresetEnds('light')[which]),
-    dark: formatOklch(readPresetEnds('dark')[which]),
-  };
-}
-
-function writeEndDeclaration(which, color) {
-  const line = `--hop-${which}: ${color};`;
-  if (line.length <= CODE_LINE_LENGTH) return line;
-  const inner = color
-    .slice('light-dark('.length, -1)
-    .replace('), ', '),\n    ');
-  return `--hop-${which}: light-dark(\n    ${inner}\n  );`;
-}
-
-function writeHopCss() {
-  const lines = ['color-scheme: light dark;'];
-  for (const which of ENDS) {
-    const pair = endPairForCss(which);
-    lines.push(
-      pair
-        ? writeEndDeclaration(which, writeColorPair(pair))
-        : `/* --hop-${which} not set: Hue Hop picks it from the other end. */`
-    );
-  }
-  lines.push(
-    `--hop-curve: ${state.curve};`,
-    `--hop-lift: ${state.lift};`,
-    `--hop-shift: ${state.shift};`
-  );
-  if (state.isDriftOn) {
-    lines.push(
-      `--hop-drift-range: ${state.range};`,
-      `--hop-drift-cycle: ${state.cycle};`
-    );
-  }
-  return `:root {\n  ${lines.join('\n  ')}\n}`;
-}
-
-function writeHtmlTab() {
-  return isPreset() ? `${state.hue} preset` : 'On the element';
-}
-
 function stylesheetsNeeded() {
-  const names = [];
-  if (isPreset() && codeRoute.active !== 'stylesheet') names.push('hues.css');
-  if (state.isDriftOn) names.push('drift.css');
-  return names;
+  return state.isDriftOn ? ['drift.css'] : [];
 }
 
 function writeImports() {
@@ -949,10 +888,7 @@ function writeSelfHostNote() {
 }
 
 function showCode() {
-  setText(htmlTab, writeHtmlTab());
   fillCode(htmlSnippet, writeHopHtml());
-  fillCode(cssSnippet, writeHopCss());
-  fillCode(bareSnippet, writeBareHopHtml());
   fillCode(importSnippet, writeImports());
   const cdnFolder = `https://cdn.jsdelivr.net/npm/${codeInstall.dataset.cdn}/dist/`;
   fillCode(cdnSnippet, writeScriptTags(cdnFolder, cdnFolder));
@@ -1136,8 +1072,7 @@ function pickColor(name, value) {
 
 function catchNeutralStop(field, name) {
   if (name === 'curve') catchSoftStop(field, 0, 0.1);
-  else if (name === 'lift')
-    catchSoftStop(field, defaultLiftFor(state.hue), 0.004);
+  else if (name === 'lift') catchSoftStop(field, defaultLift(state.hue), 0.004);
   else if (name === 'shift') catchSoftStop(field, 0, 4);
 }
 
@@ -1384,9 +1319,6 @@ document
 document.getElementById('reset').addEventListener('click', resetStudio);
 copyLinkButton.addEventListener('click', copyLink);
 codeDrawer.addEventListener('wa-show', showCode);
-codeRoute.addEventListener('wa-tab-show', () =>
-  requestAnimationFrame(showCode)
-);
 isColorModeOn.addEventListener('change', render);
 
 document.addEventListener('sidechange', ({ detail }) => {

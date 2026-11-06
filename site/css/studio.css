@@ -559,13 +559,6 @@ wa-option {
   font-size: var(--type-small);
 }
 
-.color-field {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-related);
-  min-height: var(--bar-control);
-}
-
 .page-picker {
   --swatch-gap: 3px;
 }
@@ -573,11 +566,6 @@ wa-option {
 .page-picker::part(trigger) {
   width: 1.5rem;
   height: 1.5rem;
-}
-
-.color-field wa-color-picker::part(trigger) {
-  width: var(--bar-control);
-  height: var(--bar-control);
 }
 
 /* Stays tall enough for the hex and Auto stacked beside it. */
@@ -608,7 +596,6 @@ wa-option {
 .end-facts .end-auto {
   gap: var(--space-tight);
   min-height: 1.25rem;
-  font-size: var(--type-label);
 }
 
 .icon-action {
@@ -629,94 +616,8 @@ wa-option {
   color: var(--ink);
 }
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-tight);
-  min-height: var(--bar-control);
-  padding-inline: var(--space-related);
-  border: var(--border-thin) solid transparent;
-  border-radius: var(--radius-control);
-  background: var(--surface-raised);
-  box-shadow: var(--depth-raised);
-  color: var(--ink-quiet);
-  font-size: var(--type-fine);
-  line-height: 1;
-  cursor: pointer;
-  transition:
-    transform var(--note-16) var(--ease-bounce),
-    box-shadow var(--note-16) var(--ease-bounce),
-    border-color var(--note-16) var(--ease-hit),
-    color var(--note-16) var(--ease-hit);
-}
-
-.chip:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--depth-lifted);
-  color: var(--ink);
-}
-
-.chip:active {
-  transform: translateY(1px) scale(0.98);
-  background: var(--surface-sunken);
-  box-shadow: var(--depth-pressed);
-  transition-duration: var(--note-32);
-  transition-timing-function: var(--ease-hit);
-}
-
-.chip:focus-visible {
-  box-shadow: var(--depth-raised), var(--focus-glow);
-}
-
-.hue-grid {
+.row-presets .hue-grid {
   grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(4.25rem, 1fr));
-  gap: var(--space-related);
-}
-
-/* Each hue sits in a sleeve on the page color, like the landing's hue tiles. */
-.hue-chip {
-  justify-content: center;
-  min-width: 0;
-  border-color: var(--border-container);
-  background: var(--stage);
-  box-shadow: var(--depth-pressed);
-  font-size: var(--type-body);
-  font-weight: var(--weight-strong);
-  overflow: hidden;
-}
-
-.hue-chip:hover {
-  border-color: var(--border-control);
-  box-shadow: var(--depth-pressed);
-}
-
-.hue-chip[data-hue='custom'] {
-  border-style: dashed;
-  background: transparent;
-  box-shadow: none;
-  font-family: var(--font-readout);
-  font-size: var(--type-label);
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.hue-chip[aria-checked='true'] {
-  border-color: var(--lit);
-  border-style: solid;
-  box-shadow:
-    inset 0 0 0 var(--border-thin) var(--lit),
-    var(--lit-glow);
-  color: var(--ink);
-  animation: sleeve-drop var(--note-8) var(--ease-bounce);
-}
-
-@keyframes sleeve-drop {
-  from {
-    transform: translateY(-4px);
-  }
 }
 
 #code-drawer {
@@ -798,12 +699,6 @@ wa-option {
 
 .probes i[data-end='end'] {
   color: var(--hop-end, transparent);
-}
-
-@media (min-width: 28rem) {
-  .hue-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 }
 
 @media (width < 50rem) {
@@ -1113,14 +1008,6 @@ wa-option {
     .studio[data-ready] .row:not([hidden]) {
       opacity: 0;
     }
-  }
-}
-
-@media (forced-colors: active) {
-  .hue-chip[aria-checked='true'] {
-    border-color: Highlight;
-    outline: var(--border-thick) solid Highlight;
-    outline-offset: -4px;
   }
 }
 

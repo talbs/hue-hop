@@ -34,7 +34,7 @@ export const PAGES = [
     output: 'index.html',
     root: './',
     navName: 'home',
-    stylesheets: ['desk.css', 'wild.css', 'quickstart.css'],
+    stylesheets: ['chips.css', 'desk.css', 'wild.css', 'quickstart.css'],
     url: SITE_URL,
     title: 'Hue Hop',
     description:
@@ -56,7 +56,7 @@ export const PAGES = [
     output: 'studio/index.html',
     root: '../',
     navName: 'studio',
-    stylesheets: ['studio.css'],
+    stylesheets: ['chips.css', 'studio.css'],
     url: `${SITE_URL}studio/`,
     title: 'Hue Hop Studio',
     description:

@@ -1,5 +1,5 @@
 import { floorRatio, lowestLetterContrast } from './contrast.js';
-import { letterRights, readSide, whenSideChanges } from './scheme.js';
+import { readSide, whenSideChanges } from './scheme.js';
 
 import {
   catchSoftStop,
@@ -10,6 +10,8 @@ import {
 } from './motion.js';
 import {
   DEFAULT_STATE,
+  decimalsIn,
+  defaultLift,
   describeMarkup,
   describeStudioLink,
   styleFor,
@@ -35,23 +37,23 @@ const live = document.getElementById('live');
 const stage = document.getElementById('stage');
 const stageBars = stage?.querySelector('.stage-eq');
 const textField = document.getElementById('desk-text');
-const sleeves = [...document.querySelectorAll('.sleeves [role="radio"]')];
-const oneColor = document.getElementById('one-color');
-const endSlices = [...oneColor.querySelectorAll('.end-slice')].map((slice) => ({
-  slice,
-  end: slice.dataset.end,
-  picker: slice.querySelector('wa-color-picker'),
-  auto: slice.querySelector('.end-auto'),
+const hueChips = [...document.querySelectorAll('#desk .hue-chip')];
+const customEndsRow = document.getElementById('custom-ends');
+const customEndControls = [
+  ...customEndsRow.querySelectorAll('.custom-end'),
+].map((control) => ({
+  control,
+  end: control.dataset.end,
+  picker: control.querySelector('wa-color-picker'),
+  auto: control.querySelector('.end-auto'),
 }));
-const oneColorSample = document.getElementById('one-color-sample');
 const driftSwitch = document.getElementById('drift-switch');
 const displaySwitch = document.getElementById('display-switch');
 const samples = document.getElementById('samples');
-const sleeveSamples = [...document.querySelectorAll('.sleeve-title hue-hop')];
-const ellipsisContext = document.createElement('canvas').getContext('2d');
 const curveFader = document.getElementById('curve');
 const shiftFader = document.getElementById('shift');
-const faders = [curveFader, shiftFader];
+const liftFader = document.getElementById('lift');
+const faders = [curveFader, shiftFader, liftFader];
 const lamp = document.getElementById('lamp');
 const stageHue = document.getElementById('stage-hue');
 const lampState = document.getElementById('lamp-state');
@@ -59,30 +61,47 @@ const lampDetail = document.getElementById('lamp-detail');
 const markup = document.getElementById('markup');
 const studioLink = document.getElementById('studio-link');
 
+function checkedHue() {
+  return hueChips.find((chip) => chip.getAttribute('aria-checked') === 'true')
+    ?.dataset.hue;
+}
+
+function readLift() {
+  return Number(Number(liftFader.value).toFixed(3));
+}
+
 export function readDeskState() {
-  const checked = sleeves.find(
-    (sleeve) => sleeve.getAttribute('aria-checked') === 'true'
-  );
-  const isOneColor = checked?.dataset.hue === 'custom';
+  const hue = checkedHue();
+  const isCustom = hue === 'custom';
   return {
     ...DEFAULT_STATE,
     text: textField.value,
-    hue: isOneColor ? null : (checked?.dataset.hue ?? DEFAULT_STATE.hue),
-    ...(isOneColor && { ...customEnds(), lift: 0 }),
+    hue: isCustom ? null : (hue ?? DEFAULT_STATE.hue),
+    ...(isCustom && customEnds()),
     curve: Number(curveFader.value),
     shift: Number(shiftFader.value),
+    lift: readLift(),
     drift: driftSwitch.getAttribute('aria-pressed') === 'true',
     display: displaySwitch.getAttribute('aria-pressed') === 'true',
   };
 }
 
-function checkSleeve(hue) {
-  for (const sleeve of sleeves) {
-    const isChecked = sleeve.dataset.hue === hue;
-    sleeve.setAttribute('aria-checked', String(isChecked));
-    sleeve.tabIndex = isChecked ? 0 : -1;
+// A hue rests at its own lift and custom ends at 0, so a lift nobody moved follows the switch and stays out of the markup.
+function moveLiftToRest(hue) {
+  const currentHue = checkedHue();
+  if (hue === currentHue || readLift() !== defaultLift(currentHue)) return;
+  liftFader.value = defaultLift(hue);
+  showFaderValue(liftFader);
+}
+
+function checkHueChip(hue) {
+  moveLiftToRest(hue);
+  for (const chip of hueChips) {
+    const isChecked = chip.dataset.hue === hue;
+    chip.setAttribute('aria-checked', String(isChecked));
+    chip.tabIndex = isChecked ? 0 : -1;
   }
-  oneColor.inert = hue !== 'custom';
+  customEndsRow.hidden = hue !== 'custom';
 }
 
 // Tomato. Side B's is darker because the same tomato fails 4.5:1 on the light background. It follows the side until someone picks their own.
@@ -93,7 +112,7 @@ const CUSTOM_DEFAULTS = {
 
 function useSideDefaults() {
   const defaults = CUSTOM_DEFAULTS[readSide()];
-  for (const { picker, end } of endSlices) {
+  for (const { picker, end } of customEndControls) {
     if (!picker.dataset.picked) picker.value = defaults[end];
   }
 }
@@ -101,29 +120,32 @@ function useSideDefaults() {
 // Each end is a picked color or left to Hue Hop. At least one stays picked, so the last picked end's AUTO switch is disabled.
 function customEnds() {
   const ends = {};
-  for (const { slice, end, picker } of endSlices) {
-    if (!slice.classList.contains('is-auto')) ends[end] = picker.value;
+  for (const { control, end, picker } of customEndControls) {
+    if (!control.classList.contains('is-auto')) ends[end] = picker.value;
   }
   return ends;
 }
 
-function showOneColor() {
+function showCustomEnds() {
   const ends = customEnds();
   const pickedCount = Object.keys(ends).length;
-  for (const { slice, end, auto } of endSlices) {
-    const isAuto = slice.classList.contains('is-auto');
-    if (ends[end]) oneColorSample.setAttribute(end, ends[end]);
-    else oneColorSample.removeAttribute(end);
+  for (const { control, end, auto } of customEndControls) {
+    const isAuto = control.classList.contains('is-auto');
     auto.setAttribute('aria-pressed', String(isAuto));
     auto.disabled = !isAuto && pickedCount < 2;
   }
 }
 
 function showFaderValue(fader) {
-  const decimals = fader.step < 1 ? 1 : 0;
   desk.querySelector(`output[for="${fader.id}"]`).textContent = Number(
     fader.value
-  ).toFixed(decimals);
+  ).toFixed(decimalsIn(fader.step));
+}
+
+function softStopOf(fader) {
+  if (fader === curveFader) return [1, 0.1];
+  if (fader === liftFader) return [defaultLift(checkedHue()), 0.004];
+  return [0, 4];
 }
 
 function showContrast(state) {
@@ -170,37 +192,14 @@ let shouldTypeText = false;
 
 let hasPendingRender = false;
 
-// A truncated title draws its ellipsis in the title's own color, so it borrows the painted color of the first letter it hides.
-function colorEllipsis(title) {
-  title.style.removeProperty('color');
-  if (title.scrollWidth <= title.clientWidth) return;
-  const hop = title.querySelector('hue-hop');
-  const titleStyle = getComputedStyle(title);
-  ellipsisContext.font = titleStyle.font;
-  const ellipsisStart =
-    title.getBoundingClientRect().right -
-    parseFloat(titleStyle.paddingInlineEnd) -
-    ellipsisContext.measureText('…').width;
-  const rights = letterRights(hop);
-  const hiddenIndex = rights.findIndex((right) => right > ellipsisStart);
-  if (hiddenIndex < 0) return;
-  const step = Math.floor((hiddenIndex * hop.hops) / rights.length);
-  title.style.color = getComputedStyle(
-    hop,
-    `::highlight(hue-hop-${step})`
-  ).color;
-}
-
 function render() {
   if (hasPendingRender) return;
   hasPendingRender = true;
   requestAnimationFrame(() => {
     hasPendingRender = false;
-    showOneColor();
+    showCustomEnds();
     const state = readDeskState();
     writeStateTo(live, state);
-    showTextInSleeves(state.text);
-    sleeveSamples.forEach((hop) => colorEllipsis(hop.parentElement));
     fillCode(markup, describeMarkup(state));
     stage.style.setProperty('--letters', longestWordLength(state.text));
     showStepBars(state);
@@ -217,10 +216,11 @@ function render() {
 
 export function applyDeskState(state) {
   textField.value = state.text;
-  checkSleeve(state.hue ?? 'custom');
+  liftFader.value = state.lift;
+  checkHueChip(state.hue ?? 'custom');
   if (!state.hue) {
-    for (const { slice, end, picker } of endSlices) {
-      slice.classList.toggle('is-auto', !state[end]);
+    for (const { control, end, picker } of customEndControls) {
+      control.classList.toggle('is-auto', !state[end]);
       if (!state[end]) continue;
       picker.value = state[end];
       picker.dataset.picked = 'true';
@@ -234,38 +234,30 @@ export function applyDeskState(state) {
   render();
 }
 
-function showTextInSleeves(text) {
-  const sample = text.trim() || 'Hue Hop';
-  for (const element of sleeveSamples) {
-    if (element.textContent !== sample) element.textContent = sample;
-  }
-}
-
 function shownSample() {
   return [...samples.children].find((sample) => !sample.hidden).textContent;
 }
 
-function moveSleeveFocus(event) {
+function moveHueFocus(event) {
   const steps = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
   let next;
-  const index = sleeves.indexOf(event.currentTarget);
+  const index = hueChips.indexOf(event.currentTarget);
   if (event.key in steps) {
     const isRtl = getComputedStyle(desk).direction === 'rtl';
     const isHorizontal =
       event.key.startsWith('ArrowL') || event.key.startsWith('ArrowR');
     const step = steps[event.key] * (isRtl && isHorizontal ? -1 : 1);
-    next = sleeves[(index + step + sleeves.length) % sleeves.length];
+    next = hueChips[(index + step + hueChips.length) % hueChips.length];
   } else if (event.key === 'Home') {
-    next = sleeves[0];
+    next = hueChips[0];
   } else if (event.key === 'End') {
-    next = sleeves.at(-1);
+    next = hueChips.at(-1);
   } else {
     return;
   }
   event.preventDefault();
-  checkSleeve(next.dataset.hue);
+  checkHueChip(next.dataset.hue);
   next.focus();
-  next.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   render();
 }
 
@@ -299,25 +291,25 @@ if (desk) {
     shouldTypeText = true;
     applyDeskState({ ...DEFAULT_STATE, text: firstText });
   });
-  for (const sleeve of sleeves) {
-    sleeve.addEventListener('click', () => {
-      checkSleeve(sleeve.dataset.hue);
+  for (const chip of hueChips) {
+    chip.addEventListener('click', () => {
+      checkHueChip(chip.dataset.hue);
       render();
     });
-    sleeve.addEventListener('keydown', moveSleeveFocus);
+    chip.addEventListener('keydown', moveHueFocus);
   }
-  for (const { slice, picker, auto } of endSlices) {
+  for (const { control, picker, auto } of customEndControls) {
     for (const type of ['input', 'change']) {
       picker.addEventListener(type, () => {
         picker.dataset.picked = 'true';
-        slice.classList.remove('is-auto');
-        checkSleeve('custom');
+        control.classList.remove('is-auto');
+        checkHueChip('custom');
         render();
       });
     }
     auto.addEventListener('click', () => {
-      slice.classList.toggle('is-auto');
-      checkSleeve('custom');
+      control.classList.toggle('is-auto');
+      checkHueChip('custom');
       render();
     });
   }
@@ -329,13 +321,9 @@ if (desk) {
     live.textContent = textField.value;
   });
   useSideDefaults();
-  const titleSizes = new ResizeObserver((entries) => {
-    for (const { target } of entries) colorEllipsis(target);
-  });
-  sleeveSamples.forEach((hop) => titleSizes.observe(hop.parentElement));
   for (const fader of faders) {
     fader.addEventListener('input', () => {
-      const [stop, reach] = fader === curveFader ? [1, 0.1] : [0, 4];
+      const [stop, reach] = softStopOf(fader);
       catchSoftStop(fader, stop, reach);
       showFaderValue(fader);
       render();

@@ -131,9 +131,7 @@
                     ></wa-copy-button>
                   </div>
                   <p class="install-note">
-                    Add the seven ready-made hues with
-                    <code>import 'hue-hop/hues.css';</code>
-                    and drift with
+                    Add drift with
                     <code>import 'hue-hop/drift.css';</code>
                     .
                   </p>
@@ -148,21 +146,20 @@
                     ><code class="language-html" id="docs-cdn">&lt;script
   type="module"
   src="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hue-hop.js"
-&gt;&lt;/script&gt;
-&lt;link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hues.css"
-/&gt;
-&lt;link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/drift.css"
-/&gt;</code></pre>
+&gt;&lt;/script&gt;</code></pre>
                     <wa-copy-button
                       class="code-copy"
                       from="docs-cdn"
-                      copy-label="Copy CDN tags"
+                      copy-label="Copy CDN tag"
                     ></wa-copy-button>
                   </div>
+                  <p class="install-note">
+                    Add drift with a
+                    <code>&lt;link&gt;</code>
+                    to
+                    <code>dist/drift.css</code>
+                    in the same folder.
+                  </p>
                   <wa-callout
                     class="note"
                     variant="success"
@@ -187,12 +184,12 @@
                   <p class="install-note">
                     Copy
                     <code>dist/hue-hop.js</code>
-                    ,
-                    <code>dist/hues.css</code>
-                    , and
+                    from the package into your site and load it like any other
+                    file. Add drift by copying
                     <code>dist/drift.css</code>
-                    from the package into your site. Load them like any other
-                    file.
+                    too and loading it with a
+                    <code>&lt;link&gt;</code>
+                    .
                   </p>
                   <div class="code-well">
                     <p class="code-label readout-label">In your HTML</p>
@@ -201,19 +198,11 @@
                     ><code class="language-html" id="docs-self-host">&lt;script
   type="module"
   src="/js/hue-hop.js"
-&gt;&lt;/script&gt;
-&lt;link
-  rel="stylesheet"
-  href="/css/hues.css"
-/&gt;
-&lt;link
-  rel="stylesheet"
-  href="/css/drift.css"
-/&gt;</code></pre>
+&gt;&lt;/script&gt;</code></pre>
                     <wa-copy-button
                       class="code-copy"
                       from="docs-self-host"
-                      copy-label="Copy self-host tags"
+                      copy-label="Copy self-host tag"
                     ></wa-copy-button>
                   </div>
                 </div>
@@ -234,8 +223,6 @@
               Put the element inside the heading, around the words. Pick a look
               with
               <code>hue</code>
-              , which needs
-              <code>hues.css</code>
               .
             </p>
             <figure class="example">
@@ -283,13 +270,9 @@
               , a short plain-text version of these docs written for assistants.
               It has the install, the attributes, and the rules an assistant
               gets wrong without them (headings and names only, check your own
-              ends,
-              <code>hue</code>
-              needs
-              <code>hues.css</code>
-              and a
+              ends, a
               <code>color-scheme</code>
-              ).
+              for the dark side).
             </p>
             <h3 id="paste-in-prompt">Paste-In Prompt</h3>
             <p>For a one-off. Paste it into the chat.</p>
@@ -353,9 +336,7 @@
             </h2>
 
             <p>
-              Seven ready-made pairs ship in
-              <code>hues.css</code>
-              . Load it once, then pick one with
+              Seven ready-made pairs come with the element. Pick one with
               <code>hue</code>
               . Each pair has a dark side and a light side. The names describe
               the dark side.
@@ -525,34 +506,13 @@
               .
             </p>
             <p>
-              <code>hues.css</code>
-              and
-              <code>drift.css</code>
-              live in a cascade layer named
-              <code>hue-hop</code>
-              , so your unlayered rules on the element always win over them. If
-              your site uses layers too (Tailwind v4 does), list
-              <code>hue-hop</code>
-              first. Then your own layers win.
-            </p>
-            <div class="code-well">
-              <p class="code-label readout-label">In your CSS</p>
-              <pre
-                class="code-block"
-              ><code class="language-css" id="docs-hues-layers">@layer hue-hop, theme, base, components, utilities;</code></pre>
-              <wa-copy-button
-                class="code-copy"
-                from="docs-hues-layers"
-                copy-label="Copy CSS"
-              ></wa-copy-button>
-            </div>
-            <p>
-              <code>hues.css</code>
-              targets the
-              <code>hue-hop</code>
-              tag. A subclass under
-              <a href="#another-tag">another tag</a>
-              needs its own copy of the rules.
+              A rule on the element beats the hue, even inside a cascade layer,
+              so Tailwind v4 utilities work with no setup. A value on a parent,
+              like
+              <code>:root</code>
+              , loses to the hue. See
+              <a href="#which-value-wins">Which Value Wins</a>
+              .
             </p>
           </section>
           <section
@@ -686,11 +646,23 @@
                 </dd>
               </div>
               <div>
-                <dt class="readout-label">Loses to it</dt>
+                <dt class="readout-label">Below that</dt>
+                <dd>A plain class rule, then any rule in a cascade layer.</dd>
+              </div>
+              <div>
+                <dt class="readout-label">The hue</dt>
                 <dd>
-                  An inherited value, a
+                  The
                   <code>hue</code>
-                  , a plain class rule, or any rule in a cascade layer.
+                  attribute's own colors.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Weakest</dt>
+                <dd>
+                  A value inherited from a parent, like
+                  <code>:root</code>
+                  .
                 </dd>
               </div>
             </dl>
@@ -907,11 +879,7 @@
               <a href="#load-it">Load It</a>
               ), then add
               <code>drift</code>
-              to any element. The example uses
-              <code>hue</code>
-              too, which needs
-              <code>hues.css</code>
-              .
+              to any element.
             </p>
             <figure
               class="example"
@@ -983,17 +951,12 @@
               motion, and under forced colors and increased contrast.
             </p>
             <p>
-              <code>drift.css</code>
-              targets the
-              <code>hue-hop</code>
-              tag. For a subclass under
+              A subclass under
               <a href="#another-tag">another tag</a>
-              , copy the
-              <code>hue-hop[drift]</code>
-              rule for it, inside the same media query. Keep
-              <code>var()</code>
-              out of any keyframes you write for it, or Firefox animates them in
-              jumps.
+              drifts too, as long as it has text. Inside another component's
+              shadow root, load
+              <code>drift.css</code>
+              on the page and in that root.
             </p>
           </section>
           <section
@@ -1010,11 +973,7 @@
             <p>
               Short text that names something: a title, a name, a number. It
               isn't meant for body copy, which gets hard to read when every
-              letter changes color. The examples use
-              <code>hue</code>
-              , which needs
-              <code>hues.css</code>
-              .
+              letter changes color.
             </p>
             <figure class="example">
               <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
@@ -1100,11 +1059,7 @@
               on the element itself, so to change lift under a hue, set it on
               the element. The examples set them in
               <code>style</code>
-              so you can see the one value that changes. They also use
-              <code>hue</code>
-              , which needs
-              <code>hues.css</code>
-              .
+              so you can see the one value that changes.
             </p>
             <h3 id="curve">Curve</h3>
             <p>
@@ -1413,7 +1368,6 @@
               <code>var(--hop-end)</code>
               .
             </p>
-            <p>Three things to know before you copy this.</p>
             <dl class="fact-list">
               <div>
                 <dt class="readout-label">Keep the media query</dt>
@@ -1452,11 +1406,13 @@
               <p class="code-label readout-label">In your JavaScript</p>
               <pre
                 class="code-block"
-              ><code class="language-javascript" id="docs-copy-ends">const parent = document.querySelector('.playlist');
-const styles = getComputedStyle(parent.querySelector('hue-hop'));
-for (const name of ['--hop-start', '--hop-end']) {
-  parent.style.setProperty(name, styles.getPropertyValue(name));
-}</code></pre>
+              ><code class="language-javascript" id="docs-copy-ends">customElements.whenDefined('hue-hop').then(() => {
+  const parent = document.querySelector('.playlist');
+  const styles = getComputedStyle(parent.querySelector('hue-hop'));
+  for (const name of ['--hop-start', '--hop-end']) {
+    parent.style.setProperty(name, styles.getPropertyValue(name));
+  }
+});</code></pre>
               <wa-copy-button
                 class="code-copy"
                 from="docs-copy-ends"
@@ -1616,31 +1572,44 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>end</code>
               stop updating.
             </p>
+            <p>The hues and drift follow your tag on their own.</p>
             <p>
-              <code>hues.css</code>
-              and
-              <code>drift.css</code>
-              target the
-              <code>hue-hop</code>
-              tag, so the new tag needs its own copy of their rules. See
-              <a href="#hues">Hues</a>
-              and
-              <a href="#drift">Drift</a>
-              .
+              The element attaches a shadow root holding one
+              <code>&lt;slot&gt;</code>
+              , and your text stays where you wrote it. A subclass can attach
+              its own root in its constructor instead. Any later and the browser
+              throws. Keep a
+              <code>&lt;slot&gt;</code>
+              in it, or the text won't show. A closed root goes without the
+              hues, because the element can't reach it.
             </p>
             <h3 id="cascade-layers">Tailwind and Cascade Layers</h3>
             <p>
-              <code>hues.css</code>
+              CSS on the element beats a
+              <code>hue</code>
+              with no setup, layer or not. So do
+              <code>--hop-drift-range</code>
               and
+              <code>--hop-drift-cycle</code>
+              . The one exception is a layered rule that sets
+              <code>animation</code>
+              on a drifting element.
               <code>drift.css</code>
-              sit in a layer named
+              sits in a layer named
               <code>hue-hop</code>
-              . If your site uses layers (Tailwind v4 does), list
-              <code>hue-hop</code>
-              first so your own layers win. The line to copy is under
-              <a href="#hues">Hues</a>
-              .
+              , so list that first for your rule to win.
             </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your CSS</p>
+              <pre
+                class="code-block"
+              ><code class="language-css" id="docs-drift-layers">@layer hue-hop, theme, base, components, utilities;</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-drift-layers"
+                copy-label="Copy CSS"
+              ></wa-copy-button>
+            </div>
             <h3 id="csp">Content Security Policy</h3>
             <p>
               The element adds its styles from JavaScript as constructed
@@ -1649,10 +1618,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               tag. So your policy doesn't need
               <code>style-src 'unsafe-inline'</code>
               for it.
-              <code>hues.css</code>
-              and
               <code>drift.css</code>
-              are plain stylesheet files, so load them from a host your policy
+              is a plain stylesheet file, so load it from a host your policy
               already allows.
             </p>
             <h3 id="editors">Editors</h3>
@@ -1911,13 +1878,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               extra step would slow each restyle on the page, theme switches and
               drift included.
             </p>
-            <p>
-              Type in the box to watch the count. The example uses
-              <code>hue</code>
-              , so it needs
-              <code>hues.css</code>
-              .
-            </p>
+            <p>Type in the box to watch the count.</p>
             <figure
               class="example"
               data-control="hops"
@@ -2243,10 +2204,11 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   gets a
                   <code>StaticRange</code>
                   over the real text node, and each step is one highlight. So
-                  there are no spans. The only thing the element adds to the DOM
-                  is its
+                  there are no spans. The element adds two things: its
                   <code>hops</code>
-                  attribute.
+                  attribute, and a shadow root holding one
+                  <code>&lt;slot&gt;</code>
+                  . Your text stays where you wrote it.
                 </dd>
               </div>
               <div>
@@ -2266,8 +2228,12 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <div>
                 <dt class="readout-label">Stylesheets</dt>
                 <dd>
-                  The styles arrive as constructed stylesheets on the document,
-                  or on the shadow root the element sits in. Each distinct
+                  The styles arrive as constructed stylesheets. The hues sit in
+                  the element's own shadow root, as
+                  <code>:host</code>
+                  rules, which is why CSS on the element beats them and an
+                  inherited value doesn't. The rest goes on the document, or on
+                  the shadow root the element sits in. Each distinct
                   <code>start</code>
                   or
                   <code>end</code>
@@ -2363,7 +2329,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 around visually.
               </li>
               <li>
-                Text in a
+                Text passed through your own
                 <code>&lt;slot&gt;</code>
                 inside the element isn't colored.
               </li>
@@ -2387,6 +2353,10 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 of them fall back to plain text.
               </li>
               <li>
+                A subclass with a closed shadow root doesn't get the hues. Its
+                letters still step if you set your own ends.
+              </li>
+              <li>
                 A subclass that defines its own
                 <code>observedAttributes</code>
                 must include
@@ -2400,24 +2370,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 stop updating.
               </li>
               <li>
-                <code>drift.css</code>
-                targets the
-                <code>hue-hop</code>
-                tag. Under
-                <a href="#another-tag">another tag</a>
-                , copy the
-                <code>hue-hop[drift]</code>
-                rule inside the same media query, and keep
-                <code>var()</code>
-                out of any keyframes you write for it.
-              </li>
-              <li>
-                The element's styles are constructed stylesheets, so a content
-                security policy doesn't need
-                <code>style-src 'unsafe-inline'</code>
-                for them. See
-                <a href="#csp">Content Security Policy</a>
-                .
+                A subclass with no text, like one wrapping only an SVG, doesn't
+                drift.
               </li>
             </ul>
           </section>
@@ -2435,14 +2389,6 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <dt>Nothing is colored.</dt>
               <dd>
                 <ul>
-                  <li>
-                    <code>hue</code>
-                    without
-                    <code>hues.css</code>
-                    . Load it (see
-                    <a href="#load-it">Load It</a>
-                    ).
-                  </li>
                   <li>
                     An older browser. Below the floor the heading stays plain on
                     purpose. See
@@ -2476,9 +2422,10 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                     .
                   </li>
                   <li>
-                    The text is in a
+                    You put your own
                     <code>&lt;slot&gt;</code>
-                    . Slotted text isn't colored. Put the
+                    inside the element. Text passed through it isn't colored.
+                    Put the
                     <code>&lt;hue-hop&gt;</code>
                     around the text where it's written, not around the slot.
                   </li>
@@ -2498,25 +2445,14 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               </dd>
               <dt>My CSS doesn't override the hue.</dt>
               <dd>
-                <ul>
-                  <li>
-                    Your site uses cascade layers, and
-                    <code>hue-hop</code>
-                    comes later in the order. List it first. The line is under
-                    <a href="#hues">Hues</a>
-                    .
-                  </li>
-                  <li>
-                    You set
-                    <code>--hop-*</code>
-                    on a parent, like
-                    <code>:root</code>
-                    . The hue's own value on the element beats an inherited one.
-                    Set yours on the element. See
-                    <a href="#change-one-end">Change One End</a>
-                    .
-                  </li>
-                </ul>
+                You set
+                <code>--hop-*</code>
+                on a parent, like
+                <code>:root</code>
+                . The hue's own value on the element beats an inherited one. Set
+                yours on the element. See
+                <a href="#change-one-end">Change One End</a>
+                .
               </dd>
               <dt>The middle letters look wrong.</dt>
               <dd>
@@ -2553,15 +2489,13 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                     ).
                   </li>
                   <li>
-                    Reduced motion is on. Drift holds still on purpose, and
-                    under forced colors and increased contrast too.
+                    The element is in another component's shadow root. Load
+                    <code>drift.css</code>
+                    on the page and in that root.
                   </li>
                   <li>
-                    A subclass under another tag. Copy the
-                    <code>hue-hop[drift]</code>
-                    rule for it. See
-                    <a href="#drift">Drift</a>
-                    .
+                    Reduced motion is on. Drift holds still on purpose, and
+                    under forced colors and increased contrast too.
                   </li>
                 </ul>
               </dd>
@@ -2846,7 +2780,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                     </th>
                     <td>0</td>
                     <td>0 plus your JS</td>
-                    <td>under 2 KB</td>
+                    <td>under 2.5 KB</td>
                   </tr>
                 </tbody>
               </table>
@@ -2863,7 +2797,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               Support
             </h2>
             <p>
-              Bugs, ideas, and questions are all welcome in
+              Bugs, ideas, and questions go in
               <a href="{{repo-url}}/issues">GitHub Issues</a>
               .
             </p>
@@ -2883,15 +2817,6 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   <a href="{{repo-url}}/blob/main/CONTRIBUTING.md">
                     CONTRIBUTING
                   </a>
-                  .
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Not yet checked</dt>
-                <dd>
-                  A real-Safari pass with VoiceOver, find-in-page, and print.
-                  Tried it? Tell Brian what worked and what didn't, in
-                  <a href="{{repo-url}}/issues">Issues</a>
                   .
                 </dd>
               </div>
@@ -2918,9 +2843,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 <dd>
                   Gzipped:
                   <code>hue-hop.js</code>
-                  2 KB,
-                  <code>hues.css</code>
-                  600 bytes,
+                  2.5 KB,
                   <code>drift.css</code>
                   400 bytes. The package won't pack over them.
                 </dd>

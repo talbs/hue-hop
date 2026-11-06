@@ -232,171 +232,52 @@
   margin: 0;
 }
 
-.hue-grid {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: max-content;
-  gap: var(--wa-space-s);
-  margin-inline: calc(var(--space-group) * -1);
-  padding: var(--space-tight) var(--space-group) var(--space-related);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--space-group);
+.custom-ends {
+  --min-column-size: calc(10rem + var(--space-related));
 }
 
-.sleeves {
-  display: contents;
-}
-
-.sleeve {
-  position: relative;
-  display: grid;
-  align-content: space-between;
-  gap: var(--space-related);
-  --sleeve-pad: 0.625rem var(--space-group) 0.75rem 0.875rem;
-  min-height: 5.5rem;
-  padding: var(--sleeve-pad);
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-control);
-  background: var(--stage);
-  box-shadow: var(--depth-pressed);
-  color: inherit;
-  text-align: start;
-  text-decoration: none;
-  scroll-snap-align: start;
-  cursor: pointer;
-  transition:
-    transform var(--note-16) var(--ease-bounce),
-    border-color var(--note-16) var(--ease-hit),
-    box-shadow var(--note-16) var(--ease-hit);
-}
-
-.sleeve:focus-visible,
-.sleeve:has(> .sleeve-pick:focus-visible) {
-  box-shadow: var(--depth-pressed), var(--focus-glow);
-}
-
-.sleeve:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-control);
-}
-
-.sleeve:not(.sleeve-custom):active {
-  transform: translateY(1px) scale(0.985);
-  transition-duration: var(--note-32);
-  transition-timing-function: var(--ease-hit);
-}
-
-.sleeve[aria-checked='true'],
-.sleeve:has(> [aria-checked='true']) {
-  animation: sleeve-drop var(--note-8) var(--ease-bounce);
-  border-color: var(--lit);
-  box-shadow:
-    inset 0 0 0 var(--border-thin) var(--lit),
-    var(--lit-glow);
-}
-
-@keyframes sleeve-drop {
-  from {
-    transform: translateY(-4px);
-  }
-}
-
-.sleeve-custom {
-  align-content: stretch;
-  padding: 0;
-  cursor: default;
-}
-
-/* Custom color keeps the tile layout: its radio fills the card (and sizes it), and the picker and the start/end switch sit over its corners, since a control can't live inside a button. */
-.sleeve-pick {
-  display: grid;
-  align-content: space-between;
-  gap: var(--space-related);
-  min-width: 0;
-  padding: var(--sleeve-pad);
-  border: 0;
-  background: none;
-  color: inherit;
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-
-.sleeve-pick:focus-visible {
-  outline-color: transparent;
-}
-
-.sleeve-custom .sleeve-name,
-.sleeve-custom .sleeve-title {
-  padding-inline-end: 2rem;
-}
-
-.sleeve-custom:has(> [aria-checked='true']) :is(.sleeve-name, .sleeve-title) {
-  padding-inline-end: 6.5rem;
-}
-
-.one-color {
-  --chip-inset: 0.75rem;
-  position: absolute;
-  inset-block: var(--chip-inset);
-  inset-inline-end: var(--chip-inset);
-}
-
-.end-slice wa-color-picker {
-  flex: 1;
-  min-block-size: 0;
-}
-
-.sleeve-custom:not(:has(> [aria-checked='true'])) .end-auto {
+.custom-ends[hidden] {
   display: none;
 }
 
-.one-color wa-color-picker,
-.one-color wa-color-picker::part(form-control),
-.one-color wa-color-picker::part(form-control-input),
-.one-color wa-color-picker::part(trigger-container) {
-  block-size: 100%;
+.custom-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-group);
 }
 
-.one-color wa-color-picker::part(trigger) {
-  inline-size: 2.5rem;
-  block-size: 100%;
-  border-radius: calc(var(--radius-control) - 2px);
-  transition:
-    inline-size var(--note-16) var(--ease-bounce),
-    opacity var(--note-16) var(--ease-hit);
+/* Side by side on a narrow desk, a wide gap would leave Start's AUTO closer to End's swatch than to its own label. */
+@media (width < 48rem) {
+  .custom-end {
+    gap: var(--space-related);
+  }
 }
 
-/* Resting strips ignore clicks, so a click lands on the tile and opens them. */
-.sleeve-custom:not(:has(> [aria-checked='true'])) .one-color {
-  --swatch-gap: 0px;
-  gap: var(--space-tight);
-  pointer-events: none;
+/* Fills the row's height so it's a real target, not just its small label. */
+.custom-end .end-auto {
+  align-self: stretch;
+  padding-inline: var(--space-tight);
 }
 
-.sleeve-custom:not(:has(> [aria-checked='true']))
-  .one-color
-  wa-color-picker::part(trigger) {
-  inline-size: 6px;
-  opacity: 0.6;
-}
-
-.sleeve-name {
-  min-width: 0;
-  white-space: nowrap;
-}
-
-.sleeve-title {
-  font-size: var(--type-body);
-  font-weight: var(--weight-display);
-  line-height: var(--leading-heading);
-  letter-spacing: -0.01em;
+.desk .fader {
+  row-gap: var(--space-related);
 }
 
 .reset-button {
   margin-inline-start: auto;
+}
+
+/* Filling each line keeps Reset from sitting alone at one edge when the row wraps. */
+@media (width < 28rem) {
+  .desk .hue-grid {
+    grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
+  }
+
+  .desk-switches .lit-button {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding-inline: var(--space-related);
+  }
 }
 
 .lamp-led {
@@ -413,42 +294,25 @@
   text-transform: none;
 }
 
-.studio-perks {
-  color: var(--ink-faint);
+.studio-caption {
+  color: var(--ink-quiet);
   font-size: var(--type-fine);
   line-height: var(--leading-tight);
-}
-
-.studio-cta {
-  container-type: inline-size;
-}
-
-/* The four perks need about 23rem on one line. Narrower, they pair up in two columns so no divider is left hanging at a line end. */
-@container (width < 23rem) {
-  .studio-perks {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    row-gap: var(--space-tight);
-  }
-
-  .studio-perks li:nth-child(odd) {
-    justify-self: end;
-  }
-
-  .studio-perks li:nth-child(2) wa-divider {
-    display: none;
-  }
-}
-
-@media (forced-colors: active) {
-  .sleeve[aria-checked='true'],
-  .sleeve:has(> [aria-checked='true']) {
-    outline: 3px solid Highlight;
-    outline-offset: -3px;
-  }
+  text-align: center;
+  text-wrap: balance;
 }
 
 @media (min-width: 48rem) {
+  .studio-cta {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-group);
+  }
+
+  .studio-caption {
+    text-align: start;
+  }
+
   .stage {
     --stage-pad-inline: var(--space-section);
     min-height: 16rem;
@@ -458,21 +322,24 @@
     --desk-pad: var(--space-section);
     gap: var(--space-section);
   }
+}
 
-  .hue-grid {
-    grid-auto-flow: row;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-columns: auto;
-    margin-inline: 0;
-    padding-inline: 0;
-    overflow: visible;
+@media (width < 50rem) {
+  .desk {
+    --bar-control: var(--tap);
   }
 }
 
 @media (min-width: 64rem) {
   .desk {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: var(--space-page);
+  }
+
+  /* Holding the row's space keeps the panel still when Custom opens. */
+  .custom-ends[hidden] {
+    display: grid;
+    visibility: hidden;
   }
 
   .desk-code {

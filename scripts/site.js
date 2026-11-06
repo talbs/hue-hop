@@ -138,7 +138,7 @@ async function buildSite() {
         "@import '@awesome.me/webawesome/dist/styles/layers.css';",
         "@import '@awesome.me/webawesome/dist/styles/themes/default.css';",
         "@import '@awesome.me/webawesome/dist/styles/utilities.css';",
-        "@import './dist/hues.css';",
+        "@import './src/hues.css';",
         "@import './dist/drift.css';",
       ].join('\n'),
       resolveDir: '.',

@@ -35,7 +35,6 @@ after(async () => {
 async function openPage(html) {
   const page = await browser.newPage();
   await page.setContent(html);
-  await page.addStyleTag({ path: 'dist/hues.css' });
   await page.addScriptTag({ path: 'dist/hue-hop.js', type: 'module' });
   return page;
 }

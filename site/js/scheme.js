@@ -59,7 +59,7 @@ function letterEdges(wordmark) {
   return letterRights(hop).map((right) => (right - box.left) / box.width);
 }
 
-export function letterRights(hop) {
+function letterRights(hop) {
   const letters = [...hop.querySelectorAll('.hop-letter')];
   if (letters.length) {
     return letters
