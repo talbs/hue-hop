@@ -902,7 +902,7 @@
             Quickstart
           </h2>
           <p class="section-lead">
-            Three steps from npm to a colored heading. No framework, no config.
+            Two steps to a colored heading. No framework, no config.
           </p>
           <div class="quickstart">
             <ol class="steps wa-stack wa-gap-2xl wa-list-plain">
@@ -929,113 +929,116 @@
                     name="npm"
                     active
                   >
-                    <div class="code-well">
-                      <pre
-                        class="code-block"
-                      ><code class="language-bash" id="qs-install">npm install hue-hop</code></pre>
-                      <wa-copy-button
-                        class="code-copy"
-                        from="qs-install"
-                        copy-label="Copy install command"
-                      >
-                        <wa-icon
-                          slot="copy-icon"
-                          canvas="auto"
-                          family="pixel"
-                          name="clone"
-                        ></wa-icon>
-                        <wa-icon
-                          slot="success-icon"
-                          canvas="auto"
-                          family="pixel"
-                          name="check"
-                        ></wa-icon>
-                        <wa-icon
-                          slot="error-icon"
-                          canvas="auto"
-                          family="pixel"
-                          name="xmark"
-                        ></wa-icon>
-                      </wa-copy-button>
+                    <div class="wa-stack wa-gap-s">
+                      <div class="code-well">
+                        <p class="code-label readout-label">In your terminal</p>
+                        <pre
+                          class="code-block"
+                        ><code class="language-bash" id="qs-install">npm install hue-hop</code></pre>
+                        <wa-copy-button
+                          class="code-copy"
+                          from="qs-install"
+                          copy-label="Copy install command"
+                        >
+                          <wa-icon
+                            slot="copy-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="clone"
+                          ></wa-icon>
+                          <wa-icon
+                            slot="success-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="check"
+                          ></wa-icon>
+                          <wa-icon
+                            slot="error-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="xmark"
+                          ></wa-icon>
+                        </wa-copy-button>
+                      </div>
+                      <div class="code-well">
+                        <p class="code-label readout-label">
+                          In your JavaScript
+                        </p>
+                        <pre
+                          class="code-block"
+                        ><code class="language-javascript" id="qs-import">import 'hue-hop';</code></pre>
+                        <wa-copy-button
+                          class="code-copy"
+                          from="qs-import"
+                          copy-label="Copy import code"
+                        >
+                          <wa-icon
+                            slot="copy-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="clone"
+                          ></wa-icon>
+                          <wa-icon
+                            slot="success-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="check"
+                          ></wa-icon>
+                          <wa-icon
+                            slot="error-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="xmark"
+                          ></wa-icon>
+                        </wa-copy-button>
+                      </div>
                     </div>
                   </wa-tab-panel>
                   <wa-tab-panel name="cdn">
-                    <div class="code-well">
-                      <pre
-                        class="code-block"
-                      ><code class="language-html" id="qs-cdn">&lt;script
+                    <div class="wa-stack wa-gap-s">
+                      <div class="code-well">
+                        <p class="code-label readout-label">In your HTML</p>
+                        <pre
+                          class="code-block"
+                        ><code class="language-html" id="qs-cdn">&lt;script
   type="module"
   src="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hue-hop.js"
 &gt;&lt;/script&gt;</code></pre>
-                      <wa-copy-button
-                        class="code-copy"
-                        from="qs-cdn"
-                        copy-label="Copy CDN script tag"
-                      >
-                        <wa-icon
-                          slot="copy-icon"
-                          canvas="auto"
-                          family="pixel"
-                          name="clone"
-                        ></wa-icon>
-                        <wa-icon
-                          slot="success-icon"
-                          canvas="auto"
-                          family="pixel"
-                          name="check"
-                        ></wa-icon>
-                        <wa-icon
-                          slot="error-icon"
-                          canvas="auto"
-                          family="pixel"
-                          name="xmark"
-                        ></wa-icon>
-                      </wa-copy-button>
+                        <wa-copy-button
+                          class="code-copy"
+                          from="qs-cdn"
+                          copy-label="Copy CDN script tag"
+                        >
+                          <wa-icon
+                            slot="copy-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="clone"
+                          ></wa-icon>
+                          <wa-icon
+                            slot="success-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="check"
+                          ></wa-icon>
+                          <wa-icon
+                            slot="error-icon"
+                            canvas="auto"
+                            family="pixel"
+                            name="xmark"
+                          ></wa-icon>
+                        </wa-copy-button>
+                      </div>
+                      <p class="install-note">
+                        No bundler. One tag in your page.
+                      </p>
                     </div>
-                    <p class="install-note">
-                      No bundler. One tag in your page, so skip step 02.
-                    </p>
                   </wa-tab-panel>
                 </wa-tab-group>
               </li>
               <li class="step wa-stack wa-gap-m">
                 <h3 class="step-title wa-gap-m wa-align-items-baseline">
                   <span class="step-number">02</span>
-                  Import
-                </h3>
-                <div class="code-well">
-                  <pre
-                    class="code-block"
-                  ><code class="language-javascript" id="qs-import">import 'hue-hop';</code></pre>
-                  <wa-copy-button
-                    class="code-copy"
-                    from="qs-import"
-                    copy-label="Copy import code"
-                  >
-                    <wa-icon
-                      slot="copy-icon"
-                      canvas="auto"
-                      family="pixel"
-                      name="clone"
-                    ></wa-icon>
-                    <wa-icon
-                      slot="success-icon"
-                      canvas="auto"
-                      family="pixel"
-                      name="check"
-                    ></wa-icon>
-                    <wa-icon
-                      slot="error-icon"
-                      canvas="auto"
-                      family="pixel"
-                      name="xmark"
-                    ></wa-icon>
-                  </wa-copy-button>
-                </div>
-              </li>
-              <li class="step wa-stack wa-gap-m">
-                <h3 class="step-title wa-gap-m wa-align-items-baseline">
-                  <span class="step-number">03</span>
                   Drop One In
                 </h3>
                 <div class="code-result">
@@ -1098,7 +1101,7 @@
                     class="further-row"
                     href="{{docs-url}}#light-and-dark"
                   >
-                    <span class="further-number">04</span>
+                    <span class="further-number">03</span>
                     <span class="further-text wa-stack wa-gap-xs">
                       <span
                         class="further-title hop-link is-quiet wa-align-self-start"
@@ -1116,7 +1119,7 @@
                     class="further-row"
                     href="{{docs-url}}#your-own-colors"
                   >
-                    <span class="further-number">05</span>
+                    <span class="further-number">04</span>
                     <span class="further-text wa-stack wa-gap-xs">
                       <span
                         class="further-title hop-link is-quiet wa-align-self-start"
@@ -1134,7 +1137,7 @@
                     class="further-row"
                     href="{{docs-url}}#keep-them-readable"
                   >
-                    <span class="further-number">06</span>
+                    <span class="further-number">05</span>
                     <span class="further-text wa-stack wa-gap-xs">
                       <span
                         class="further-title hop-link is-quiet wa-align-self-start"
@@ -1152,7 +1155,7 @@
                     class="further-row"
                     href="{{docs-url}}#drift"
                   >
-                    <span class="further-number">07</span>
+                    <span class="further-number">06</span>
                     <span class="further-text wa-stack wa-gap-xs">
                       <span
                         class="further-title hop-link is-quiet wa-align-self-start"
