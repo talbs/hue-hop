@@ -95,6 +95,10 @@
     grid-column: 3;
     padding-inline: var(--wa-space-4xl) 0;
   }
+
+  .docs-page:not(:defined) .docs-title {
+    padding-block-start: var(--wa-space-2xl);
+  }
 }
 
 .docs-page[view='desktop'] {
