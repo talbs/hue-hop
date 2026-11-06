@@ -1,4 +1,4 @@
-/* Optional paints once, so Web Awesome's later repaint can't record larger text and push LCP back.
+/* Web Awesome's upgrade rebuilds the page's boxes, and Chrome records their text again at whatever size it has then. Optional keeps the face the same on both sides of the upgrade, so a swapped-in Onest can't move LCP there.
    Fast links and repeat visits get Onest. A slow first visit gets the fallback and never swaps. */
 @font-face {
   font-family: 'Onest';

@@ -511,8 +511,8 @@ wa-divider[orientation='vertical'] {
   --track-width: var(--border-thin);
 }
 
-.install-tabs wa-tab::part(base) {
-  padding: var(--space-related) var(--wa-space-s);
+/* The face sits on the tab itself so it holds before wa.js runs, when the part doesn't exist yet. */
+.install-tabs wa-tab {
   color: var(--ink-faint);
   font-family: var(--font-readout);
   font-size: var(--type-label);
@@ -541,15 +541,20 @@ wa-divider[orientation='vertical'] {
   }
 }
 
+.install-tabs wa-tab::part(base),
+.install-tabs:not(:defined) > wa-tab {
+  padding: var(--space-related) var(--wa-space-s);
+}
+
 .install-tabs::part(tabs) {
   gap: 0;
 }
 
-.install-tabs wa-tab:hover::part(base) {
+.install-tabs wa-tab:hover {
   color: var(--ink-quiet);
 }
 
-.install-tabs wa-tab[aria-selected='true']::part(base) {
+.install-tabs wa-tab[active] {
   color: var(--ink);
 }
 
@@ -572,6 +577,38 @@ wa-divider[orientation='vertical'] {
     opacity: 0;
     translate: 0 -4px;
   }
+}
+
+/* Before wa.js runs, the tabs take the shape of the upgraded strip, so the install steps below don't move at the upgrade. The pseudo-element carries the track line across the rest of the row. */
+.install-tabs:not(:defined) {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.install-tabs:not(:defined)::before {
+  content: '';
+  flex: 1;
+  order: 1;
+  border-block-end: var(--track-width) solid var(--track-color);
+}
+
+/* The pull-up above makes the upgraded tabs overlap the strip's track. Before the upgrade there is no track under them, so the row keeps its full height. */
+.install-tabs:not(:defined) > wa-tab {
+  margin-block-end: 0;
+  border-block-end-color: var(--track-color);
+}
+
+.install-tabs:not(:defined) > wa-tab[active] {
+  border-block-end-color: var(--indicator-color);
+}
+
+.install-tabs:not(:defined) > wa-tab-panel {
+  order: 2;
+  inline-size: 100%;
+}
+
+.install-tabs:not(:defined) > wa-tab-panel[active] {
+  margin-block-start: var(--space-group);
 }
 
 .install-note {

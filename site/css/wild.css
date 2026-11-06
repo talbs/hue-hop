@@ -17,10 +17,13 @@
     format('woff2');
 }
 
-/* The two demo faces are the heaviest files on the home page. Skipping this section's layout keeps them from loading until it nears the screen. */
-.wild {
+/* The two demo faces are the heaviest files on the home page. Skipping this section's layout keeps them from loading until it nears the screen. It sits on the section because content-visibility clips at the box's edge, and .wild's edge would slice the top row as it lifts on hover. */
+#wild {
   content-visibility: auto;
-  contain-intrinsic-size: auto 1860px;
+  contain-intrinsic-size: auto 2165px;
+}
+
+.wild {
   --font-serif: 'Fraunces', 'Iowan Old Style', Georgia, serif;
   --font-grotesk:
     'Bricolage Grotesque', 'Avenir Next Condensed', var(--font-display);
@@ -263,8 +266,11 @@
     --frame-pad: var(--space-section);
   }
 
+  #wild {
+    contain-intrinsic-size: auto 1635px;
+  }
+
   .wild {
-    contain-intrinsic-size: auto 1490px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -277,8 +283,11 @@
 }
 
 @media (min-width: 64rem) {
+  #wild {
+    contain-intrinsic-size: auto 1261px;
+  }
+
   .wild {
-    contain-intrinsic-size: auto 1120px;
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
