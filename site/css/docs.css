@@ -639,7 +639,7 @@ wa-tag wa-icon[name='check'] {
 .fact-list > div {
   display: grid;
   gap: var(--space-tight);
-  padding-block: var(--wa-space-s);
+  padding-block: var(--space-group);
   border-block-end: var(--border-thin) solid var(--divider);
 }
 
