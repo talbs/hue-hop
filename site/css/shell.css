@@ -107,8 +107,14 @@ wa-page::part(subheader) {
 
 .site-nav {
   grid-area: nav;
+  max-inline-size: 100%;
   overflow-x: auto;
   scrollbar-width: none;
+}
+
+.site-nav wa-scroller {
+  --shadow-color: var(--page);
+  --shadow-size: var(--wa-space-m);
 }
 
 .site-nav a {
@@ -186,6 +192,7 @@ wa-page::part(subheader) {
 
 .side-toggle:active .side-knob {
   box-shadow: var(--depth-pressed);
+  transition-duration: var(--note-8), var(--note-32);
 }
 
 .side-letter {
@@ -242,7 +249,7 @@ wa-page::part(subheader) {
   text-decoration: none;
 }
 
-.site-footer a:not(.site-footer-wordmark) {
+.site-footer :where(a:not(.site-footer-wordmark)) {
   color: var(--ink-quiet);
 }
 
@@ -262,28 +269,39 @@ wa-page::part(subheader) {
   }
 }
 
-/* Hugs its links, so it keeps one size between the Studio's width and the others' and its page move only slides. */
+/* Hugs its links, so its page move only slides. */
 @media (min-width: 23rem) {
   .site-nav {
     justify-self: end;
-    justify-content: flex-end;
   }
 }
 
-/* From 368px the header fits on one line: a body-size wordmark and tighter gaps make room for the links. */
+/* From 368px the header fits on one line, with a body-size wordmark. */
 @media (23rem <= width < 48rem) {
   .site-header-inner {
     grid-template-columns: auto 1fr auto;
     grid-template-areas: 'wordmark nav side';
-    column-gap: var(--wa-space-s);
   }
 
   .site-wordmark {
     font-size: var(--type-body);
   }
+}
 
-  .site-nav {
+/* The tight gaps are only for phones, to make room for the links. From 480px the desktop's fit, with room to spare. */
+@media (23rem <= width < 30rem) {
+  .site-header-inner {
+    column-gap: var(--wa-space-s);
+  }
+
+  .site-nav-links {
     gap: var(--wa-space-s);
+  }
+}
+
+@media (min-width: 30rem) {
+  .site-header-inner {
+    column-gap: var(--wa-space-xl);
   }
 }
 
@@ -295,7 +313,6 @@ wa-page::part(subheader) {
   .site-header-inner {
     grid-template-columns: auto 1fr auto;
     grid-template-areas: 'wordmark nav side';
-    column-gap: var(--wa-space-xl);
     padding-block: var(--space-related);
   }
 
@@ -504,6 +521,26 @@ wa-divider[orientation='vertical'] {
   transition: color var(--note-16) var(--ease-hit);
 }
 
+.install-tabs wa-tab {
+  margin-block-end: calc(-1 * var(--track-width));
+  border-block-end: var(--track-width) solid transparent;
+}
+
+.install-tabs wa-tab[active] {
+  border-block-end-color: var(--indicator-color);
+}
+
+.install-tabs[data-ready] wa-tab {
+  transition: border-color var(--note-16) var(--ease-hit);
+}
+
+/* Forced colors repaints a transparent border solid, which would underline every tab. */
+@media (forced-colors: active) {
+  .install-tabs wa-tab:not([active]) {
+    border-block-end-color: Canvas;
+  }
+}
+
 .install-tabs::part(tabs) {
   gap: 0;
 }
@@ -522,6 +559,19 @@ wa-divider[orientation='vertical'] {
 
 .install-tabs wa-tab-panel {
   --padding: 0;
+}
+
+.install-tabs[data-ready] wa-tab-panel[active] {
+  transition:
+    opacity var(--note-16) var(--ease-hit),
+    translate var(--note-16) var(--ease-bounce);
+}
+
+@starting-style {
+  .install-tabs[data-ready] wa-tab-panel[active] {
+    opacity: 0;
+    translate: 0 -4px;
+  }
 }
 
 .install-note {
@@ -597,19 +647,32 @@ wa-copy-button::part(success-icon) {
     animation: none;
   }
 
-  /* Only the Studio's header is wider than --measure, so this is the only move with anywhere to slide. */
-  @media (min-width: 72rem) {
-    :root:active-view-transition-type(studio-move) .site-wordmark {
-      view-transition-name: site-wordmark;
-    }
+  /* The header's pieces land somewhere else on the Studio, with its own gutter and width, and on docs below 860px, with its menu button. Left in the bar's fade, two copies of each would overlap. */
+  :root:active-view-transition-type(page-move) .site-wordmark {
+    view-transition-name: site-wordmark;
+  }
 
-    :root:active-view-transition-type(studio-move) .site-nav {
-      view-transition-name: site-nav;
-    }
+  :root:active-view-transition-type(page-move) .site-nav {
+    view-transition-name: site-nav;
+  }
 
-    :root:active-view-transition-type(studio-move) .side-toggle {
-      view-transition-name: side-toggle;
-    }
+  :root:active-view-transition-type(page-move) .side-toggle {
+    view-transition-name: side-toggle;
+  }
+
+  :root:active-view-transition-type(page-move)
+    .docs-page::part(navigation-toggle) {
+    view-transition-name: docs-menu;
+    /* wa.js can create it at any point in a move, so its fade waits for the move to end instead of guessing when the wordmark has passed. */
+    animation-play-state: paused;
+  }
+
+  /* On a phone the toggle squeezes docs' nav, which scrolls to fit. Scaled to fit, the links would stack at two sizes; held at size against the nav's start, they stay legible. */
+  :root:active-view-transition-type(page-move)::view-transition-old(site-nav),
+  :root:active-view-transition-type(page-move)::view-transition-new(site-nav) {
+    block-size: 100%;
+    object-fit: none;
+    object-position: left center;
   }
 
   :root:active-view-transition-type(page-move) .hero-title {
@@ -619,6 +682,22 @@ wa-copy-button::part(success-icon) {
   :root:active-view-transition-type(page-move)::view-transition-group(*) {
     animation-duration: var(--note-8);
     animation-timing-function: var(--ease-hit);
+  }
+
+  /* The toggle and the wordmark share pixels, so they take turns: the toggle clears on the first 32nd and the pieces slide after it. */
+  :root:active-view-transition-type(page-move)::view-transition-old(docs-menu) {
+    animation: page-fade-out var(--note-32) var(--ease-hit) both;
+  }
+
+  :root:active-view-transition-type(page-move)::view-transition-group(
+      site-wordmark
+    ),
+  :root:active-view-transition-type(page-move)::view-transition-group(site-nav),
+  :root:active-view-transition-type(page-move)::view-transition-group(
+      side-toggle
+    ) {
+    animation-duration: var(--note-16);
+    animation-delay: var(--note-32);
   }
 
   :root:active-view-transition-type(page-move)::view-transition-old(root) {

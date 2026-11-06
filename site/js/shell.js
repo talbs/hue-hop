@@ -141,3 +141,15 @@ for (const type of ['letterhop', 'sidechange']) {
   document.addEventListener(type, kickMeter);
 }
 meter?.addEventListener('click', kickMeter);
+
+// A browser won't scroll to a focused link that's already partly showing, which would leave a clipped nav link half hidden.
+document
+  .querySelector('.site-nav')
+  .addEventListener('focusin', ({ target }) => {
+    target.scrollIntoView({ inline: 'nearest', block: 'nearest' });
+  });
+
+// A tab group activates its first panel as it scrolls into view, so only a switch after that gets to animate.
+document.addEventListener('wa-tab-show', ({ target }) => {
+  target.toggleAttribute('data-ready', true);
+});

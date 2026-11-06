@@ -126,9 +126,14 @@ wa-slider:state(focused)::part(thumb) {
   box-shadow: var(--cap-bevel), var(--depth-cap), var(--focus-glow);
 }
 
+/* A picker handle has no Reset or arrow glide, so like a dragged cap it only ever follows the pointer. */
+wa-color-picker::part(slider-handle),
 wa-slider:state(dragging)::part(thumb),
 wa-slider:state(dragging)::part(indicator) {
-  transition-property: scale, box-shadow, filter;
+  transition:
+    scale var(--note-16) var(--ease-bounce),
+    box-shadow var(--note-16) var(--ease-bounce),
+    filter var(--note-16) var(--ease-hit);
 }
 
 wa-slider:state(dragging)::part(thumb) {
@@ -203,6 +208,9 @@ wa-color-picker::part(color-picker) {
   background: none;
   color: var(--ink-faint);
   cursor: pointer;
+  transition:
+    color var(--note-16) var(--ease-hit),
+    opacity var(--note-16) var(--ease-hit);
 }
 
 .end-auto .led {
@@ -231,6 +239,7 @@ wa-color-picker::part(trigger)::before {
   height: auto;
   border-radius: 2px;
   box-shadow: none;
+  transition: background-color var(--note-16) var(--ease-hit);
 }
 
 .is-auto wa-color-picker::part(trigger) {

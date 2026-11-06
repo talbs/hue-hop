@@ -175,6 +175,7 @@
 .stage-eq span {
   flex: 0 1 1.5rem;
   min-width: 0;
+  height: 0;
   max-height: 100%;
   transition: height var(--note-8) var(--ease-bounce);
 }
@@ -191,6 +192,7 @@
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
   overflow-wrap: anywhere;
+  transition: font-size var(--note-16) var(--ease-hit);
 }
 
 .desk {
@@ -238,6 +240,12 @@
 
 .custom-ends[hidden] {
   display: none;
+}
+
+:where(.custom-ends).reveal {
+  transition:
+    var(--reveal-transition),
+    visibility var(--note-16) var(--ease-hit);
 }
 
 .custom-end {
@@ -336,10 +344,15 @@
     column-gap: var(--space-page);
   }
 
-  /* Holding the row's space keeps the panel still when Custom opens. */
+  /* Holding the row's space keeps the panel still when Custom opens. Without display: none it can't use the reveal's starting style, so it waits up here for its drop, moving back only after the fade so the exit stays opacity only. */
   .custom-ends[hidden] {
     display: grid;
     visibility: hidden;
+    translate: var(--reveal-drop);
+    transition:
+      opacity var(--note-32) var(--ease-hit),
+      visibility var(--note-32) var(--ease-hit),
+      translate 0s var(--note-32);
   }
 
   .desk-code {

@@ -1,4 +1,5 @@
 import { codeFromPreview } from './example-code.js';
+import { isMotionOk } from './motion.js';
 import { whenSideChanges } from './scheme.js';
 import {
   DEFAULT_STATE,
@@ -36,10 +37,15 @@ function revealInSidebar(link) {
   const sidebarBox = sidebar.getBoundingClientRect();
   const linkBox = link.getBoundingClientRect();
   const margin = linkBox.height * 2;
+  // Loading a deep link marks sections too, and that shouldn't play as a scroll.
+  const behavior = hasUserScrolled && isMotionOk() ? 'smooth' : 'instant';
   if (linkBox.top < sidebarBox.top + margin) {
-    sidebar.scrollBy({ top: linkBox.top - sidebarBox.top - margin });
+    sidebar.scrollBy({ top: linkBox.top - sidebarBox.top - margin, behavior });
   } else if (linkBox.bottom > sidebarBox.bottom - margin) {
-    sidebar.scrollBy({ top: linkBox.bottom - sidebarBox.bottom + margin });
+    sidebar.scrollBy({
+      top: linkBox.bottom - sidebarBox.bottom + margin,
+      behavior,
+    });
   }
 }
 

@@ -98,6 +98,10 @@
   --note-32: calc(var(--beat) / 8);
   --ease-hit: cubic-bezier(0.2, 0, 0.4, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --wa-transition-fast: var(--note-32);
+  --wa-transition-normal: var(--note-16);
+  --wa-transition-slow: var(--note-8);
+  --wa-transition-easing: var(--ease-hit);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -144,15 +148,19 @@
     color-mix(in oklch, var(--focus) 70%, transparent);
 
   --depth-panel: inset 0 1px 0 var(--edge-light);
+  /* Same shape on every token, two inset slots then two outer: box-shadow only blends when the lists agree on inset. */
   --depth-raised:
     inset 0 1px 0 var(--edge-light), inset 0 -2px 0 var(--edge-shade),
-    1px 2px 3px rgb(0 0 0 / 0.45);
+    1px 2px 3px rgb(0 0 0 / 0.45), 0 0 0 0 transparent;
   --depth-pressed:
-    inset 1px 2px 3px rgb(0 0 0 / 0.6), inset 0 0 0 1px rgb(0 0 0 / 0.3);
+    inset 1px 2px 3px rgb(0 0 0 / 0.6), inset 0 0 0 1px rgb(0 0 0 / 0.3),
+    0 0 0 0 transparent, 0 0 0 0 transparent;
   --depth-lifted:
     inset 0 1px 0 rgb(255 255 255 / 0.14), inset 0 -2px 0 var(--edge-shade),
-    2px 4px 8px rgb(0 0 0 / 0.5);
-  --depth-groove: inset 1px 2px 3px rgb(0 0 0 / 0.55);
+    2px 4px 8px rgb(0 0 0 / 0.5), 0 0 0 0 transparent;
+  --depth-groove:
+    inset 1px 2px 3px rgb(0 0 0 / 0.55), inset 0 0 0 0 transparent,
+    0 0 0 0 transparent, 0 0 0 0 transparent;
   --depth-cap: 2px 3px 4px rgb(0 0 0 / 0.4);
   --depth-cap-lifted: 3px 6px 10px rgb(0 0 0 / 0.45);
   --glow-blur: 6px;
@@ -184,14 +192,17 @@
 
   --depth-panel: 1px 2px 4px rgb(0 0 0 / 0.04), 0 0 0 1px var(--divider);
   --depth-raised:
-    inset 0 -1px 0 var(--edge-shade), 1px 1px 2px rgb(0 0 0 / 0.06),
-    0 0 0 1px rgb(0 0 0 / 0.08);
+    inset 0 -1px 0 var(--edge-shade), inset 0 0 0 0 transparent,
+    1px 1px 2px rgb(0 0 0 / 0.06), 0 0 0 1px rgb(0 0 0 / 0.08);
   --depth-pressed:
-    inset 0 1px 2px rgb(0 0 0 / 0.06), inset 0 0 0 1px rgb(0 0 0 / 0.04);
+    inset 0 1px 2px rgb(0 0 0 / 0.06), inset 0 0 0 0 transparent,
+    0 0 0 0 transparent, 0 0 0 1px rgb(0 0 0 / 0.04);
   --depth-lifted:
-    inset 0 -1px 0 var(--edge-shade), 1px 3px 6px rgb(0 0 0 / 0.08),
-    0 0 0 1px rgb(0 0 0 / 0.1);
-  --depth-groove: inset 1px 1px 2px rgb(0 0 0 / 0.12);
+    inset 0 -1px 0 var(--edge-shade), inset 0 0 0 0 transparent,
+    1px 3px 6px rgb(0 0 0 / 0.08), 0 0 0 1px rgb(0 0 0 / 0.1);
+  --depth-groove:
+    inset 1px 1px 2px rgb(0 0 0 / 0.12), inset 0 0 0 0 transparent,
+    0 0 0 0 transparent, 0 0 0 0 transparent;
   --depth-cap: 1px 2px 4px rgb(0 0 0 / 0.1);
   --depth-cap-lifted: 2px 4px 8px rgb(0 0 0 / 0.12);
   --glow-blur: 0px;
