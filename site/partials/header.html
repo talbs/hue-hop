@@ -11,29 +11,33 @@
       <hue-hop hue="dusk">{{wordmark}}</hue-hop>
     </a>
     <nav
-      class="site-nav wa-gap-l"
+      class="site-nav"
       aria-label="Site"
     >
-      <a
-        class="hop-link is-quiet"
-        href="{{docs-url}}"
-        data-nav="docs"
-      >
-        Docs
-      </a>
-      <a
-        class="hop-link is-quiet"
-        href="{{studio-url}}"
-        data-nav="studio"
-      >
-        Studio
-      </a>
-      <a
-        class="hop-link is-quiet"
-        href="{{repo-url}}"
-      >
-        GitHub
-      </a>
+      <wa-scroller without-scrollbar>
+        <div class="site-nav-links wa-gap-l">
+          <a
+            class="hop-link is-quiet"
+            href="{{docs-url}}"
+            data-nav="docs"
+          >
+            Docs
+          </a>
+          <a
+            class="hop-link is-quiet"
+            href="{{studio-url}}"
+            data-nav="studio"
+          >
+            Studio
+          </a>
+          <a
+            class="hop-link is-quiet"
+            href="{{repo-url}}"
+          >
+            GitHub
+          </a>
+        </div>
+      </wa-scroller>
     </nav>
     <button
       type="button"

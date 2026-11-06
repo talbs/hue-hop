@@ -17,15 +17,17 @@
   margin-block-start: 0.875rem;
   margin-inline-start: calc(var(--gutter) - 9px);
   color: var(--ink-quiet);
+  animation: page-fade-in var(--note-32) var(--ease-hit);
+}
+
+/* At its content's width the header would wrap below the toggle on a phone. A zero basis holds them on one row and leaves the squeeze to the nav's scroller. */
+.docs-page > .site-header {
+  flex: 1 1 0;
+  min-inline-size: 0;
 }
 
 .docs-page[view='mobile'] .site-header-inner {
   padding-inline-start: var(--wa-space-xs);
-}
-
-/* The toggle takes the current page's room in the header, and the page's own title says where you are. */
-.docs-page[view='mobile'] [data-nav='docs'] {
-  display: none;
 }
 
 .docs-page > wa-icon,
@@ -62,10 +64,6 @@
 
   .docs-page:not(:defined) .site-header-inner {
     padding-inline-start: var(--wa-space-xs);
-  }
-
-  .docs-page:not(:defined) [data-nav='docs'] {
-    display: none;
   }
 }
 

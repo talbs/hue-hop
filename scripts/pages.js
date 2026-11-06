@@ -6,13 +6,7 @@ import { DOCS_URL, REPO_URL, SITE_URL, STUDIO_URL } from '../site/js/urls.js';
 import { AGENT_RULES, ASSISTANT_PROMPT, DOCS_GROUPS } from './copy.js';
 import { compileExamples, fillCopyButtons } from './examples.js';
 import { attributeRows, cssPropertyRows, propertyRows } from './manifest.js';
-import {
-  isStudioUrl,
-  keepGroupsOnTransform,
-  markStudioMoveArriving,
-  markStudioMoveLeaving,
-  rememberClickedLink,
-} from './page-move-boot.js';
+import { keepGroupsOnTransform } from './page-move-boot.js';
 import { SOCIAL_IMAGE_SIZE } from './social-image.js';
 
 // Keep the kit restricted to huehop.dev and localhost: the code ships in public HTML.
@@ -137,7 +131,7 @@ export function readFills(manifest) {
       '<script type="module" src="{{root}}dist/hue-hop.js"></script>',
     // The 404's stage renders even if a module request to the site is slow.
     'inline-element-script': `<script type="module">\n${read('dist/hue-hop.js')}\n</script>`,
-    'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${isStudioUrl}\n${rememberClickedLink}\n${markStudioMoveLeaving}\n${markStudioMoveArriving}\n${keepGroupsOnTransform}\naddEventListener('click', rememberClickedLink, true);\naddEventListener('pageswap', markStudioMoveLeaving);\naddEventListener('pagereveal', markStudioMoveArriving);\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>\n${VIEW_TRANSITION_RULE}`,
+    'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${keepGroupsOnTransform}\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>\n${VIEW_TRANSITION_RULE}`,
   };
 }
 

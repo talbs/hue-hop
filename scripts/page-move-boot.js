@@ -2,7 +2,7 @@
 
 // A group's default animation also runs width and height, which holds it on the main thread even when they don't change.
 export function keepGroupsOnTransform({ viewTransition }) {
-  if (!viewTransition?.types.has('studio-move')) return;
+  if (!viewTransition) return;
   viewTransition.ready.then(
     () => {
       for (const { effect } of document.getAnimations()) {
@@ -16,8 +16,9 @@ export function keepGroupsOnTransform({ viewTransition }) {
         const heightChange = Math.abs(
           parseFloat(from.height) - parseFloat(to.height)
         );
-        // A few pixels is a font still settling on the new page, and animating it would pull the group off the compositor while that page loads.
-        if (!(widthChange < 8 && heightChange < 8)) continue;
+        // A few pixels is a font still settling on the new page, and animating it would pull the group off the compositor while that page loads. The nav's images are held at size, so its width would only move a crop.
+        const isHeldAtSize = effect.pseudoElement.includes('site-nav');
+        if (!isHeldAtSize && !(widthChange < 8 && heightChange < 8)) continue;
         effect.setKeyframes([
           { transform: from.transform, easing: from.easing },
           { transform: to.transform },
@@ -26,38 +27,4 @@ export function keepGroupsOnTransform({ viewTransition }) {
     },
     () => {}
   );
-}
-
-export function isStudioUrl(url) {
-  return new URL(url, location.href).pathname
-    .replace(/\/$/, '')
-    .endsWith('/studio');
-}
-
-// A browser with no activation to read has only the clicked link to go on, so its Back or Forward to the Studio gets the plain fade.
-export function rememberClickedLink(event) {
-  window.lastClickedHref = event.target.closest?.('a')?.href;
-}
-
-export function markStudioMoveLeaving(event) {
-  const isLeavingStudio = isStudioUrl(location.href);
-  try {
-    if (isLeavingStudio) sessionStorage.setItem('hue-hop-left-studio', '1');
-  } catch {}
-  const destination = event.activation?.entry?.url ?? window.lastClickedHref;
-  const isGoingToStudio = destination && isStudioUrl(destination);
-  if (isLeavingStudio || isGoingToStudio) {
-    event.viewTransition?.types.add('studio-move');
-  }
-}
-
-export function markStudioMoveArriving(event) {
-  let hasLeftStudio = false;
-  try {
-    hasLeftStudio = sessionStorage.getItem('hue-hop-left-studio') === '1';
-    sessionStorage.removeItem('hue-hop-left-studio');
-  } catch {}
-  if (hasLeftStudio || isStudioUrl(location.href)) {
-    event.viewTransition?.types.add('studio-move');
-  }
 }
