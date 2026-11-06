@@ -60,14 +60,14 @@ After that, every release goes like this:
    awk -v heading="## $VERSION" 'index($0, heading) == 1 { isInSection = 1; next } /^## / { isInSection = 0 } isInSection' CHANGELOG.md | gh release create "v$VERSION" --title "Hue Hop $VERSION" --notes-file -
    ```
 
-5. Watch the workflow, then confirm npm has it.
+5. Watch the workflow, then confirm npm has it. npm can take a few minutes to show a new version, so seeing the old one right after a passing run isn't a failure.
 
    ```sh
    gh run watch
    npm view hue-hop version
    ```
 
-6. Check the CDNs. Each line should print `200`. jsDelivr can lag a few minutes.
+6. Check the CDNs. Each line should print `200`. Expect a `404` or `502` for a few minutes after npm catches up. These URLs use the minor version, so change `@0.1` when that moves.
 
    ```sh
    curl -s -o /dev/null -w '%{http_code}\n' https://cdn.jsdelivr.net/npm/hue-hop@0.1/dist/hue-hop.js
