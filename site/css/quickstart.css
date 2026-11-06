@@ -16,11 +16,6 @@
   color: var(--ink-faint);
 }
 
-.step-note {
-  color: var(--ink-quiet);
-  font-size: var(--type-small);
-}
-
 .further-head {
   padding-block-end: var(--space-group);
   border-block-end: var(--border-thin) solid var(--divider);
