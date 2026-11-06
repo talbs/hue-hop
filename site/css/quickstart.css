@@ -9,6 +9,14 @@
   min-width: 0;
 }
 
+.step {
+  transition: opacity var(--note-16) var(--ease-hit);
+}
+
+.step:has(wa-tab-panel[name='cdn'][active]) + .step {
+  opacity: 0.45;
+}
+
 .step-number {
   font-family: var(--font-readout);
   font-size: var(--type-readout);
