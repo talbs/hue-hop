@@ -30,6 +30,8 @@
     "./hues.css": "./dist/hues.css",
     "./package.json": "./package.json"
   },
+  "main": "./dist/hue-hop.js",
+  "types": "./hue-hop.d.ts",
   "sideEffects": [
     "./dist/hue-hop.js",
     "./dist/*.css"
@@ -47,8 +49,12 @@
     "access": "public",
     "provenance": true
   },
-  "engines": {
-    "node": ">=22"
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22",
+      "onFail": "error"
+    }
   },
   "scripts": {
     "build": "node scripts/build.js",
@@ -65,7 +71,10 @@
     "@awesome.me/webawesome": "3.14.0",
     "esbuild": "0.28.2",
     "microlighter": "^2.2.0",
-    "playwright": "1.64.1",
+    "playwright": "1.65.0",
     "prettier": "3.9.10"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   }
 }
