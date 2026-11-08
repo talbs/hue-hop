@@ -1884,7 +1884,13 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               itself won't work here. The import already registered it, and a
               class can only be registered once. Your tag and
               <code>&lt;hue-hop&gt;</code>
-              can share a page.
+              can share a page. To leave
+              <code>&lt;hue-hop&gt;</code>
+              undefined, import from
+              <code>hue-hop/element</code>
+              instead. See
+              <a href="#exports">Exports</a>
+              .
             </p>
             <p>
               A subclass that defines its own
@@ -1961,6 +1967,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               Custom Elements Manifest format. The package's
               <code>customElements</code>
               field points to it, so any tool that reads the format can find it.
+              Scripts can import it as
+              <code>hue-hop/custom-elements.json</code>
+              .
             </p>
           </section>
           <section
@@ -2246,6 +2255,15 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               under another name, see
               <a href="#another-tag">Another Tag</a>
               .
+            </p>
+            <p>
+              <code>hue-hop/element</code>
+              exports
+              <code>HueHop</code>
+              without defining a tag, for a scoped registry or your own prefix.
+              Load it or
+              <code>hue-hop</code>
+              , never both, or the page runs two copies.
             </p>
           </section>
           <section

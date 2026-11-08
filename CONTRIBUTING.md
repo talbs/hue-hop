@@ -40,7 +40,7 @@ Every release goes like this:
    npm version minor --no-git-tag-version
    ```
 
-2. Run the checks. `npm pack --dry-run` should list eight files. Anything else means `files` in `package.json` is leaking.
+2. Run the checks. `npm pack --dry-run` should list twelve files. Anything else means `files` in `package.json` is leaking.
 
    ```sh
    npm test

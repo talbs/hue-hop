@@ -82,6 +82,10 @@ const SOCIAL_IMAGE_ALT =
 
 export const read = (path) => readFileSync(path, 'utf8');
 
+// Inline, the map's relative URL would resolve against whatever page is showing.
+const withoutSourceMapComment = (code) =>
+  code.replace(/\n\/\/# sourceMappingURL=\S+\s*$/, '');
+
 const readDarkSurface = () =>
   read('site/css/tokens.css').match(/--surface: (#\w+);/)[1];
 
@@ -131,7 +135,7 @@ export function readFills(manifest) {
     'element-script':
       '<script type="module" src="{{root}}dist/hue-hop.js"></script>',
     // The 404's stage renders even if a module request to the site is slow.
-    'inline-element-script': `<script type="module">\n${read('dist/hue-hop.js')}\n</script>`,
+    'inline-element-script': `<script type="module">\n${withoutSourceMapComment(read('dist/hue-hop.js'))}\n</script>`,
     'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${keepGroupsOnTransform}\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>\n${VIEW_TRANSITION_RULE}`,
   };
 }
