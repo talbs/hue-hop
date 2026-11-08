@@ -1,11 +1,6 @@
-export class HueHop extends HTMLElement {
-  /** How many color steps the letters use, one per letter up to 64, or `0` when the element is off the page or the browser lacks support. */
-  readonly hops: number;
-  /** The color of the first letter, mirroring the `start` attribute, where `null` removes it. */
-  start: string | null;
-  /** The color of the last letter, mirroring the `end` attribute, where `null` removes it. */
-  end: string | null;
-}
+import type { HueHop, HueName } from './element.js';
+
+export * from './element.js';
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -23,10 +18,9 @@ declare module 'react' {
     interface IntrinsicElements {
       'hue-hop': ClassAttributes<HueHop> &
         HTMLAttributes<HueHop> & {
-          drift?: boolean | '';
-          hue?:
-            'dusk' | 'reef' | 'fern' | 'ember' | 'guava' | 'orchid' | 'honey';
-          display?: boolean | '';
+          drift?: boolean;
+          hue?: HueName;
+          display?: boolean;
           start?: string;
           end?: string;
         };

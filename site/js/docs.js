@@ -4,7 +4,7 @@ import { whenSideChanges } from './scheme.js';
 import {
   DEFAULT_STATE,
   decimalsIn,
-  defaultLift,
+  defaultBoost,
   describeStudioLink,
 } from './state.js';
 import { fillCode } from './syntax.js';
@@ -320,7 +320,7 @@ function studioLinkFor(hop) {
     end: hop.getAttribute('end'),
     curve: readTuning(hop, 'curve', DEFAULT_STATE.curve),
     shift: readTuning(hop, 'shift', DEFAULT_STATE.shift),
-    lift: readTuning(hop, 'lift', defaultLift(hue)),
+    boost: readTuning(hop, 'boost', defaultBoost(hue)),
     drift: hop.hasAttribute('drift'),
     display: hop.hasAttribute('display'),
   });

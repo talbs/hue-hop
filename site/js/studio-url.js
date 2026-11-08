@@ -1,5 +1,5 @@
 import { isBlankLetter } from './motion.js';
-import { DEFAULT_STATE, defaultLift } from './state.js';
+import { DEFAULT_STATE, defaultBoost } from './state.js';
 
 const PRESET_HUES = [
   'dusk',
@@ -32,7 +32,7 @@ const SIDE_BY_SCHEME = new Map([
 
 const NUMBER_RANGES = {
   curve: [0.25, 4],
-  lift: [-0.06, 0.12],
+  boost: [-0.06, 0.12],
   shift: [-180, 180],
   weight: [100, 900],
   size: [12, 200],
@@ -49,7 +49,7 @@ export const DEFAULT_STUDIO = {
   start: null,
   end: null,
   curve: DEFAULT_STATE.curve,
-  lift: DEFAULT_STATE.lift,
+  boost: DEFAULT_STATE.boost,
   shift: DEFAULT_STATE.shift,
   display: false,
   bar: 4.5,
@@ -175,6 +175,10 @@ function readHue(params, start, end) {
 // Anything unreadable or out of range is left out, so the caller's default stands.
 export function readStudioParams(search, { isColor }) {
   const params = new URLSearchParams(search);
+  // Links shared before 0.2.0 call boost "lift".
+  if (!params.has('boost') && params.has('lift')) {
+    params.set('boost', params.get('lift'));
+  }
   const state = {};
 
   const text = readWord(params.get('text'));
@@ -187,7 +191,7 @@ export function readStudioParams(search, { isColor }) {
   if (hue) state.hue = hue;
   if (start) state.start = start;
   if (end) state.end = end;
-  if (isCustom) state.lift = defaultLift(hue);
+  if (isCustom) state.boost = defaultBoost(hue);
 
   for (const name of Object.keys(NUMBER_RANGES)) {
     const value = readNumber(params, name);
@@ -239,7 +243,7 @@ export function writeStudioParams(state) {
   if (state.start) params.set('start', writeColorPair(state.start));
   if (state.end) params.set('end', writeColorPair(state.end));
   setIfChanged('curve', state.curve, DEFAULT_STUDIO.curve);
-  setIfChanged('lift', state.lift, defaultLift(state.hue));
+  setIfChanged('boost', state.boost, defaultBoost(state.hue));
   setIfChanged('shift', state.shift, DEFAULT_STUDIO.shift);
   if (state.isDriftOn) params.set('drift', '1');
   if (isDisplayOn) params.set('display', '1');

@@ -2,7 +2,7 @@
 
 **Every letter hops a hue.** Hue Hop colors each letter of a heading or name, one flat color at a time, from a start color to an end color. The text stays text: select it, find it, copy it, read it with a screen reader.
 
-It's one custom element, `<hue-hop>`, with no dependencies and under 2.5 KB gzipped. It works in Chrome 134+, Firefox 140+, and Safari 18+.
+It's one custom element, `<hue-hop>`, with no dependencies and under 2.75 KB gzipped. It works in Chrome 134+, Firefox 140+, and Safari 18+.
 
 **[See it live, and read the docs →](https://huehop.dev/)**
 

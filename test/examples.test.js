@@ -9,11 +9,6 @@ const rows = [
     '<hue-hop hue="dusk">Nas</hue-hop>',
   ],
   [
-    'drops hops',
-    '<hue-hop hue="dusk" hops="3">Nas</hue-hop>',
-    '<hue-hop hue="dusk">Nas</hue-hop>',
-  ],
-  [
     'keeps style',
     '<hue-hop hue="dusk" style="--hop-curve: 1.6;">Nas</hue-hop>',
     '<hue-hop hue="dusk" style="--hop-curve: 1.6;">Nas</hue-hop>',

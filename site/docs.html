@@ -378,11 +378,11 @@
               Point it at
               <a href="{{root}}llms.txt">llms.txt</a>
               , a short plain-text version of these docs written for assistants.
-              It has the install, the attributes, and the rules an assistant
-              gets wrong without them (headings and names only, check your own
+              It has the install and attributes. It also has the rules
+              assistants get wrong: headings and names only, check your own
               ends, a
               <code>color-scheme</code>
-              for the dark scheme).
+              for the dark scheme.
             </p>
             <h3 id="paste-in-prompt">Paste-In Prompt</h3>
             <p>For a one-off. Paste it into the chat.</p>
@@ -777,14 +777,34 @@
             </dl>
             <h3 id="from-javascript">From JavaScript</h3>
             <p>
+              <code>el.hue</code>
+              ,
               <code>el.start</code>
-              and
+              ,
               <code>el.end</code>
-              read and set the attributes. Setting one to
+              ,
+              <code>el.display</code>
+              and
+              <code>el.drift</code>
+              read and set the attributes.
+              <code>hue</code>
+              ,
+              <code>start</code>
+              and
+              <code>end</code>
+              take
               <code>null</code>
-              removes it. Setting a property works the same as setting the
-              attribute, even before the element has loaded. That covers
-              frameworks that set properties (Angular, Solid, Lit's
+              to remove the attribute.
+              <code>display</code>
+              and
+              <code>drift</code>
+              take
+              <code>true</code>
+              or
+              <code>false</code>
+              . Setting a property works the same as setting the attribute, even
+              before the element has loaded. That covers frameworks that set
+              properties (Angular, Solid, Lit's
               <code>.start=</code>
               ).
             </p>
@@ -858,7 +878,7 @@
               steps evenly from one end to the other, so if both ends pass, most
               letters between them do too. Ends far apart on the color wheel
               (green to violet, say) can still dip in the middle, and
-              <a href="#lift">lift</a>
+              <a href="#boost">boost</a>
               makes that more likely. Check the middle letters.
             </p>
             <p>
@@ -1072,7 +1092,12 @@
                 </wa-scroller>
               </div>
             </figure>
-            <p>Two custom properties set the sway. Both are plain numbers.</p>
+            <p>
+              Two custom properties set the sway. The range is a plain number,
+              and the cycle is a time like
+              <code>10s</code>
+              .
+            </p>
             <wa-scroller>
               <table>
                 <thead>
@@ -1090,10 +1115,8 @@
                   </tr>
                   <tr>
                     <td><code>--hop-drift-cycle</code></td>
-                    <td><code>10</code></td>
-                    <td>
-                      How many seconds one full sway there and back takes.
-                    </td>
+                    <td><code>10s</code></td>
+                    <td>How long one full sway there and back takes.</td>
                   </tr>
                 </tbody>
               </table>
@@ -1261,8 +1284,8 @@
               or a class, and every heading under it follows. One catch: a
               <code>hue</code>
               sets
-              <code>--hop-lift</code>
-              on the element itself, so to change lift under a hue, set it on
+              <code>--hop-boost</code>
+              on the element itself, so to change boost under a hue, set it on
               the element. The examples set them in
               <code>style</code>
               so you can see the one value that changes.
@@ -1313,7 +1336,7 @@
                 </wa-scroller>
               </div>
             </figure>
-            <h3 id="lift">Lift</h3>
+            <h3 id="boost">Boost</h3>
             <p>
               Extra color intensity (OKLCH chroma) for the middle letters, so
               the blend doesn't go dull halfway. The two ends don't change. The
@@ -1325,7 +1348,7 @@
             </p>
             <figure
               class="example"
-              data-control="lift"
+              data-control="boost"
             >
               <div class="example-panel">
                 <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
@@ -1333,7 +1356,7 @@
                     <hue-hop
                       start="oklch(60% 0.12 200)"
                       end="oklch(60% 0.12 300)"
-                      style="--hop-lift: 0"
+                      style="--hop-boost: 0"
                     >
                       Sky's the Limit
                     </hue-hop>
@@ -1344,8 +1367,8 @@
                   <div class="wa-cluster">
                     <div class="fader">
                       <wa-slider
-                        id="lift-fader"
-                        label="Lift"
+                        id="boost-fader"
+                        label="Boost"
                         min="0"
                         max="0.12"
                         step="0.001"
@@ -1354,7 +1377,7 @@
                       ></wa-slider>
                       <output
                         class="fader-value wa-text-end"
-                        for="lift-fader"
+                        for="boost-fader"
                       >
                         0.000
                       </output>
@@ -1376,7 +1399,7 @@
                 name="triangle-exclamation"
                 label="Warning"
               ></wa-icon>
-              <strong>Too much lift gets clipped.</strong>
+              <strong>Too much boost gets clipped.</strong>
               Past the sRGB range (the colors a typical screen can show), the
               middle letters get cut back, and on a white page that can lower
               their contrast. Check the middle letters. The
@@ -1695,7 +1718,7 @@
             <p>
               Middle markers look slightly less vivid than the letters, because
               the mix leaves out
-              <code>--hop-lift</code>
+              <code>--hop-boost</code>
               , which every hue sets to
               <code>0.021</code>
               .
@@ -1744,7 +1767,9 @@
               <code>drift</code>
               , and
               <code>display</code>
-              . Nothing to declare.
+              . Nothing to declare. The seven names are exported as
+              <code>HueName</code>
+              .
             </p>
             <h3 id="react">React</h3>
             <p>
@@ -1754,26 +1779,19 @@
               <code>end</code>
               as attributes or as properties, and the element reads both.
             </p>
-            <wa-callout
-              class="note"
-              variant="neutral"
-              appearance="outlined"
-              size="s"
-            >
-              <wa-icon
-                slot="icon"
-                canvas="auto"
-                family="pixel"
-                name="comment-dots"
-                label="Note"
-              ></wa-icon>
-              <strong>Server rendering logs one warning in development.</strong>
-              If the element defines itself before React 18 hydrates, the
-              development build logs
-              <code>Extra attributes from the server: hops</code>
-              . Colors stay correct. If your test runner fails on console
-              errors, let that one line through.
-            </wa-callout>
+            <p>
+              Turn on
+              <code>drift</code>
+              and
+              <code>display</code>
+              with the bare name, like
+              <code>&lt;hue-hop drift&gt;</code>
+              , and leave them out to turn them off. React 19 treats
+              <code>drift=""</code>
+              as off, and React 18 treats
+              <code>drift={false}</code>
+              as on.
+            </p>
             <h3 id="server-rendering">Server Rendering</h3>
             <p>
               Importing it on the server is safe. There's no browser there, so
@@ -1866,7 +1884,13 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               itself won't work here. The import already registered it, and a
               class can only be registered once. Your tag and
               <code>&lt;hue-hop&gt;</code>
-              can share a page.
+              can share a page. To leave
+              <code>&lt;hue-hop&gt;</code>
+              undefined, import from
+              <code>hue-hop/element</code>
+              instead. See
+              <a href="#exports">Exports</a>
+              .
             </p>
             <p>
               A subclass that defines its own
@@ -1891,6 +1915,11 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>&lt;slot&gt;</code>
               in it, or the text won't show. A closed root goes without the
               hues, because the element can't reach it.
+            </p>
+            <p>
+              A subclass can't call
+              <code>attachInternals()</code>
+              . The element already did, and an element only gets one.
             </p>
             <h3 id="cascade-layers">Tailwind and Cascade Layers</h3>
             <p>
@@ -1938,6 +1967,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               Custom Elements Manifest format. The package's
               <code>customElements</code>
               field points to it, so any tool that reads the format can find it.
+              Scripts can import it as
+              <code>hue-hop/custom-elements.json</code>
+              .
             </p>
           </section>
           <section
@@ -2008,9 +2040,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               Vitest 5.1.
             </p>
             <p>
-              Wiring up a DOM by hand? The element reads
-              <code>CSS</code>
-              as it loads. Copy only
+              Wiring up a DOM by hand? Copying only
               <code>window</code>
               ,
               <code>document</code>
@@ -2018,34 +2048,15 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>HTMLElement</code>
               , and
               <code>customElements</code>
-              onto the global and the import throws
-              <code>ReferenceError: CSS is not defined</code>
-              . Copy
-              <code>window.CSS</code>
-              too and it loads in both. On jsdom, this line before the import
-              works too:
+              onto the global is enough. With no
+              <code>CSS</code>
+              , the element loads and stays inert.
             </p>
-            <div class="code-well">
-              <p class="code-label readout-label">Before the import</p>
-              <pre
-                class="code-block"
-              ><code class="language-javascript" id="docs-css-guard">globalThis.CSS ??= {};</code></pre>
-              <wa-copy-button
-                class="code-copy"
-                from="docs-css-guard"
-                copy-label="Copy JavaScript"
-              ></wa-copy-button>
-            </div>
             <p>
               <code>el.hops</code>
               is
               <code>0</code>
-              off the page or without support, test DOMs included. The
-              <a href="#hops">
-                <code>hops</code>
-                attribute
-              </a>
-              keeps its last value.
+              off the page or without support, test DOMs included.
             </p>
           </section>
           <p class="docs-group readout-label">Reference</p>
@@ -2118,7 +2129,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 label="Note"
               ></wa-icon>
               <strong>
-                Curve, lift, shift, drift range, and drift cycle have no
+                Curve, boost, shift, drift range, and drift cycle have no
                 attributes.
               </strong>
               See
@@ -2146,17 +2157,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <a href="#reading-a-color">Reading a Letter's Color</a>
               .
             </p>
-            <h3 id="hops">
-              The
-              <code>hops</code>
-              Attribute
-            </h3>
-            <p>
-              The element writes its step count on itself (like
-              <code>hops="13"</code>
-              ) and reads it back from its own stylesheet. Don't set it: a
-              hand-set value can miscolor the letters until the text changes.
-            </p>
+            <h3 id="step-count">Step Count</h3>
             <p>
               Every letter except a space gets its own step, up to 64. Longer
               text shares steps, so a 200-letter heading still runs the whole
@@ -2223,19 +2224,10 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               </div>
             </figure>
             <p>
-              The code leaves
-              <code>hops</code>
-              out, like every example here, because you never write it.
-            </p>
-            <p>
               <code>el.hops</code>
-              returns the same count as a read-only number. It's
+              returns the count as a read-only number. It's
               <code>0</code>
-              when the element is off the page (the attribute keeps its last
-              value) or the browser lacks support. With server rendering, React
-              can warn about the attribute. See
-              <a href="#react">React</a>
-              .
+              when the element is off the page or the browser lacks support.
             </p>
             <h3 id="exports">Exports</h3>
             <p>
@@ -2247,6 +2239,15 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               under another name, see
               <a href="#another-tag">Another Tag</a>
               .
+            </p>
+            <p>
+              <code>hue-hop/element</code>
+              exports
+              <code>HueHop</code>
+              without defining a tag, for a scoped registry or your own prefix.
+              Load it or
+              <code>hue-hop</code>
+              , never both, or the page runs two copies.
             </p>
           </section>
           <section
@@ -2317,10 +2318,12 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               </strong>
               The element checks for
               <code>CSS.highlights</code>
-              as it loads and does nothing without it. There's no polyfill.
-              Chrome 105 to 133 have the API but can't read custom properties
-              inside a highlight, so they show plain text too, never a wrong
-              color. Safari 17 is unmeasured.
+              and
+              <code>:state()</code>
+              as it loads, and does nothing unless it finds both. There's no
+              polyfill. Chrome 105 to 133 have the API but can't read custom
+              properties inside a highlight, so they show plain text too, never
+              a wrong color. Safari 17 is unmeasured.
             </wa-callout>
             <h3 id="before-it-loads">Before It Loads</h3>
             <p>
@@ -2356,10 +2359,10 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 partner instead.
               </li>
               <li>
-                Ends far apart on the color wheel, and lift, can push the middle
-                letters past what an sRGB screen can show. They get clipped, by
-                an amount that depends on the colors, and on a white page that
-                can lower their contrast. Check the middle letters.
+                Ends far apart on the color wheel, and boost, can push the
+                middle letters past what an sRGB screen can show. They get
+                clipped, by an amount that depends on the colors, and on a white
+                page that can lower their contrast. Check the middle letters.
               </li>
               <li>
                 User stylesheets and extensions that force a text color still
@@ -2436,6 +2439,13 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <li>
                 A subclass with no text, like one wrapping only an SVG, doesn't
                 drift.
+              </li>
+              <li>
+                A subclass can't call
+                <code>attachInternals()</code>
+                . The element already did. See
+                <a href="#another-tag">Another Tag</a>
+                .
               </li>
             </ul>
           </section>
@@ -2524,27 +2534,11 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               </dd>
               <dt>The middle letters look wrong.</dt>
               <dd>
-                Ends far apart on the color wheel, or too much lift, push the
+                Ends far apart on the color wheel, or too much boost, push the
                 middle letters past what an sRGB screen can show, and they get
-                clipped. Lower the lift or bring the ends closer, then check the
-                middle letters. See
-                <a href="#lift">Lift</a>
-                .
-              </dd>
-              <dt>
-                React warns about
-                <code>hops</code>
-                .
-              </dt>
-              <dd>
-                Server rendering. The server's HTML has no
-                <code>hops</code>
-                , and the element writes it before React 18 hydrates, so the
-                development build prints
-                <code>Warning: Extra attributes from the server: hops</code>
-                . It's harmless, and the colors stay correct. If your test
-                runner fails on console errors, let that one line through. See
-                <a href="#react">React</a>
+                clipped. Lower the boost or bring the ends closer, then check
+                the middle letters. See
+                <a href="#boost">Boost</a>
                 .
               </dd>
               <dt>Drift doesn't move.</dt>
@@ -2656,9 +2650,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   <code>StaticRange</code>
                   (a fixed start and end point in the text) over the real text
                   node, and each step is one highlight. So there are no spans.
-                  The element adds two things: its
-                  <code>hops</code>
-                  attribute, and a shadow root holding one
+                  The element adds one thing: a shadow root holding one
                   <code>&lt;slot&gt;</code>
                   . Your text stays where you wrote it.
                 </dd>
@@ -2668,9 +2660,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 <dd>
                   Each step's color is worked out in CSS:
                   <code>color-mix()</code>
-                  in OKLCH between the two ends, spaced by the curve, lifted in
-                  the middle, then turned by the shift and the drift. So a theme
-                  switch or a
+                  in OKLCH between the two ends. The curve spaces the steps,
+                  boost saturates the middle, and shift and drift turn the hue.
+                  So a theme switch or a
                   <code>--hop-*</code>
                   change recolors the letters with no JavaScript. Read the
                   <a href="{{repo-url}}/blob/main/src/formula.css">formula</a>
@@ -2686,7 +2678,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   rules, which is why CSS on the element beats them and an
                   inherited value doesn't. The rest goes on the document, or on
                   the shadow root the element sits in. Every heading in a root
-                  shares one sheet, with one rule per distinct
+                  shares one sheet. It holds one rule per distinct
                   <code>start</code>
                   or
                   <code>end</code>
@@ -2968,7 +2960,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                     </th>
                     <td>0</td>
                     <td>0 plus your JS</td>
-                    <td>under 2.5 KB</td>
+                    <td>under 2.75 KB</td>
                   </tr>
                 </tbody>
               </table>
@@ -3031,7 +3023,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 <dd>
                   Gzipped:
                   <code>hue-hop.js</code>
-                  2.5 KB,
+                  2.75 KB,
                   <code>drift.css</code>
                   400 bytes. The package won't pack over them.
                 </dd>

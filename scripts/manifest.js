@@ -116,7 +116,7 @@ export function llmsText({
 
   const sections = [
     '# Hue Hop',
-    '> Every letter hops a hue. `<hue-hop>` colors each letter of a heading or name, one flat color at a time, from a start color to an end color. The text stays text: select it, find it, copy it, read it with a screen reader. One custom element, no dependencies, under 2.5 KB gzipped. Chrome 134+, Firefox 140+, Safari 18+.',
+    '> Every letter hops a hue. `<hue-hop>` colors each letter of a heading or name, one flat color at a time, from a start color to an end color. The text stays text: select it, find it, copy it, read it with a screen reader. One custom element, no dependencies, under 2.75 KB gzipped. Chrome 134+, Firefox 140+, Safari 18+.',
     `This file describes version ${version}. Hue Hop is pre-1.0, so pin the version.`,
     '## Install',
     'With a bundler:',
@@ -124,7 +124,7 @@ export function llmsText({
     `${FENCE}js\nimport 'hue-hop';\n${FENCE}`,
     'Without one:',
     `${FENCE}html\n<script type="module" src="${cdnBase}/hue-hop.js"></script>\n${FENCE}`,
-    `Add drift only if you use it: \`import 'hue-hop/drift.css';\`, or a \`<link>\` to \`${cdnBase}/drift.css\`. Types ship with the package, and the element class is exported as \`HueHop\`.`,
+    `Add drift only if you use it: \`import 'hue-hop/drift.css';\`, or a \`<link>\` to \`${cdnBase}/drift.css\`. Types ship with the package, and the element class is exported as \`HueHop\`. \`hue-hop/element\` exports it without defining \`<hue-hop>\`.`,
     '## Use',
     `${FENCE}html\n<h1><hue-hop hue="dusk">Midnight Marauders</hue-hop></h1>\n${FENCE}`,
     'Rules:',

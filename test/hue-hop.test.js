@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { after, before, test } from 'node:test';
 import { chromium, firefox, webkit } from 'playwright';
 
@@ -58,6 +59,50 @@ test('a hue colors the element with only the script loaded', async () => {
     assert.ok(ends[0].includes('oklch'), `${tag} ${content} start: ${ends[0]}`);
     assert.ok(ends[1].includes('oklch'), `${tag} ${content} end: ${ends[1]}`);
   }
+});
+
+test('every attribute has a property that reflects it, even set before define', async () => {
+  const rows = [
+    ['start', 'red', 'red', 'red'],
+    ['hue', 'reef', 'reef', 'reef'],
+    ['hue', null, null, null],
+    ['display', true, '', true],
+    ['drift', false, null, false],
+  ];
+  for (const [name, value, expectedAttribute, readBack] of rows) {
+    const page = await browser.newPage();
+    await page.setContent('<hue-hop id="t" hue="dusk" drift>Nas</hue-hop>');
+    await page.evaluate(
+      ([name, value]) => {
+        document.getElementById('t')[name] = value;
+      },
+      [name, value]
+    );
+    await page.addScriptTag({ path: 'dist/hue-hop.js', type: 'module' });
+    const [attribute, property] = await page.evaluate((name) => {
+      const element = document.getElementById('t');
+      return [element.getAttribute(name), element[name]];
+    }, name);
+    assert.equal(attribute, expectedAttribute, `${name} = ${value}`);
+    assert.equal(property, readBack, `${name} = ${value}`);
+  }
+});
+
+test('the element entry exports the class without defining the tag', async () => {
+  const page = await browser.newPage();
+  await page.setContent('<my-hop id="t" hue="dusk">Nas</my-hop>');
+  const code = await readFile('dist/element.js', 'utf8');
+  const [isBaseTagDefined, hops] = await page.evaluate(async (code) => {
+    const blob = new Blob([code], { type: 'text/javascript' });
+    const { HueHop } = await import(URL.createObjectURL(blob));
+    customElements.define('my-hop', class extends HueHop {});
+    return [
+      Boolean(customElements.get('hue-hop')),
+      document.getElementById('t').hops,
+    ];
+  }, code);
+  assert.equal(isBaseTagDefined, false);
+  assert.equal(hops, 3);
 });
 
 test('importing without a dom does not throw', async () => {
@@ -143,8 +188,8 @@ async function rangesOf(page, selector) {
     found.sort((a, b) => a.index - b.index);
 
     return {
+      hasHopsAttribute: element.hasAttribute('hops'),
       hops: element.hops,
-      hopsAttribute: element.getAttribute('hops'),
       indexes: found.map((entry) => entry.index),
       texts: found.map((entry) => entry.text),
     };
@@ -188,11 +233,14 @@ test('steps graphemes into shared highlights', async () => {
     const steps = expectedIndexes ?? expected.map((_, index) => index);
     const stepCount = steps.at(-1) + 1;
     const page = await openPage(`<hue-hop id="t">${html}</hue-hop>`);
-    const { hops, hopsAttribute, indexes, texts } = await rangesOf(page, '#t');
+    const { hasHopsAttribute, hops, indexes, texts } = await rangesOf(
+      page,
+      '#t'
+    );
     assert.deepEqual(texts, expected, name);
     assert.equal(hops, stepCount, name);
+    assert.equal(hasHopsAttribute, false, name);
     assert.deepEqual(indexes, steps, name);
-    assert.equal(hopsAttribute, String(stepCount), name);
   }
 });
 
@@ -237,10 +285,9 @@ test('content changes re-step and leave no old ranges', async () => {
     const pageErrors = [];
     page.on('pageerror', (error) => pageErrors.push(error.message));
     await page.evaluate(`(${change})(document.getElementById('t'))`);
-    const { hops, hopsAttribute, texts } = await rangesOf(page, '#t');
+    const { hops, texts } = await rangesOf(page, '#t');
     assert.deepEqual(texts, expected, name);
     assert.equal(hops, expected.length, name);
-    assert.equal(hopsAttribute, String(expected.length), name);
     const stale = await page.evaluate(
       () =>
         [...CSS.highlights]
@@ -249,6 +296,38 @@ test('content changes re-step and leave no old ranges', async () => {
     );
     assert.equal(stale, 0, name);
     assert.deepEqual(pageErrors, [], name);
+  }
+});
+
+test('a hop recounts after a detached edit', async () => {
+  const page = await openPage(
+    '<hue-hop id="t" start="red" end="blue">Illmatic</hue-hop>'
+  );
+  const { hops, lastLetter, blue } = await page.evaluate(async () => {
+    const element = document.getElementById('t');
+    const parent = element.parentNode;
+    element.remove();
+    element.textContent = 'Nas';
+    parent.append(element);
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    const probe = document.createElement('i');
+    probe.style.color = 'oklch(from blue l c h)';
+    document.body.append(probe);
+    return {
+      hops: element.hops,
+      lastLetter: getComputedStyle(element, '::highlight(hue-hop-2)').color,
+      blue: getComputedStyle(probe).color,
+    };
+  });
+  assert.equal(hops, 3);
+  const channels = (color) => color.match(/[\d.]+/g).map(Number);
+  const [actual, expected] = [channels(lastLetter), channels(blue)];
+  for (const [index, value] of expected.entries()) {
+    assert.ok(
+      Math.abs(actual[index] - value) < 0.01 * Math.max(1, value),
+      `${lastLetter} vs ${blue}`
+    );
   }
 });
 
