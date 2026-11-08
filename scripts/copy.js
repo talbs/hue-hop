@@ -25,6 +25,7 @@ export const DOCS_GROUPS = [
     'Start',
     [
       ['Get Started', '#get-started'],
+      ['Where It Fits', '#where-it-fits'],
       ['Build with AI', '#build-with-ai'],
     ],
   ],
@@ -35,7 +36,8 @@ export const DOCS_GROUPS = [
       ['Your Own Colors', '#your-own-colors'],
       ['Light and Dark', '#light-and-dark'],
       ['Drift', '#drift'],
-      ['Where It Fits', '#where-it-fits'],
+      ['Studio', '#studio'],
+      ['Accessibility', '#accessibility'],
     ],
   ],
   [
@@ -50,18 +52,21 @@ export const DOCS_GROUPS = [
     [
       ['Frameworks and Editors', '#frameworks-and-editors'],
       ['Testing Your App', '#testing'],
-      ['Before It Loads', '#before-it-loads'],
     ],
   ],
   [
     'Reference',
     [
       ['API', '#api'],
-      ['Accessibility', '#accessibility'],
       ['Browser Support', '#browser-support'],
-      ['How It Works', '#how-it-works'],
       ['Known Limits', '#known-limits'],
       ['Troubleshooting', '#troubleshooting'],
+    ],
+  ],
+  [
+    'About',
+    [
+      ['How It Works', '#how-it-works'],
       ['Inspiration', '#inspiration'],
       ['Support', '#support'],
       ['Colophon', '#colophon'],

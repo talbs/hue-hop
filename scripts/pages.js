@@ -127,12 +127,44 @@ export function readFills(manifest) {
     'assistant-prompt': escapeHtml(ASSISTANT_PROMPT),
     'agent-rules': escapeHtml(AGENT_RULES),
     'docs-nav': docsNav(DOCS_GROUPS),
+    'hue-end-tabs': hueEndTabs(),
     'element-script':
       '<script type="module" src="{{root}}dist/hue-hop.js"></script>',
     // The 404's stage renders even if a module request to the site is slow.
     'inline-element-script': `<script type="module">\n${read('dist/hue-hop.js')}\n</script>`,
     'side-boot': `<script>\n${readSide}\n${showSide}\nshowSide(readSide());\n${keepGroupsOnTransform}\naddEventListener('pagereveal', keepGroupsOnTransform);\n</script>\n${VIEW_TRANSITION_RULE}`,
   };
+}
+
+const HUE_ENDS =
+  /:where\(hue-hop\[hue='(\w+)'\]\)\s*\{\s*--hop-start:\s*([^;]+);\s*--hop-end:\s*([^;]+);/g;
+
+// Read from the element's own hue rules, so the docs can't fall behind a retuned hue.
+function hueEndTabs() {
+  const hues = [...read('src/hues.css').matchAll(HUE_ENDS)];
+  if (hues.length === 0) {
+    throw new Error('src/hues.css no longer has hue rules this can read');
+  }
+  const tabs = [];
+  const panels = [];
+  for (const [index, [, name, start, end]] of hues.entries()) {
+    const active = index === 0 ? ' active' : '';
+    const id = `docs-hue-ends-${name}`;
+    const code = `.playlist {\n  --hop-start: ${start};\n  --hop-end: ${end};\n}`;
+    tabs.push(`<wa-tab slot="nav" panel="${name}"${active}>${name}</wa-tab>`);
+    panels.push(
+      [
+        `<wa-tab-panel name="${name}"${active}>`,
+        '<div class="code-well">',
+        '<p class="code-label readout-label">In your CSS</p>',
+        `<pre class="code-block"><code class="language-css" id="${id}">${escapeHtml(code)}</code></pre>`,
+        `<wa-copy-button class="code-copy" from="${id}" copy-label="Copy CSS"></wa-copy-button>`,
+        '</div>',
+        '</wa-tab-panel>',
+      ].join('\n')
+    );
+  }
+  return `<wa-tab-group class="install-tabs">\n${tabs.join('\n')}\n${panels.join('\n')}\n</wa-tab-group>`;
 }
 
 // A fill can hold placeholders of its own (a partial, or {{root}} in the docs URL), so fill until nothing changes.

@@ -257,6 +257,90 @@
             </p>
           </section>
           <section
+            id="where-it-fits"
+            aria-labelledby="where-it-fits-title"
+          >
+            <h2
+              class="section-title"
+              id="where-it-fits-title"
+            >
+              Where It Fits
+            </h2>
+
+            <p>
+              Short text that names something: a title, a name, a number. It
+              isn't meant for body copy, which gets hard to read when every
+              letter changes color.
+            </p>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <header>
+                  <a
+                    href="/"
+                    class="logo"
+                  >
+                    <hue-hop hue="reef">Halftime</hue-hop>
+                  </a>
+                  <a href="/tour">Tour</a>
+                  <a href="/shop">Shop</a>
+                </header>
+              </div>
+              <figcaption class="readout-label">
+                A site logo in a nav bar
+              </figcaption>
+            </figure>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <p>
+                  Words by
+                  <hue-hop hue="honey">Bonita Applebum</hue-hop>
+                </p>
+              </div>
+              <figcaption class="readout-label">
+                A byline, with only the name colored
+              </figcaption>
+            </figure>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h2 role="none"><hue-hop hue="fern">Summertime</hue-hop></h2>
+                <ol>
+                  <li>Back in the Day</li>
+                  <li>Feel Me Flow</li>
+                  <li>Jump Around</li>
+                </ol>
+              </div>
+              <figcaption class="readout-label">A playlist heading</figcaption>
+            </figure>
+            <figure class="example">
+              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                <h1 role="none">
+                  <hue-hop
+                    hue="guava"
+                    display
+                  >
+                    Ether
+                  </hue-hop>
+                </h1>
+                <p>Review · 6 min read</p>
+              </div>
+              <figcaption class="readout-label">
+                An article title, in the display version
+              </figcaption>
+            </figure>
+            <p>
+              A heading that wraps keeps one ramp across its lines. Links and
+              other inline markup can sit inside, and they keep working. The
+              colors run straight across them (see
+              <a href="#styling">Styling Around It</a>
+              ).
+            </p>
+            <p>
+              Use as many as you like on one page. They share their styles (see
+              <a href="#how-it-works">How It Works</a>
+              ).
+            </p>
+          </section>
+          <section
             id="build-with-ai"
             aria-labelledby="build-with-ai-title"
           >
@@ -313,16 +397,8 @@
                 copy-label="Copy project rules"
               ></wa-copy-button>
             </div>
-            <h3 id="manifest-and-types">Manifest and Types</h3>
             <p>
-              The package ships two files for your tools.
-              <code>custom-elements.json</code>
-              lists every attribute, property, and custom property, and the
-              package's
-              <code>customElements</code>
-              field points tools at it.
-              <code>hue-hop.d.ts</code>
-              types the element, React JSX included. See
+              Types and an editor manifest ship in the package too. See
               <a href="#frameworks-and-editors">Frameworks and Editors</a>
               .
             </p>
@@ -423,12 +499,7 @@
               <code>#000</code>
               to
               <code>#1a1a1a</code>
-              . On other backgrounds, you'll need to check them yourself. Every
-              hue also sets
-              <code>--hop-lift</code>
-              to
-              <code>0.021</code>
-              .
+              . On other backgrounds, you'll need to check them yourself.
             </p>
             <wa-callout
               class="note"
@@ -685,6 +756,7 @@
               <code>.start=</code>
               ).
             </p>
+            <p>Change the text any time. The colors follow.</p>
             <h3 id="keep-them-readable">Keep Them Readable</h3>
             <p>
               The element can't see the background, so it can't check your
@@ -969,82 +1041,134 @@
             </p>
           </section>
           <section
-            id="where-it-fits"
-            aria-labelledby="where-it-fits-title"
+            id="studio"
+            aria-labelledby="studio-title"
           >
             <h2
               class="section-title"
-              id="where-it-fits-title"
+              id="studio-title"
             >
-              Where It Fits
+              Studio
             </h2>
-
             <p>
-              Short text that names something: a title, a name, a number. It
-              isn't meant for body copy, which gets hard to read when every
-              letter changes color.
+              The
+              <a
+                class="hop-link"
+                href="{{studio-url}}"
+              >
+                Studio
+              </a>
+              picks your own pair and checks it for you.
             </p>
-            <figure class="example">
-              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
-                <header>
-                  <a
-                    href="/"
-                    class="logo"
-                  >
-                    <hue-hop hue="reef">Halftime</hue-hop>
-                  </a>
-                  <a href="/tour">Tour</a>
-                  <a href="/shop">Shop</a>
-                </header>
+            <ol>
+              <li>Pick a start and an end color, or let it pick one.</li>
+              <li>
+                Set the background to your page color. Every letter's contrast
+                is checked against it. Flip the side switch in the header to set
+                your other scheme's page.
+              </li>
+              <li>
+                If a letter fails, press Fit. It moves the ends until every
+                letter passes, or tells you it can't.
+              </li>
+              <li>Open Code and copy the markup.</li>
+            </ol>
+          </section>
+          <section
+            id="accessibility"
+            aria-labelledby="accessibility-title"
+          >
+            <h2
+              class="section-title"
+              id="accessibility-title"
+            >
+              Accessibility
+            </h2>
+            <h3 id="handled-for-you">Handled for You</h3>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Screen readers</dt>
+                <dd>
+                  Screen readers hear the text once, as words. The text is never
+                  split.
+                </dd>
               </div>
-              <figcaption class="readout-label">
-                A site logo in a nav bar
-              </figcaption>
-            </figure>
-            <figure class="example">
-              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
-                <p>
-                  Words by
-                  <hue-hop hue="honey">Bonita Applebum</hue-hop>
-                </p>
+              <div>
+                <dt class="readout-label">High contrast</dt>
+                <dd>
+                  Forced colors mode turns the effect off, and so does any OS
+                  contrast setting (
+                  <code>prefers-contrast</code>
+                  other than
+                  <code>no-preference</code>
+                  ). The heading falls back to its normal color.
+                </dd>
               </div>
-              <figcaption class="readout-label">
-                A byline, with only the name colored
-              </figcaption>
-            </figure>
-            <figure class="example">
-              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
-                <h2 role="none"><hue-hop hue="fern">Summertime</hue-hop></h2>
-                <ol>
-                  <li>Back in the Day</li>
-                  <li>Feel Me Flow</li>
-                  <li>Jump Around</li>
-                </ol>
+              <div>
+                <dt class="readout-label">Reduced motion</dt>
+                <dd>Drift stops when the visitor prefers reduced motion.</dd>
               </div>
-              <figcaption class="readout-label">A playlist heading</figcaption>
-            </figure>
-            <figure class="example">
-              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
-                <h1 role="none">
-                  <hue-hop
-                    hue="guava"
-                    display
-                  >
-                    Ether
-                  </hue-hop>
-                </h1>
-                <p>Review · 6 min read</p>
+              <div>
+                <dt class="readout-label">Find and copy</dt>
+                <dd>
+                  Find in page, selection, and copy work as they do on any
+                  heading.
+                </dd>
               </div>
-              <figcaption class="readout-label">
-                An article title, in the display version
-              </figcaption>
-            </figure>
-            <p>
-              Links and other inline markup can sit inside, and they keep
-              working. The colors run straight across them. Keep link underlines
-              on: when only part of a heading is a link, the underline is the
-              only thing that says so (WCAG 1.4.1).
-            </p>
+              <div>
+                <dt class="readout-label">Hue contrast</dt>
+                <dd>
+                  Every letter of the seven
+                  <a href="#hues">hues</a>
+                  passes 4.5:1 on the backgrounds listed there, or 3:1 with
+                  <code>display</code>
+                  .
+                </dd>
+              </div>
+            </dl>
+            <h3 id="your-part">Your Part</h3>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Your contrast</dt>
+                <dd>
+                  Check contrast at your own ends. The element can't see the
+                  background. See
+                  <a href="#keep-them-readable">Keep Them Readable</a>
+                  .
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Link underlines</dt>
+                <dd>
+                  Keep link underlines on. When only part of a heading is a
+                  link, it's the only thing that says so (WCAG 1.4.1).
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Where to use it</dt>
+                <dd>
+                  Use it on headings and names, not body copy. Body copy gets
+                  hard to read when every letter changes color.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Display</dt>
+                <dd>
+                  Use
+                  <code>display</code>
+                  only for large text. It passes 3:1, not 4.5:1.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Hidden text</dt>
+                <dd>
+                  Put screen-reader-only text outside the element. Inside, it
+                  still uses up hops, so the visible letters may not reach
+                  <code>--hop-end</code>
+                  .
+                </dd>
+              </div>
+            </dl>
           </section>
           <p class="docs-group readout-label">Customize</p>
           <section
@@ -1300,10 +1424,27 @@
                 <dd>
                   They lose their own color in every state, hover and visited
                   included. They keep their focus ring and underline. Firefox
-                  and Safari keep the underline in the link's color. Chrome
-                  paints it in each letter's color, and
+                  and Safari draw it in the link's color. Chrome paints it in
+                  each letter's color, and
                   <code>text-decoration-color</code>
                   only shows under the spaces.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Hover and animation</dt>
+                <dd>
+                  A
+                  <code>:hover</code>
+                  rule that sets
+                  <code>--hop-start</code>
+                  or
+                  <code>--hop-end</code>
+                  works, but the colors snap instead of fading. Those properties
+                  aren't registered with
+                  <code>@property</code>
+                  , so a
+                  <code>transition</code>
+                  on them can't run.
                 </dd>
               </div>
               <div>
@@ -1403,35 +1544,31 @@
               Instead
             </h4>
             <p>
-              Drop the
-              <code>.playlist</code>
-              rule and run this script. A
+              A
               <code>hue</code>
               sets its ends on the element itself, so nothing beside it can see
-              them. The script copies them to the parent, and they still follow
-              theme switches.
+              them. Keep the
+              <code>hue</code>
+              on the heading, and swap the
+              <code>.playlist</code>
+              rule above for that hue's ends. They still follow theme switches.
             </p>
-            <div class="code-well">
-              <p class="code-label readout-label">In your JavaScript</p>
-              <pre
-                class="code-block"
-              ><code class="language-javascript" id="docs-copy-ends">customElements.whenDefined('hue-hop').then(() => {
-  const parent = document.querySelector('.playlist');
-  const styles = getComputedStyle(parent.querySelector('hue-hop'));
-  for (const name of ['--hop-start', '--hop-end']) {
-    parent.style.setProperty(name, styles.getPropertyValue(name));
-  }
-});</code></pre>
-              <wa-copy-button
-                class="code-copy"
-                from="docs-copy-ends"
-                copy-label="Copy JavaScript"
-              ></wa-copy-button>
-            </div>
+            {{hue-end-tabs}}
+            <p>
+              These are the regular ends. With
+              <code>display</code>
+              , copy the
+              <code>[display]</code>
+              rule for your hue from
+              <a href="{{repo-url}}/blob/main/src/hues.css">hues.css</a>
+              instead.
+            </p>
             <p>
               Middle markers look slightly less vivid than the letters, because
               the mix leaves out
               <code>--hop-lift</code>
+              , which every hue sets to
+              <code>0.021</code>
               .
             </p>
           </section>
@@ -1450,6 +1587,12 @@
               It's a plain custom element. Plain HTML, Svelte, and Lit need
               nothing. TypeScript and React get their types from the package.
               Vue and Angular each need one setting.
+            </p>
+            <p>
+              It works inside another component's shadow root too. For drift
+              there, load
+              <code>drift.css</code>
+              in that root as well as on the page.
             </p>
             <h3 id="typescript">TypeScript</h3>
             <p>
@@ -1776,29 +1919,6 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               keeps its last value.
             </p>
           </section>
-          <section
-            id="before-it-loads"
-            aria-labelledby="before-it-loads-title"
-          >
-            <h2
-              class="section-title"
-              id="before-it-loads-title"
-            >
-              Before It Loads
-            </h2>
-            <p>
-              Without JavaScript, or before the element loads, the heading is
-              plain text in its normal color. When the colors arrive, nothing
-              moves, so there's no layout shift to prevent and nothing to load
-              ahead of it.
-            </p>
-            <p>
-              Older browsers show the plain heading too. The element never
-              paints a wrong color. See
-              <a href="#browser-support">Browser Support</a>
-              .
-            </p>
-          </section>
           <p class="docs-group readout-label">Reference</p>
           <section
             id="api"
@@ -2001,103 +2121,6 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             </p>
           </section>
           <section
-            id="accessibility"
-            aria-labelledby="accessibility-title"
-          >
-            <h2
-              class="section-title"
-              id="accessibility-title"
-            >
-              Accessibility
-            </h2>
-            <h3 id="handled-for-you">Handled for You</h3>
-            <dl class="fact-list">
-              <div>
-                <dt class="readout-label">Screen readers</dt>
-                <dd>
-                  Screen readers hear the text once, as words. The text is never
-                  split.
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">High contrast</dt>
-                <dd>
-                  Forced colors mode turns the effect off, and so does any OS
-                  contrast setting (
-                  <code>prefers-contrast</code>
-                  other than
-                  <code>no-preference</code>
-                  ). The heading falls back to its normal color.
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Reduced motion</dt>
-                <dd>Drift stops when the visitor prefers reduced motion.</dd>
-              </div>
-              <div>
-                <dt class="readout-label">Find and copy</dt>
-                <dd>
-                  Find in page, selection, and copy work as they do on any
-                  heading.
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Hue contrast</dt>
-                <dd>
-                  Every letter of the seven
-                  <a href="#hues">hues</a>
-                  passes 4.5:1 on the backgrounds listed there, or 3:1 with
-                  <code>display</code>
-                  .
-                </dd>
-              </div>
-            </dl>
-            <h3 id="your-part">Your Part</h3>
-            <dl class="fact-list">
-              <div>
-                <dt class="readout-label">Your contrast</dt>
-                <dd>
-                  Check contrast at your own ends. The element can't see the
-                  background. See
-                  <a href="#keep-them-readable">Keep Them Readable</a>
-                  .
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Link underlines</dt>
-                <dd>
-                  Keep link underlines on. When only part of a heading is a
-                  link, the underline is the only thing that says so (WCAG
-                  1.4.1).
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Where to use it</dt>
-                <dd>
-                  Use it on headings and names, not body copy. Body copy gets
-                  hard to read when every letter changes color.
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Display</dt>
-                <dd>
-                  Use
-                  <code>display</code>
-                  only for large text. It passes 3:1, not 4.5:1.
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Hidden text</dt>
-                <dd>
-                  Put screen-reader-only text outside the element. Inside, it
-                  still uses up hops, so the visible letters may not reach
-                  <code>--hop-end</code>
-                  .
-                </dd>
-              </div>
-            </dl>
-          </section>
-          <section
             id="browser-support"
             aria-labelledby="browser-support-title"
           >
@@ -2170,122 +2193,13 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               inside a highlight, so they show plain text too, never a wrong
               color. Safari 17 is unmeasured.
             </wa-callout>
-          </section>
-          <section
-            id="how-it-works"
-            aria-labelledby="how-it-works-title"
-          >
-            <h2
-              class="section-title"
-              id="how-it-works-title"
-            >
-              How It Works
-            </h2>
+            <h3 id="before-it-loads">Before It Loads</h3>
             <p>
-              Hue Hop never splits your text. A word stays one element in one
-              text node, and the colors are painted over it. Here's one word
-              taken apart. Move the fader to change how its colors are spaced.
+              Without JavaScript, or before the element loads, the heading is
+              plain text in its normal color. When the colors arrive, nothing
+              moves, so there's no layout shift to prevent and nothing to load
+              ahead of it.
             </p>
-            <figure
-              class="example"
-              data-control="curve"
-              data-meter
-            >
-              <div class="example-panel">
-                <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
-                  <h2 role="none">
-                    <hue-hop
-                      hue="dusk"
-                      style="--hop-curve: 1"
-                    >
-                      Aquemini
-                    </hue-hop>
-                  </h2>
-                </div>
-                <div
-                  class="hop-meter"
-                  aria-hidden="true"
-                ></div>
-                <wa-divider></wa-divider>
-                <wa-scroller class="example-bar">
-                  <div class="wa-cluster">
-                    <div class="fader">
-                      <wa-slider
-                        id="how-it-works-fader"
-                        label="Curve"
-                        min="0.3"
-                        max="3"
-                        step="0.1"
-                        value="1"
-                        indicator-offset="1"
-                      ></wa-slider>
-                      <output
-                        class="fader-value wa-text-end"
-                        for="how-it-works-fader"
-                      >
-                        1.0
-                      </output>
-                    </div>
-                  </div>
-                </wa-scroller>
-              </div>
-              <figcaption class="readout-label">
-                Each bar is one letter's highlight, in that letter's color
-              </figcaption>
-            </figure>
-            <dl class="fact-list">
-              <div>
-                <dt class="readout-label">Ranges</dt>
-                <dd>
-                  The CSS Custom Highlight API paints the colors. Each letter
-                  gets a
-                  <code>StaticRange</code>
-                  over the real text node, and each step is one highlight. So
-                  there are no spans. The element adds two things: its
-                  <code>hops</code>
-                  attribute, and a shadow root holding one
-                  <code>&lt;slot&gt;</code>
-                  . Your text stays where you wrote it.
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Colors</dt>
-                <dd>
-                  Each step's color is worked out in CSS:
-                  <code>color-mix()</code>
-                  in OKLCH between the two ends, spaced by the curve, lifted in
-                  the middle, then turned by the shift and the drift. So a theme
-                  switch or a
-                  <code>--hop-*</code>
-                  change recolors the letters with no JavaScript. Read the
-                  <a href="{{repo-url}}/blob/main/src/formula.css">formula</a>
-                  in the repo.
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">Stylesheets</dt>
-                <dd>
-                  The styles arrive as constructed stylesheets. The hues sit in
-                  the element's own shadow root, as
-                  <code>:host</code>
-                  rules, which is why CSS on the element beats them and an
-                  inherited value doesn't. The rest goes on the document, or on
-                  the shadow root the element sits in. Each distinct
-                  <code>start</code>
-                  or
-                  <code>end</code>
-                  value becomes one rule in a sheet for that root. At 256 rules,
-                  that sheet is rebuilt from the elements still on the page.
-                </dd>
-              </div>
-              <div>
-                <dt class="readout-label">64 steps</dt>
-                <dd>
-                  In Chromium and Safari each restyle costs about the square of
-                  the step count, so longer text shares steps.
-                </dd>
-              </div>
-            </dl>
           </section>
           <section
             id="known-limits"
@@ -2303,6 +2217,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 The element can't check contrast at the start and end colors, so
                 that part is up to you.
               </li>
+              <li>Two ends, no middle stops.</li>
               <li>
                 A typo in a color (
                 <code>start="tael"</code>
@@ -2329,23 +2244,15 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <h3 id="limits-text">Text</h3>
             <ul>
               <li>
-                Links inside keep their focus ring and underline. They lose
-                their own color in every state, hover and visited included.
+                Links inside, selected text, and gradient text each behave a
+                little differently. See
+                <a href="#styling">Styling Around It</a>
+                .
               </li>
               <li>
-                Firefox and Safari keep a link's underline in the link's color.
-                Chrome paints it in each letter's color, and
-                <code>text-decoration-color</code>
-                only shows under the spaces.
-              </li>
-              <li>
-                Selected text: a
-                <code>::selection</code>
-                rule of yours that sets
-                <code>color</code>
-                wins in every browser. Without one, Chrome and Safari keep the
-                letter colors on the selection background, and Firefox uses its
-                own selection colors.
+                A
+                <code>&lt;hue-hop&gt;</code>
+                inside another colors its own text. The outer one skips it.
               </li>
               <li>
                 Find in page still shows its matches. The colors come back
@@ -2384,12 +2291,6 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 <code>--hop-end</code>
                 .
               </li>
-              <li>
-                Gradient-text headings (
-                <code>background-clip: text</code>
-                with a transparent fill) hide the effect. The transparent fill
-                wins.
-              </li>
             </ul>
             <h3 id="limits-setup">Setup</h3>
             <ul>
@@ -2400,15 +2301,13 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <li>
                 A subclass that defines its own
                 <code>observedAttributes</code>
-                must include
-                <code>...super.observedAttributes</code>
-                and call
-                <code>super.attributeChangedCallback()</code>
-                , or
+                needs two extra lines, or
                 <code>start</code>
                 and
                 <code>end</code>
-                stop updating.
+                stop updating. See
+                <a href="#another-tag">Another Tag</a>
+                .
               </li>
               <li>
                 A subclass with no text, like one wrapping only an SVG, doesn't
@@ -2440,6 +2339,18 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                     A typo in a color (
                     <code>start="tael"</code>
                     ). Correcting the spelling fixes it.
+                  </li>
+                  <li>
+                    <code>hue</code>
+                    isn't one of the seven (
+                    <code>hue="teal"</code>
+                    ). An unknown name sets no colors. Use a name from
+                    <a href="#hues">Hues</a>
+                    , or set
+                    <code>start</code>
+                    and
+                    <code>end</code>
+                    .
                   </li>
                   <li>
                     Both ends point at a
@@ -2548,6 +2459,125 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <a href="#support">Support</a>
               ).
             </p>
+          </section>
+          <p class="docs-group readout-label">About</p>
+          <section
+            id="how-it-works"
+            aria-labelledby="how-it-works-title"
+          >
+            <h2
+              class="section-title"
+              id="how-it-works-title"
+            >
+              How It Works
+            </h2>
+            <p>
+              Hue Hop never splits your text. A word stays one element in one
+              text node, and the colors are painted over it. Here's one word
+              taken apart. Move the fader to change how its colors are spaced.
+            </p>
+            <figure
+              class="example"
+              data-control="curve"
+              data-meter
+            >
+              <div class="example-panel">
+                <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
+                  <h2 role="none">
+                    <hue-hop
+                      hue="dusk"
+                      style="--hop-curve: 1"
+                    >
+                      Aquemini
+                    </hue-hop>
+                  </h2>
+                </div>
+                <div
+                  class="hop-meter"
+                  aria-hidden="true"
+                ></div>
+                <wa-divider></wa-divider>
+                <wa-scroller class="example-bar">
+                  <div class="wa-cluster">
+                    <div class="fader">
+                      <wa-slider
+                        id="how-it-works-fader"
+                        label="Curve"
+                        min="0.3"
+                        max="3"
+                        step="0.1"
+                        value="1"
+                        indicator-offset="1"
+                      ></wa-slider>
+                      <output
+                        class="fader-value wa-text-end"
+                        for="how-it-works-fader"
+                      >
+                        1.0
+                      </output>
+                    </div>
+                  </div>
+                </wa-scroller>
+              </div>
+              <figcaption class="readout-label">
+                Each bar is one letter's highlight, in that letter's color
+              </figcaption>
+            </figure>
+            <dl class="fact-list">
+              <div>
+                <dt class="readout-label">Ranges</dt>
+                <dd>
+                  The CSS Custom Highlight API paints the colors. Each letter
+                  gets a
+                  <code>StaticRange</code>
+                  over the real text node, and each step is one highlight. So
+                  there are no spans. The element adds two things: its
+                  <code>hops</code>
+                  attribute, and a shadow root holding one
+                  <code>&lt;slot&gt;</code>
+                  . Your text stays where you wrote it.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Colors</dt>
+                <dd>
+                  Each step's color is worked out in CSS:
+                  <code>color-mix()</code>
+                  in OKLCH between the two ends, spaced by the curve, lifted in
+                  the middle, then turned by the shift and the drift. So a theme
+                  switch or a
+                  <code>--hop-*</code>
+                  change recolors the letters with no JavaScript. Read the
+                  <a href="{{repo-url}}/blob/main/src/formula.css">formula</a>
+                  in the repo.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">Stylesheets</dt>
+                <dd>
+                  The styles arrive as constructed stylesheets. The hues sit in
+                  the element's own shadow root, as
+                  <code>:host</code>
+                  rules, which is why CSS on the element beats them and an
+                  inherited value doesn't. The rest goes on the document, or on
+                  the shadow root the element sits in. Every heading in a root
+                  shares one sheet, with one rule per distinct
+                  <code>start</code>
+                  or
+                  <code>end</code>
+                  value, so a page of headings with the same ends adds two
+                  rules. At 256 rules, that sheet is rebuilt from the elements
+                  still on the page.
+                </dd>
+              </div>
+              <div>
+                <dt class="readout-label">64 steps</dt>
+                <dd>
+                  In Chromium and Safari each restyle costs about the square of
+                  the step count, so longer text shares steps.
+                </dd>
+              </div>
+            </dl>
           </section>
           <section
             id="inspiration"
