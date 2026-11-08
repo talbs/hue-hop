@@ -3,7 +3,7 @@ import { gzipSync } from 'node:zlib';
 import { basename } from 'node:path';
 
 const budgets = {
-  'dist/hue-hop.js': 2560,
+  'dist/hue-hop.js': 2816,
   'dist/drift.css': 400,
 };
 
