@@ -131,7 +131,7 @@
               "description": "How the steps are spaced: `1` is even, higher stays near the start color longer, and lower reaches the end color sooner."
             },
             {
-              "name": "--hop-lift",
+              "name": "--hop-boost",
               "syntax": "<number>",
               "default": "0",
               "description": "How much extra color intensity (OKLCH chroma) the middle letters get, so the blend doesn't go dull halfway."
@@ -150,9 +150,9 @@
             },
             {
               "name": "--hop-drift-cycle",
-              "syntax": "<number>",
-              "default": "10",
-              "description": "How many seconds one full sway there and back takes when `drift` is on, written as a plain number."
+              "syntax": "<time>",
+              "default": "10s",
+              "description": "How long one full sway there and back takes when `drift` is on."
             }
           ]
         }

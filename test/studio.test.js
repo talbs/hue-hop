@@ -88,7 +88,7 @@ function assertSameColor(actual, expected, label) {
 }
 
 test('checker matches the element', async () => {
-  const atRest = { curve: 1, lift: 0, shift: 0 };
+  const atRest = { curve: 1, boost: 0, shift: 0 };
   const customEnds = 'start="oklch(60% 0.12 200)" end="oklch(60% 0.12 300)"';
   const rows = [
     [
@@ -96,21 +96,21 @@ test('checker matches the element', async () => {
       'hue="dusk"',
       'Respiration',
       11,
-      { ...atRest, lift: 0.021 },
+      { ...atRest, boost: 0.021 },
     ],
     [
       'reef with curve 2',
       'hue="reef" style="--hop-curve: 2"',
       'Respiration',
       11,
-      { curve: 2, lift: 0.021, shift: 0 },
+      { curve: 2, boost: 0.021, shift: 0 },
     ],
     [
-      'custom with lift',
-      `${customEnds} style="--hop-lift: 0.05"`,
+      'custom with boost',
+      `${customEnds} style="--hop-boost: 0.05"`,
       'Respiration',
       11,
-      { ...atRest, lift: 0.05 },
+      { ...atRest, boost: 0.05 },
     ],
     [
       'custom with shift',
@@ -132,14 +132,14 @@ test('checker matches the element', async () => {
       'hue="dusk"',
       'é\u{1F469}\u{1F3FD}‍\u{1F680}a',
       3,
-      { ...atRest, lift: 0.021 },
+      { ...atRest, boost: 0.021 },
     ],
     [
       'past the step cap',
       'hue="dusk"',
       'ab'.repeat(35),
       70,
-      { ...atRest, lift: 0.021 },
+      { ...atRest, boost: 0.021 },
     ],
   ];
 
@@ -167,7 +167,7 @@ test('checker matches the element', async () => {
 });
 
 test('fit keeps its promise per side', async () => {
-  const atRest = { curve: 1, lift: 0, shift: 0 };
+  const atRest = { curve: 1, boost: 0, shift: 0 };
   const rows = [
     [
       'failing pair on a dark page',
@@ -210,13 +210,13 @@ test('fit keeps its promise per side', async () => {
       'moved',
     ],
     [
-      'high lift',
+      'high boost',
       '#f7f7f5',
       4.5,
       ['oklch(55% 0.1 140)', 'oklch(55% 0.1 200)'],
       null,
       11,
-      { ...atRest, curve: 2, lift: 0.16 },
+      { ...atRest, curve: 2, boost: 0.16 },
       'moved',
     ],
     [
@@ -226,7 +226,7 @@ test('fit keeps its promise per side', async () => {
       ['oklch(40% 0.12 260)', 'oklch(45% 0.12 330)'],
       null,
       70,
-      { ...atRest, lift: 0.021, shift: 40 },
+      { ...atRest, boost: 0.021, shift: 40 },
       'moved',
     ],
     [
@@ -326,7 +326,7 @@ test('fit keeps its promise per side', async () => {
 
     const startAttribute = plan.start.text ? `start="${plan.start.text}"` : '';
     const endAttribute = plan.end.text ? `end="${plan.end.text}"` : '';
-    const style = `--hop-curve: ${tuning.curve}; --hop-lift: ${tuning.lift}; --hop-shift: ${tuning.shift}`;
+    const style = `--hop-curve: ${tuning.curve}; --hop-boost: ${tuning.boost}; --hop-shift: ${tuning.shift}`;
     await page.evaluate(
       (html) => {
         document.body.innerHTML = html;
@@ -358,7 +358,7 @@ function readWithDefaults(search) {
 }
 
 test('studio URL round trip', () => {
-  const custom = { hue: 'custom', lift: 0 };
+  const custom = { hue: 'custom', boost: 0 };
   const roundTrips = [
     ['all defaults', {}, ''],
     ['preset hue', { hue: 'reef' }, 'hue=reef'],
@@ -397,11 +397,11 @@ test('studio URL round trip', () => {
       null,
     ],
     [
-      'custom with the hue lift',
-      { ...custom, lift: 0.021 },
-      'hue=custom&lift=0.021',
+      'custom with the hue boost',
+      { ...custom, boost: 0.021 },
+      'hue=custom&boost=0.021',
     ],
-    ['preset with no lift', { lift: 0 }, 'lift=0'],
+    ['preset with no boost', { boost: 0 }, 'boost=0'],
     ['display implies its bar', { display: true, bar: 3 }, 'display=1'],
     ['display held at 4.5', { display: true }, 'display=1&bar=4.5'],
     [
@@ -450,14 +450,14 @@ test('studio URL round trip', () => {
       {
         ...DEFAULT_STATE,
         hue: null,
-        lift: 0,
+        boost: 0,
         start: 'darkcyan',
         end: 'light-dark(red, blue)',
       },
       {
         text: 'Halftime',
         hue: 'custom',
-        lift: 0,
+        boost: 0,
         start: { light: 'darkcyan', dark: 'darkcyan' },
         end: { light: 'red', dark: 'blue' },
       },
@@ -481,7 +481,7 @@ test('studio URL round trip', () => {
         ...DEFAULT_STATE,
         curve: 2,
         shift: 40,
-        lift: 0.05,
+        boost: 0.05,
         drift: true,
         display: true,
         accent: '!',
@@ -490,7 +490,7 @@ test('studio URL round trip', () => {
         text: 'Halftime',
         curve: 2,
         shift: 40,
-        lift: 0.05,
+        boost: 0.05,
         isDriftOn: true,
         display: true,
         bar: 3,
@@ -500,11 +500,11 @@ test('studio URL round trip', () => {
     ],
     [
       'display dropped on custom',
-      { ...DEFAULT_STATE, hue: null, lift: 0, start: 'red', display: true },
+      { ...DEFAULT_STATE, hue: null, boost: 0, start: 'red', display: true },
       {
         text: 'Halftime',
         hue: 'custom',
-        lift: 0,
+        boost: 0,
         start: { light: 'red', dark: 'red' },
       },
     ],
@@ -525,7 +525,7 @@ test('studio URL round trip', () => {
     [
       'one end skipped',
       'start=tael&end=red',
-      { hue: 'custom', lift: 0, end: { light: 'red', dark: 'red' } },
+      { hue: 'custom', boost: 0, end: { light: 'red', dark: 'red' } },
     ],
     ['color with a CSS break', 'start=red;}&hue=reef', { hue: 'reef' }],
     ['color with var()', 'start=var(--x)&weight=500', { weight: 500 }],
@@ -581,24 +581,25 @@ test('studio URL round trip', () => {
     ],
     ['unknown font', 'font=comic&size=40', { size: 40 }],
     ['curve out of range', 'curve=99&shift=10', { shift: 10 }],
-    ['lift out of range', 'lift=9&shift=10', { shift: 10 }],
+    ['boost out of range', 'boost=9&shift=10', { shift: 10 }],
+    ['old lift param', 'lift=0.05', { boost: 0.05 }],
     ['shift out of range', 'shift=999&curve=2', { curve: 2 }],
     ['bar not offered', 'bar=2&cycle=5', { cycle: 5 }],
     ['unknown hue', 'hue=tael&curve=2', { curve: 2 }],
     [
       'unknown hue with an end',
       'hue=tael&start=red',
-      { hue: 'custom', lift: 0, start: { light: 'red', dark: 'red' } },
+      { hue: 'custom', boost: 0, start: { light: 'red', dark: 'red' } },
     ],
     [
       'no hue with an end',
       'end=red',
-      { hue: 'custom', lift: 0, end: { light: 'red', dark: 'red' } },
+      { hue: 'custom', boost: 0, end: { light: 'red', dark: 'red' } },
     ],
     [
       'display means nothing on custom',
       'hue=custom&display=1',
-      { hue: 'custom', lift: 0 },
+      { hue: 'custom', boost: 0 },
     ],
     [
       'display picks its bar',

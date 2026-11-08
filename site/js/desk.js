@@ -11,7 +11,7 @@ import {
 import {
   DEFAULT_STATE,
   decimalsIn,
-  defaultLift,
+  defaultBoost,
   describeMarkup,
   describeStudioLink,
   styleFor,
@@ -52,8 +52,8 @@ const displaySwitch = document.getElementById('display-switch');
 const samples = document.getElementById('samples');
 const curveFader = document.getElementById('curve');
 const shiftFader = document.getElementById('shift');
-const liftFader = document.getElementById('lift');
-const faders = [curveFader, shiftFader, liftFader];
+const boostFader = document.getElementById('boost');
+const faders = [curveFader, shiftFader, boostFader];
 const lamp = document.getElementById('lamp');
 const stageHue = document.getElementById('stage-hue');
 const lampState = document.getElementById('lamp-state');
@@ -66,8 +66,8 @@ function checkedHue() {
     ?.dataset.hue;
 }
 
-function readLift() {
-  return Number(Number(liftFader.value).toFixed(3));
+function readBoost() {
+  return Number(Number(boostFader.value).toFixed(3));
 }
 
 export function readDeskState() {
@@ -80,22 +80,22 @@ export function readDeskState() {
     ...(isCustom && customEnds()),
     curve: Number(curveFader.value),
     shift: Number(shiftFader.value),
-    lift: readLift(),
+    boost: readBoost(),
     drift: driftSwitch.getAttribute('aria-pressed') === 'true',
     display: displaySwitch.getAttribute('aria-pressed') === 'true',
   };
 }
 
-// A hue rests at its own lift and custom ends at 0, so a lift nobody moved follows the switch and stays out of the markup.
-function moveLiftToRest(hue) {
+// A hue rests at its own boost and custom ends at 0, so a boost nobody moved follows the switch and stays out of the markup.
+function moveBoostToRest(hue) {
   const currentHue = checkedHue();
-  if (hue === currentHue || readLift() !== defaultLift(currentHue)) return;
-  liftFader.value = defaultLift(hue);
-  showFaderValue(liftFader);
+  if (hue === currentHue || readBoost() !== defaultBoost(currentHue)) return;
+  boostFader.value = defaultBoost(hue);
+  showFaderValue(boostFader);
 }
 
 function checkHueChip(hue) {
-  moveLiftToRest(hue);
+  moveBoostToRest(hue);
   for (const chip of hueChips) {
     const isChecked = chip.dataset.hue === hue;
     chip.setAttribute('aria-checked', String(isChecked));
@@ -144,7 +144,7 @@ function showFaderValue(fader) {
 
 function softStopOf(fader) {
   if (fader === curveFader) return [1, 0.1];
-  if (fader === liftFader) return [defaultLift(checkedHue()), 0.004];
+  if (fader === boostFader) return [defaultBoost(checkedHue()), 0.004];
   return [0, 4];
 }
 
@@ -216,7 +216,7 @@ function render() {
 
 export function applyDeskState(state) {
   textField.value = state.text;
-  liftFader.value = state.lift;
+  boostFader.value = state.boost;
   checkHueChip(state.hue ?? 'custom');
   if (!state.hue) {
     for (const { control, end, picker } of customEndControls) {

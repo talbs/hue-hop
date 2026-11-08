@@ -36,7 +36,7 @@ function mixHue(startHue, endHue, amount) {
 function shiftedHue(mixedHue, chroma, shift) {
   if (!Number.isNaN(mixedHue)) return wrapHue(mixedHue + shift);
   if (chroma < GREY_CHROMA) return NaN;
-  // Relative color reads a missing hue as 0, so lift on two greys colors them at the shift angle.
+  // Relative color reads a missing hue as 0, so boost on two greys colors them at the shift angle.
   return wrapHue(shift);
 }
 
@@ -56,7 +56,7 @@ export function autoPartnerOf(color) {
 export function letterColors(
   { start, end },
   stepTotal,
-  { curve, lift, shift }
+  { curve, boost, shift }
 ) {
   const colors = [];
   for (let step = 0; step < stepTotal; step++) {
@@ -65,7 +65,7 @@ export function letterColors(
       0,
       start.chroma +
         (end.chroma - start.chroma) * progress +
-        lift * Math.sin(progress * Math.PI)
+        boost * Math.sin(progress * Math.PI)
     );
     colors.push({
       lightness: start.lightness + (end.lightness - start.lightness) * progress,
@@ -194,7 +194,7 @@ export function otherEndOf(which) {
   return which === 'start' ? 'end' : 'start';
 }
 
-// Lift and the hue path can dip a middle letter under the bar: push the end nearer it away from the page until every letter clears.
+// Boost and the hue path can dip a middle letter under the bar: push the end nearer it away from the page until every letter clears.
 function settleEnds({
   ends,
   pageLuminance,
