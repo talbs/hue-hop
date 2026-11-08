@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { after, before, test } from 'node:test';
 import { chromium, firefox, webkit } from 'playwright';
 
@@ -85,6 +86,23 @@ test('every attribute has a property that reflects it, even set before define', 
     assert.equal(attribute, expectedAttribute, `${name} = ${value}`);
     assert.equal(property, readBack, `${name} = ${value}`);
   }
+});
+
+test('the element entry exports the class without defining the tag', async () => {
+  const page = await browser.newPage();
+  await page.setContent('<my-hop id="t" hue="dusk">Nas</my-hop>');
+  const code = await readFile('dist/element.js', 'utf8');
+  const [isBaseTagDefined, hops] = await page.evaluate(async (code) => {
+    const blob = new Blob([code], { type: 'text/javascript' });
+    const { HueHop } = await import(URL.createObjectURL(blob));
+    customElements.define('my-hop', class extends HueHop {});
+    return [
+      Boolean(customElements.get('hue-hop')),
+      document.getElementById('t').hops,
+    ];
+  }, code);
+  assert.equal(isBaseTagDefined, false);
+  assert.equal(hops, 3);
 });
 
 test('importing without a dom does not throw', async () => {

@@ -48,9 +48,10 @@ const cssAsMinifiedString = {
 };
 
 await esbuild.build({
-  entryPoints: ['src/hue-hop.js'],
-  outfile: 'dist/hue-hop.js',
+  entryPoints: ['src/hue-hop.js', 'src/element.js'],
+  outdir: 'dist',
   bundle: true,
+  sourcemap: true,
   format: 'esm',
   minify: true,
   target: 'es2022',

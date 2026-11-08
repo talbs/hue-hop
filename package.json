@@ -26,7 +26,12 @@
       "types": "./hue-hop.d.ts",
       "default": "./dist/hue-hop.js"
     },
+    "./element": {
+      "types": "./element.d.ts",
+      "default": "./dist/element.js"
+    },
     "./drift.css": "./dist/drift.css",
+    "./custom-elements.json": "./custom-elements.json",
     "./package.json": "./package.json"
   },
   "main": "./dist/hue-hop.js",
@@ -41,6 +46,7 @@
   "files": [
     "dist",
     "hue-hop.d.ts",
+    "element.d.ts",
     "custom-elements.json",
     "CHANGELOG.md"
   ],

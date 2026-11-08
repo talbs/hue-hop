@@ -175,6 +175,21 @@
           }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/element.js",
+      "declarations": [],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "HueHop",
+          "declaration": {
+            "name": "HueHop",
+            "module": "dist/hue-hop.js"
+          }
+        }
+      ]
     }
   ]
 }
