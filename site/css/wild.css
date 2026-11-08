@@ -596,6 +596,7 @@
 
 .press-meta {
   color: #5a5448;
+  font-size: min(var(--type-label), 3.6cqi);
 }
 
 .press-hole {
@@ -1339,6 +1340,7 @@
 
   .banner-foot {
     justify-content: center;
+    text-align: center;
   }
 
   .nav-search {
