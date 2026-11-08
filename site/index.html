@@ -734,6 +734,161 @@
           id="wild"
           aria-labelledby="wild-title"
         >
+          <svg
+            class="defs"
+            width="0"
+            height="0"
+            aria-hidden="true"
+          >
+            <filter
+              id="neon-glow"
+              x="-15%"
+              y="-40%"
+              width="130%"
+              height="180%"
+            >
+              <feGaussianBlur
+                in="SourceGraphic"
+                stdDeviation="14"
+                result="halo"
+              />
+              <feGaussianBlur
+                in="SourceGraphic"
+                stdDeviation="4"
+                result="tube"
+              />
+              <feMerge>
+                <feMergeNode in="halo" />
+                <feMergeNode in="tube" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+
+            <symbol
+              id="cassette"
+              viewBox="0 0 256 162"
+            >
+              <path
+                class="tape-body"
+                d="M9 1H247A8 8 0 0 1 255 9V153A8 8 0 0 1 247 161H9A8 8 0 0 1 1 153V9A8 8 0 0 1 9 1Z"
+              />
+              <rect
+                class="tape-paper"
+                x="13"
+                y="11"
+                width="230"
+                height="102"
+                rx="3"
+              />
+              <rect
+                class="tape-window"
+                x="66"
+                y="52"
+                width="124"
+                height="50"
+                rx="25"
+              />
+              <circle
+                class="tape-pack"
+                cx="91"
+                cy="77"
+                r="21"
+              />
+              <circle
+                class="tape-pack-thin"
+                cx="165"
+                cy="77"
+                r="13"
+              />
+              <circle
+                class="tape-hub"
+                cx="91"
+                cy="77"
+                r="8.5"
+              />
+              <circle
+                class="tape-hub"
+                cx="165"
+                cy="77"
+                r="8.5"
+              />
+              <circle
+                class="tape-spindle"
+                cx="91"
+                cy="77"
+                r="5.4"
+              />
+              <circle
+                class="tape-spindle"
+                cx="165"
+                cy="77"
+                r="5.4"
+              />
+              <path
+                class="tape-teeth"
+                d="M95.68 79.70L93.86 78.65M91.00 82.40L91.00 80.30M86.32 79.70L88.14 78.65M86.32 74.30L88.14 75.35M91.00 71.60L91.00 73.70M95.68 74.30L93.86 75.35M169.68 79.70L167.86 78.65M165.00 82.40L165.00 80.30M160.32 79.70L162.14 78.65M160.32 74.30L162.14 75.35M165.00 71.60L165.00 73.70M169.68 74.30L167.86 75.35"
+              />
+              <path
+                class="tape-base"
+                d="M47 161 56 123H200L209 161Z"
+              />
+              <circle
+                class="tape-hole"
+                cx="78"
+                cy="146"
+                r="5"
+              />
+              <circle
+                class="tape-hole"
+                cx="178"
+                cy="146"
+                r="5"
+              />
+              <rect
+                class="tape-hole"
+                x="108"
+                y="141"
+                width="8"
+                height="10"
+                rx="1"
+              />
+              <rect
+                class="tape-hole"
+                x="140"
+                y="141"
+                width="8"
+                height="10"
+                rx="1"
+              />
+              <g class="tape-screw">
+                <circle
+                  cx="8"
+                  cy="8"
+                  r="2.5"
+                />
+                <circle
+                  cx="248"
+                  cy="8"
+                  r="2.5"
+                />
+                <circle
+                  cx="8"
+                  cy="154"
+                  r="2.5"
+                />
+                <circle
+                  cx="248"
+                  cy="154"
+                  r="2.5"
+                />
+                <circle
+                  cx="128"
+                  cy="132"
+                  r="2.5"
+                />
+              </g>
+            </symbol>
+          </svg>
           <h2
             class="section-title"
             id="wild-title"
@@ -742,121 +897,96 @@
           </h2>
           <p class="section-lead">
             Hue Hop is for short text that names something: a title, a name, a
-            number worth noticing. Flip the side to see every one of these light
-            and dark.
+            number worth noticing. Some carry the same colors out to what sits
+            around them:
+            <a href="{{docs-url}}#coloring-things-nearby">
+              a stripe, a marker, a badge, a vinyl press
+            </a>
+            .
           </p>
           <div class="wild">
             <figure class="wild-item wild-deck">
-              <div class="wild-frame">
-                <p class="mock-kicker readout-label">Feature</p>
-                <p class="mock-deck-title">
-                  <hue-hop
-                    hue="ember"
-                    display
-                  >
-                    Midnight Marauders
-                  </hue-hop>
-                </p>
-                <p class="mock-standfirst">
-                  A Tribe Called Quest's third album, all fourteen tracks, in
-                  the order they were cut.
-                </p>
-                <p class="mock-byline readout-label">
-                  By the music desk · 12 min read
-                </p>
+              <div class="wild-frame hop-near">
+                <div class="deck-head readout-label">
+                  <span>Liner Notes</span>
+                  <span>No. 12 · November</span>
+                </div>
+                <div class="deck-open">
+                  <p class="readout-label deck-kicker">Album of the month</p>
+                  <p class="deck-title">
+                    <hue-hop
+                      hue="ember"
+                      display
+                    >
+                      Midnight Marauders
+                    </hue-hop>
+                  </p>
+                  <p class="deck-standfirst">
+                    A Tribe Called Quest’s third album, more than thirty years
+                    on, still sounds like a late drive with the windows down.
+                  </p>
+                  <p class="readout-label deck-byline">
+                    <span
+                      class="deck-mark"
+                      aria-hidden="true"
+                    ></span>
+                    By the music desk · 12 min read
+                  </p>
+                </div>
+                <div class="deck-body">
+                  <p>
+                    A calm, processed voice opens the record, gives you its
+                    tempo, and pops back up between songs like a tour guide. It
+                    is a joke, and it tells you how seriously the group took the
+                    groove.
+                  </p>
+                  <p>
+                    Q-Tip and Phife Dawg trade verses like old friends finishing
+                    each other’s sentences, while Ali Shaheed Muhammad keeps the
+                    bass low and the cuts clean.
+                  </p>
+                  <p>
+                    It came out on the same November day in 1993 as the Wu-Tang
+                    Clan’s debut. Both are still played start to finish.
+                  </p>
+                </div>
+                <p class="readout-label deck-folio">Continued on p. 40 →</p>
               </div>
               <figcaption class="readout-label">Magazine deck</figcaption>
             </figure>
 
             <figure class="wild-item wild-year">
-              <div class="wild-frame">
-                <p class="mock-year">
-                  <hue-hop
-                    hue="dusk"
-                    display
-                  >
-                    1994
-                  </hue-hop>
-                </p>
-                <ul class="mock-meta wa-stack wa-gap-2xs wa-list-plain">
-                  <li>Illmatic</li>
-                  <li>Ready to Die</li>
-                  <li>Southernplayalisticadillacmuzik</li>
-                </ul>
-              </div>
-              <figcaption class="readout-label">A year</figcaption>
-            </figure>
-
-            <figure class="wild-item wild-dropcap">
-              <div class="wild-frame">
-                <p class="mock-runin">
-                  <hue-hop hue="fern">
-                    <span class="mock-cap">T</span>
-                    he Low End Theory
-                  </hue-hop>
-                  runs fourteen tracks, opens with Excursions and closes with
-                  Scenario. Play it front to back at least once.
-                </p>
-              </div>
-              <figcaption class="readout-label">Drop cap</figcaption>
-            </figure>
-
-            <figure class="wild-item wild-accent">
-              <div class="wild-frame">
-                <p class="mock-accent-line">
-                  Now playing
-                  <hue-hop start="tomato">Aquemini</hue-hop>
-                </p>
-                <p class="mock-meta">OutKast, 1998</p>
-                <div
-                  class="mock-progress"
-                  aria-hidden="true"
-                >
-                  <span></span>
+              <div class="wild-frame hop-near">
+                <div class="year-picker readout-label">
+                  <span>← 1993</span>
+                  <span>Archive</span>
+                  <span>1995 →</span>
                 </div>
-                <p class="mock-times readout-label wa-split">
-                  <span>2:41</span>
-                  <span>5:19</span>
-                </p>
-              </div>
-              <figcaption class="readout-label">One color, auto end</figcaption>
-            </figure>
-
-            <figure class="wild-item wild-line">
-              <div class="wild-frame">
-                <p class="mock-line">
-                  <hue-hop
-                    hue="orchid"
-                    display
-                    drift
-                  >
-                    Spottieottiedopaliscious
-                  </hue-hop>
-                </p>
-              </div>
-              <figcaption class="readout-label">A line, set large</figcaption>
-            </figure>
-
-            <figure class="wild-item wild-tags">
-              <div class="wild-frame">
-                <ul
-                  class="mock-tags wa-cluster wa-gap-xs wa-justify-content-center wa-list-plain"
-                >
-                  <li><hue-hop hue="reef">Nas</hue-hop></li>
-                  <li><hue-hop hue="reef">Lauryn Hill</hue-hop></li>
-                  <li class="is-selected">
-                    <hue-hop hue="reef">MF DOOM</hue-hop>
+                <p class="year-number"><hue-hop hue="dusk">1994</hue-hop></p>
+                <ol class="year-list">
+                  <li style="--step: 0">
+                    <b>Illmatic</b>
+                    <span>Nas</span>
                   </li>
-                  <li><hue-hop hue="reef">De La Soul</hue-hop></li>
-                  <li><hue-hop hue="reef">Mos Def</hue-hop></li>
-                </ul>
+                  <li style="--step: 0.5">
+                    <b>Ready to Die</b>
+                    <span>The Notorious B.I.G.</span>
+                  </li>
+                  <li style="--step: 1">
+                    <b>Southernplayalisticadillacmuzik</b>
+                    <span>OutKast</span>
+                  </li>
+                </ol>
               </div>
-              <figcaption class="readout-label">Tag chips</figcaption>
+              <figcaption class="readout-label">Archive, by year</figcaption>
             </figure>
 
             <figure class="wild-item wild-countdown">
-              <div class="wild-frame">
-                <p class="mock-countdown">
+              <div class="wild-frame scheme-dark hop-near">
+                <p class="readout-label countdown-label">
+                  The new album drops in
+                </p>
+                <p class="countdown-clock">
                   <hue-hop
                     id="countdown"
                     hue="honey"
@@ -865,27 +995,405 @@
                     03:14:52
                   </hue-hop>
                 </p>
-                <p class="mock-countdown-units readout-label">
-                  <span>hours</span>
-                  <span>min</span>
-                  <span>sec</span>
-                </p>
+                <div
+                  class="countdown-week readout-label"
+                  aria-hidden="true"
+                >
+                  <span style="--step: 0">M</span>
+                  <span style="--step: 0.17">T</span>
+                  <span style="--step: 0.33">W</span>
+                  <span style="--step: 0.5">T</span>
+                  <span
+                    class="is-today"
+                    style="--step: 0.67"
+                  >
+                    F
+                  </span>
+                  <span class="is-off">S</span>
+                  <span class="is-off">S</span>
+                </div>
               </div>
-              <figcaption class="readout-label">Countdown</figcaption>
+              <figcaption class="readout-label">Release countdown</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-nav">
+              <div class="wild-frame hop-near">
+                <div class="nav-bar">
+                  <p class="nav-logo">
+                    <span
+                      class="nav-mark"
+                      aria-hidden="true"
+                    >
+                      <span style="--bar: 45%; --step: 0"></span>
+                      <span style="--bar: 100%; --step: 0.33"></span>
+                      <span style="--bar: 65%; --step: 0.67"></span>
+                      <span style="--bar: 85%; --step: 1"></span>
+                    </span>
+                    <hue-hop hue="reef">Halftime</hue-hop>
+                  </p>
+                  <div
+                    class="nav-search"
+                    aria-hidden="true"
+                  >
+                    <svg viewBox="0 0 16 16">
+                      <circle
+                        cx="7"
+                        cy="7"
+                        r="4.5"
+                      />
+                      <path d="m10.5 10.5 3.5 3.5" />
+                    </svg>
+                    <span>Search shows</span>
+                    <kbd>⌘K</kbd>
+                  </div>
+                  <div
+                    class="nav-tools"
+                    aria-hidden="true"
+                  >
+                    <span class="nav-bell">
+                      <svg viewBox="0 0 16 16">
+                        <path
+                          d="M4 7a4 4 0 0 1 8 0c0 3 1.5 4 1.5 4h-11S4 10 4 7ZM6.5 13.5a1.6 1.6 0 0 0 3 0"
+                        />
+                      </svg>
+                      <span class="nav-badge">3</span>
+                    </span>
+                    <span class="nav-avatar"><span>DW</span></span>
+                  </div>
+                </div>
+                <div
+                  class="nav-tabs"
+                  aria-hidden="true"
+                >
+                  <span class="is-current">
+                    Tour
+                    <i>12</i>
+                  </span>
+                  <span>Releases</span>
+                  <span>Merch</span>
+                  <span class="nav-action">Get tickets</span>
+                </div>
+                <div
+                  class="nav-rows"
+                  aria-hidden="true"
+                >
+                  <span class="nav-chip is-on">All cities</span>
+                  <span class="nav-chip">On sale</span>
+                  <span class="nav-count">12 shows</span>
+                </div>
+              </div>
+              <figcaption class="readout-label">Site toolbar</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-neon">
+              <div class="wild-frame scheme-dark">
+                <p class="neon-word"><hue-hop>Juicy</hue-hop></p>
+              </div>
+              <figcaption class="readout-label">Neon sign</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-record">
+              <div class="wild-frame scheme-dark hop-near">
+                <span
+                  class="press-sleeve"
+                  aria-hidden="true"
+                ></span>
+                <div class="press">
+                  <div class="press-label scheme-light">
+                    <p class="readout-label press-meta">Side A</p>
+                    <p class="press-title">
+                      <hue-hop hue="ember">Liquid Swords</hue-hop>
+                    </p>
+                    <span
+                      class="press-hole"
+                      aria-hidden="true"
+                    ></span>
+                    <p class="readout-label press-meta">33⅓ · CR-0407</p>
+                  </div>
+                </div>
+              </div>
+              <figcaption class="readout-label">Vinyl press</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-line">
+              <div class="wild-frame">
+                <div class="banner scheme-dark">
+                  <span
+                    class="banner-grommet"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    class="banner-grommet"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    class="banner-grommet"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    class="banner-grommet"
+                    aria-hidden="true"
+                  ></span>
+                  <p class="line-title">
+                    <hue-hop
+                      hue="orchid"
+                      display
+                      drift
+                    >
+                      <span>Spottieottie</span>
+                      <span>dopaliscious</span>
+                    </hue-hop>
+                  </p>
+                  <p class="banner-foot">
+                    <span>Block party</span>
+                    <span>Sat Aug 9 · Gates at noon</span>
+                    <span>Free</span>
+                  </p>
+                </div>
+              </div>
+              <figcaption class="readout-label">Fence banner</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-bill">
+              <div class="wild-frame hop-near">
+                <div class="bill-sheet">
+                  <div class="bill-head">
+                    <span>The Basement</span>
+                    <span>Fri Nov 14</span>
+                  </div>
+                  <p class="bill-names">
+                    <hue-hop hue="reef">
+                      <span class="bill-a">Nas</span>
+                      <span class="bill-b">Lauryn Hill</span>
+                      <span class="bill-c">MF DOOM</span>
+                      <span class="bill-d">De La Soul</span>
+                      <span class="bill-e">Mos Def</span>
+                    </hue-hop>
+                  </p>
+                  <div class="bill-foot">
+                    <span>Doors 8</span>
+                    <span>Show 9</span>
+                    <span>All ages</span>
+                  </div>
+                </div>
+              </div>
+              <figcaption class="readout-label">Gig bill</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-passage">
+              <div class="wild-frame">
+                <blockquote class="passage">
+                  <p class="passage-text">
+                    <hue-hop hue="dusk">
+                      All art constantly aspires towards the condition of music.
+                    </hue-hop>
+                  </p>
+                  <footer>
+                    <cite>Walter Pater, “The School of Giorgione,” 1877</cite>
+                  </footer>
+                </blockquote>
+              </div>
+              <figcaption class="readout-label">A pull quote</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-404">
+              <div class="wild-frame hop-near">
+                <div class="lost-head">
+                  <p class="lost-number"><hue-hop hue="guava">404</hue-hop></p>
+                  <p class="lost-note">This track isn’t on the album.</p>
+                  <p class="lost-action">Back to side A</p>
+                </div>
+                <ol class="lost-tracks">
+                  <li>
+                    <span>403</span>
+                    <b>Forbidden</b>
+                    <span>3:12</span>
+                  </li>
+                  <li class="is-missing">
+                    <span>404</span>
+                    <b>Not Found</b>
+                    <span>–:––</span>
+                  </li>
+                  <li>
+                    <span>405</span>
+                    <b>Method Not Allowed</b>
+                    <span>2:47</span>
+                  </li>
+                  <li>
+                    <span>410</span>
+                    <b>Gone</b>
+                    <span>0:58</span>
+                  </li>
+                </ol>
+              </div>
+              <figcaption class="readout-label">Page not found</figcaption>
             </figure>
 
             <figure class="wild-item wild-term">
-              <div class="wild-frame">
+              <div class="wild-frame scheme-dark hop-near">
+                <div
+                  class="term-bar"
+                  aria-hidden="true"
+                >
+                  <span class="term-dot"></span>
+                  <span class="term-dot"></span>
+                  <span class="term-dot"></span>
+                  <span class="term-title">hue-hop — zsh — 80×20</span>
+                </div>
                 <pre
-                  class="mock-term"
-                ><span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯ npm run size</span>
-<span class="mock-term-out">  hue-hop.js  2407/2560  ok</span>
-<span class="mock-term-out">  drift.css    299/400   ok</span>
-<span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯ npm test</span>
-<span class="mock-term-out">  3 passing</span>
-<span><hue-hop hue="reef">~/hue-hop</hue-hop> ❯ <span class="mock-term-cursor"></span></span></pre>
+                  class="term"
+                ><code><span class="term-prompt"><hue-hop hue="reef">hue-hop on main via node 22</hue-hop></span>
+<span class="term-arrow">❯</span> npm run check
+
+<span class="term-dim">  size</span>
+  hue-hop.js  <span class="term-bar-fill">███████████████████</span><span class="term-dim">░</span>  2407 / 2560 B
+  drift.css   <span class="term-bar-fill">███████████████████▊</span>   391 / 400 B
+
+<span class="term-dim">  checks</span>
+  <span class="term-badge">PASS</span> every letter clears 4.5:1
+  <span class="term-badge">PASS</span> 7 hues on 4 pages
+  <span class="term-badge is-warn">WARN</span> drift.css is 9 bytes from its budget
+  <span class="term-badge is-fail">FAIL</span> "tael" is not a color
+<span class="term-dim">       did you mean "teal"?</span>
+
+  2 passed · 1 warning · 1 failed <span class="term-dim">in 1.24s</span>
+
+<span class="term-prompt"><hue-hop hue="reef">hue-hop on main via node 22</hue-hop></span>
+<span class="term-arrow">❯</span> <span class="term-cursor"></span></code></pre>
+                <div class="term-status">
+                  <span>main ✓</span>
+                  <span>node 22</span>
+                  <span>9:41</span>
+                </div>
               </div>
-              <figcaption class="readout-label">Terminal prompt</figcaption>
+              <figcaption class="readout-label">Terminal</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-tapes">
+              <div class="wild-frame">
+                <ul class="tape-field">
+                  <li class="tape tape-ink">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>A</b>
+                        <hue-hop hue="dusk">Scenario</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="tape tape-smoke">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>A</b>
+                        <hue-hop hue="fern">Award Tour</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="tape tape-ink">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>B</b>
+                        <hue-hop hue="honey">Paid in Full</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="tape tape-smoke">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>A</b>
+                        <hue-hop hue="orchid">Passin’ Me By</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="tape tape-ink">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>A</b>
+                        <hue-hop hue="reef">Aquemini</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="tape tape-ink">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>B</b>
+                        <hue-hop hue="guava">Juicy</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="tape tape-ink">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>A</b>
+                        <hue-hop hue="ember">Liquid Swords</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="tape tape-ink">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>B</b>
+                        <hue-hop hue="fern">Can I Kick It?</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                  <li class="tape tape-smoke">
+                    <svg aria-hidden="true"><use href="#cassette" /></svg>
+                    <div class="tape-label">
+                      <span class="tape-title">
+                        <b>A</b>
+                        <hue-hop hue="ember">Mass Appeal</hue-hop>
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <figcaption class="readout-label">Cassettes</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-player">
+              <div class="wild-frame">
+                <div
+                  class="player-menubar readout-label"
+                  aria-hidden="true"
+                >
+                  <span>Sat 8 Nov</span>
+                  <span>9:41</span>
+                </div>
+                <div class="player-widget">
+                  <div
+                    class="player-art"
+                    aria-hidden="true"
+                  ></div>
+                  <div class="player-main">
+                    <p class="player-title"><hue-hop>Rosa Parks</hue-hop></p>
+                    <p class="player-album">Aquemini</p>
+                    <p class="player-artist">OutKast</p>
+                    <div
+                      class="player-controls"
+                      aria-hidden="true"
+                    >
+                      <svg viewBox="0 0 24 24">
+                        <path d="M19 6 11 12l8 6V6ZM11 6l-8 6 8 6V6Z" />
+                      </svg>
+                      <svg viewBox="0 0 24 24">
+                        <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
+                      </svg>
+                      <svg viewBox="0 0 24 24">
+                        <path d="M5 6l8 6-8 6V6ZM13 6l8 6-8 6V6Z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <figcaption class="readout-label">Music player</figcaption>
             </figure>
           </div>
         </section>
