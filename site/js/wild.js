@@ -29,3 +29,14 @@ if (countdown && isMotionOk()) {
     if (entry.isIntersecting) ticker = setInterval(tick, 1000);
   }).observe(countdown);
 }
+
+function shareHueWithParent(parent) {
+  const styles = getComputedStyle(parent.querySelector('hue-hop'));
+  for (const name of ['--hop-start', '--hop-end']) {
+    parent.style.setProperty(name, styles.getPropertyValue(name));
+  }
+}
+
+customElements.whenDefined('hue-hop').then(() => {
+  document.querySelectorAll('.hop-near').forEach(shareHueWithParent);
+});
