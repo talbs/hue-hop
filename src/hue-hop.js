@@ -15,9 +15,10 @@ const hueSheet = hasSupport && new CSSStyleSheet();
 const boxWatcher =
   hasSupport &&
   new IntersectionObserver((entries) => {
-    for (const { target, boundingClientRect } of entries) {
+    for (const { target, boundingClientRect, isIntersecting } of entries) {
       const data = elementData.get(target);
-      const hasBox = boundingClientRect.width > 0;
+      // A hop with no box never intersects. Safari can report one on screen at width 0 when its skipped container hadn't sized it yet.
+      const hasBox = isIntersecting || boundingClientRect.width > 0;
       if (hasBox) {
         if (data.hadNoBox) paint(target);
         boxWatcher.unobserve(target);
