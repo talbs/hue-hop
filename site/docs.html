@@ -2040,9 +2040,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               Vitest 5.1.
             </p>
             <p>
-              Wiring up a DOM by hand? The element reads
-              <code>CSS</code>
-              as it loads. Copy only
+              Wiring up a DOM by hand? Copying only
               <code>window</code>
               ,
               <code>document</code>
@@ -2050,24 +2048,10 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>HTMLElement</code>
               , and
               <code>customElements</code>
-              onto the global and the import throws
-              <code>ReferenceError: CSS is not defined</code>
-              . Copy
-              <code>window.CSS</code>
-              too and it loads in both. On jsdom, this line before the import
-              works too:
+              onto the global is enough. With no
+              <code>CSS</code>
+              , the element loads and stays inert.
             </p>
-            <div class="code-well">
-              <p class="code-label readout-label">Before the import</p>
-              <pre
-                class="code-block"
-              ><code class="language-javascript" id="docs-css-guard">globalThis.CSS ??= {};</code></pre>
-              <wa-copy-button
-                class="code-copy"
-                from="docs-css-guard"
-                copy-label="Copy JavaScript"
-              ></wa-copy-button>
-            </div>
             <p>
               <code>el.hops</code>
               is
@@ -2334,10 +2318,12 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               </strong>
               The element checks for
               <code>CSS.highlights</code>
-              as it loads and does nothing without it. There's no polyfill.
-              Chrome 105 to 133 have the API but can't read custom properties
-              inside a highlight, so they show plain text too, never a wrong
-              color. Safari 17 is unmeasured.
+              and
+              <code>:state()</code>
+              as it loads, and does nothing unless it finds both. There's no
+              polyfill. Chrome 105 to 133 have the API but can't read custom
+              properties inside a highlight, so they show plain text too, never
+              a wrong color. Safari 17 is unmeasured.
             </wa-callout>
             <h3 id="before-it-loads">Before It Loads</h3>
             <p>
