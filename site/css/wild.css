@@ -1017,10 +1017,12 @@
 
 .term-dim {
   color: #8f9197;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
 }
 
 .term-bar-fill {
   color: #d8dade;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
 }
 
 .term-badge {
