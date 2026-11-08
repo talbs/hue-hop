@@ -307,7 +307,7 @@ wa-page::part(subheader) {
 
 @media (min-width: 48rem) {
   :root {
-    --gutter: var(--wa-space-3xl);
+    --gutter: var(--space-section);
   }
 
   .site-header-inner {
