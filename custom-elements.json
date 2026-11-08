@@ -37,6 +37,7 @@
               "type": {
                 "text": "boolean"
               },
+              "fieldName": "drift",
               "description": "Slowly sways the hues back and forth, needs `drift.css`, and holds still when the visitor prefers reduced motion."
             },
             {
@@ -44,6 +45,7 @@
               "type": {
                 "text": "'dusk' | 'reef' | 'fern' | 'ember' | 'guava' | 'orchid' | 'honey'"
               },
+              "fieldName": "hue",
               "description": "Picks one of the seven ready-made color pairs."
             },
             {
@@ -51,6 +53,7 @@
               "type": {
                 "text": "boolean"
               },
+              "fieldName": "display",
               "description": "Switches the picked hue to its large-heading version, which passes 3:1 instead of 4.5:1."
             }
           ],
@@ -81,6 +84,33 @@
               },
               "attribute": "end",
               "description": "The color of the last letter, mirroring the `end` attribute, where `null` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "hue",
+              "type": {
+                "text": "'dusk' | 'reef' | 'fern' | 'ember' | 'guava' | 'orchid' | 'honey' | null"
+              },
+              "attribute": "hue",
+              "description": "Which ready-made color pair the element uses, mirroring the `hue` attribute, where `null` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "display",
+              "type": {
+                "text": "boolean"
+              },
+              "attribute": "display",
+              "description": "Whether the hue uses its large-heading version, mirroring the `display` attribute, where `false` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "drift",
+              "type": {
+                "text": "boolean"
+              },
+              "attribute": "drift",
+              "description": "Whether the hues sway, mirroring the `drift` attribute, where `false` removes it."
             }
           ],
           "cssProperties": [

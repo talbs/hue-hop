@@ -777,14 +777,34 @@
             </dl>
             <h3 id="from-javascript">From JavaScript</h3>
             <p>
+              <code>el.hue</code>
+              ,
               <code>el.start</code>
-              and
+              ,
               <code>el.end</code>
-              read and set the attributes. Setting one to
+              ,
+              <code>el.display</code>
+              and
+              <code>el.drift</code>
+              read and set the attributes.
+              <code>hue</code>
+              ,
+              <code>start</code>
+              and
+              <code>end</code>
+              take
               <code>null</code>
-              removes it. Setting a property works the same as setting the
-              attribute, even before the element has loaded. That covers
-              frameworks that set properties (Angular, Solid, Lit's
+              to remove the attribute.
+              <code>display</code>
+              and
+              <code>drift</code>
+              take
+              <code>true</code>
+              or
+              <code>false</code>
+              . Setting a property works the same as setting the attribute, even
+              before the element has loaded. That covers frameworks that set
+              properties (Angular, Solid, Lit's
               <code>.start=</code>
               ).
             </p>
@@ -1744,7 +1764,9 @@
               <code>drift</code>
               , and
               <code>display</code>
-              . Nothing to declare.
+              . Nothing to declare. The seven names are exported as
+              <code>HueName</code>
+              .
             </p>
             <h3 id="react">React</h3>
             <p>
@@ -1753,6 +1775,19 @@
               and
               <code>end</code>
               as attributes or as properties, and the element reads both.
+            </p>
+            <p>
+              Turn on
+              <code>drift</code>
+              and
+              <code>display</code>
+              with the bare name, like
+              <code>&lt;hue-hop drift&gt;</code>
+              , and leave them out to turn them off. React 19 treats
+              <code>drift=""</code>
+              as off, and React 18 treats
+              <code>drift={false}</code>
+              as on.
             </p>
             <h3 id="server-rendering">Server Rendering</h3>
             <p>
