@@ -1,7 +1,7 @@
 /* Skips this section's layout until it nears the screen. It sits on the section because content-visibility clips at the box's edge, and .wild's edge would slice the top row as it lifts on hover. */
 #wild {
   content-visibility: auto;
-  contain-intrinsic-size: auto 5673px;
+  contain-intrinsic-size: auto 5662px;
 }
 
 /* The site's inks are fixed per side, so a dark island on the light side would get dark ink. These pairs let each island resolve to its own scheme. */
@@ -46,14 +46,8 @@
 
 .wild ul,
 .wild ol {
-  margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.wild li {
-  margin: 0;
-  padding: 0;
 }
 
 .hop-near,
@@ -187,7 +181,6 @@
   column-gap: var(--wa-space-l);
   padding-block-start: var(--wa-space-l);
   border-block-start: 1px solid var(--rule);
-  color: var(--ink);
   font: 1rem / 1.55 var(--font-deck);
 }
 
@@ -571,7 +564,6 @@
 }
 
 .press-label {
-  position: relative;
   display: grid;
   grid-template-rows: auto auto 2.4cqi auto;
   align-content: center;
@@ -798,7 +790,6 @@
 
 .wild-404 .wild-frame {
   gap: var(--wa-space-l);
-  background: var(--surface-plain);
 }
 
 .lost-head {
@@ -834,7 +825,6 @@
 }
 
 .wild .lost-tracks li {
-  position: relative;
   display: grid;
   grid-template-columns: 2.25rem minmax(0, 1fr) auto;
   gap: 0.5rem;
@@ -923,14 +913,17 @@
   font: inherit;
 }
 
+.term-dim,
+.term-bar-fill {
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+
 .term-dim {
   color: #8f9197;
-  font-family: ui-monospace, Menlo, Consolas, monospace;
 }
 
 .term-bar-fill {
   color: #d8dade;
-  font-family: ui-monospace, Menlo, Consolas, monospace;
 }
 
 .term-badge {
@@ -985,7 +978,6 @@
 .wild-tapes .wild-frame {
   min-block-size: 22rem;
   padding: 0;
-  background: var(--surface-plain);
 }
 
 .wild .tape-field {
@@ -1026,7 +1018,6 @@
 .tape-body {
   fill: var(--shell);
   stroke: var(--shell-line);
-  stroke-width: 1;
 }
 
 .tape-paper {
@@ -1036,7 +1027,6 @@
 .tape-window {
   fill: #2a2a2e;
   stroke: #17171a;
-  stroke-width: 1;
 }
 
 .tape-pack,
@@ -1060,7 +1050,6 @@
 .tape-base {
   fill: var(--base);
   stroke: var(--shell-line);
-  stroke-width: 1;
 }
 
 .tape-hole {
@@ -1246,10 +1235,7 @@
       #101a24;
   }
 
-  .bill-head {
-    border-image: var(--stepped-across) 1;
-  }
-
+  .bill-head,
   .lost-action {
     border-image: var(--stepped-across) 1;
   }
@@ -1348,10 +1334,6 @@
     flex-basis: 100%;
   }
 
-  .nav-tools {
-    margin-inline-start: auto;
-  }
-
   .nav-tabs .nav-action {
     display: none;
   }
@@ -1364,7 +1346,7 @@
 
 @media (min-width: 48rem) {
   #wild {
-    contain-intrinsic-size: auto 5214px;
+    contain-intrinsic-size: auto 5273px;
   }
 
   .wild {
@@ -1387,7 +1369,7 @@
 
 @media (min-width: 64rem) {
   #wild {
-    contain-intrinsic-size: auto 3427px;
+    contain-intrinsic-size: auto 3467px;
   }
 
   .wild {
@@ -1410,7 +1392,6 @@
   }
 
   .wild-nav {
-    grid-column: 1 / -1;
     grid-row: 3;
   }
 
@@ -1425,7 +1406,6 @@
   }
 
   .wild-line {
-    grid-column: 1 / -1;
     grid-row: 5;
   }
 

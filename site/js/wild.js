@@ -77,6 +77,7 @@ function addDemoFaces() {
   }
 }
 
+// As @font-face rules, Chrome and Safari fetch these at load even with the section skipped by content-visibility.
 function loadDemoFacesOnApproach(section) {
   const observer = new IntersectionObserver(
     ([entry]) => {
