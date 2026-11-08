@@ -342,8 +342,8 @@
             <p>
               Seven ready-made pairs come with the element. Pick one with
               <code>hue</code>
-              . Each pair has a dark side and a light side. The names describe
-              the dark side.
+              . Each pair has a dark side and a light side. The descriptions
+              below are for the dark side.
             </p>
             <wa-scroller>
               <table class="hues-table">
@@ -627,7 +627,9 @@
                 <dd>
                   The
                   <code>style</code>
-                  attribute.
+                  attribute, unless a stylesheet uses
+                  <code>!important</code>
+                  .
                 </dd>
               </div>
               <div>
@@ -677,10 +679,11 @@
               <code>el.end</code>
               read and set the attributes. Setting one to
               <code>null</code>
-              removes it. So frameworks that set properties instead of
-              attributes (Angular, Solid, Lit's
+              removes it. Setting a property works the same as setting the
+              attribute, even before the element has loaded. That covers
+              frameworks that set properties (Angular, Solid, Lit's
               <code>.start=</code>
-              ) should work too.
+              ).
             </p>
             <h3 id="keep-them-readable">Keep Them Readable</h3>
             <p>
@@ -883,7 +886,9 @@
               <a href="#load-it">Load It</a>
               ), then add
               <code>drift</code>
-              to any element.
+              to the
+              <code>&lt;hue-hop&gt;</code>
+              .
             </p>
             <figure
               class="example"
@@ -1872,8 +1877,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <p>
               The element writes its step count on itself, like
               <code>hops="13"</code>
-              . Its own stylesheet reads it. You can leave it alone. The element
-              writes it when the count changes.
+              and reads it from its own stylesheet. Don't set it. A hand-set
+              value can miscolor the letters until the text changes.
             </p>
             <p>
               Each letter gets its own step, up to 64. Spaces don't count.
