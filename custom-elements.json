@@ -52,13 +52,6 @@
                 "text": "boolean"
               },
               "description": "Switches the picked hue to its large-heading version, which passes 3:1 instead of 4.5:1."
-            },
-            {
-              "name": "hops",
-              "type": {
-                "text": "number"
-              },
-              "description": "How many color steps the letters use, one per letter up to 64, written by the element itself, so don't set it."
             }
           ],
           "members": [

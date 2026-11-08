@@ -18,7 +18,7 @@
     }
   }
   @media (prefers-reduced-motion: no-preference) and (forced-colors: none) and (prefers-contrast: no-preference) {
-    :is(hue-hop, [hops])[drift] {
+    :is(hue-hop, :state(hops))[drift] {
       --_hop-drift: calc(var(--_hop-wave) * var(--hop-drift-range, 24));
       animation: hue-hop-drift calc(var(--hop-drift-cycle, 10) * 0.5s)
         ease-in-out calc(var(--hop-drift-cycle, 10) * -0.25s) infinite alternate;

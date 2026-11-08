@@ -1,6 +1,6 @@
 const OPENING_TAG = /<([a-zA-Z][\w-]*)((?:"[^"]*"|'[^']*'|[^'">])*)>/g;
 const ATTRIBUTE = /([^\s"'=<>/]+)(?:\s*=\s*("[^"]*"|'[^']*'|[^\s"'=<>`]+))?/g;
-const WIRING_ATTRIBUTES = ['id', 'hops', 'role'];
+const WIRING_ATTRIBUTES = ['id', 'role'];
 
 function isWiringAttribute(name) {
   const lowerName = name.toLowerCase();

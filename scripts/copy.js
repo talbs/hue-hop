@@ -12,7 +12,6 @@ export const LLMS_RULES = [
   `Use a ready-made \`hue\`, or check your own \`start\` and \`end\` against the [lightness table](${SITE_URL}docs/#keep-them-readable).`,
   'The page needs a `color-scheme` to show the dark-scheme colors of a `hue`.',
   '`drift` needs `drift.css`.',
-  'Never set `hops`. The element writes it.',
   'Keep link underlines on.',
   'Set `--hop-curve` and `--hop-shift` once, on `:root` or a class.',
   'A `hue` beats inherited values, `--hop-lift` included. To override one, set `start`, `end`, or `--hop-*` on the element, in any CSS layer.',

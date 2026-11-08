@@ -1754,26 +1754,6 @@
               <code>end</code>
               as attributes or as properties, and the element reads both.
             </p>
-            <wa-callout
-              class="note"
-              variant="neutral"
-              appearance="outlined"
-              size="s"
-            >
-              <wa-icon
-                slot="icon"
-                canvas="auto"
-                family="pixel"
-                name="comment-dots"
-                label="Note"
-              ></wa-icon>
-              <strong>Server rendering logs one warning in development.</strong>
-              If the element defines itself before React 18 hydrates, the
-              development build logs
-              <code>Extra attributes from the server: hops</code>
-              . Colors stay correct. If your test runner fails on console
-              errors, let that one line through.
-            </wa-callout>
             <h3 id="server-rendering">Server Rendering</h3>
             <p>
               Importing it on the server is safe. There's no browser there, so
@@ -1891,6 +1871,11 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>&lt;slot&gt;</code>
               in it, or the text won't show. A closed root goes without the
               hues, because the element can't reach it.
+            </p>
+            <p>
+              A subclass can't call
+              <code>attachInternals()</code>
+              . The element already did, and an element only gets one.
             </p>
             <h3 id="cascade-layers">Tailwind and Cascade Layers</h3>
             <p>
@@ -2040,12 +2025,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>el.hops</code>
               is
               <code>0</code>
-              off the page or without support, test DOMs included. The
-              <a href="#hops">
-                <code>hops</code>
-                attribute
-              </a>
-              keeps its last value.
+              off the page or without support, test DOMs included.
             </p>
           </section>
           <p class="docs-group readout-label">Reference</p>
@@ -2146,17 +2126,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <a href="#reading-a-color">Reading a Letter's Color</a>
               .
             </p>
-            <h3 id="hops">
-              The
-              <code>hops</code>
-              Attribute
-            </h3>
-            <p>
-              The element writes its step count on itself (like
-              <code>hops="13"</code>
-              ) and reads it back from its own stylesheet. Don't set it: a
-              hand-set value can miscolor the letters until the text changes.
-            </p>
+            <h3 id="step-count">Step Count</h3>
             <p>
               Every letter except a space gets its own step, up to 64. Longer
               text shares steps, so a 200-letter heading still runs the whole
@@ -2223,19 +2193,10 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               </div>
             </figure>
             <p>
-              The code leaves
-              <code>hops</code>
-              out, like every example here, because you never write it.
-            </p>
-            <p>
               <code>el.hops</code>
-              returns the same count as a read-only number. It's
+              returns the count as a read-only number. It's
               <code>0</code>
-              when the element is off the page (the attribute keeps its last
-              value) or the browser lacks support. With server rendering, React
-              can warn about the attribute. See
-              <a href="#react">React</a>
-              .
+              when the element is off the page or the browser lacks support.
             </p>
             <h3 id="exports">Exports</h3>
             <p>
@@ -2437,6 +2398,13 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 A subclass with no text, like one wrapping only an SVG, doesn't
                 drift.
               </li>
+              <li>
+                A subclass can't call
+                <code>attachInternals()</code>
+                . The element already did. See
+                <a href="#another-tag">Another Tag</a>
+                .
+              </li>
             </ul>
           </section>
           <section
@@ -2529,22 +2497,6 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 clipped. Lower the lift or bring the ends closer, then check the
                 middle letters. See
                 <a href="#lift">Lift</a>
-                .
-              </dd>
-              <dt>
-                React warns about
-                <code>hops</code>
-                .
-              </dt>
-              <dd>
-                Server rendering. The server's HTML has no
-                <code>hops</code>
-                , and the element writes it before React 18 hydrates, so the
-                development build prints
-                <code>Warning: Extra attributes from the server: hops</code>
-                . It's harmless, and the colors stay correct. If your test
-                runner fails on console errors, let that one line through. See
-                <a href="#react">React</a>
                 .
               </dd>
               <dt>Drift doesn't move.</dt>
@@ -2656,9 +2608,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   <code>StaticRange</code>
                   (a fixed start and end point in the text) over the real text
                   node, and each step is one highlight. So there are no spans.
-                  The element adds two things: its
-                  <code>hops</code>
-                  attribute, and a shadow root holding one
+                  The element adds one thing: a shadow root holding one
                   <code>&lt;slot&gt;</code>
                   . Your text stays where you wrote it.
                 </dd>
