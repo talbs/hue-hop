@@ -378,11 +378,11 @@
               Point it at
               <a href="{{root}}llms.txt">llms.txt</a>
               , a short plain-text version of these docs written for assistants.
-              It has the install, the attributes, and the rules an assistant
-              gets wrong without them (headings and names only, check your own
+              It has the install and attributes. It also has the rules
+              assistants get wrong: headings and names only, check your own
               ends, a
               <code>color-scheme</code>
-              for the dark scheme).
+              for the dark scheme.
             </p>
             <h3 id="paste-in-prompt">Paste-In Prompt</h3>
             <p>For a one-off. Paste it into the chat.</p>
@@ -2660,9 +2660,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 <dd>
                   Each step's color is worked out in CSS:
                   <code>color-mix()</code>
-                  in OKLCH between the two ends, spaced by the curve, boosted in
-                  the middle, then turned by the shift and the drift. So a theme
-                  switch or a
+                  in OKLCH between the two ends. The curve spaces the steps,
+                  boost saturates the middle, and shift and drift turn the hue.
+                  So a theme switch or a
                   <code>--hop-*</code>
                   change recolors the letters with no JavaScript. Read the
                   <a href="{{repo-url}}/blob/main/src/formula.css">formula</a>
@@ -2678,7 +2678,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   rules, which is why CSS on the element beats them and an
                   inherited value doesn't. The rest goes on the document, or on
                   the shadow root the element sits in. Every heading in a root
-                  shares one sheet, with one rule per distinct
+                  shares one sheet. It holds one rule per distinct
                   <code>start</code>
                   or
                   <code>end</code>
