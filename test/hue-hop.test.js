@@ -60,6 +60,33 @@ test('a hue colors the element with only the script loaded', async () => {
   }
 });
 
+test('every attribute has a property that reflects it, even set before define', async () => {
+  const rows = [
+    ['start', 'red', 'red', 'red'],
+    ['hue', 'reef', 'reef', 'reef'],
+    ['hue', null, null, null],
+    ['display', true, '', true],
+    ['drift', false, null, false],
+  ];
+  for (const [name, value, expectedAttribute, readBack] of rows) {
+    const page = await browser.newPage();
+    await page.setContent('<hue-hop id="t" hue="dusk" drift>Nas</hue-hop>');
+    await page.evaluate(
+      ([name, value]) => {
+        document.getElementById('t')[name] = value;
+      },
+      [name, value]
+    );
+    await page.addScriptTag({ path: 'dist/hue-hop.js', type: 'module' });
+    const [attribute, property] = await page.evaluate((name) => {
+      const element = document.getElementById('t');
+      return [element.getAttribute(name), element[name]];
+    }, name);
+    assert.equal(attribute, expectedAttribute, `${name} = ${value}`);
+    assert.equal(property, readBack, `${name} = ${value}`);
+  }
+});
+
 test('importing without a dom does not throw', async () => {
   const { HueHop } = await import('../dist/hue-hop.js');
   assert.equal(typeof HueHop, 'function');

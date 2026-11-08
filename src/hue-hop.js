@@ -31,6 +31,8 @@ const boxWatcher =
   });
 
 const colorAttributes = ['start', 'end'];
+const booleanAttributes = ['display', 'drift'];
+const reflectedAttributes = [...colorAttributes, 'hue', ...booleanAttributes];
 const mostRulesPerRoot = 256;
 // Each restyle costs about the square of the step count in Chromium and Safari, so longer text shares steps.
 const mostHops = 64;
@@ -188,11 +190,6 @@ function replayEarlyProperty(element, name) {
   element[name] = value;
 }
 
-function setOrRemoveAttribute(element, name, value) {
-  if (value == null) element.removeAttribute(name);
-  else element.setAttribute(name, String(value));
-}
-
 function paint(element) {
   const data = elementData.get(element);
   clearRanges(data);
@@ -254,28 +251,12 @@ export class HueHop extends BaseElement {
     return hopsFor(elementData.get(this)?.ranges.length ?? 0);
   }
 
-  get start() {
-    return this.getAttribute('start');
-  }
-
-  set start(value) {
-    setOrRemoveAttribute(this, 'start', value);
-  }
-
-  get end() {
-    return this.getAttribute('end');
-  }
-
-  set end(value) {
-    setOrRemoveAttribute(this, 'end', value);
-  }
-
   attributeChangedCallback() {
     if (hasSupport && this.isConnected) applyColorAttributes(this);
   }
 
   connectedCallback() {
-    for (const name of colorAttributes) replayEarlyProperty(this, name);
+    for (const name of reflectedAttributes) replayEarlyProperty(this, name);
     if (!hasSupport) return;
     adoptHues(this);
     const data = elementData.get(this);
@@ -299,6 +280,21 @@ export class HueHop extends BaseElement {
     connectedHops.delete(this);
     clearRanges(data);
   }
+}
+
+for (const name of reflectedAttributes) {
+  const isBoolean = booleanAttributes.includes(name);
+  Object.defineProperty(HueHop.prototype, name, {
+    configurable: true,
+    get() {
+      return isBoolean ? this.hasAttribute(name) : this.getAttribute(name);
+    },
+    set(value) {
+      if (isBoolean) this.toggleAttribute(name, !!value);
+      else if (value == null) this.removeAttribute(name);
+      else this.setAttribute(name, value);
+    },
+  });
 }
 
 if (hasSupport) {
