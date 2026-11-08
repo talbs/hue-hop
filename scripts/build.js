@@ -12,6 +12,16 @@ function hostRulesFrom(css) {
   return hostRules;
 }
 
+function formulaAroundPlaceholder(css) {
+  const parts = css.split('::highlight(hue-hop-K)');
+  if (parts.length !== 2) {
+    throw new Error(
+      'src/formula.css no longer has exactly one ::highlight(hue-hop-K) placeholder'
+    );
+  }
+  return parts;
+}
+
 const cssAsMinifiedString = {
   name: 'css-as-minified-string',
   setup(build) {
@@ -22,10 +32,16 @@ const cssAsMinifiedString = {
         minify: true,
       });
       const collapsedCode = code.replace(/\s+/g, ' ');
+      const name = basename(path);
+      if (name === 'formula.css') {
+        const [before, after] = formulaAroundPlaceholder(collapsedCode);
+        return {
+          contents: `export const formulaBefore = ${JSON.stringify(before)}, formulaAfter = ${JSON.stringify(after)};`,
+          loader: 'js',
+        };
+      }
       const contents =
-        basename(path) === 'hues.css'
-          ? hostRulesFrom(collapsedCode)
-          : collapsedCode;
+        name === 'hues.css' ? hostRulesFrom(collapsedCode) : collapsedCode;
       return { contents, loader: 'text' };
     });
   },
