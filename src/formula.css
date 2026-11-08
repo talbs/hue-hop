@@ -3,6 +3,9 @@
     calc(var(--_hop-i) / max(var(--_hop-n) - 1, 1)),
     var(--hop-curve, 1)
   );
+  /* The clamp() stands in for sign(), which the support floor lacks. It gives
+     +1 when the hue sits on one side of 95 (yellow) and -1 on the other, so
+     the partner hue always turns away from yellow. */
   --_hop-partner: oklch(
     from var(--hop-start, var(--hop-end)) l c
       calc(h + 50 * clamp(-1, (mod(h - 95 + 180, 360) - 180) * 1000 + 1, 1))

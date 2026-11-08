@@ -1,4 +1,4 @@
-import formula from './formula.css';
+import { formulaBefore, formulaAfter } from './formula.css';
 import hues from './hues.css';
 
 const hasSupport = typeof CSS !== 'undefined' && 'highlights' in CSS;
@@ -100,7 +100,9 @@ function sheetText(longest) {
   return (
     '@media (forced-colors: none) and (prefers-contrast: no-preference){' +
     stepRules.join('') +
-    formula.replace('::highlight(hue-hop-K)', stepSelectors.join(',')) +
+    formulaBefore +
+    stepSelectors.join(',') +
+    formulaAfter +
     '}'
   );
 }
