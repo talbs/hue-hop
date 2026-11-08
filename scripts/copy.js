@@ -13,7 +13,6 @@ export const LLMS_RULES = [
   'The page needs a `color-scheme` to show the dark side of a `hue`.',
   '`drift` needs `drift.css`.',
   'Never set `hops`. The element writes it.',
-  'One tag name per page or shadow root: `hue-hop` or your subclass, not both.',
   'Keep link underlines on.',
   'Set `--hop-curve` and `--hop-shift` once, on `:root` or a class. Not per element.',
   'A `hue` beats inherited values, `--hop-lift` included. To override one, set `start`, `end`, or `--hop-*` on the element, in any CSS layer.',

@@ -60,6 +60,44 @@ test('a hue colors the element with only the script loaded', async () => {
   }
 });
 
+test('importing without a dom does not throw', async () => {
+  const { HueHop } = await import('../dist/hue-hop.js');
+  assert.equal(typeof HueHop, 'function');
+});
+
+test('a subclass and the base tag both color on one page', async () => {
+  const rows = [
+    ['base first', ['hue-hop', 'my-hop']],
+    ['subclass first', ['my-hop', 'hue-hop']],
+  ];
+  const textByTag = { 'hue-hop': 'Short', 'my-hop': 'Much longer text' };
+  for (const [name, tags] of rows) {
+    const page = await openPage(
+      tags
+        .map((tag) => `<${tag} hue="dusk">${textByTag[tag]}</${tag}>`)
+        .join('')
+    );
+    const firstLetterColors = await page.evaluate(async (tags) => {
+      customElements.define(
+        'my-hop',
+        class extends customElements.get('hue-hop') {}
+      );
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      return tags.map(
+        (tag) =>
+          getComputedStyle(
+            document.querySelector(tag),
+            '::highlight(hue-hop-0)'
+          ).color
+      );
+    }, tags);
+    for (const color of firstLetterColors) {
+      assert.ok(color.includes('oklch'), `${name}: ${firstLetterColors}`);
+    }
+  }
+});
+
 test('page css beats a hue, and a hue beats inherited values', async () => {
   const hop = '<hue-hop id="t" class="x" hue="dusk">Nas</hue-hop>';
   const rows = [

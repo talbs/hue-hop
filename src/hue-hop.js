@@ -1,7 +1,7 @@
 import formula from './formula.css';
 import hues from './hues.css';
 
-const hasSupport = 'highlights' in CSS;
+const hasSupport = typeof CSS !== 'undefined' && 'highlights' in CSS;
 
 const segmenter =
   hasSupport && new Intl.Segmenter(undefined, { granularity: 'grapheme' });
@@ -84,15 +84,15 @@ function ownTextNodes(element) {
   return nodes;
 }
 
-function sheetText(tag, longest) {
+function sheetText(longest) {
   const stepRules = [];
   const stepSelectors = [];
   for (let step = 0; step < longest; step++) {
     const name = `::highlight(${highlightName(step)})`;
-    const selector = `${tag}${name},${tag} *${name}`;
+    const selector = `[hops]${name},[hops] *${name}`;
     stepRules.push(
       `${selector}{--_hop-i:${step}}`,
-      `${tag}[hops='${step + 1}']{--_hop-n:${step + 1}}`
+      `[hops='${step + 1}']{--_hop-n:${step + 1}}`
     );
     stepSelectors.push(selector);
   }
@@ -220,13 +220,16 @@ function paint(element) {
   const rootStyle = rootStyleFor(element.getRootNode());
   if (hops > rootStyle.longest) {
     rootStyle.longest = hops;
-    rootStyle.sheet.replaceSync(sheetText(element.localName, hops));
+    rootStyle.sheet.replaceSync(sheetText(hops));
   }
 
   boxWatcher.observe(element);
 }
 
-export class HueHop extends HTMLElement {
+// Server renderers import components without a DOM, so the class needs a base that exists there.
+const BaseElement = globalThis.HTMLElement ?? class {};
+
+export class HueHop extends BaseElement {
   static get observedAttributes() {
     return colorAttributes;
   }
@@ -295,4 +298,6 @@ if (hasSupport) {
   });
 }
 
-if (!customElements.get('hue-hop')) customElements.define('hue-hop', HueHop);
+if (globalThis.customElements && !customElements.get('hue-hop')) {
+  customElements.define('hue-hop', HueHop);
+}
