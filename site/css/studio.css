@@ -69,8 +69,6 @@
   --word-size: 3.5rem;
   --meter-tile: 1.5rem;
   --meter-pad: var(--space-tight);
-  /* The panels sit this far from the window on every side, so the header lines up with them. */
-  --gutter: var(--space-group);
 }
 
 .site-header-inner {
@@ -745,7 +743,6 @@ wa-option {
 
 @media (min-width: 50rem) {
   :root {
-    --gutter: var(--space-section);
     --stage-inset: var(--wa-space-3xl);
     --word-size: 6rem;
     --meter-tile: 2rem;
