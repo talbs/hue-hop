@@ -14,7 +14,7 @@ import {
   typeOut,
 } from './motion.js';
 import { whenSideChanges } from './scheme.js';
-import { defaultLift, escapeHtml } from './state.js';
+import { defaultBoost, escapeHtml } from './state.js';
 import {
   autoPartnerOf,
   formatOklch,
@@ -147,7 +147,7 @@ function pageLuminanceOf(scheme) {
 }
 
 function tuning() {
-  return { curve: state.curve, lift: state.lift, shift: state.shift };
+  return { curve: state.curve, boost: state.boost, shift: state.shift };
 }
 
 function wordInUse() {
@@ -429,8 +429,8 @@ function styleText() {
   if (state.curve !== DEFAULT_STUDIO.curve) {
     lines.push(`--hop-curve: ${state.curve}`);
   }
-  if (state.lift !== defaultLift(state.hue)) {
-    lines.push(`--hop-lift: ${state.lift}`);
+  if (state.boost !== defaultBoost(state.hue)) {
+    lines.push(`--hop-boost: ${state.boost}`);
   }
   if (state.shift !== DEFAULT_STUDIO.shift) {
     lines.push(`--hop-shift: ${state.shift}`);
@@ -439,7 +439,7 @@ function styleText() {
     lines.push(`--hop-drift-range: ${state.range}`);
   }
   if (state.isDriftOn && state.cycle !== DEFAULT_STUDIO.cycle) {
-    lines.push(`--hop-drift-cycle: ${state.cycle}`);
+    lines.push(`--hop-drift-cycle: ${state.cycle}s`);
   }
   return lines.join('; ');
 }
@@ -827,7 +827,7 @@ function showReadouts() {
   showOutput('weight', String(weightAsked()));
   showOutput('size', `${state.size}px`);
   showOutput('curve', `×${state.curve.toFixed(2)}`);
-  showOutput('lift', state.lift.toFixed(3));
+  showOutput('boost', state.boost.toFixed(3));
   showOutput('shift', `${state.shift}°`);
   showOutput('range', `±${state.range}°`);
   showOutput('cycle', `${state.cycle}s`);
@@ -1031,7 +1031,7 @@ function writeFieldsFromState() {
   control('font').value = state.font;
   control('size').value = state.size;
   control('curve').value = Math.log2(state.curve);
-  control('lift').value = state.lift;
+  control('boost').value = state.boost;
   control('shift').value = state.shift;
   control('accent').value = state.accent;
   control('range').value = state.range;
@@ -1054,8 +1054,8 @@ const FIELD_WRITERS = {
   curve(value) {
     state.curve = Number((2 ** Number(value)).toFixed(2));
   },
-  lift(value) {
-    state.lift = Number(Number(value).toFixed(3));
+  boost(value) {
+    state.boost = Number(Number(value).toFixed(3));
   },
 };
 
@@ -1079,7 +1079,8 @@ function pickColor(name, value) {
 
 function catchNeutralStop(field, name) {
   if (name === 'curve') catchSoftStop(field, 0, 0.1);
-  else if (name === 'lift') catchSoftStop(field, defaultLift(state.hue), 0.004);
+  else if (name === 'boost')
+    catchSoftStop(field, defaultBoost(state.hue), 0.004);
   else if (name === 'shift') catchSoftStop(field, 0, 4);
 }
 

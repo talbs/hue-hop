@@ -878,7 +878,7 @@
               steps evenly from one end to the other, so if both ends pass, most
               letters between them do too. Ends far apart on the color wheel
               (green to violet, say) can still dip in the middle, and
-              <a href="#lift">lift</a>
+              <a href="#boost">boost</a>
               makes that more likely. Check the middle letters.
             </p>
             <p>
@@ -1092,7 +1092,12 @@
                 </wa-scroller>
               </div>
             </figure>
-            <p>Two custom properties set the sway. Both are plain numbers.</p>
+            <p>
+              Two custom properties set the sway. The range is a plain number,
+              and the cycle is a time like
+              <code>10s</code>
+              .
+            </p>
             <wa-scroller>
               <table>
                 <thead>
@@ -1110,10 +1115,8 @@
                   </tr>
                   <tr>
                     <td><code>--hop-drift-cycle</code></td>
-                    <td><code>10</code></td>
-                    <td>
-                      How many seconds one full sway there and back takes.
-                    </td>
+                    <td><code>10s</code></td>
+                    <td>How long one full sway there and back takes.</td>
                   </tr>
                 </tbody>
               </table>
@@ -1281,8 +1284,8 @@
               or a class, and every heading under it follows. One catch: a
               <code>hue</code>
               sets
-              <code>--hop-lift</code>
-              on the element itself, so to change lift under a hue, set it on
+              <code>--hop-boost</code>
+              on the element itself, so to change boost under a hue, set it on
               the element. The examples set them in
               <code>style</code>
               so you can see the one value that changes.
@@ -1333,7 +1336,7 @@
                 </wa-scroller>
               </div>
             </figure>
-            <h3 id="lift">Lift</h3>
+            <h3 id="boost">Boost</h3>
             <p>
               Extra color intensity (OKLCH chroma) for the middle letters, so
               the blend doesn't go dull halfway. The two ends don't change. The
@@ -1345,7 +1348,7 @@
             </p>
             <figure
               class="example"
-              data-control="lift"
+              data-control="boost"
             >
               <div class="example-panel">
                 <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
@@ -1353,7 +1356,7 @@
                     <hue-hop
                       start="oklch(60% 0.12 200)"
                       end="oklch(60% 0.12 300)"
-                      style="--hop-lift: 0"
+                      style="--hop-boost: 0"
                     >
                       Sky's the Limit
                     </hue-hop>
@@ -1364,8 +1367,8 @@
                   <div class="wa-cluster">
                     <div class="fader">
                       <wa-slider
-                        id="lift-fader"
-                        label="Lift"
+                        id="boost-fader"
+                        label="Boost"
                         min="0"
                         max="0.12"
                         step="0.001"
@@ -1374,7 +1377,7 @@
                       ></wa-slider>
                       <output
                         class="fader-value wa-text-end"
-                        for="lift-fader"
+                        for="boost-fader"
                       >
                         0.000
                       </output>
@@ -1396,7 +1399,7 @@
                 name="triangle-exclamation"
                 label="Warning"
               ></wa-icon>
-              <strong>Too much lift gets clipped.</strong>
+              <strong>Too much boost gets clipped.</strong>
               Past the sRGB range (the colors a typical screen can show), the
               middle letters get cut back, and on a white page that can lower
               their contrast. Check the middle letters. The
@@ -1715,7 +1718,7 @@
             <p>
               Middle markers look slightly less vivid than the letters, because
               the mix leaves out
-              <code>--hop-lift</code>
+              <code>--hop-boost</code>
               , which every hue sets to
               <code>0.021</code>
               .
@@ -2133,7 +2136,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 label="Note"
               ></wa-icon>
               <strong>
-                Curve, lift, shift, drift range, and drift cycle have no
+                Curve, boost, shift, drift range, and drift cycle have no
                 attributes.
               </strong>
               See
@@ -2352,10 +2355,10 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 partner instead.
               </li>
               <li>
-                Ends far apart on the color wheel, and lift, can push the middle
-                letters past what an sRGB screen can show. They get clipped, by
-                an amount that depends on the colors, and on a white page that
-                can lower their contrast. Check the middle letters.
+                Ends far apart on the color wheel, and boost, can push the
+                middle letters past what an sRGB screen can show. They get
+                clipped, by an amount that depends on the colors, and on a white
+                page that can lower their contrast. Check the middle letters.
               </li>
               <li>
                 User stylesheets and extensions that force a text color still
@@ -2527,11 +2530,11 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               </dd>
               <dt>The middle letters look wrong.</dt>
               <dd>
-                Ends far apart on the color wheel, or too much lift, push the
+                Ends far apart on the color wheel, or too much boost, push the
                 middle letters past what an sRGB screen can show, and they get
-                clipped. Lower the lift or bring the ends closer, then check the
-                middle letters. See
-                <a href="#lift">Lift</a>
+                clipped. Lower the boost or bring the ends closer, then check
+                the middle letters. See
+                <a href="#boost">Boost</a>
                 .
               </dd>
               <dt>Drift doesn't move.</dt>
@@ -2653,7 +2656,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 <dd>
                   Each step's color is worked out in CSS:
                   <code>color-mix()</code>
-                  in OKLCH between the two ends, spaced by the curve, lifted in
+                  in OKLCH between the two ends, spaced by the curve, boosted in
                   the middle, then turned by the shift and the drift. So a theme
                   switch or a
                   <code>--hop-*</code>

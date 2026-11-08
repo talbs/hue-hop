@@ -5,15 +5,15 @@ export const DEFAULT_STATE = {
   end: null,
   curve: 1,
   shift: 0,
-  lift: 0.021,
+  boost: 0.021,
   drift: false,
   display: false,
   accent: null,
 };
 
-// A hue sets the lift, so only custom ends start from 0.
-export function defaultLift(hue) {
-  return hue && hue !== 'custom' ? DEFAULT_STATE.lift : 0;
+// A hue sets the boost, so only custom ends start from 0.
+export function defaultBoost(hue) {
+  return hue && hue !== 'custom' ? DEFAULT_STATE.boost : 0;
 }
 
 export function decimalsIn(step) {
@@ -29,8 +29,8 @@ export function escapeHtml(text) {
 }
 
 function changedTuning(state) {
-  const defaults = { ...DEFAULT_STATE, lift: defaultLift(state.hue) };
-  return ['curve', 'shift', 'lift'].filter(
+  const defaults = { ...DEFAULT_STATE, boost: defaultBoost(state.hue) };
+  return ['curve', 'shift', 'boost'].filter(
     (name) => state[name] !== defaults[name]
   );
 }

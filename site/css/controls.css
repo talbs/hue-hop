@@ -254,7 +254,7 @@ wa-color-picker::part(trigger)::before {
   margin-block-end: var(--cap-overhang);
 }
 
-/* Wide enough for the longest readout (Lift's 0.000, Shift's -90), so the slider never resizes mid-drag. The margin centers the digits' line on the track, less the quarter pixel those digits sit high in it. */
+/* Wide enough for the longest readout (Boost's 0.000, Shift's -90), so the slider never resizes mid-drag. The margin centers the digits' line on the track, less the quarter pixel those digits sit high in it. */
 wa-slider + .fader-value {
   min-inline-size: 5ch;
   margin-block-end: calc(
