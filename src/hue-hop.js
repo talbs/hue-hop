@@ -1,7 +1,10 @@
 import { formulaBefore, formulaAfter } from './formula.css';
 import hues from './hues.css';
 
-const hasSupport = typeof CSS !== 'undefined' && 'highlights' in CSS;
+const hasSupport =
+  typeof CSS !== 'undefined' &&
+  'highlights' in CSS &&
+  CSS.supports('selector(:state(a))');
 
 const segmenter =
   hasSupport && new Intl.Segmenter(undefined, { granularity: 'grapheme' });
@@ -59,6 +62,7 @@ function stepAt(index, letterCount) {
 
 function clearRanges(data) {
   const letterCount = data.ranges.length;
+  data.states.delete(`hops-${hopsFor(letterCount)}`);
   for (const [index, range] of data.ranges.entries()) {
     highlightAt(stepAt(index, letterCount)).delete(range);
   }
@@ -90,10 +94,10 @@ function sheetText(longest) {
   const stepSelectors = [];
   for (let step = 0; step < longest; step++) {
     const name = `::highlight(${highlightName(step)})`;
-    const selector = `[hops]${name},[hops] *${name}`;
+    const selector = `:state(hops)${name},:state(hops) *${name}`;
     stepRules.push(
       `${selector}{--_hop-i:${step}}`,
-      `[hops='${step + 1}']{--_hop-n:${step + 1}}`
+      `:state(hops-${step + 1}){--_hop-n:${step + 1}}`
     );
     stepSelectors.push(selector);
   }
@@ -191,7 +195,6 @@ function setOrRemoveAttribute(element, name, value) {
 
 function paint(element) {
   const data = elementData.get(element);
-  const previousHops = hopsFor(data.ranges.length);
   clearRanges(data);
 
   for (const node of ownTextNodes(element)) {
@@ -217,8 +220,8 @@ function paint(element) {
   }
 
   const hops = hopsFor(letterCount);
-  // Output only: never read or observed, so writing it can't trigger a repaint.
-  if (hops !== previousHops) element.setAttribute('hops', String(hops));
+  // Output only: nothing observes the states, so changing them can't trigger a repaint.
+  data.states.add(`hops-${hops}`);
 
   const rootStyle = rootStyleFor(element.getRootNode());
   if (hops > rootStyle.longest) {
@@ -235,6 +238,16 @@ const BaseElement = globalThis.HTMLElement ?? class {};
 export class HueHop extends BaseElement {
   static get observedAttributes() {
     return colorAttributes;
+  }
+
+  constructor() {
+    super();
+    if (!hasSupport) return;
+    elementData.set(this, {
+      observer: new MutationObserver(() => paint(this)),
+      ranges: [],
+      states: this.attachInternals().states,
+    });
   }
 
   get hops() {
@@ -265,14 +278,8 @@ export class HueHop extends BaseElement {
     for (const name of colorAttributes) replayEarlyProperty(this, name);
     if (!hasSupport) return;
     adoptHues(this);
-    let data = elementData.get(this);
-    if (!data) {
-      data = {
-        observer: new MutationObserver(() => paint(this)),
-        ranges: [],
-      };
-      elementData.set(this, data);
-    }
+    const data = elementData.get(this);
+    data.states.add('hops');
     applyColorAttributes(this);
     paint(this);
     connectedHops.add(this);
