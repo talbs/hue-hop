@@ -62,10 +62,7 @@
             <hue-hop hue="dusk">Hue Hop</hue-hop>
             <span class="docs-mark">Docs</span>
           </h1>
-          <p class="section-lead">
-            Every letter hops a hue. Everything about the element is on this
-            page, from the first import to the API.
-          </p>
+          <p class="section-lead">Every letter hops a hue.</p>
         </div>
         <article class="wa-prose">
           <p class="docs-group readout-label">Start</p>
@@ -137,6 +134,11 @@
                   <p class="install-note">
                     Add drift with
                     <code>import 'hue-hop/drift.css';</code>
+                    . That needs a bundler that handles CSS (Vite does).
+                    Otherwise load
+                    <code>dist/drift.css</code>
+                    with a
+                    <code>&lt;link&gt;</code>
                     .
                   </p>
                 </div>
@@ -144,19 +146,38 @@
               <wa-tab-panel name="cdn">
                 <div class="wa-stack wa-gap-s">
                   <div class="code-well">
-                    <p class="code-label readout-label">In your HTML</p>
+                    <p class="code-label readout-label">A whole page</p>
                     <pre
                       class="code-block"
-                    ><code class="language-html" id="docs-cdn">&lt;script
-  type="module"
-  src="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hue-hop.js"
-&gt;&lt;/script&gt;</code></pre>
+                    ><code class="language-html" id="docs-cdn">&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="color-scheme" content="light dark"&gt;
+    &lt;script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hue-hop.js"
+    &gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;&lt;hue-hop hue="dusk"&gt;Midnight Marauders&lt;/hue-hop&gt;&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
                     <wa-copy-button
                       class="code-copy"
                       from="docs-cdn"
-                      copy-label="Copy CDN tag"
+                      copy-label="Copy starter page"
                     ></wa-copy-button>
                   </div>
+                  <p class="install-note">
+                    The
+                    <code>color-scheme</code>
+                    line lets the hues follow the visitor's light or dark
+                    setting. Leave it out and you always get the light colors.
+                    Already have a page? Copy only the
+                    <code>&lt;script&gt;</code>
+                    tag.
+                  </p>
                   <p class="install-note">
                     Add drift with a
                     <code>&lt;link&gt;</code>
@@ -224,10 +245,11 @@
             </p>
             <h3 id="wrap-a-heading">Wrap a Heading</h3>
             <p>
-              Put the element inside the heading, around the words. Pick a look
-              with
+              Put the element inside the heading, around the words, and pick a
+              look with
               <code>hue</code>
-              .
+              . Each letter gets one flat color, one step on the way from the
+              start color to the end. One hop is one color step.
             </p>
             <figure class="example">
               <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
@@ -237,15 +259,15 @@
               </div>
             </figure>
             <p>
-              The heading stays one piece of text. Select, find, and copy work
-              like on any heading. Kerning holds, and links inside keep working.
-              Nothing moves when the colors load.
+              The heading stays one piece of text, so select, find, and copy
+              work like on any heading. Kerning holds, links inside keep
+              working, and nothing moves when the colors load.
             </p>
             <h3 id="pick-colors">Pick Colors</h3>
             <p>
               Use
               <code>hue</code>
-              for one of the seven shipped pairs, or
+              for one of the seven ready-made pairs, or
               <code>start</code>
               and
               <code>end</code>
@@ -360,7 +382,7 @@
               gets wrong without them (headings and names only, check your own
               ends, a
               <code>color-scheme</code>
-              for the dark side).
+              for the dark scheme).
             </p>
             <h3 id="paste-in-prompt">Paste-In Prompt</h3>
             <p>For a one-off. Paste it into the chat.</p>
@@ -418,8 +440,8 @@
             <p>
               Seven ready-made pairs come with the element. Pick one with
               <code>hue</code>
-              . Each pair has a dark side and a light side. The descriptions
-              below are for the dark side.
+              . Each pair has one set of colors for a dark scheme and one for a
+              light scheme.
             </p>
             <wa-scroller>
               <table class="hues-table">
@@ -429,7 +451,8 @@
                       <span class="wa-visually-hidden">Sample</span>
                     </th>
                     <th scope="col"><code>hue</code></th>
-                    <th scope="col">Goes from (dark side)</th>
+                    <th scope="col">Dark scheme</th>
+                    <th scope="col">Light scheme</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -439,6 +462,7 @@
                     </td>
                     <td><code>dusk</code></td>
                     <td>pale sky to blue-violet</td>
+                    <td>steel blue to indigo</td>
                   </tr>
                   <tr>
                     <td class="hue-sample">
@@ -446,6 +470,7 @@
                     </td>
                     <td><code>reef</code></td>
                     <td>pale aqua to blue</td>
+                    <td>teal to navy</td>
                   </tr>
                   <tr>
                     <td class="hue-sample">
@@ -453,6 +478,7 @@
                     </td>
                     <td><code>fern</code></td>
                     <td>lime to pine</td>
+                    <td>green to dark pine</td>
                   </tr>
                   <tr>
                     <td class="hue-sample">
@@ -460,6 +486,7 @@
                     </td>
                     <td><code>ember</code></td>
                     <td>pale amber to red</td>
+                    <td>bronze to deep red</td>
                   </tr>
                   <tr>
                     <td class="hue-sample">
@@ -467,6 +494,7 @@
                     </td>
                     <td><code>guava</code></td>
                     <td>peach to magenta</td>
+                    <td>terracotta to berry</td>
                   </tr>
                   <tr>
                     <td class="hue-sample">
@@ -474,6 +502,7 @@
                     </td>
                     <td><code>orchid</code></td>
                     <td>blush pink to aubergine</td>
+                    <td>rose to deep violet</td>
                   </tr>
                   <tr>
                     <td class="hue-sample">
@@ -481,13 +510,14 @@
                     </td>
                     <td><code>honey</code></td>
                     <td>butter yellow to rust</td>
+                    <td>ochre to rust</td>
                   </tr>
                 </tbody>
               </table>
             </wa-scroller>
             <p>
-              On the light side the starts are deeper, so they stay readable on
-              light pages. Flip the side switch in the header to see them.
+              The light-scheme starts are deeper, so they stay readable on light
+              pages. Flip the side switch in the header to see both.
             </p>
             <p>
               Every letter of the seven hues passes 4.5:1 contrast, with drift
@@ -523,7 +553,7 @@
               <code>light-dark()</code>
               , so without a
               <code>color-scheme</code>
-              on the page you always get the light side. See
+              on the page you always get the light colors. See
               <a href="#light-and-dark">Light and Dark</a>
               .
             </wa-callout>
@@ -646,8 +676,9 @@
             <p>
               Set only one and Hue Hop picks the other. It keeps your lightness
               and intensity and turns the hue 50 degrees around the color wheel,
-              away from yellow. Yellow can't stay bright at a readable
-              lightness.
+              away from yellow (
+              <a href="#keep-them-readable">Keep Them Readable</a>
+              says why).
             </p>
             <figure class="example">
               <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
@@ -719,7 +750,9 @@
                   <code>start</code>
                   or
                   <code>end</code>
-                  on the element.
+                  on the element. Each value becomes a rule like
+                  <code>hue-hop[start="teal"]</code>
+                  , and that's the rule yours has to beat.
                 </dd>
               </div>
               <div>
@@ -815,6 +848,13 @@
               </table>
             </wa-scroller>
             <p>
+              So for body text on a light page,
+              <code>start="oklch(50% 0.15 250)"</code>
+              passes. The
+              <code>50%</code>
+              is the number to watch.
+            </p>
+            <p>
               These hold for any hue and any chroma a screen can show. Lightness
               steps evenly from one end to the other, so if both ends pass, most
               letters between them do too. Ends far apart on the color wheel
@@ -868,34 +908,64 @@
               <code>light-dark()</code>
               follow.
             </p>
-            <p>
-              Pick colors per scheme in one of three ways. Tokens that already
-              flip with your theme:
-            </p>
-            <div class="code-well">
-              <p class="code-label readout-label">In your CSS</p>
-              <pre
-                class="code-block"
-              ><code class="language-css" id="docs-flip-tokens">:root {
+            <p>Pick colors per scheme in one of three ways.</p>
+            <wa-tab-group class="install-tabs">
+              <wa-tab
+                slot="nav"
+                panel="tokens"
+                active
+              >
+                Theme tokens
+              </wa-tab>
+              <wa-tab
+                slot="nav"
+                panel="scheme"
+              >
+                Scheme rule
+              </wa-tab>
+              <wa-tab
+                slot="nav"
+                panel="light-dark"
+              >
+                light-dark()
+              </wa-tab>
+              <wa-tab-panel
+                name="tokens"
+                active
+              >
+                <div class="wa-stack wa-gap-s">
+                  <p class="install-note">
+                    Point both ends at tokens that already flip with your theme.
+                  </p>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your CSS</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-css" id="docs-flip-tokens">:root {
   --hop-start: var(--brand-500);
   --hop-end: var(--accent-500);
 }</code></pre>
-              <wa-copy-button
-                class="code-copy"
-                from="docs-flip-tokens"
-                copy-label="Copy CSS"
-              ></wa-copy-button>
-            </div>
-            <p>
-              A scheme rule, or a class your theme switch sets (like
-              <code>.dark</code>
-              ):
-            </p>
-            <div class="code-well">
-              <p class="code-label readout-label">In your CSS</p>
-              <pre
-                class="code-block"
-              ><code class="language-css" id="docs-flip-scheme">:root {
+                    <wa-copy-button
+                      class="code-copy"
+                      from="docs-flip-tokens"
+                      copy-label="Copy CSS"
+                    ></wa-copy-button>
+                  </div>
+                </div>
+              </wa-tab-panel>
+              <wa-tab-panel name="scheme">
+                <div class="wa-stack wa-gap-s">
+                  <p class="install-note">
+                    Set the ends again in a scheme query, or under the class
+                    your theme switch sets (like
+                    <code>.dark</code>
+                    ).
+                  </p>
+                  <div class="code-well">
+                    <p class="code-label readout-label">In your CSS</p>
+                    <pre
+                      class="code-block"
+                    ><code class="language-css" id="docs-flip-scheme">:root {
   --hop-start: teal;
   --hop-end: royalblue;
 }
@@ -906,40 +976,44 @@
     --hop-end: lightskyblue;
   }
 }</code></pre>
-              <wa-copy-button
-                class="code-copy"
-                from="docs-flip-scheme"
-                copy-label="Copy CSS"
-              ></wa-copy-button>
-            </div>
-            <p>
-              Or
-              <code>light-dark()</code>
-              , which picks its first color on a light page and its second on a
-              dark one:
-            </p>
-            <figure class="example">
-              <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
-                <div class="two-sides">
-                  <h2 role="none"><hue-hop>Hey Ya!</hue-hop></h2>
+                    <wa-copy-button
+                      class="code-copy"
+                      from="docs-flip-scheme"
+                      copy-label="Copy CSS"
+                    ></wa-copy-button>
+                  </div>
                 </div>
-              </div>
-              <style data-example-css>
-                .two-sides {
-                  --hop-start: light-dark(teal, aquamarine);
-                  --hop-end: light-dark(royalblue, lightskyblue);
-                }
-              </style>
-            </figure>
-            <p>
-              <code>light-dark()</code>
-              needs
-              <code>color-scheme</code>
-              on the page (
-              <code>:root { color-scheme: light dark; }</code>
-              ). Without it you always get the light value. This page sets it,
-              which is why the example flips.
-            </p>
+              </wa-tab-panel>
+              <wa-tab-panel name="light-dark">
+                <div class="wa-stack wa-gap-s">
+                  <p class="install-note">
+                    <code>light-dark()</code>
+                    picks its first color on a light page and its second on a
+                    dark one. It needs
+                    <code>color-scheme</code>
+                    on the page (
+                    <code>:root { color-scheme: light dark; }</code>
+                    ), or you always get the light value. This page sets it,
+                    which is why the example flips.
+                  </p>
+                  <figure class="example">
+                    <div
+                      class="example-preview wa-not-prose wa-stack wa-gap-xs"
+                    >
+                      <div class="two-sides">
+                        <h2 role="none"><hue-hop>Hey Ya!</hue-hop></h2>
+                      </div>
+                    </div>
+                    <style data-example-css>
+                      .two-sides {
+                        --hop-start: light-dark(teal, aquamarine);
+                        --hop-end: light-dark(royalblue, lightskyblue);
+                      }
+                    </style>
+                  </figure>
+                </div>
+              </wa-tab-panel>
+            </wa-tab-group>
           </section>
           <section
             id="drift"
@@ -1163,7 +1237,7 @@
                 <dt class="readout-label">Hidden text</dt>
                 <dd>
                   Put screen-reader-only text outside the element. Inside, it
-                  still uses up hops, so the visible letters may not reach
+                  still uses up steps, so the visible letters may not reach
                   <code>--hop-end</code>
                   .
                 </dd>
@@ -1304,9 +1378,9 @@
                 label="Warning"
               ></wa-icon>
               <strong>Too much lift gets clipped.</strong>
-              Past what an sRGB screen can show, the middle letters get cut
-              back, and on a white page that can lower their contrast. Check the
-              middle letters. The
+              Past the sRGB range (the colors a typical screen can show), the
+              middle letters get cut back, and on a white page that can lower
+              their contrast. Check the middle letters. The
               <a
                 class="hop-link"
                 href="{{studio-url}}"
@@ -1407,8 +1481,9 @@
                   rule of yours that sets
                   <code>color</code>
                   wins in every browser, and the letter colors come back after.
-                  Without one, Chrome and Safari keep the letter colors on the
-                  selection background. Firefox uses its own selection colors.
+                  Without one, it depends on the browser (see
+                  <a href="#browser-differences">Browser Differences</a>
+                  ).
                 </dd>
               </div>
               <div>
@@ -1423,11 +1498,10 @@
                 <dt class="readout-label">Links inside</dt>
                 <dd>
                   They lose their own color in every state, hover and visited
-                  included. They keep their focus ring and underline. Firefox
-                  and Safari draw it in the link's color. Chrome paints it in
-                  each letter's color, and
-                  <code>text-decoration-color</code>
-                  only shows under the spaces.
+                  included. They keep their focus ring and underline. The
+                  underline's color depends on the browser (see
+                  <a href="#browser-differences">Browser Differences</a>
+                  ).
                 </dd>
               </div>
               <div>
@@ -1457,6 +1531,62 @@
                 </dd>
               </div>
             </dl>
+            <h3 id="browser-differences">Browser Differences</h3>
+            <wa-scroller>
+              <table class="quirk-table">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <span class="wa-visually-hidden">Case</span>
+                    </th>
+                    <th scope="col">Chrome</th>
+                    <th scope="col">Firefox</th>
+                    <th scope="col">Safari</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Selected text, without your
+                      <code>::selection</code>
+                      rule
+                    </th>
+                    <td>Letter colors on the selection background</td>
+                    <td>Firefox's own selection colors</td>
+                    <td>Letter colors on the selection background</td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Link underline
+                    </th>
+                    <td>
+                      Each letter's color.
+                      <code>text-decoration-color</code>
+                      only shows under spaces.
+                    </td>
+                    <td>The link's color</td>
+                    <td>The link's color</td>
+                  </tr>
+                  <tr>
+                    <th
+                      scope="row"
+                      class="readout-label"
+                    >
+                      Ligatures
+                    </th>
+                    <td>Colors split where the step changes</td>
+                    <td>Colors split where the step changes</td>
+                    <td>The whole ligature takes its first letter's color</td>
+                  </tr>
+                </tbody>
+              </table>
+            </wa-scroller>
             <h3 id="coloring-things-nearby">Coloring Things Nearby</h3>
             <p>
               Hue Hop only colors letters. To match a list marker, a badge or a
@@ -1931,9 +2061,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               API
             </h2>
             <p>
-              The tables come straight from
+              These tables are generated from
               <code>custom-elements.json</code>
-              .
+              , so they match the package.
             </p>
             <h3 id="attributes">Attributes</h3>
             <wa-scroller>
@@ -2023,17 +2153,17 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               Attribute
             </h3>
             <p>
-              The element writes its step count on itself, like
+              The element writes its step count on itself (like
               <code>hops="13"</code>
-              and reads it from its own stylesheet. Don't set it. A hand-set
-              value can miscolor the letters until the text changes.
+              ) and reads it back from its own stylesheet. Don't set it: a
+              hand-set value can miscolor the letters until the text changes.
             </p>
             <p>
-              Each letter gets its own step, up to 64. Spaces don't count.
-              Longer text shares steps, so a 200-letter heading still runs the
-              whole ramp with about three letters per color. Past 64, every
-              extra step would slow each restyle on the page, theme switches and
-              drift included.
+              Every letter except a space gets its own step, up to 64. Longer
+              text shares steps, so a 200-letter heading still runs the whole
+              ramp at about three letters per color. More steps would slow every
+              restyle (the browser working out styles again) on the page, theme
+              switches and drift included.
             </p>
             <p>Type in the box to watch the count.</p>
             <figure
@@ -2244,8 +2374,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <h3 id="limits-text">Text</h3>
             <ul>
               <li>
-                Links inside, selected text, and gradient text each behave a
-                little differently. See
+                Links inside, selected text, gradient text, and ligatures each
+                behave a little differently. See
                 <a href="#styling">Styling Around It</a>
                 .
               </li>
@@ -2258,15 +2388,10 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 Find in page still shows its matches. The colors come back
                 after.
               </li>
-              <li>Color emoji keep their own colors and use one hop each.</li>
-              <li>
-                Chrome and Firefox split a ligature's colors at the step
-                boundary. Safari paints the whole ligature in its first letter's
-                color.
-              </li>
+              <li>Color emoji keep their own colors and use one step each.</li>
               <li>
                 A letter split across two elements (a base letter in one, a
-                combining mark in the next) counts as two hops.
+                combining mark in the next) counts as two steps.
               </li>
               <li>
                 The steps follow reading order, so mixed-direction text jumps
@@ -2286,7 +2411,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 or hide an ancestor. Those recolor when they show.
               </li>
               <li>
-                Screen-reader-only text inside the element still uses up hops,
+                Screen-reader-only text inside the element still uses up steps,
                 so the visible letters may not reach
                 <code>--hop-end</code>
                 .
@@ -2381,7 +2506,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 <code>color-scheme</code>
                 on the page, so
                 <code>light-dark()</code>
-                always picks the light side. Add
+                always picks the light value. Add
                 <code>:root { color-scheme: light dark; }</code>
                 . See
                 <a href="#light-and-dark">Light and Dark</a>
@@ -2530,8 +2655,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   The CSS Custom Highlight API paints the colors. Each letter
                   gets a
                   <code>StaticRange</code>
-                  over the real text node, and each step is one highlight. So
-                  there are no spans. The element adds two things: its
+                  (a fixed start and end point in the text) over the real text
+                  node, and each step is one highlight. So there are no spans.
+                  The element adds two things: its
                   <code>hops</code>
                   attribute, and a shadow root holding one
                   <code>&lt;slot&gt;</code>

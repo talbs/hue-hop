@@ -190,7 +190,9 @@
   color: var(--ink);
 }
 
-.docs-page .wa-prose :is(.fact-list dt, .compare-table tbody th) {
+.docs-page
+  .wa-prose
+  :is(.fact-list dt, .compare-table tbody th, .quirk-table tbody th) {
   color: var(--ink-faint);
 }
 
@@ -614,7 +616,7 @@ wa-scroller > table {
   text-wrap: balance;
 }
 
-.wa-prose .compare-table tbody th {
+.wa-prose :is(.compare-table, .quirk-table) tbody th {
   font-weight: var(--weight-body);
 }
 

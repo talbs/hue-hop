@@ -6,7 +6,7 @@ It's one custom element, `<hue-hop>`, with no dependencies and under 2.5 KB gzip
 
 **[See it live, and read the docs →](https://huehop.dev/)**
 
-0.x: pin a version. Names and defaults may change before 1.0.
+Pin a version. Names and defaults may change before 1.0.
 
 ## Use it
 
