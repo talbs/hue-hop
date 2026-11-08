@@ -989,6 +989,14 @@
   font: 0.875rem / 1.55 var(--font-code);
 }
 
+.term:focus-visible {
+  outline-offset: -2px;
+}
+
+[data-side='b'] .term:focus-visible {
+  outline-color: var(--ink);
+}
+
 .term code {
   padding: 0;
   background: none;
