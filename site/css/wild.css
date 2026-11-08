@@ -662,7 +662,7 @@
   inline-size: 50%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #f4efe3;
+  background: #f6f1e5;
   color: #2a2620;
   text-align: center;
 }
@@ -1111,7 +1111,7 @@
 }
 
 .tape-paper {
-  fill: #f3f3f1;
+  fill: #f4f4f2;
 }
 
 .tape-window {
