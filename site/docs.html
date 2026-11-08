@@ -1502,6 +1502,34 @@
               . Colors stay correct. If your test runner fails on console
               errors, let that one line through.
             </wa-callout>
+            <h3 id="server-rendering">Server Rendering</h3>
+            <p>
+              Importing it on the server is safe. There's no browser there, so
+              it does nothing, and the heading goes out as plain text. The
+              colors arrive when the same import runs in the browser.
+            </p>
+            <p>
+              So import it from code that also runs in the browser. Code that
+              only runs on the server never defines the element on the page.
+            </p>
+            <ul>
+              <li>
+                Next.js: import it in a file that starts with
+                <code>'use client'</code>
+                , not in a Server Component.
+              </li>
+              <li>
+                Astro: import it in a
+                <code>&lt;script&gt;</code>
+                tag, not in the frontmatter.
+              </li>
+              <li>
+                Nuxt: import it in a plugin named like
+                <code>plugins/hue-hop.client.js</code>
+                .
+              </li>
+              <li>SvelteKit: import it in the component. That runs in both.</li>
+            </ul>
             <h3 id="vue-and-angular">Vue and Angular</h3>
             <p>
               Both need to be told that
@@ -1564,9 +1592,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <p>
               <code>HueHop</code>
               itself won't work here. The import already registered it, and a
-              class can only be registered once. Use one tag per page or shadow
-              root. Two tags in one root make one of them fall back to plain
-              text.
+              class can only be registered once. Your tag and
+              <code>&lt;hue-hop&gt;</code>
+              can share a page.
             </p>
             <p>
               A subclass that defines its own
@@ -2366,10 +2394,6 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <h3 id="limits-setup">Setup</h3>
             <ul>
               <li>
-                One tag per page or shadow root. Two tags in one root make one
-                of them fall back to plain text.
-              </li>
-              <li>
                 A subclass with a closed shadow root doesn't get the hues. Its
                 letters still step if you set your own ends.
               </li>
@@ -2428,14 +2452,6 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                     Forced colors or increased contrast is on. The effect turns
                     off on purpose. See
                     <a href="#accessibility">Accessibility</a>
-                    .
-                  </li>
-                  <li>
-                    Two tags in one page or shadow root, like
-                    <code>hue-hop</code>
-                    and a subclass. One falls back to plain text, so stick to
-                    one tag. See
-                    <a href="#another-tag">Another Tag</a>
                     .
                   </li>
                   <li>
