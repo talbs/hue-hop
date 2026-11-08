@@ -60,6 +60,11 @@ test('a hue colors the element with only the script loaded', async () => {
   }
 });
 
+test('importing without a dom does not throw', async () => {
+  const { HueHop } = await import('../dist/hue-hop.js');
+  assert.equal(typeof HueHop, 'function');
+});
+
 test('page css beats a hue, and a hue beats inherited values', async () => {
   const hop = '<hue-hop id="t" class="x" hue="dusk">Nas</hue-hop>';
   const rows = [

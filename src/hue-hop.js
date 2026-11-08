@@ -1,7 +1,7 @@
 import formula from './formula.css';
 import hues from './hues.css';
 
-const hasSupport = 'highlights' in CSS;
+const hasSupport = typeof CSS !== 'undefined' && 'highlights' in CSS;
 
 const segmenter =
   hasSupport && new Intl.Segmenter(undefined, { granularity: 'grapheme' });
@@ -226,7 +226,10 @@ function paint(element) {
   boxWatcher.observe(element);
 }
 
-export class HueHop extends HTMLElement {
+// Server renderers import components without a DOM, so the class needs a base that exists there.
+const BaseElement = globalThis.HTMLElement ?? class {};
+
+export class HueHop extends BaseElement {
   static get observedAttributes() {
     return colorAttributes;
   }
@@ -295,4 +298,6 @@ if (hasSupport) {
   });
 }
 
-if (!customElements.get('hue-hop')) customElements.define('hue-hop', HueHop);
+if (globalThis.customElements && !customElements.get('hue-hop')) {
+  customElements.define('hue-hop', HueHop);
+}
