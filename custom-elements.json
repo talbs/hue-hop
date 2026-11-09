@@ -33,6 +33,46 @@
               "description": "The color of the last letter, which sets `--hop-end` on this element. Left out, it comes from `hue` if one is set. Otherwise it's picked from the start color."
             },
             {
+              "name": "curve",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "curve",
+              "description": "How the steps are spaced, which sets `--hop-curve` on this element. `1` is even, higher stays near the start color longer, and lower reaches the end color sooner."
+            },
+            {
+              "name": "boost",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "boost",
+              "description": "How much extra color intensity the middle letters get, which sets `--hop-boost` on this element and beats a hue's own boost."
+            },
+            {
+              "name": "shift",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "shift",
+              "description": "Turns each letter's hue by this many degrees, which sets `--hop-shift` on this element. Write a plain number (`30`, not `30deg`)."
+            },
+            {
+              "name": "drift-range",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "driftRange",
+              "description": "How many degrees the hues sway each way, which sets `--hop-drift-range` on this element. Does nothing without `drift`."
+            },
+            {
+              "name": "drift-cycle",
+              "type": {
+                "text": "string"
+              },
+              "fieldName": "driftCycle",
+              "description": "How long one full sway there and back takes, like `4s`, which sets `--hop-drift-cycle` on this element. Does nothing without `drift`."
+            },
+            {
               "name": "drift",
               "type": {
                 "text": "boolean"
@@ -84,6 +124,51 @@
               },
               "attribute": "end",
               "description": "The color of the last letter, mirroring the `end` attribute, where `null` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "curve",
+              "type": {
+                "text": "string | null"
+              },
+              "attribute": "curve",
+              "description": "How the steps are spaced, mirroring the `curve` attribute, where `null` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "boost",
+              "type": {
+                "text": "string | null"
+              },
+              "attribute": "boost",
+              "description": "How much extra color intensity the middle letters get, mirroring the `boost` attribute, where `null` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "shift",
+              "type": {
+                "text": "string | null"
+              },
+              "attribute": "shift",
+              "description": "How many degrees each letter's hue turns, mirroring the `shift` attribute, where `null` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "driftRange",
+              "type": {
+                "text": "string | null"
+              },
+              "attribute": "drift-range",
+              "description": "How many degrees the hues sway each way, mirroring the `drift-range` attribute, where `null` removes it."
+            },
+            {
+              "kind": "field",
+              "name": "driftCycle",
+              "type": {
+                "text": "string | null"
+              },
+              "attribute": "drift-cycle",
+              "description": "How long one full sway takes, mirroring the `drift-cycle` attribute, where `null` removes it."
             },
             {
               "kind": "field",

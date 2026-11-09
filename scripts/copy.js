@@ -13,8 +13,8 @@ export const LLMS_RULES = [
   'The page needs a `color-scheme` to show the dark-scheme colors of a `hue`.',
   '`drift` needs `drift.css`.',
   'Keep link underlines on.',
-  'Set `--hop-curve` and `--hop-shift` once, on `:root` or a class.',
-  "A `hue`'s colors beat inherited values. To override one, set `start`, `end`, `--hop-start` or `--hop-end` on the element, in any CSS layer. Its boost is only a default, so any `--hop-boost` beats it, inherited or not.",
+  'Tune one heading with the `curve`, `boost`, `shift`, `drift-range` and `drift-cycle` attributes. Write values as CSS would (`drift-cycle="4s"`, `shift="30"`). To tune every heading, set `--hop-curve` and the rest on `:root` or a class instead.',
+  "A `hue`'s colors beat inherited values. To override one, set `start`, `end`, `--hop-start` or `--hop-end` on the element, in any CSS layer. Its boost is only a default, so a `boost` attribute or any `--hop-boost` beats it, inherited or not.",
   '`display` is for large text only.',
   'Pin the version.',
 ];

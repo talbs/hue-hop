@@ -23,6 +23,11 @@ declare module 'react' {
           display?: boolean;
           start?: string;
           end?: string;
+          curve?: string | number;
+          boost?: string | number;
+          shift?: string | number;
+          'drift-range'?: string | number;
+          'drift-cycle'?: string;
         };
     }
   }

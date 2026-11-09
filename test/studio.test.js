@@ -100,21 +100,21 @@ test('checker matches the element', async () => {
     ],
     [
       'reef with curve 2',
-      'hue="reef" style="--hop-curve: 2"',
+      'hue="reef" curve="2"',
       'Respiration',
       11,
       { curve: 2, boost: 0.021, shift: 0 },
     ],
     [
       'custom with boost',
-      `${customEnds} style="--hop-boost: 0.05"`,
+      `${customEnds} boost="0.05"`,
       'Respiration',
       11,
       { ...atRest, boost: 0.05 },
     ],
     [
       'custom with shift',
-      `${customEnds} style="--hop-shift: 40"`,
+      `${customEnds} shift="40"`,
       'Respiration',
       11,
       { ...atRest, shift: 40 },
@@ -326,12 +326,12 @@ test('fit keeps its promise per side', async () => {
 
     const startAttribute = plan.start.text ? `start="${plan.start.text}"` : '';
     const endAttribute = plan.end.text ? `end="${plan.end.text}"` : '';
-    const style = `--hop-curve: ${tuning.curve}; --hop-boost: ${tuning.boost}; --hop-shift: ${tuning.shift}`;
+    const tuningAttributes = `curve="${tuning.curve}" boost="${tuning.boost}" shift="${tuning.shift}"`;
     await page.evaluate(
       (html) => {
         document.body.innerHTML = html;
       },
-      `<hue-hop ${startAttribute} ${endAttribute} style="${style}">${'ab'.repeat(35).slice(0, letterTotal)}</hue-hop>`
+      `<hue-hop ${startAttribute} ${endAttribute} ${tuningAttributes}>${'ab'.repeat(35).slice(0, letterTotal)}</hue-hop>`
     );
 
     const { hops, letters } = await readElementColors(page, 'hue-hop');

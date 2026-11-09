@@ -301,6 +301,21 @@
               <a href="#your-own-colors">Your Own Colors</a>
               .
             </p>
+            <p>
+              Tune it with
+              <code>curve</code>
+              ,
+              <code>boost</code>
+              and
+              <code>shift</code>
+              on the same tag. For a whole site, set
+              <code>--hop-curve</code>
+              and the rest on
+              <code>:root</code>
+              instead. See
+              <a href="#tuning">Tuning the Ramp</a>
+              .
+            </p>
           </section>
           <section
             id="where-it-fits"
@@ -635,10 +650,10 @@
             </p>
             <p>
               A rule on the element beats the hue, even inside a cascade layer,
-              so Tailwind v4 utilities work with no setup. A value on a parent,
-              like
+              so Tailwind v4 utilities work with no setup. A color set on a
+              parent, like
               <code>:root</code>
-              , loses to the hue. See
+              , loses to the hue. A boost set there beats it. See
               <a href="#which-value-wins">Which Value Wins</a>
               .
             </p>
@@ -771,9 +786,12 @@
                 <dt class="readout-label">The attribute</dt>
                 <dd>
                   <code>start</code>
-                  or
+                  ,
                   <code>end</code>
-                  on the element. Each value becomes a rule like
+                  ,
+                  <code>curve</code>
+                  or any other tuning attribute on the element. Each value
+                  becomes a rule like
                   <code>hue-hop[start="teal"]</code>
                   , and that's the rule yours has to beat.
                 </dd>
@@ -813,12 +831,24 @@
               <code>el.display</code>
               and
               <code>el.drift</code>
-              read and set the attributes.
-              <code>hue</code>
+              read and set the attributes. So do
+              <code>el.curve</code>
               ,
-              <code>start</code>
+              <code>el.boost</code>
+              ,
+              <code>el.shift</code>
+              ,
+              <code>el.driftRange</code>
               and
-              <code>end</code>
+              <code>el.driftCycle</code>
+              . The last two set
+              <code>drift-range</code>
+              and
+              <code>drift-cycle</code>
+              . All of these except
+              <code>display</code>
+              and
+              <code>drift</code>
               take
               <code>null</code>
               to remove the attribute.
@@ -1120,27 +1150,34 @@
               </div>
             </figure>
             <p>
-              Two custom properties set the sway. The range is a plain number,
-              and the cycle is a time like
+              Two attributes set the sway, like
+              <code>&lt;hue-hop hue="ember" drift drift-cycle="4s"&gt;</code>
+              . The range is a plain number, and the cycle is a time like
               <code>10s</code>
+              . Each has a custom property too, for setting it in CSS. Neither
+              does anything without
+              <code>drift</code>
               .
             </p>
             <wa-scroller>
               <table>
                 <thead>
                   <tr>
-                    <th scope="col">Property</th>
+                    <th scope="col">Attribute</th>
+                    <th scope="col">Custom property</th>
                     <th scope="col">Default</th>
                     <th scope="col">What it does</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
+                    <td><code>drift-range</code></td>
                     <td><code>--hop-drift-range</code></td>
                     <td><code>24</code></td>
                     <td>How many degrees the hues sway each way.</td>
                   </tr>
                   <tr>
+                    <td><code>drift-cycle</code></td>
                     <td><code>--hop-drift-cycle</code></td>
                     <td><code>10s</code></td>
                     <td>How long one full sway there and back takes.</td>
@@ -1305,18 +1342,18 @@
               Tuning the Ramp
             </h2>
             <p>
-              Three custom properties shape the steps between your two ends.
-              None of them has an attribute. Set them once, on
-              <code>:root</code>
-              or a class, and every heading under it follows. A
-              <code>hue</code>
-              brings its own boost, but only as a default. Any
-              <code>--hop-boost</code>
-              beats it, even one on
-              <code>:root</code>
-              . The examples set them in
-              <code>style</code>
-              so you can see the one value that changes.
+              Three attributes shape the steps between your two ends:
+              <code>curve</code>
+              ,
+              <code>boost</code>
+              and
+              <code>shift</code>
+              . Set them on the heading you're tuning, like
+              <code>&lt;hue-hop hue="reef" curve="2"&gt;</code>
+              . The values are what you'd write in CSS. To tune every heading at
+              once, see
+              <a href="#tuning-in-css">Tuning in CSS</a>
+              .
             </p>
             <h3 id="curve">Curve</h3>
             <p>
@@ -1334,7 +1371,7 @@
                   <h2 role="none">
                     <hue-hop
                       hue="ember"
-                      style="--hop-curve: 1"
+                      curve="1"
                     >
                       Step in the Arena
                     </hue-hop>
@@ -1372,9 +1409,11 @@
               <code>0</code>
               , and every ready-made hue sets
               <code>0.021</code>
-              . Any
+              . A
+              <code>boost</code>
+              attribute beats a hue's, and so does any
               <code>--hop-boost</code>
-              beats a hue's, even one set on
+              , even one set on
               <code>:root</code>
               .
             </p>
@@ -1388,7 +1427,7 @@
                     <hue-hop
                       start="oklch(60% 0.12 200)"
                       end="oklch(60% 0.12 300)"
-                      style="--hop-boost: 0"
+                      boost="0"
                     >
                       Sky's the Limit
                     </hue-hop>
@@ -1464,7 +1503,7 @@
                   <h2 role="none">
                     <hue-hop
                       hue="dusk"
-                      style="--hop-shift: 0"
+                      shift="0"
                     >
                       Around the Way Girl
                     </hue-hop>
@@ -1497,6 +1536,83 @@
             <p>
               Contrast can still move a little as the hues turn. A shifted
               ready-made hue isn't the one that was measured, so check it.
+            </p>
+            <h3 id="tuning-in-css">Tuning in CSS</h3>
+            <p>
+              Every tuning attribute has a custom property. Set it on
+              <code>:root</code>
+              or a class, and every heading under it follows. No attribute
+              needed.
+            </p>
+            <wa-scroller>
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Attribute</th>
+                    <th scope="col">Custom property</th>
+                    <th scope="col">Default</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>curve</code></td>
+                    <td><code>--hop-curve</code></td>
+                    <td><code>1</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>boost</code></td>
+                    <td><code>--hop-boost</code></td>
+                    <td><code>0</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>shift</code></td>
+                    <td><code>--hop-shift</code></td>
+                    <td><code>0</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>drift-range</code></td>
+                    <td><code>--hop-drift-range</code></td>
+                    <td><code>24</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>drift-cycle</code></td>
+                    <td><code>--hop-drift-cycle</code></td>
+                    <td><code>10s</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </wa-scroller>
+            <div class="code-well">
+              <p class="code-label readout-label">In your CSS</p>
+              <pre
+                class="code-block"
+              ><code class="language-css" id="docs-tuning-css">:root {
+  --hop-curve: 1.4;
+  --hop-boost: 0.03;
+}
+
+.hero {
+  --hop-drift-cycle: 20s;
+}
+
+@media (min-width: 60rem) {
+  :root {
+    --hop-shift: 20;
+  }
+}</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-tuning-css"
+                copy-label="Copy CSS"
+              ></wa-copy-button>
+            </div>
+            <p>
+              An attribute on a heading beats these, so one heading can still
+              differ. To beat an attribute from CSS, use
+              <code>style</code>
+              or a more specific rule. See
+              <a href="#which-value-wins">Which Value Wins</a>
+              .
             </p>
           </section>
           <section
@@ -2156,14 +2272,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 name="comment-dots"
                 label="Note"
               ></wa-icon>
-              <strong>
-                Curve, boost, shift, drift range, and drift cycle have no
-                attributes.
-              </strong>
+              <strong>Every tuning attribute has a custom property too.</strong>
               See
-              <a href="#tuning">Tuning the Ramp</a>
-              and
-              <a href="#drift">Drift</a>
+              <a href="#tuning-in-css">Tuning in CSS</a>
               .
             </wa-callout>
             <h3 id="highlights">Highlights</h3>
@@ -2492,6 +2603,24 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <dd>
                 <ul>
                   <li>
+                    A
+                    <code>curve</code>
+                    ,
+                    <code>boost</code>
+                    or
+                    <code>shift</code>
+                    value isn't valid CSS, like
+                    <code>shift="30deg"</code>
+                    (write
+                    <code>30</code>
+                    ). Hue Hop passes values through unchecked, so the letters
+                    fall back to the heading's normal color. A bad
+                    <code>drift-range</code>
+                    or
+                    <code>drift-cycle</code>
+                    only stops the sway.
+                  </li>
+                  <li>
                     An older browser. Below the floor the heading stays plain on
                     purpose. See
                     <a href="#browser-support">Browser Support</a>
@@ -2634,7 +2763,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   <h2 role="none">
                     <hue-hop
                       hue="dusk"
-                      style="--hop-curve: 1"
+                      curve="1"
                     >
                       Aquemini
                     </hue-hop>
