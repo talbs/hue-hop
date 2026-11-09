@@ -170,10 +170,6 @@
                     ></wa-copy-button>
                   </div>
                   <p class="install-note">
-                    The
-                    <code>color-scheme</code>
-                    line lets the hues follow the visitor's light or dark
-                    setting. Leave it out and you always get the light colors.
                     Already have a page? Copy only the
                     <code>&lt;script&gt;</code>
                     tag.
@@ -207,12 +203,23 @@
               <wa-tab-panel name="self-host">
                 <div class="wa-stack wa-gap-s">
                   <p class="install-note">
-                    Copy
-                    <code>dist/hue-hop.js</code>
-                    from the package into your site and load it like any other
-                    file. Add drift by copying
-                    <code>dist/drift.css</code>
-                    too and loading it with a
+                    Save
+                    <a
+                      href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/hue-hop.js"
+                    >
+                      <code>hue-hop.js</code>
+                    </a>
+                    to your site's
+                    <code>/js/</code>
+                    folder. Add drift by saving
+                    <a
+                      href="https://cdn.jsdelivr.net/npm/{{cdn-version}}/dist/drift.css"
+                    >
+                      <code>drift.css</code>
+                    </a>
+                    to
+                    <code>/css/</code>
+                    and loading it with a
                     <code>&lt;link&gt;</code>
                     .
                   </p>
@@ -233,6 +240,23 @@
                 </div>
               </wa-tab-panel>
             </wa-tab-group>
+            <p>
+              Then set
+              <code>color-scheme</code>
+              so the hues follow the visitor's light or dark setting. Without
+              it, dark pages get the light colors.
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your head</p>
+              <pre
+                class="code-block"
+              ><code class="language-html" id="docs-color-scheme">&lt;meta name="color-scheme" content="light dark"&gt;</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-color-scheme"
+                copy-label="Copy color-scheme tag"
+              ></wa-copy-button>
+            </div>
             <p>
               Loading it defines
               <code>&lt;hue-hop&gt;</code>
