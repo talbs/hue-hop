@@ -2,6 +2,12 @@
 
 Newest version first. Changes go under Added, Changed, Deprecated, Removed, Fixed, or Security. Anything breaking says **Breaking** and goes at the top.
 
+## 0.3.0
+
+### Changed
+
+- **Breaking:** An inherited `--hop-boost` now beats a hue's built-in boost. Set it on `:root` or a parent and hue headings follow. Before, only a `--hop-boost` on the element itself could change it.
+
 ## 0.2.0 · 2026-11-08
 
 The API this version ships is the one 1.0 will keep.

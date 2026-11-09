@@ -1,6 +1,6 @@
 @layer hue-hop {
   :where(hue-hop[hue]) {
-    --hop-boost: 0.021;
+    --_hop-hue-boost: 0.021;
   }
   :where(hue-hop[hue='dusk']) {
     --hop-start: light-dark(oklch(52.9% 0.107 231), oklch(84% 0.098 231));

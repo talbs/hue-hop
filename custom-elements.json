@@ -134,7 +134,7 @@
               "name": "--hop-boost",
               "syntax": "<number>",
               "default": "0",
-              "description": "How much extra color intensity (OKLCH chroma) the middle letters get, so the blend doesn't go dull halfway."
+              "description": "How much extra color intensity (OKLCH chroma) the middle letters get, so the blend doesn't go dull halfway. A hue's boost is a default, and any `--hop-boost` beats it, inherited or not."
             },
             {
               "name": "--hop-shift",
