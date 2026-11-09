@@ -7,6 +7,7 @@ import {
   segmentPitch,
 } from './motion.js';
 import { setSide, slatTiming } from './scheme.js';
+import { track } from './track.js';
 
 const sideToggle = document.getElementById('side-toggle');
 
@@ -150,6 +151,13 @@ document
   });
 
 // A tab group activates its first panel as it scrolls into view, so only a switch after that gets to animate.
-document.addEventListener('wa-tab-show', ({ target }) => {
+document.addEventListener('wa-tab-show', ({ target, detail }) => {
   target.toggleAttribute('data-ready', true);
+  if (target.matches('.install-tabs')) {
+    track('install-tab', { tab: detail.name });
+  }
+});
+
+document.addEventListener('wa-copy', ({ target }) => {
+  track('copy-code', { code: target.getAttribute('from') });
 });
