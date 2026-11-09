@@ -871,9 +871,15 @@ function stylesheetsNeeded() {
   return state.isDriftOn ? ['drift.css'] : [];
 }
 
+const SELF_HOST_JS_FOLDER = '/js/';
+const SELF_HOST_CSS_FOLDER = '/css/';
+
 function writeImports() {
   const lines = ["import 'hue-hop';"];
-  for (const name of stylesheetsNeeded()) {
+  const stylesheets = stylesheetsNeeded();
+  if (stylesheets.length > 0)
+    lines.push('// CSS imports need a bundler, like Vite');
+  for (const name of stylesheets) {
     lines.push(`import 'hue-hop/${name}';`);
   }
   return lines.join('\n');
@@ -889,9 +895,26 @@ function writeScriptTags(folder, cssFolder) {
   return tags.join('\n');
 }
 
-function writeSelfHostNote() {
-  const files = ['hue-hop.js', ...stylesheetsNeeded()].join(' and ');
-  return `Copy ${files} from the package's dist folder into your site.`;
+function showSelfHostNote(cdnFolder) {
+  const stylesheetsKey = stylesheetsNeeded().join(' ');
+  if (selfHostNote.dataset.stylesheets === stylesheetsKey) return;
+  selfHostNote.dataset.stylesheets = stylesheetsKey;
+
+  const files = [
+    ['hue-hop.js', SELF_HOST_JS_FOLDER],
+    ...stylesheetsNeeded().map((name) => [name, SELF_HOST_CSS_FOLDER]),
+  ];
+
+  const parts = ['Save '];
+  files.forEach(([name, folder], index) => {
+    if (index > 0) parts.push(' and ');
+    const link = document.createElement('a');
+    link.href = cdnFolder + name;
+    link.textContent = name;
+    parts.push(link, ` to your site's ${folder} folder`);
+  });
+  parts.push('.');
+  selfHostNote.replaceChildren(...parts);
 }
 
 function showCode() {
@@ -899,8 +922,11 @@ function showCode() {
   fillCode(importSnippet, writeImports());
   const cdnFolder = `https://cdn.jsdelivr.net/npm/${codeInstall.dataset.cdn}/dist/`;
   fillCode(cdnSnippet, writeScriptTags(cdnFolder, cdnFolder));
-  fillCode(selfHostSnippet, writeScriptTags('/js/', '/css/'));
-  setText(selfHostNote, writeSelfHostNote());
+  fillCode(
+    selfHostSnippet,
+    writeScriptTags(SELF_HOST_JS_FOLDER, SELF_HOST_CSS_FOLDER)
+  );
+  showSelfHostNote(cdnFolder);
 }
 
 let stopTyping = () => {};
