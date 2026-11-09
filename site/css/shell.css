@@ -36,12 +36,28 @@ wa-page::part(skip-to-content):focus-visible {
   z-index: 11;
   inset-block-start: var(--space-related);
   inset-inline-start: var(--gutter);
-  padding: var(--space-related) var(--space-group);
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding-inline: var(--space-group);
   border-radius: var(--radius-control);
   background: var(--surface-raised);
+  box-shadow: var(--depth-raised), var(--focus-glow);
   color: var(--ink);
-  font-size: var(--type-small);
-  outline: var(--border-thick) solid var(--focus);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (min-width: 50rem) {
+  wa-page::part(skip-to-content):focus-visible {
+    min-height: var(--bar-control);
+  }
 }
 
 /* wa-page lays its slots out as padded flex rows. */
