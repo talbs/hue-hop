@@ -93,8 +93,10 @@ const isHighlightingCode =
   !matchMedia('(forced-colors: active)').matches;
 
 if (isHighlightingCode) {
-  const setHighlight = CSS.highlights.set.bind(CSS.highlights);
-  CSS.highlights.set = (name, highlight) => {
+  // WebKit garbage-collects the CSS.highlights wrapper object and drops anything assigned to it, so the patch goes on its prototype.
+  const registryPrototype = Object.getPrototypeOf(CSS.highlights);
+  const setHighlight = registryPrototype.set.bind(CSS.highlights);
+  registryPrototype.set = (name, highlight) => {
     const extraRanges = extraRangesForPass();
     extraRanges[name]?.forEach((range) => highlight.add(range));
     setHighlight(name, highlight);
