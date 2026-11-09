@@ -227,17 +227,6 @@ wa-page::part(subheader) {
   color: var(--ink);
 }
 
-.side-name {
-  display: none;
-  min-width: 5ch;
-  text-align: start;
-}
-
-[data-side='a'] .side-name-b,
-[data-side='b'] .side-name-a {
-  display: none;
-}
-
 .site-footer {
   margin-block-start: var(--space-page);
   border-block-start: var(--border-thin) solid var(--divider);
@@ -330,10 +319,6 @@ wa-page::part(subheader) {
     grid-template-columns: auto 1fr auto;
     grid-template-areas: 'wordmark nav side';
     padding-block: var(--space-related);
-  }
-
-  .side-name {
-    display: inline;
   }
 }
 

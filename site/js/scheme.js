@@ -103,10 +103,29 @@ export function whenSideChanges(callback) {
   });
 }
 
+// A named layer is drawn above the whole page snapshot, sticky header included. So the wordmark only gets its own layer while it sits fully below the header.
+function isClearOfHeader(wordmark) {
+  const header = document.querySelector('.site-header');
+  if (!wordmark || !header) return false;
+  const box = wordmark.getBoundingClientRect();
+  return (
+    box.top >= header.getBoundingClientRect().bottom &&
+    box.top < window.innerHeight
+  );
+}
+
 export function setSide(side) {
   if (document.startViewTransition && isMotionOk()) {
-    const edges = letterEdges(document.querySelector('.hero-title'));
+    const wordmark = document.querySelector('.hero-title');
+    const isWordmarkLifted = isClearOfHeader(wordmark);
+    const edges = isWordmarkLifted ? letterEdges(wordmark) : [];
+    if (!isWordmarkLifted) {
+      document.documentElement.setAttribute('data-wordmark-tucked', '');
+    }
     const transition = document.startViewTransition(() => showSide(side));
+    transition.finished.finally(() =>
+      document.documentElement.removeAttribute('data-wordmark-tucked')
+    );
     const timing = slatTiming();
     transition.ready.then(() => {
       document.documentElement.animate(slatFrames(timing), {

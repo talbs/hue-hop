@@ -54,76 +54,25 @@
 }
 
 .hero-body {
-  --flank-size: 30rem;
-  --content-percentage: 44%;
+  --content-percentage: 60%;
   gap: var(--space-section) var(--space-page);
-  margin-block-start: var(--space-page);
+  margin-block-start: var(--space-section);
 }
 
-/* The board's display, pressed in under the faders: the desk's sample words in each hue, with an LED per hue. */
-.hero-demo {
-  --stage-max: clamp(2rem, 1.5rem + 1.5vw, 3rem);
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: var(--space-section);
-  align-self: stretch;
-  container-type: inline-size;
-  min-height: 11rem;
-  padding: var(--space-group) var(--space-section) var(--space-section);
-  border: var(--border-thin) solid transparent;
-  border-radius: var(--radius-container);
+/* Sits at the pitch's end on a wide screen. Once it wraps under the pitch, it starts at the left edge instead of stretching. */
+.hero-actions {
+  flex-grow: 0;
+  padding: var(--wa-space-s);
+  border-radius: calc(var(--radius-control) + var(--wa-space-s));
   background: var(--surface-sunken);
   box-shadow: var(--depth-pressed);
-  color: inherit;
-  text-decoration: none;
-  transition: border-color var(--note-16) var(--ease-hit);
 }
 
-.hero-demo:hover {
-  border-color: var(--border-container);
-}
-
-.hero-demo:focus-visible {
-  box-shadow: var(--depth-pressed), var(--focus-glow);
-}
-
-.hero-demo-readout {
-  color: var(--ink-faint);
-}
-
-.hero-demo-led {
-  display: flex;
-}
-
-/* Segment ticks, like a level meter's, rather than round LEDs. */
-.hero-demo-led .led {
-  width: 3px;
-  height: 0.875rem;
-  border-radius: 1px;
-}
-
-.hero-demo .stage-text {
-  align-self: end;
-  white-space: nowrap;
-}
-
-.hero-demo-facts {
-  margin: 0 calc(var(--space-section) * -1) calc(var(--space-section) * -1);
-  padding: var(--space-group) var(--space-section);
-  border-block-start: var(--border-thin) solid var(--border-container);
-}
-
-.hero-demo-facts span {
-  padding: var(--space-tight) var(--space-related);
-  border: var(--border-thin) solid var(--border-container);
-  border-radius: var(--radius-control);
-  color: var(--ink-quiet);
-}
-
-.hero-demo-facts .hero-demo-still {
-  padding-inline: 0;
-  border-color: transparent;
-  color: var(--ink-faint);
+/* The links take the button's side padding, so the words sit evenly apart whether a frame is drawn or not. The underline stays under the word. */
+.hero-actions .hop-link {
+  padding-inline: var(--space-group);
+  background-origin: content-box;
+  background-clip: content-box;
 }
 
 .hero-pitch {
@@ -157,7 +106,7 @@
   margin-inline-end: var(--space-related);
 }
 
-/* A fixed meter behind the stage: twelve bars stepping up the way the colors step, bent by the Curve fader. */
+/* A fixed meter behind the stage: twelve bars stepping up the way the colors step. */
 .stage-eq {
   --segment: 10px;
   --segment-gap: 4px;
@@ -184,10 +133,7 @@
 .stage-text {
   min-width: 0;
   font-family: var(--font-display);
-  font-size: min(
-    var(--stage-max, var(--type-stage)),
-    100cqi / (var(--letters, 1) * 0.6)
-  );
+  font-size: min(var(--type-stage), 100cqi / (var(--letters, 1) * 0.6));
   font-weight: var(--weight-heading);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
@@ -209,7 +155,7 @@
 
 .desk-code {
   margin: 0 calc(var(--desk-pad) * -1) calc(var(--desk-pad) * -1);
-  padding: var(--desk-pad);
+  padding: var(--wa-space-l) var(--desk-pad);
   border-block-start: var(--border-thin) solid var(--border-container);
   border-radius: 0 0 var(--radius-container) var(--radius-container);
   background: var(--surface-sunken);
@@ -230,64 +176,26 @@
   overflow-wrap: anywhere;
 }
 
+/* The copy button is taller than one line of code. Pulling it in keeps it from padding the row below the code. */
 .desk-code .code-copy {
-  margin: 0;
+  margin-block: calc(
+    (var(--type-body) * var(--leading-tight) - var(--code-action-height)) / 2
+  );
+  margin-inline: 0;
 }
 
-.custom-ends {
-  --min-column-size: calc(10rem + var(--space-related));
+/* Seven chips in rows of four, so none is left alone on a phone. */
+.desk .hue-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.custom-ends[hidden] {
-  display: none;
-}
-
-:where(.custom-ends).reveal {
-  transition:
-    var(--reveal-transition),
-    visibility var(--note-16) var(--ease-hit);
-}
-
-.custom-end {
-  display: flex;
-  align-items: center;
-  gap: var(--space-group);
-}
-
-/* Side by side on a narrow desk, a wide gap would leave Start's AUTO closer to End's swatch than to its own label. */
-@media (width < 48rem) {
-  .custom-end {
-    gap: var(--space-related);
+/* At 320px the chip names need a smaller size to fit four across with room around them. */
+@media (width < 23rem) {
+  .desk .hue-chip {
+    padding-inline: var(--space-tight);
+    font-size: var(--type-small);
   }
 }
-
-/* Fills the row's height so it's a real target, not just its small label. */
-.custom-end .end-auto {
-  align-self: stretch;
-  padding-inline: var(--space-tight);
-}
-
-.desk .fader {
-  row-gap: var(--space-related);
-}
-
-.reset-button {
-  margin-inline-start: auto;
-}
-
-/* Filling each line keeps Reset from sitting alone at one edge when the row wraps. */
-@media (width < 28rem) {
-  .desk .hue-grid {
-    grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
-  }
-
-  .desk-switches .lit-button {
-    flex: 1 1 auto;
-    justify-content: center;
-    padding-inline: var(--space-related);
-  }
-}
-
 .lamp-led {
   width: 0.625rem;
   height: 0.625rem;
@@ -304,23 +212,28 @@
 
 .studio-caption {
   color: var(--ink-quiet);
-  font-size: var(--type-fine);
+  font-size: var(--type-small);
   line-height: var(--leading-tight);
-  text-align: center;
-  text-wrap: balance;
+}
+
+/* Plain inline links, so a long one can break across lines with the sentence. */
+.studio-caption .hop-link {
+  display: inline;
+}
+
+/* The footer's LED-segment divider, laid flat. */
+.desk > wa-divider {
+  --spacing: 0;
+  height: 2px;
+  border: 0;
+  background: repeating-linear-gradient(
+    to right,
+    var(--border-container) 0 2px,
+    transparent 2px 3px
+  );
 }
 
 @media (min-width: 48rem) {
-  .studio-cta {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-group);
-  }
-
-  .studio-caption {
-    text-align: start;
-  }
-
   .stage {
     --stage-pad-inline: var(--space-section);
     min-height: 16rem;
@@ -342,17 +255,6 @@
   .desk {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     column-gap: var(--space-page);
-  }
-
-  /* Holding the row's space keeps the panel still when Custom opens. Without display: none it can't use the reveal's starting style, so it waits up here for its drop, moving back only after the fade so the exit stays opacity only. */
-  .custom-ends[hidden] {
-    display: grid;
-    visibility: hidden;
-    translate: var(--reveal-drop);
-    transition:
-      opacity var(--note-32) var(--ease-hit),
-      visibility var(--note-32) var(--ease-hit),
-      translate 0s var(--note-32);
   }
 
   .desk-code {
