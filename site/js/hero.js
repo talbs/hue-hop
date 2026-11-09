@@ -83,6 +83,7 @@ for (const type of ['pointerup', 'pointerleave', 'pointercancel']) {
 title.addEventListener('click', (event) => {
   if (event.detail !== 1 || wasHeld || isSelecting() || !isMotionOk()) return;
   hopWordmark(LETTER_HOP);
+  skipDemoAhead();
 });
 
 // The hero stage steps through the desk's sample words, one hue each, every four beats. It holds still on hover, off screen and under reduced motion.
@@ -93,8 +94,10 @@ const sampleWords = [...document.querySelectorAll('#samples span')].map(
   (sample) => sample.textContent.trim()
 );
 const demoLeds = [...document.querySelectorAll('.hero-demo-led')];
+const hasDemo = Boolean(demo && sampleWords.length && demoLeds.length);
 let demoStep = 1;
 let demoTimer;
+let isDemoVisible = false;
 
 // Custom ends far apart on the wheel, which no preset spans. Each holds 4.5:1 across the whole word; Side B's are darker for the light background.
 const CUSTOM_PAIRS = [
@@ -124,11 +127,15 @@ function showSample(step) {
   }
 }
 
-function showNextSample() {
-  if (document.hidden || !isMotionOk()) return;
+function stepDemo() {
   demoStep += 1;
   showSample(demoStep);
   hopLetters(demoWord, LETTER_DROP);
+}
+
+function showNextSample() {
+  if (document.hidden || !isMotionOk()) return;
+  stepDemo();
   demoTimer = setTimeout(showNextSample, beatMs() * 4);
 }
 
@@ -139,7 +146,14 @@ function playDemo(isOn) {
   }
 }
 
-if (demo && sampleWords.length && demoLeds.length) {
+// Restarting the timer gives the clicked sample its full four beats.
+function skipDemoAhead() {
+  if (!hasDemo) return;
+  stepDemo();
+  playDemo(isDemoVisible);
+}
+
+if (hasDemo) {
   showSample(demoStep);
   document.addEventListener('sidechange', () => showSample(demoStep));
   demo.addEventListener('click', () => {
@@ -147,14 +161,13 @@ if (demo && sampleWords.length && demoLeds.length) {
       new CustomEvent('trysample', { detail: shownSample })
     );
   });
-  let isVisible = false;
   new IntersectionObserver(([entry]) => {
-    isVisible = entry.isIntersecting;
-    playDemo(isVisible);
+    isDemoVisible = entry.isIntersecting;
+    playDemo(isDemoVisible);
   }).observe(demo);
   demo.addEventListener('pointerenter', () => playDemo(false));
-  demo.addEventListener('pointerleave', () => playDemo(isVisible));
+  demo.addEventListener('pointerleave', () => playDemo(isDemoVisible));
   document.addEventListener('visibilitychange', () =>
-    playDemo(isVisible && !document.hidden)
+    playDemo(isDemoVisible && !document.hidden)
   );
 }
