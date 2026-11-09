@@ -158,7 +158,6 @@ input {
   ),
 .further-row:is(:hover, :focus-visible) .further-title,
 a.track-row:is(:hover, :focus-visible) .track-title,
-.hero-demo:is(:hover, :focus-visible) .hop-link,
 .hop-link[aria-current] {
   background-size:
     100% var(--border-thick),
@@ -364,6 +363,10 @@ a {
 
   ::view-transition-new(hero-wordmark) {
     clip-path: inset(0 100% 0 0);
+  }
+
+  :root[data-wordmark-tucked] .hero-title {
+    view-transition-name: none;
   }
 }
 

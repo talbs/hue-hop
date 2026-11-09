@@ -98,633 +98,36 @@
               Hue Hop
             </hue-hop>
           </h1>
-          <div class="hero-body wa-flank:end wa-align-items-start">
-            <div class="wa-stack wa-gap-l">
-              <p class="hero-pitch">
-                Give each letter of a heading or name its own color, stepped
-                from one color to another. The text stays real, so selection,
-                find-in-page and screen readers all work. No spans, no images,
-                no build step.
-              </p>
-              <div class="wa-cluster wa-gap-m">
-                <a
-                  class="lit-button is-lit"
-                  href="#try"
-                >
-                  <span
-                    class="led"
-                    aria-hidden="true"
-                  ></span>
-                  Try it
-                </a>
-                <a
-                  class="lit-button"
-                  href="{{docs-url}}"
-                >
-                  Docs
-                </a>
-                <a
-                  class="lit-button"
-                  href="{{studio-url}}"
-                >
-                  Studio
-                </a>
-              </div>
-            </div>
-            <a
-              class="hero-demo"
-              href="#try"
-            >
-              <span class="hero-demo-readout readout-label wa-split">
-                <span class="wa-cluster wa-gap-s">
-                  <span
-                    class="wa-cluster wa-gap-2xs"
-                    aria-hidden="true"
-                  >
-                    <span
-                      class="hero-demo-led"
-                      data-hue="dusk"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led is-lit"
-                      data-hue="reef"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led"
-                      data-hue="fern"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led"
-                      data-hue="ember"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led"
-                      data-hue="guava"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led"
-                      data-hue="orchid"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led"
-                      data-hue="honey"
-                    >
-                      <span class="led"></span>
-                    </span>
-                  </span>
-                  <span
-                    class="wa-cluster wa-gap-2xs"
-                    aria-hidden="true"
-                  >
-                    <span
-                      class="hero-demo-led"
-                      data-pair="0"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led"
-                      data-pair="1"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led"
-                      data-pair="2"
-                    >
-                      <span class="led"></span>
-                    </span>
-                    <span
-                      class="hero-demo-led"
-                      data-pair="3"
-                    >
-                      <span class="led"></span>
-                    </span>
-                  </span>
-                  <span id="hero-demo-hue">reef</span>
-                </span>
-                <span class="hop-link is-quiet">Try your own</span>
-              </span>
-              <span class="stage-text">
-                <hue-hop
-                  id="hero-demo-word"
-                  hue="reef"
-                >
-                  Ether
-                </hue-hop>
-              </span>
-              <span class="hero-demo-facts readout-label wa-cluster wa-gap-xs">
-                <span class="hero-demo-still">Still</span>
-                <span>Selectable</span>
-                <span>Searchable</span>
-                <span>Read aloud</span>
-              </span>
-            </a>
-          </div>
-        </section>
-
-        <section
-          class="section"
-          id="try"
-          aria-labelledby="try-title"
-        >
-          <h2
-            class="section-title"
-            id="try-title"
-          >
-            Try It
-          </h2>
-          <p class="section-lead">
-            Type your own words and pick one of the seven hues. Move the faders,
-            then copy the markup, or take it all to the Studio for custom colors
-            and the rest of the controls.
-          </p>
-
-          <div
-            class="stage"
-            id="stage"
-          >
-            <div
-              class="stage-eq"
-              aria-hidden="true"
-            ></div>
-            <div
-              class="stage-readout readout-label wa-cluster wa-gap-xs"
-              id="lamp"
-              data-state="off"
-            >
-              <span
-                class="stage-hue"
-                id="stage-hue"
-              >
-                Dusk
-              </span>
-              <span
-                class="led lamp-led"
-                aria-hidden="true"
-              ></span>
-              <span class="wa-visually-hidden">Contrast</span>
-              <output
-                class="lamp-state"
-                id="lamp-state"
-                aria-live="polite"
-              >
-                —
-              </output>
-              <span
-                class="lamp-detail"
-                id="lamp-detail"
-              ></span>
-            </div>
-            <p
-              class="stage-text"
-              dir="auto"
-            >
-              <hue-hop
-                id="live"
-                hue="dusk"
-              >
-                Halftime
-              </hue-hop>
+          <div class="hero-body wa-flank:end">
+            <p class="hero-pitch">
+              Give each letter of a heading or name its own color, stepped from
+              one color to another. The text stays real, so selection,
+              find-in-page and screen readers all work. No spans, no images, no
+              build step.
             </p>
-          </div>
-
-          <div
-            class="desk"
-            id="desk"
-          >
-            <div class="wa-stack wa-gap-l">
-              <div class="wa-stack wa-gap-xs">
-                <span
-                  class="readout-label"
-                  aria-hidden="true"
-                >
-                  Text
-                </span>
-                <div class="wa-flank:end wa-gap-s">
-                  <wa-input
-                    class="wa-visually-hidden-label"
-                    id="desk-text"
-                    label="Text"
-                    maxlength="200"
-                    value="Halftime"
-                    autocomplete="off"
-                    spellcheck="false"
-                  ></wa-input>
-                  <button
-                    type="button"
-                    class="lit-button"
-                    id="shuffle"
-                  >
-                    Shuffle
-                  </button>
-                </div>
-                <wa-random-content
-                  id="samples"
-                  items="1"
-                  hidden
-                >
-                  {{sample-titles}}
-                </wa-random-content>
-              </div>
-
-              <div class="wa-stack wa-gap-xs">
-                <span
-                  class="readout-label"
-                  id="hues-label"
-                >
-                  Hues
-                </span>
-                <div class="wa-stack wa-gap-m">
-                  <div
-                    class="hue-grid"
-                    role="radiogroup"
-                    aria-labelledby="hues-label"
-                  >
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="true"
-                      data-hue="dusk"
-                      aria-describedby="hue-route-dusk"
-                    >
-                      <hue-hop hue="dusk">dusk</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="reef"
-                      aria-describedby="hue-route-reef"
-                    >
-                      <hue-hop hue="reef">reef</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="fern"
-                      aria-describedby="hue-route-fern"
-                    >
-                      <hue-hop hue="fern">fern</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="ember"
-                      aria-describedby="hue-route-ember"
-                    >
-                      <hue-hop hue="ember">ember</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="guava"
-                      aria-describedby="hue-route-guava"
-                    >
-                      <hue-hop hue="guava">guava</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="orchid"
-                      aria-describedby="hue-route-orchid"
-                    >
-                      <hue-hop hue="orchid">orchid</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="honey"
-                      aria-describedby="hue-route-honey"
-                    >
-                      <hue-hop hue="honey">honey</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="custom"
-                      aria-describedby="hue-route-custom"
-                    >
-                      Custom
-                    </button>
-                  </div>
-                  <div
-                    class="custom-ends reveal wa-grid wa-gap-xs"
-                    id="custom-ends"
-                    hidden
-                  >
-                    <div
-                      class="custom-end"
-                      data-end="start"
-                    >
-                      <div class="color-field">
-                        <wa-color-picker
-                          class="wa-visually-hidden-label"
-                          label="Start color"
-                          value="#e0582b"
-                          size="small"
-                          without-format-toggle
-                        ></wa-color-picker>
-                      </div>
-                      <span
-                        class="readout-label"
-                        aria-hidden="true"
-                      >
-                        Start
-                      </span>
-                      <button
-                        type="button"
-                        class="end-auto readout-label"
-                        aria-pressed="false"
-                        aria-label="Auto: let Hue Hop pick the start"
-                      >
-                        <span
-                          class="led"
-                          aria-hidden="true"
-                        ></span>
-                        auto
-                      </button>
-                    </div>
-                    <div
-                      class="custom-end is-auto"
-                      data-end="end"
-                    >
-                      <div class="color-field">
-                        <wa-color-picker
-                          class="wa-visually-hidden-label"
-                          label="End color"
-                          value="#d6337f"
-                          size="small"
-                          without-format-toggle
-                        ></wa-color-picker>
-                      </div>
-                      <span
-                        class="readout-label"
-                        aria-hidden="true"
-                      >
-                        End
-                      </span>
-                      <button
-                        type="button"
-                        class="end-auto readout-label"
-                        aria-pressed="true"
-                        aria-label="Auto: let Hue Hop pick the end"
-                      >
-                        <span
-                          class="led"
-                          aria-hidden="true"
-                        ></span>
-                        auto
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <span
-                  class="wa-visually-hidden"
-                  id="hue-route-dusk"
-                >
-                  pale sky to blue-violet
-                </span>
-                <span
-                  class="wa-visually-hidden"
-                  id="hue-route-reef"
-                >
-                  pale aqua to blue
-                </span>
-                <span
-                  class="wa-visually-hidden"
-                  id="hue-route-fern"
-                >
-                  lime to pine
-                </span>
-                <span
-                  class="wa-visually-hidden"
-                  id="hue-route-ember"
-                >
-                  pale amber to red
-                </span>
-                <span
-                  class="wa-visually-hidden"
-                  id="hue-route-guava"
-                >
-                  peach to magenta
-                </span>
-                <span
-                  class="wa-visually-hidden"
-                  id="hue-route-orchid"
-                >
-                  blush pink to aubergine
-                </span>
-                <span
-                  class="wa-visually-hidden"
-                  id="hue-route-honey"
-                >
-                  butter yellow to rust
-                </span>
-                <span
-                  class="wa-visually-hidden"
-                  id="hue-route-custom"
-                >
-                  custom colors: set a start, an end or both, and Hue Hop picks
-                  any end you leave out
-                </span>
-              </div>
-            </div>
-
-            <div class="wa-stack wa-gap-l">
-              <div class="wa-stack wa-gap-m">
-                <div class="fader">
-                  <a
-                    class="tuning-link wa-span-grid readout-label hop-link is-quiet"
-                    href="{{docs-url}}#curve"
-                    aria-label="Curve docs"
-                  >
-                    Curve
-                  </a>
-                  <wa-slider
-                    class="wa-visually-hidden-label"
-                    id="curve"
-                    label="Curve"
-                    min="0.3"
-                    max="3"
-                    step="0.1"
-                    value="1"
-                    indicator-offset="1"
-                  ></wa-slider>
-                  <output
-                    class="fader-value wa-text-end"
-                    for="curve"
-                  >
-                    1.0
-                  </output>
-                </div>
-                <div class="fader">
-                  <a
-                    class="tuning-link wa-span-grid readout-label hop-link is-quiet"
-                    href="{{docs-url}}#shift"
-                    aria-label="Shift docs"
-                  >
-                    Shift
-                  </a>
-                  <wa-slider
-                    class="wa-visually-hidden-label"
-                    id="shift"
-                    label="Shift"
-                    min="-90"
-                    max="90"
-                    step="1"
-                    value="0"
-                    indicator-offset="0"
-                  ></wa-slider>
-                  <output
-                    class="fader-value wa-text-end"
-                    for="shift"
-                  >
-                    0
-                  </output>
-                </div>
-                <div class="fader">
-                  <a
-                    class="tuning-link wa-span-grid readout-label hop-link is-quiet"
-                    href="{{docs-url}}#boost"
-                    aria-label="Boost docs"
-                  >
-                    Boost
-                  </a>
-                  <wa-slider
-                    class="wa-visually-hidden-label"
-                    id="boost"
-                    label="Boost"
-                    min="0"
-                    max="0.12"
-                    step="0.001"
-                    value="0.021"
-                  ></wa-slider>
-                  <output
-                    class="fader-value wa-text-end"
-                    for="boost"
-                  >
-                    0.021
-                  </output>
-                </div>
-              </div>
-
-              <div class="desk-switches wa-cluster wa-gap-s">
-                <button
-                  type="button"
-                  class="lit-button"
-                  id="drift-switch"
-                  aria-pressed="false"
-                >
-                  <span
-                    class="led"
-                    aria-hidden="true"
-                  ></span>
-                  Drift
-                </button>
-                <button
-                  type="button"
-                  class="lit-button"
-                  id="display-switch"
-                  aria-pressed="false"
-                >
-                  <span
-                    class="led"
-                    aria-hidden="true"
-                  ></span>
-                  Display
-                </button>
-                <button
-                  type="button"
-                  class="lit-button reset-button"
-                  id="reset"
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
-
-            <div class="studio-cta wa-span-grid wa-stack wa-gap-s">
+            <div class="hero-actions wa-cluster wa-gap-2xs">
               <a
-                class="lit-button wa-justify-content-center"
-                id="studio-link"
-                href="{{studio-url}}"
-                aria-describedby="studio-caption"
+                class="lit-button is-lit"
+                href="#try"
               >
-                Open in Studio
+                <span
+                  class="led"
+                  aria-hidden="true"
+                ></span>
+                Try it
               </a>
-              <p
-                class="studio-caption"
-                id="studio-caption"
+              <a
+                class="hop-link is-quiet readout-label"
+                href="{{docs-url}}"
               >
-                For custom ends, accents, and per-letter contrast.
-              </p>
-            </div>
-
-            <div class="desk-code wa-stack wa-gap-s">
-              <span class="readout-label">Markup</span>
-              <div class="code-well">
-                <pre
-                  class="code-block"
-                ><code class="language-html" id="markup"></code></pre>
-                <wa-copy-button
-                  class="code-copy"
-                  from="markup"
-                  copy-label="Copy markup"
-                >
-                  <wa-icon
-                    slot="copy-icon"
-                    canvas="auto"
-                    family="pixel"
-                    name="clone"
-                  ></wa-icon>
-                  <wa-icon
-                    slot="success-icon"
-                    canvas="auto"
-                    family="pixel"
-                    name="check"
-                  ></wa-icon>
-                  <wa-icon
-                    slot="error-icon"
-                    canvas="auto"
-                    family="pixel"
-                    name="xmark"
-                  ></wa-icon>
-                </wa-copy-button>
-              </div>
+                Docs
+              </a>
+              <a
+                class="hop-link is-quiet readout-label"
+                href="{{studio-url}}"
+              >
+                Studio
+              </a>
             </div>
           </div>
         </section>
@@ -897,12 +300,7 @@
           </h2>
           <p class="section-lead">
             Hue Hop is for short text that names something: a title, a name, a
-            number worth noticing. Some carry the same colors out to what sits
-            around them:
-            <a href="{{docs-url}}#coloring-things-nearby">
-              a stripe, a marker, a badge, a vinyl press
-            </a>
-            .
+            number worth noticing.
           </p>
           <div class="wild">
             <figure class="wild-item wild-deck">
@@ -1031,58 +429,40 @@
                     </span>
                     <hue-hop hue="reef">Halftime</hue-hop>
                   </p>
-                  <div
-                    class="nav-search"
+                  <span
+                    class="nav-action"
                     aria-hidden="true"
                   >
-                    <svg viewBox="0 0 16 16">
-                      <circle
-                        cx="7"
-                        cy="7"
-                        r="4.5"
-                      />
-                      <path d="m10.5 10.5 3.5 3.5" />
-                    </svg>
-                    <span>Search shows</span>
-                    <kbd>⌘K</kbd>
-                  </div>
-                  <div
-                    class="nav-tools"
-                    aria-hidden="true"
-                  >
-                    <span class="nav-bell">
-                      <svg viewBox="0 0 16 16">
-                        <path
-                          d="M4 7a4 4 0 0 1 8 0c0 3 1.5 4 1.5 4h-11S4 10 4 7ZM6.5 13.5a1.6 1.6 0 0 0 3 0"
-                        />
-                      </svg>
-                      <span class="nav-badge">3</span>
-                    </span>
-                    <span class="nav-avatar"><span>DW</span></span>
-                  </div>
+                    Get tickets
+                  </span>
                 </div>
                 <div
                   class="nav-tabs"
                   aria-hidden="true"
                 >
-                  <span class="is-current">
-                    Tour
-                    <i>12</i>
-                  </span>
+                  <span class="is-current">Tour</span>
                   <span>Releases</span>
                   <span>Merch</span>
-                  <span class="nav-action">Get tickets</span>
                 </div>
-                <div
-                  class="nav-rows"
+                <ul
+                  class="nav-shows"
                   aria-hidden="true"
                 >
-                  <span class="nav-chip is-on">All cities</span>
-                  <span class="nav-chip">On sale</span>
-                  <span class="nav-count">12 shows</span>
-                </div>
+                  <li>
+                    <span class="nav-date">Nov 14</span>
+                    <span class="nav-city">Atlanta</span>
+                    <span class="nav-venue">The Low End</span>
+                    <span class="nav-tickets">Tickets</span>
+                  </li>
+                  <li>
+                    <span class="nav-date">Nov 16</span>
+                    <span class="nav-city">Houston</span>
+                    <span class="nav-venue">Third Coast Hall</span>
+                    <span class="nav-tickets">Tickets</span>
+                  </li>
+                </ul>
               </div>
-              <figcaption class="readout-label">Site toolbar</figcaption>
+              <figcaption class="readout-label">Site header</figcaption>
             </figure>
 
             <figure class="wild-item wild-neon">
@@ -1227,6 +607,76 @@
                 </ol>
               </div>
               <figcaption class="readout-label">Page not found</figcaption>
+            </figure>
+
+            <figure class="wild-item wild-themer">
+              <div class="wild-frame scheme-dark">
+                <div
+                  class="themer-bar"
+                  aria-hidden="true"
+                >
+                  <span>Theme</span>
+                  <span>5 of 10</span>
+                </div>
+                <div class="themer-body">
+                  <div
+                    class="themer-rack"
+                    aria-hidden="true"
+                  >
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #ff7a45"
+                    ></span>
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #ffb59a"
+                    ></span>
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #ffb347"
+                    ></span>
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #f2dd5c"
+                    ></span>
+                    <span
+                      class="themer-swatch is-picked"
+                      style="--swatch: #a8e05f"
+                    ></span>
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #7fe3c5"
+                    ></span>
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #5ad1e8"
+                    ></span>
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #6fa4ff"
+                    ></span>
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #b18cff"
+                    ></span>
+                    <span
+                      class="themer-swatch"
+                      style="--swatch: #ff7eb6"
+                    ></span>
+                  </div>
+                  <p class="themer-name">
+                    <hue-hop
+                      start="#a8e05f"
+                      end="#f2dd5c"
+                      style="--hop-curve: 1.8"
+                    >
+                      Pickle Juice
+                    </hue-hop>
+                  </p>
+                  <p class="themer-hex readout-label">#a8e05f</p>
+                </div>
+              </div>
+              <figcaption class="readout-label">Swatch picker</figcaption>
             </figure>
 
             <figure class="wild-item wild-term">
@@ -1395,6 +845,324 @@
               </div>
               <figcaption class="readout-label">Music player</figcaption>
             </figure>
+          </div>
+        </section>
+
+        <section
+          class="section"
+          id="try"
+          aria-labelledby="try-title"
+        >
+          <h2
+            class="section-title"
+            id="try-title"
+          >
+            Try It
+          </h2>
+          <p class="section-lead">
+            Type your own words, pick one of the seven hues and copy the markup.
+            That's the whole job.
+          </p>
+
+          <div
+            class="stage"
+            id="stage"
+          >
+            <div
+              class="stage-eq"
+              aria-hidden="true"
+            ></div>
+            <div
+              class="stage-readout readout-label wa-cluster wa-gap-xs"
+              id="lamp"
+              data-state="off"
+            >
+              <span
+                class="stage-hue"
+                id="stage-hue"
+              >
+                Dusk
+              </span>
+              <span
+                class="led lamp-led"
+                aria-hidden="true"
+              ></span>
+              <span class="wa-visually-hidden">Contrast</span>
+              <output
+                class="lamp-state"
+                id="lamp-state"
+                aria-live="polite"
+              >
+                —
+              </output>
+              <span
+                class="lamp-detail"
+                id="lamp-detail"
+              ></span>
+            </div>
+            <p
+              class="stage-text"
+              dir="auto"
+            >
+              <hue-hop
+                id="live"
+                hue="dusk"
+              >
+                Halftime
+              </hue-hop>
+            </p>
+          </div>
+
+          <div
+            class="desk"
+            id="desk"
+          >
+            <div class="wa-stack wa-gap-xs">
+              <span
+                class="readout-label"
+                aria-hidden="true"
+              >
+                Text
+              </span>
+              <div class="wa-flank:end wa-gap-s">
+                <wa-input
+                  class="wa-visually-hidden-label"
+                  id="desk-text"
+                  label="Text"
+                  maxlength="200"
+                  value="Halftime"
+                  autocomplete="off"
+                  spellcheck="false"
+                ></wa-input>
+                <button
+                  type="button"
+                  class="lit-button"
+                  id="shuffle"
+                >
+                  Shuffle
+                </button>
+              </div>
+              <wa-random-content
+                id="samples"
+                items="1"
+                hidden
+              >
+                {{sample-titles}}
+              </wa-random-content>
+            </div>
+
+            <div class="wa-stack wa-gap-xs">
+              <span
+                class="readout-label"
+                id="hues-label"
+              >
+                Hues
+              </span>
+              <div
+                class="hue-grid"
+                role="radiogroup"
+                aria-labelledby="hues-label"
+              >
+                <button
+                  type="button"
+                  class="chip hue-chip"
+                  role="radio"
+                  aria-checked="true"
+                  data-hue="dusk"
+                  aria-describedby="hue-route-dusk"
+                >
+                  <hue-hop hue="dusk">dusk</hue-hop>
+                </button>
+                <button
+                  type="button"
+                  class="chip hue-chip"
+                  role="radio"
+                  aria-checked="false"
+                  tabindex="-1"
+                  data-hue="reef"
+                  aria-describedby="hue-route-reef"
+                >
+                  <hue-hop hue="reef">reef</hue-hop>
+                </button>
+                <button
+                  type="button"
+                  class="chip hue-chip"
+                  role="radio"
+                  aria-checked="false"
+                  tabindex="-1"
+                  data-hue="fern"
+                  aria-describedby="hue-route-fern"
+                >
+                  <hue-hop hue="fern">fern</hue-hop>
+                </button>
+                <button
+                  type="button"
+                  class="chip hue-chip"
+                  role="radio"
+                  aria-checked="false"
+                  tabindex="-1"
+                  data-hue="ember"
+                  aria-describedby="hue-route-ember"
+                >
+                  <hue-hop hue="ember">ember</hue-hop>
+                </button>
+                <button
+                  type="button"
+                  class="chip hue-chip"
+                  role="radio"
+                  aria-checked="false"
+                  tabindex="-1"
+                  data-hue="guava"
+                  aria-describedby="hue-route-guava"
+                >
+                  <hue-hop hue="guava">guava</hue-hop>
+                </button>
+                <button
+                  type="button"
+                  class="chip hue-chip"
+                  role="radio"
+                  aria-checked="false"
+                  tabindex="-1"
+                  data-hue="orchid"
+                  aria-describedby="hue-route-orchid"
+                >
+                  <hue-hop hue="orchid">orchid</hue-hop>
+                </button>
+                <button
+                  type="button"
+                  class="chip hue-chip"
+                  role="radio"
+                  aria-checked="false"
+                  tabindex="-1"
+                  data-hue="honey"
+                  aria-describedby="hue-route-honey"
+                >
+                  <hue-hop hue="honey">honey</hue-hop>
+                </button>
+              </div>
+              <span
+                class="wa-visually-hidden"
+                id="hue-route-dusk"
+              >
+                pale sky to blue-violet
+              </span>
+              <span
+                class="wa-visually-hidden"
+                id="hue-route-reef"
+              >
+                pale aqua to blue
+              </span>
+              <span
+                class="wa-visually-hidden"
+                id="hue-route-fern"
+              >
+                lime to pine
+              </span>
+              <span
+                class="wa-visually-hidden"
+                id="hue-route-ember"
+              >
+                pale amber to red
+              </span>
+              <span
+                class="wa-visually-hidden"
+                id="hue-route-guava"
+              >
+                peach to magenta
+              </span>
+              <span
+                class="wa-visually-hidden"
+                id="hue-route-orchid"
+              >
+                blush pink to aubergine
+              </span>
+              <span
+                class="wa-visually-hidden"
+                id="hue-route-honey"
+              >
+                butter yellow to rust
+              </span>
+            </div>
+
+            <wa-divider class="wa-span-grid"></wa-divider>
+
+            <div class="wa-span-grid wa-flank:end">
+              <p
+                class="studio-caption"
+                id="studio-caption"
+              >
+                Set
+                <a
+                  class="hop-link is-quiet"
+                  href="{{docs-url}}#your-own-colors"
+                >
+                  your own colors
+                </a>
+                ,
+                <a
+                  class="hop-link is-quiet"
+                  href="{{docs-url}}#tuning"
+                >
+                  tune the ramp
+                </a>
+                , add
+                <a
+                  class="hop-link is-quiet"
+                  href="{{docs-url}}#drift"
+                >
+                  drift
+                </a>
+                and check
+                <a
+                  class="hop-link is-quiet"
+                  href="{{docs-url}}#keep-them-readable"
+                >
+                  every letter's contrast
+                </a>
+                .
+              </p>
+              <a
+                class="lit-button wa-justify-content-center"
+                id="studio-link"
+                href="{{studio-url}}"
+                aria-describedby="studio-caption"
+              >
+                Remix in Studio
+              </a>
+            </div>
+
+            <div class="desk-code wa-stack wa-gap-s">
+              <span class="readout-label">Markup</span>
+              <div class="code-well">
+                <pre
+                  class="code-block"
+                ><code class="language-html" id="markup"></code></pre>
+                <wa-copy-button
+                  class="code-copy"
+                  from="markup"
+                  copy-label="Copy markup"
+                >
+                  <wa-icon
+                    slot="copy-icon"
+                    canvas="auto"
+                    family="pixel"
+                    name="clone"
+                  ></wa-icon>
+                  <wa-icon
+                    slot="success-icon"
+                    canvas="auto"
+                    family="pixel"
+                    name="check"
+                  ></wa-icon>
+                  <wa-icon
+                    slot="error-icon"
+                    canvas="auto"
+                    family="pixel"
+                    name="xmark"
+                  ></wa-icon>
+                </wa-copy-button>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -1594,6 +1362,24 @@
                       </span>
                       <span class="further-detail">
                         Let the hues sway. It stops for reduced motion.
+                      </span>
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="further-row"
+                    href="{{docs-url}}#coloring-things-nearby"
+                  >
+                    <span class="further-number">07</span>
+                    <span class="further-text wa-stack wa-gap-xs">
+                      <span
+                        class="further-title hop-link is-quiet wa-align-self-start"
+                      >
+                        Color What's Nearby
+                      </span>
+                      <span class="further-detail">
+                        Match a badge, a border or a list marker to the heading.
                       </span>
                     </span>
                   </a>
