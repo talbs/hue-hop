@@ -2,7 +2,7 @@
 
 Newest version first. Changes go under Added, Changed, Deprecated, Removed, Fixed, or Security. Anything breaking says **Breaking** and goes at the top.
 
-## 0.3.0
+## 0.3.0 · 2026-11-09
 
 ### Changed
 
