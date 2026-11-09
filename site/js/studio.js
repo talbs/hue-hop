@@ -424,24 +424,32 @@ function setHidden(element, isHidden) {
 }
 
 // Only what differs from Hue Hop's defaults, so the copied code stays short.
-function styleText() {
-  const lines = [];
-  if (state.curve !== DEFAULT_STUDIO.curve) {
-    lines.push(`--hop-curve: ${state.curve}`);
-  }
+function changedTuning() {
+  const changed = [];
+  if (state.curve !== DEFAULT_STUDIO.curve)
+    changed.push(['curve', state.curve]);
   if (state.boost !== defaultBoost(state.hue)) {
-    lines.push(`--hop-boost: ${state.boost}`);
+    changed.push(['boost', state.boost]);
   }
-  if (state.shift !== DEFAULT_STUDIO.shift) {
-    lines.push(`--hop-shift: ${state.shift}`);
-  }
+  if (state.shift !== DEFAULT_STUDIO.shift)
+    changed.push(['shift', state.shift]);
   if (state.isDriftOn && state.range !== DEFAULT_STUDIO.range) {
-    lines.push(`--hop-drift-range: ${state.range}`);
+    changed.push(['drift-range', state.range]);
   }
   if (state.isDriftOn && state.cycle !== DEFAULT_STUDIO.cycle) {
-    lines.push(`--hop-drift-cycle: ${state.cycle}s`);
+    changed.push(['drift-cycle', `${state.cycle}s`]);
   }
-  return lines.join('; ');
+  return changed;
+}
+
+function styleText() {
+  return changedTuning()
+    .map(([name, value]) => `--hop-${name}: ${value}`)
+    .join('; ');
+}
+
+function tuningAttributes() {
+  return changedTuning().map(([name, value]) => `${name}="${value}"`);
 }
 
 function showHueOnHop() {
@@ -852,8 +860,7 @@ function writeHopHtml() {
     }
   }
   if (state.isDriftOn) attributes.push('drift');
-  const style = styleText();
-  if (style) attributes.push(`style="${style}"`);
+  attributes.push(...tuningAttributes());
 
   const word = escapeHtml(wordInUse());
   const oneLineTag = ['hue-hop', ...attributes].join(' ');

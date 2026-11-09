@@ -28,6 +28,8 @@ No build step? The CDN tag is under [Load It](https://huehop.dev/docs/#load-it) 
 
 For your own colors, set `start` and `end` to any CSS color, or set one and Hue Hop picks the other. You pick the lightness, so check contrast with the rules in [Keep Them Readable](https://huehop.dev/docs/#keep-them-readable).
 
+Tune the steps with `curve`, `boost` and `shift` on the same tag. Each one has a custom property too (`--hop-curve`), so you can set it once on `:root` instead. See [Tuning the Ramp](https://huehop.dev/docs/#tuning).
+
 Building with an AI assistant? Point it at [llms.txt](https://huehop.dev/llms.txt).
 
 ## Contributing

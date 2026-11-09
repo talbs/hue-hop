@@ -8,6 +8,10 @@ Newest version first. Changes go under Added, Changed, Deprecated, Removed, Fixe
 
 - **Breaking:** An inherited `--hop-boost` now beats a hue's built-in boost. Set it on `:root` or a parent and hue headings follow. Before, only a `--hop-boost` on the element itself could change it.
 
+### Added
+
+- `curve`, `boost`, `shift`, `drift-range` and `drift-cycle` attributes, with `el.curve`, `el.boost`, `el.shift`, `el.driftRange` and `el.driftCycle` properties. They set the matching `--hop-*` custom property on that heading, and take the same values (`drift-cycle="4s"`).
+
 ## 0.2.0 · 2026-11-08
 
 The API this version ships is the one 1.0 will keep.

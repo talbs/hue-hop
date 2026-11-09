@@ -28,17 +28,11 @@ export function escapeHtml(text) {
     .replace(/"/g, '&quot;');
 }
 
-function changedTuning(state) {
+export function changedTuning(state) {
   const defaults = { ...DEFAULT_STATE, boost: defaultBoost(state.hue) };
   return ['curve', 'shift', 'boost'].filter(
     (name) => state[name] !== defaults[name]
   );
-}
-
-export function styleFor(state) {
-  return changedTuning(state)
-    .map((name) => `--hop-${name}: ${state[name]}`)
-    .join('; ');
 }
 
 export function describeMarkup(state) {
@@ -48,8 +42,9 @@ export function describeMarkup(state) {
   }
   if (state.display) parts.push('display');
   if (state.drift) parts.push('drift');
-  const style = styleFor(state);
-  if (style) parts.push(`style="${escapeHtml(style)}"`);
+  for (const name of changedTuning(state)) {
+    parts.push(`${name}="${state[name]}"`);
+  }
   const element = `<${parts.join(' ')}>${escapeHtml(state.text)}</hue-hop>`;
   if (!state.accent) return element;
   return `${element}<span class="accent">${escapeHtml(state.accent)}</span>`;

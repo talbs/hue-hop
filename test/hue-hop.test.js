@@ -63,13 +63,20 @@ test('a hue colors the element with only the script loaded', async () => {
 
 test('every attribute has a property that reflects it, even set before define', async () => {
   const rows = [
-    ['start', 'red', 'red', 'red'],
-    ['hue', 'reef', 'reef', 'reef'],
-    ['hue', null, null, null],
-    ['display', true, '', true],
-    ['drift', false, null, false],
+    ['start', 'start', 'red', 'red', 'red'],
+    ['hue', 'hue', 'reef', 'reef', 'reef'],
+    ['hue', 'hue', null, null, null],
+    ['display', 'display', true, '', true],
+    ['drift', 'drift', false, null, false],
+    ['driftCycle', 'drift-cycle', '4s', '4s', '4s'],
   ];
-  for (const [name, value, expectedAttribute, readBack] of rows) {
+  for (const [
+    name,
+    attributeName,
+    value,
+    expectedAttribute,
+    readBack,
+  ] of rows) {
     const page = await browser.newPage();
     await page.setContent('<hue-hop id="t" hue="dusk" drift>Nas</hue-hop>');
     await page.evaluate(
@@ -79,10 +86,13 @@ test('every attribute has a property that reflects it, even set before define', 
       [name, value]
     );
     await page.addScriptTag({ path: 'dist/hue-hop.js', type: 'module' });
-    const [attribute, property] = await page.evaluate((name) => {
-      const element = document.getElementById('t');
-      return [element.getAttribute(name), element[name]];
-    }, name);
+    const [attribute, property] = await page.evaluate(
+      ([name, attributeName]) => {
+        const element = document.getElementById('t');
+        return [element.getAttribute(attributeName), element[name]];
+      },
+      [name, attributeName]
+    );
     assert.equal(attribute, expectedAttribute, `${name} = ${value}`);
     assert.equal(property, readBack, `${name} = ${value}`);
   }
@@ -144,9 +154,10 @@ test('a subclass and the base tag both color on one page', async () => {
 });
 
 test('page css beats a hue, and a hue beats inherited values', async () => {
-  const hop = '<hue-hop id="t" class="x" hue="dusk">Nas</hue-hop>';
-  const colorsOf = async (css) => {
-    const page = await openPage(`<style>${css}</style>${hop}`);
+  const colorsOf = async (css, attributes = '') => {
+    const page = await openPage(
+      `<style>${css}</style><hue-hop id="t" class="x" hue="dusk" ${attributes}>Nas</hue-hop>`
+    );
     return page.evaluate(async () => {
       await new Promise((resolve) => requestAnimationFrame(resolve));
       await new Promise((resolve) => requestAnimationFrame(resolve));
@@ -158,16 +169,42 @@ test('page css beats a hue, and a hue beats inherited values', async () => {
     });
   };
   const plain = await colorsOf('');
+  const blue = 'start="blue"';
   const rows = [
-    ['layered rule', '@layer theme { hue-hop { --hop-start: red } }', 'red'],
-    ['layered utility', '@layer utilities { .x { --hop-start: red } }', 'red'],
-    ['unlayered rule', 'hue-hop { --hop-start: red }', 'red'],
-    ['unlayered :root', ':root { --hop-start: red }', 'oklch'],
-    ['layered :root', '@layer theme { :root { --hop-start: red } }', 'oklch'],
-    ['inherited boost', ':root { --hop-boost: 0.2 }', 'oklch', true],
+    [
+      'layered rule',
+      '@layer theme { hue-hop { --hop-start: red } }',
+      '',
+      'red',
+    ],
+    [
+      'layered utility',
+      '@layer utilities { .x { --hop-start: red } }',
+      '',
+      'red',
+    ],
+    ['unlayered rule', 'hue-hop { --hop-start: red }', '', 'red'],
+    ['unlayered :root', ':root { --hop-start: red }', '', 'oklch'],
+    [
+      'layered :root',
+      '@layer theme { :root { --hop-start: red } }',
+      '',
+      'oklch',
+    ],
+    ['inherited boost', ':root { --hop-boost: 0.2 }', '', 'oklch', true],
+    ['boost attribute beats the hue', '', 'boost="0.2"', 'oklch', true],
+    ['attribute beats :root', ':root { --hop-start: red }', blue, 'blue'],
+    ['attribute beats a class', '.x { --hop-start: red }', blue, 'blue'],
+    [
+      'specific rule beats attribute',
+      'body hue-hop.x { --hop-start: red }',
+      blue,
+      'red',
+    ],
+    ['style beats attribute', '', `${blue} style="--hop-start: red"`, 'red'],
   ];
-  for (const [name, css, expected, isMiddleBoosted] of rows) {
-    const { start, middle } = await colorsOf(css);
+  for (const [name, css, attributes, expected, isMiddleBoosted] of rows) {
+    const { start, middle } = await colorsOf(css, attributes);
     assert.ok(start.includes(expected), `${name}: ${start}`);
     if (isMiddleBoosted) {
       assert.notEqual(middle, plain.middle, `${name}: ${middle}`);

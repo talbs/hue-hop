@@ -30,9 +30,21 @@ const boxWatcher =
     }
   });
 
-const colorAttributes = ['start', 'end'];
+const styleAttributes = [
+  'start',
+  'end',
+  'curve',
+  'boost',
+  'shift',
+  'drift-range',
+  'drift-cycle',
+];
 const booleanAttributes = ['display', 'drift'];
-const reflectedAttributes = [...colorAttributes, 'hue', ...booleanAttributes];
+const reflectedAttributes = [...styleAttributes, 'hue', ...booleanAttributes];
+const propertyNames = {
+  'drift-range': 'driftRange',
+  'drift-cycle': 'driftCycle',
+};
 const mostRulesPerRoot = 256;
 // Each restyle costs about the square of the step count in Chromium and Safari, so longer text shares steps.
 const mostHops = 64;
@@ -154,7 +166,7 @@ function adoptHues(element) {
 
 function writeAttributeRules(element, rootStyle) {
   const { attributeSheet, selectors } = rootStyle;
-  for (const name of colorAttributes) {
+  for (const name of styleAttributes) {
     const value = element.getAttribute(name);
     if (!value) continue;
     const selector = `${element.localName}[${name}="${CSS.escape(value)}"]`;
@@ -168,7 +180,7 @@ function writeAttributeRules(element, rootStyle) {
   }
 }
 
-function applyColorAttributes(element) {
+function applyStyleAttributes(element) {
   const root = element.getRootNode();
   const rootStyle = rootStyleFor(root);
   rootStyle.tags.add(element.localName);
@@ -234,7 +246,7 @@ const BaseElement = globalThis.HTMLElement ?? class {};
 
 export class HueHop extends BaseElement {
   static get observedAttributes() {
-    return colorAttributes;
+    return styleAttributes;
   }
 
   constructor() {
@@ -252,16 +264,18 @@ export class HueHop extends BaseElement {
   }
 
   attributeChangedCallback() {
-    if (hasSupport && this.isConnected) applyColorAttributes(this);
+    if (hasSupport && this.isConnected) applyStyleAttributes(this);
   }
 
   connectedCallback() {
-    for (const name of reflectedAttributes) replayEarlyProperty(this, name);
+    for (const name of reflectedAttributes) {
+      replayEarlyProperty(this, propertyNames[name] ?? name);
+    }
     if (!hasSupport) return;
     adoptHues(this);
     const data = elementData.get(this);
     data.states.add('hops');
-    applyColorAttributes(this);
+    applyStyleAttributes(this);
     paint(this);
     connectedHops.add(this);
     data.observer.observe(this, {
@@ -284,7 +298,7 @@ export class HueHop extends BaseElement {
 
 for (const name of reflectedAttributes) {
   const isBoolean = booleanAttributes.includes(name);
-  Object.defineProperty(HueHop.prototype, name, {
+  Object.defineProperty(HueHop.prototype, propertyNames[name] ?? name, {
     configurable: true,
     get() {
       return isBoolean ? this.hasAttribute(name) : this.getAttribute(name);

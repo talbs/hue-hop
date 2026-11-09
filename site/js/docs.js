@@ -181,16 +181,12 @@ page.addEventListener('wa-after-hide', (event) => {
   });
 });
 
-// The browser ends a style it writes with a semicolon and Prettier strips it from the authored previews, so the code drops it to keep one shape.
-const TRAILING_STYLE_SEMICOLON = /(\sstyle="[^"]*?);\s*"/g;
-
 function refreshCode(figure) {
   const preview = figure.querySelector('.example-preview');
-  const code = codeFromPreview(preview.innerHTML).replace(
-    TRAILING_STYLE_SEMICOLON,
-    '$1"'
+  fillCode(
+    figure.querySelector('pre > code.language-html'),
+    codeFromPreview(preview.innerHTML)
   );
-  fillCode(figure.querySelector('pre > code.language-html'), code);
 }
 
 function previewHopIn(figure) {
@@ -205,7 +201,7 @@ function wireFader(figure) {
   fader.addEventListener('input', () => {
     const value = Number(fader.value).toFixed(decimalsIn(fader.step));
     readout.textContent = value;
-    hop.style.setProperty(`--hop-${name}`, String(Number(value)));
+    hop.setAttribute(name, String(Number(value)));
     refreshCode(figure);
   });
 }
@@ -306,8 +302,8 @@ function wireHopMeter(figure) {
 }
 
 function readTuning(hop, name, fallback) {
-  const value = hop.style.getPropertyValue(`--hop-${name}`);
-  return value === '' ? fallback : Number(value);
+  const value = hop.getAttribute(name);
+  return value === null ? fallback : Number(value);
 }
 
 function studioLinkFor(hop) {

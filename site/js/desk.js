@@ -9,12 +9,12 @@ import {
   typeOut,
 } from './motion.js';
 import {
+  changedTuning,
   DEFAULT_STATE,
   decimalsIn,
   defaultBoost,
   describeMarkup,
   describeStudioLink,
-  styleFor,
 } from './state.js';
 import { fillCode } from './syntax.js';
 import { isPlainClick } from './word-trip.js';
@@ -27,9 +27,11 @@ export function writeStateTo(element, state) {
   }
   element.toggleAttribute('drift', state.drift);
   element.toggleAttribute('display', state.display);
-  const style = styleFor(state);
-  if (style) element.setAttribute('style', style);
-  else element.removeAttribute('style');
+  const changed = changedTuning(state);
+  for (const name of ['curve', 'shift', 'boost']) {
+    if (changed.includes(name)) element.setAttribute(name, state[name]);
+    else element.removeAttribute(name);
+  }
 }
 
 const desk = document.getElementById('desk');
