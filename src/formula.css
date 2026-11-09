@@ -17,7 +17,9 @@
   );
   color: oklch(
     from var(--_hop-mix) l
-      calc(c + var(--hop-boost, 0) * sin(var(--_hop-p) * pi))
+      calc(
+        c + var(--hop-boost, var(--_hop-hue-boost, 0)) * sin(var(--_hop-p) * pi)
+      )
       calc(h + var(--hop-shift, 0) + var(--_hop-drift, 0))
   );
 }

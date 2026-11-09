@@ -145,22 +145,33 @@ test('a subclass and the base tag both color on one page', async () => {
 
 test('page css beats a hue, and a hue beats inherited values', async () => {
   const hop = '<hue-hop id="t" class="x" hue="dusk">Nas</hue-hop>';
+  const colorsOf = async (css) => {
+    const page = await openPage(`<style>${css}</style>${hop}`);
+    return page.evaluate(async () => {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      const element = document.getElementById('t');
+      return {
+        start: getComputedStyle(element).getPropertyValue('--hop-start'),
+        middle: getComputedStyle(element, '::highlight(hue-hop-1)').color,
+      };
+    });
+  };
+  const plain = await colorsOf('');
   const rows = [
     ['layered rule', '@layer theme { hue-hop { --hop-start: red } }', 'red'],
     ['layered utility', '@layer utilities { .x { --hop-start: red } }', 'red'],
     ['unlayered rule', 'hue-hop { --hop-start: red }', 'red'],
     ['unlayered :root', ':root { --hop-start: red }', 'oklch'],
     ['layered :root', '@layer theme { :root { --hop-start: red } }', 'oklch'],
+    ['inherited boost', ':root { --hop-boost: 0.2 }', 'oklch', true],
   ];
-  for (const [name, css, expected] of rows) {
-    const page = await openPage(`<style>${css}</style>${hop}`);
-    const start = await page.evaluate(async () => {
-      await new Promise((resolve) => requestAnimationFrame(resolve));
-      return getComputedStyle(document.getElementById('t')).getPropertyValue(
-        '--hop-start'
-      );
-    });
+  for (const [name, css, expected, isMiddleBoosted] of rows) {
+    const { start, middle } = await colorsOf(css);
     assert.ok(start.includes(expected), `${name}: ${start}`);
+    if (isMiddleBoosted) {
+      assert.notEqual(middle, plain.middle, `${name}: ${middle}`);
+    }
   }
 });
 

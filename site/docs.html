@@ -763,7 +763,10 @@
                 <dd>
                   The
                   <code>hue</code>
-                  attribute's own colors.
+                  attribute's own colors. Its boost is the exception: an
+                  inherited
+                  <code>--hop-boost</code>
+                  beats it.
                 </dd>
               </div>
               <div>
@@ -1281,12 +1284,13 @@
               Three custom properties shape the steps between your two ends.
               None of them has an attribute. Set them once, on
               <code>:root</code>
-              or a class, and every heading under it follows. One catch: a
+              or a class, and every heading under it follows. A
               <code>hue</code>
-              sets
+              brings its own boost, but only as a default. Any
               <code>--hop-boost</code>
-              on the element itself, so to change boost under a hue, set it on
-              the element. The examples set them in
+              beats it, even one on
+              <code>:root</code>
+              . The examples set them in
               <code>style</code>
               so you can see the one value that changes.
             </p>
@@ -1344,6 +1348,10 @@
               <code>0</code>
               , and every ready-made hue sets
               <code>0.021</code>
+              . Any
+              <code>--hop-boost</code>
+              beats a hue's, even one set on
+              <code>:root</code>
               .
             </p>
             <figure
@@ -1717,11 +1725,7 @@
             </p>
             <p>
               Middle markers look slightly less vivid than the letters, because
-              the mix leaves out
-              <code>--hop-boost</code>
-              , which every hue sets to
-              <code>0.021</code>
-              .
+              the mix leaves out the boost.
             </p>
           </section>
           <p class="docs-group readout-label">Integrate</p>
@@ -2524,10 +2528,12 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <dt>My CSS doesn't override the hue.</dt>
               <dd>
                 You set
-                <code>--hop-*</code>
+                <code>--hop-start</code>
+                or
+                <code>--hop-end</code>
                 on a parent, like
                 <code>:root</code>
-                . The hue's own value on the element beats an inherited one. Set
+                . The hue's own colors on the element beat inherited ones. Set
                 yours on the element. See
                 <a href="#change-one-end">Change One End</a>
                 .

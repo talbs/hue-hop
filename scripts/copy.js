@@ -14,7 +14,7 @@ export const LLMS_RULES = [
   '`drift` needs `drift.css`.',
   'Keep link underlines on.',
   'Set `--hop-curve` and `--hop-shift` once, on `:root` or a class.',
-  'A `hue` beats inherited values, `--hop-boost` included. To override one, set `start`, `end`, or `--hop-*` on the element, in any CSS layer.',
+  "A `hue`'s colors beat inherited values. To override one, set `start`, `end`, `--hop-start` or `--hop-end` on the element, in any CSS layer. Its boost is only a default, so any `--hop-boost` beats it, inherited or not.",
   '`display` is for large text only.',
   'Pin the version.',
 ];
