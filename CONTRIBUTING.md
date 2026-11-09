@@ -63,14 +63,14 @@ Every release goes like this:
    npm view hue-hop version
    ```
 
-6. Check the CDNs once npm shows the new version. jsDelivr can hold the `@0.1` link for up to 12 hours and still return `200`, so purge it, then check which version each link serves. Each line should name the new version. An old version or a missing line means that CDN hasn't caught up, so wait a few minutes and run them again. These URLs use the minor version, so change `@0.1` when that moves.
+6. Check the CDNs once npm shows the new version. jsDelivr can hold the `@0.2` link for up to 12 hours and still return `200`, so purge it, then check which version each link serves. Each line should name the new version. An old version or a missing line means that CDN hasn't caught up, so wait a few minutes and run them again. These URLs use the minor version, so change `@0.2` when that moves.
 
    ```sh
-   curl -s -o /dev/null https://purge.jsdelivr.net/npm/hue-hop@0.1/dist/hue-hop.js
-   curl -s -o /dev/null https://purge.jsdelivr.net/npm/hue-hop@0.1/dist/drift.css
-   curl -sI https://cdn.jsdelivr.net/npm/hue-hop@0.1/dist/hue-hop.js | grep -i 'x-jsd-version:'
-   curl -sI https://cdn.jsdelivr.net/npm/hue-hop@0.1/dist/drift.css | grep -i 'x-jsd-version:'
-   curl -sI https://unpkg.com/hue-hop@0.1/dist/hue-hop.js | grep -i location
+   curl -s -o /dev/null https://purge.jsdelivr.net/npm/hue-hop@0.2/dist/hue-hop.js
+   curl -s -o /dev/null https://purge.jsdelivr.net/npm/hue-hop@0.2/dist/drift.css
+   curl -sI https://cdn.jsdelivr.net/npm/hue-hop@0.2/dist/hue-hop.js | grep -i 'x-jsd-version:'
+   curl -sI https://cdn.jsdelivr.net/npm/hue-hop@0.2/dist/drift.css | grep -i 'x-jsd-version:'
+   curl -sI https://unpkg.com/hue-hop@0.2/dist/hue-hop.js | grep -i location
    ```
 
 7. Paste the CDN tab from the docs into a blank HTML file, add `<hue-hop hue="dusk">Test</hue-hop>` below it, and open it. If you see color, it worked.

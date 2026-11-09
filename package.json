@@ -1,6 +1,6 @@
 {
   "name": "hue-hop",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Give each letter of a heading or name its own color, stepped from one color to another.",
   "keywords": [
     "web-components",
