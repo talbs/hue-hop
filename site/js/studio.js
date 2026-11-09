@@ -35,6 +35,7 @@ import {
   writeStudioParams,
 } from './studio-url.js';
 import { fillCode } from './syntax.js';
+import { track } from './track.js';
 
 const SCHEMES = ['dark', 'light'];
 const ENDS = ['start', 'end'];
@@ -1315,6 +1316,7 @@ async function copyLink() {
     return;
   }
   confirmCopy('check', 'Copied', 'Link copied.');
+  track('copy-link');
 }
 
 // Keeps a control focused from below out from behind the pinned head. Fit's messages can make the head any height, and CSS can't read it.
