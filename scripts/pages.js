@@ -108,6 +108,7 @@ export function readFills(manifest) {
   const [major, minor] = version.split('.');
   return {
     head: read('site/partials/head.html'),
+    'skip-link': read('site/partials/skip-link.html'),
     header: read('site/partials/header.html'),
     footer: read('site/partials/footer.html'),
     wordmark: read('site/partials/wordmark.html'),
