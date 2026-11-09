@@ -68,13 +68,31 @@
   margin-block-start: var(--space-section);
 }
 
-/* Sits at the pitch's end on a wide screen. Once it wraps under the pitch, it starts at the left edge instead of stretching. */
+/* Fills the row in equal thirds on a phone. On a wide screen it sits at the pitch's end, and if it wraps under the pitch it starts at the left edge instead of stretching. */
 .hero-actions {
-  flex-grow: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  flex-grow: 1;
   padding: var(--wa-space-s);
   border-radius: calc(var(--radius-control) + var(--wa-space-s));
   background: var(--surface-sunken);
   box-shadow: var(--depth-pressed);
+}
+
+.hero-actions .lit-button {
+  justify-content: center;
+}
+
+.hero-actions .hop-link {
+  justify-self: center;
+}
+
+@media (min-width: 48rem) {
+  .hero-actions {
+    display: flex;
+    flex-grow: 0;
+  }
 }
 
 /* The links take the button's side padding, so the words sit evenly apart whether a frame is drawn or not. The underline stays under the word. */
