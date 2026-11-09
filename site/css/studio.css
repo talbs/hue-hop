@@ -64,15 +64,12 @@
 
 :root {
   --console-width: 120rem;
+  --header-measure: var(--console-width);
   --panel-radius: 0.625rem;
   --stage-inset: var(--space-section);
   --word-size: 3.5rem;
   --meter-tile: 1.5rem;
   --meter-pad: var(--space-tight);
-}
-
-.site-header-inner {
-  max-width: var(--console-width);
 }
 
 /* The other pages draw this hairline once the page scrolls. The console mostly doesn't scroll, so it stays on. */
