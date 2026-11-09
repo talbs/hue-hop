@@ -16,15 +16,24 @@
     display: flex;
     gap: var(--space-section);
     padding-inline: 0.8125rem;
+  }
+
+  /* Dimmed part by part, not as a whole bank, so a hop's fill glows at the Studio's full strength. */
+  .fader-bank wa-slider::part(track) {
+    height: 11rem;
+    background: color-mix(in oklab, var(--surface-sunken) 40%, transparent);
+    box-shadow:
+      var(--depth-groove),
+      0 1px 0 color-mix(in oklab, var(--edge-light) 40%, transparent);
+  }
+
+  .fader-bank wa-slider::part(thumb) {
     opacity: 0.4;
   }
 
-  .fader-bank wa-slider::part(track) {
-    height: 11rem;
-  }
-
+  /* The dimmed cap is see-through, so the fill starts at its edge instead of running under it. */
   .fader-bank wa-slider::part(indicator) {
-    display: none;
+    margin-block-start: calc(var(--thumb-height) / 2);
   }
 }
 

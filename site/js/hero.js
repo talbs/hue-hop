@@ -14,25 +14,40 @@ const wordmark = title.querySelector('hue-hop');
 const bankFaders = [...document.querySelectorAll('.fader-bank wa-slider')];
 
 // One fader per character of the wordmark, so each cap rides its letter's hop on the same delay and curve. Caps stay inside their slots.
-function echoInFaders({ keyframes, beats }) {
+function echoInFaders(motion) {
+  if (!bankFaders[0]?.offsetParent) return;
+  const { keyframes, beats } = motion;
+  const isFilled = motion === LETTER_HOP;
   const duration = beatMs() * beats;
-  const letterCount = splitLetters(wordmark.textContent.trim()).length;
-  const { step } = hopTiming(letterCount, duration);
+  const letters = splitLetters(wordmark.textContent.trim());
+  const { step } = hopTiming(letters.length, duration);
   const fontSize = parseFloat(getComputedStyle(wordmark).fontSize);
   bankFaders.forEach((fader, index) => {
     const cap = fader.shadowRoot?.querySelector('#thumb');
     const track = fader.shadowRoot?.querySelector('#track');
-    if (!cap || !track) return;
-    const room = (1 - Number(fader.value)) * track.offsetHeight;
-    const frames = keyframes.map(({ translate, offset, easing }) => {
-      const lift = parseFloat(translate.split(' ')[1]) * fontSize;
-      return { translate: `0 ${Math.max(lift, -room)}px`, offset, easing };
-    });
-    cap.animate(frames, {
-      duration,
-      delay: index * step,
-      fill: 'backwards',
-    });
+    const fill = fader.shadowRoot?.querySelector('#indicator');
+    if (!cap || !track || !fill) return;
+    const restShare = 1 - Number(fader.value);
+    const room = restShare * track.offsetHeight;
+    const capFrames = [];
+    const fillFrames = [];
+    for (const { translate, offset, easing } of keyframes) {
+      const lift = Math.max(
+        parseFloat(translate.split(' ')[1]) * fontSize,
+        -room
+      );
+      capFrames.push({ translate: `0 ${lift}px`, offset, easing });
+      fillFrames.push({
+        top: `calc(${restShare * 100}% + ${lift}px)`,
+        offset,
+        easing,
+      });
+    }
+    const timing = { duration, delay: index * step, fill: 'backwards' };
+    cap.animate(capFrames, timing);
+    if (!isFilled || letters[index]?.isBlank) return;
+    // The indicator rests at zero height on the cap, so moving its top edge with the cap fills the travel.
+    fill.animate(fillFrames, timing);
   });
 }
 
