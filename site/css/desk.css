@@ -3,38 +3,40 @@
   isolation: isolate;
 }
 
-/* Background only: hidden from assistive tech and inert. Each cap rides its letter when the wordmark hops. Wide screens only, where the wordmark can't run under it. */
-.fader-bank {
-  display: none;
+/* Fits the button tray, the side column's widest child. The copy takes whatever is left. */
+.hero-layout {
+  --flank-size: 18.5rem;
+  --content-percentage: 55%;
+  gap: var(--space-section) var(--space-page);
 }
 
-@media (min-width: 80rem) {
-  .fader-bank {
-    position: absolute;
-    inset-block-start: var(--space-page);
-    inset-inline-end: var(--gutter);
-    display: flex;
-    gap: var(--space-section);
-    padding-inline: 0.8125rem;
-  }
+.hero-side {
+  container: hero-side / inline-size;
+}
 
-  /* Dimmed part by part, not as a whole bank, so a hop's fill glows at the Studio's full strength. */
-  .fader-bank wa-slider::part(track) {
-    height: 11rem;
-    background: color-mix(in oklab, var(--surface-sunken) 40%, transparent);
-    box-shadow:
-      var(--depth-groove),
-      0 1px 0 color-mix(in oklab, var(--edge-light) 40%, transparent);
-  }
+/* Background only: hidden from assistive tech and inert. Each cap rides its letter when the wordmark hops. */
+.fader-bank {
+  display: none;
+  gap: var(--space-section);
+  padding-inline: 0.8125rem;
+}
 
-  .fader-bank wa-slider::part(thumb) {
-    opacity: 0.4;
-  }
+/* Dimmed part by part, not as a whole bank, so a hop's fill glows at the Studio's full strength. */
+.fader-bank wa-slider::part(track) {
+  height: 11rem;
+  background: color-mix(in oklab, var(--surface-sunken) 40%, transparent);
+  box-shadow:
+    var(--depth-groove),
+    0 1px 0 color-mix(in oklab, var(--edge-light) 40%, transparent);
+}
 
-  /* The dimmed cap is see-through, so the fill starts at its edge instead of running under it. */
-  .fader-bank wa-slider::part(indicator) {
-    margin-block-start: calc(var(--thumb-height) / 2);
-  }
+.fader-bank wa-slider::part(thumb) {
+  opacity: 0.4;
+}
+
+/* The dimmed cap is see-through, so the fill starts at its edge instead of running under it. */
+.fader-bank wa-slider::part(indicator) {
+  margin-block-start: calc(var(--thumb-height) / 2);
 }
 
 .hero-title {
@@ -62,18 +64,12 @@
   }
 }
 
-.hero-body {
-  --content-percentage: 60%;
-  gap: var(--space-section) var(--space-page);
-  margin-block-start: var(--space-section);
-}
-
-/* Fills the row in equal thirds on a phone. On a wide screen it sits at the pitch's end, and if it wraps under the pitch it starts at the left edge instead of stretching. */
+/* Fills the row in equal thirds on a phone. */
 .hero-actions {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  flex-grow: 1;
+  align-self: stretch;
   padding: var(--wa-space-s);
   border-radius: calc(var(--radius-control) + var(--wa-space-s));
   background: var(--surface-sunken);
@@ -84,26 +80,29 @@
   justify-content: center;
 }
 
-.hero-actions .hop-link {
-  justify-self: center;
-}
-
 @media (min-width: 48rem) {
   .hero-actions {
     display: flex;
-    flex-grow: 0;
+    align-self: auto;
   }
-}
 
-/* The links take the button's side padding, so the words sit evenly apart whether a frame is drawn or not. The underline stays under the word. */
-.hero-actions .hop-link {
-  padding-inline: var(--space-group);
-  background-origin: content-box;
-  background-clip: content-box;
+  /* The side column only grows past its 18.5rem flank size once it wraps under the copy, and a wrapped column is far wider than 22rem. Wrapped, a bank on its own would look stranded. */
+  @container hero-side (width < 22rem) {
+    .fader-bank {
+      display: flex;
+    }
+  }
+
+  @container hero-side (width >= 22rem) {
+    .hero-actions {
+      align-self: start;
+    }
+  }
 }
 
 .hero-pitch {
   max-width: 46rem;
+  margin-block-start: var(--space-section);
   color: var(--ink-quiet);
   font-size: var(--type-lead);
   line-height: var(--leading-tight);
