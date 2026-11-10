@@ -140,13 +140,13 @@ export function hopLetters(hop, { keyframes, beats }) {
   return total;
 }
 
-// SVG letters move in their drawing units, not ems. The lift is also halved, since the marks sit in a body-size row.
+// SVG letters move in their drawing units, not ems.
 function withLiftInUnits(keyframes, unitsPerEm) {
   return keyframes.map((frame) => {
     const [x, y] = frame.translate.split(' ');
     return {
       ...frame,
-      translate: `${x} ${parseFloat(y) * unitsPerEm * 0.5}px`,
+      translate: `${x} ${parseFloat(y) * unitsPerEm}px`,
     };
   });
 }

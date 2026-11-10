@@ -156,6 +156,7 @@ wa-page::part(subheader) {
 .wordmark {
   block-size: 0.807em;
   inline-size: auto;
+  overflow: visible;
   vertical-align: -0.099em;
 }
 
