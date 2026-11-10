@@ -164,6 +164,7 @@ export function hopLettersIn(letters, restingFills, unitsPerEm) {
     });
     letter.animate(keyframes, { duration, delay: index * step });
   }
+  document.dispatchEvent(new CustomEvent('letterhop'));
 }
 
 export function longestWordLength(text) {
