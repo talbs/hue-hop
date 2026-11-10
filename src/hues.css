@@ -58,4 +58,12 @@
     --hop-start: light-dark(oklch(65.2% 0.132 78), oklch(88.6% 0.133 88));
     --hop-end: light-dark(oklch(53% 0.14 48), oklch(60% 0.15 50));
   }
+  :where(hue-hop[hue='moon']) {
+    --hop-start: light-dark(oklch(24% 0.006 255), oklch(97% 0.006 255));
+    --hop-end: light-dark(oklch(54% 0.006 255), oklch(61% 0.006 255));
+    --_hop-hue-boost: 0.028;
+  }
+  :where(hue-hop[hue='moon'][display]) {
+    --hop-end: light-dark(oklch(64% 0.006 255), oklch(51% 0.006 255));
+  }
 }

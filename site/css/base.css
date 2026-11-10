@@ -392,16 +392,6 @@ a {
   }
 }
 
-/* Grayscale keeps each letter's lightness, so the resting mark holds the same contrast as the lit one. */
-.hop-quiet hue-hop {
-  filter: grayscale(1);
-  transition: filter var(--note-16) var(--ease-hit);
-}
-
-.hop-quiet:is(:hover, :focus-visible) hue-hop {
-  filter: none;
-}
-
 .hop-letter {
   display: inline-block;
   transform-origin: 50% 80%;

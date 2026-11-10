@@ -83,6 +83,13 @@ function listItems(entries, describeType) {
   return items.join('\n');
 }
 
+export function listedHues(manifest) {
+  const hue = readElement(manifest).attributes.find(
+    (attribute) => attribute.name === 'hue'
+  );
+  return hue.type.text.split(' | ').map((member) => member.replaceAll("'", ''));
+}
+
 export function attributeRows(manifest) {
   return tableRows(readElement(manifest).attributes, describeAttributeType);
 }

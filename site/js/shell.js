@@ -1,9 +1,9 @@
 import {
   HOP_EASING,
   beatMs,
+  hopLettersIn,
   hopTiming,
   isMotionOk,
-  lightLetters,
   segmentPitch,
 } from './motion.js';
 import { setSide, slatTiming } from './scheme.js';
@@ -83,15 +83,37 @@ document.addEventListener('sidechange', () => {
   });
 });
 
+// Every letter squashes on the shared baseline, so the p's descender doesn't pull it lower than its neighbours.
+function pinToBaseline(letters) {
+  const boxes = letters.map((letter) => letter.getBBox());
+  const baseline = Math.min(...boxes.map((box) => box.y + box.height));
+  for (const [index, letter] of letters.entries()) {
+    const box = boxes[index];
+    letter.style.transformOrigin = `${box.x + box.width / 2}px ${baseline}px`;
+  }
+}
+
 for (const mark of document.querySelectorAll('.hop-quiet')) {
-  const wordmark = mark.querySelector('.wordmark');
+  const hop = mark.querySelector('hue-hop');
+  const restingHue = hop.getAttribute('hue');
+  const letters = [...mark.querySelectorAll('.wordmark path')];
+  pinToBaseline(letters);
+  const isEngaged = () => mark.matches(':hover, :focus-visible');
   const lightUp = () => {
-    if (isMotionOk()) lightLetters(wordmark);
+    const restingFills = letters.map((letter) => getComputedStyle(letter).fill);
+    const isHopping = letters.some((letter) => letter.getAnimations().length);
+    hop.hue = 'dusk';
+    if (isMotionOk() && !isHopping) hopLettersIn(letters, restingFills);
+  };
+  const settleUnlessEngaged = () => {
+    if (!isEngaged()) hop.hue = restingHue;
   };
   mark.addEventListener('pointerenter', lightUp);
   mark.addEventListener('focus', () => {
     if (mark.matches(':focus-visible')) lightUp();
   });
+  mark.addEventListener('pointerleave', settleUnlessEngaged);
+  mark.addEventListener('blur', settleUnlessEngaged);
 }
 
 const meter = document.querySelector('.eq-meter');

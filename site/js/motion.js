@@ -140,17 +140,19 @@ export function hopLetters(hop, { keyframes, beats }) {
   return total;
 }
 
-export function lightLetters(wordmark) {
-  const letters = [...wordmark.querySelectorAll('path')];
-  const { step, length } = hopTiming(letters.length);
+// Each letter holds its old color with two identical keyframes, then snaps to the new one as it leaves the ground.
+export function hopLettersIn(letters, restingFills) {
+  const duration = beatMs() * LETTER_HOP.beats;
+  const { step } = hopTiming(letters.length, duration);
+  const crouch = duration * LETTER_HOP.keyframes[1].offset;
   for (const [index, letter] of letters.entries()) {
-    letter.animate([{ filter: 'grayscale(1)' }, { filter: 'none' }], {
-      duration: length,
-      delay: index * step,
-      easing: HOP_EASING,
-      fill: 'backwards',
+    const restingFill = { fill: restingFills[index] };
+    letter.animate([restingFill, restingFill], {
+      duration: index * step + crouch,
     });
+    letter.animate(LETTER_HOP.keyframes, { duration, delay: index * step });
   }
+  document.dispatchEvent(new CustomEvent('letterhop'));
 }
 
 export function longestWordLength(text) {
