@@ -458,8 +458,9 @@ wa-divider[orientation='vertical'] {
   );
 }
 
+/* Measured in ch, like wa-prose's 65ch, but longer: leads are short and read better with room to run. */
 .section-lead {
-  max-width: 48rem;
+  max-width: 100ch;
   margin-block: var(--space-group) var(--space-section);
   color: var(--ink-quiet);
   font-size: var(--type-lead);

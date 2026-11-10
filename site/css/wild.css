@@ -1493,9 +1493,9 @@
   }
 }
 
-/* Longer than the other leads, so on a wide screen it sits in two lines without running the band's full width. Measured in ch like wa-prose's 65ch measure. */
-.wild-lead {
-  max-width: 100ch;
+/* The margin's tick scale reads as noise against the grain and the wider grid. */
+#wild-title::after {
+  content: none;
 }
 
 /* Chrome only balances up to six lines, so on a phone the lead falls back to plain wrapping and strands its last word. */
