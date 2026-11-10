@@ -62,7 +62,7 @@
                 "text": "string"
               },
               "fieldName": "driftRange",
-              "description": "How many degrees the hues sway each way, which sets `--hop-drift-range` on this element. Does nothing without `drift`."
+              "description": "How many degrees the colors sway each way, which sets `--hop-drift-range` on this element. Does nothing without `drift`."
             },
             {
               "name": "drift-cycle",
@@ -78,7 +78,7 @@
                 "text": "boolean"
               },
               "fieldName": "drift",
-              "description": "Slowly sways the hues back and forth, needs `drift.css`, and holds still when the visitor prefers reduced motion."
+              "description": "Slowly sways the colors back and forth, needs `drift.css`, and holds still when the visitor prefers reduced motion."
             },
             {
               "name": "hue",
@@ -159,7 +159,7 @@
                 "text": "string | null"
               },
               "attribute": "drift-range",
-              "description": "How many degrees the hues sway each way, mirroring the `drift-range` attribute, where `null` removes it."
+              "description": "How many degrees the colors sway each way, mirroring the `drift-range` attribute, where `null` removes it."
             },
             {
               "kind": "field",
@@ -195,7 +195,7 @@
                 "text": "boolean"
               },
               "attribute": "drift",
-              "description": "Whether the hues sway, mirroring the `drift` attribute, where `false` removes it."
+              "description": "Whether the colors sway, mirroring the `drift` attribute, where `false` removes it."
             }
           ],
           "cssProperties": [
@@ -231,7 +231,7 @@
               "name": "--hop-drift-range",
               "syntax": "<number>",
               "default": "24",
-              "description": "How many degrees the hues sway each way when `drift` is on, written as a plain number."
+              "description": "How many degrees the colors sway each way when `drift` is on, written as a plain number."
             },
             {
               "name": "--hop-drift-cycle",
