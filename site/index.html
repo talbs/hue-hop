@@ -40,102 +40,106 @@
           class="section hero"
           aria-labelledby="hero-title"
         >
-          <div
-            class="fader-bank"
-            aria-hidden="true"
-            inert
-          >
-            <wa-slider
-              orientation="vertical"
-              value="0.45"
-              indicator-offset="0.45"
-              min="0"
-              max="1"
-            ></wa-slider>
-            <wa-slider
-              orientation="vertical"
-              value="0.7"
-              indicator-offset="0.7"
-              min="0"
-              max="1"
-            ></wa-slider>
-            <wa-slider
-              orientation="vertical"
-              value="0.85"
-              indicator-offset="0.85"
-              min="0"
-              max="1"
-            ></wa-slider>
-            <wa-slider
-              orientation="vertical"
-              value="0.65"
-              indicator-offset="0.65"
-              min="0"
-              max="1"
-            ></wa-slider>
-            <wa-slider
-              orientation="vertical"
-              value="0.4"
-              indicator-offset="0.4"
-              min="0"
-              max="1"
-            ></wa-slider>
-            <wa-slider
-              orientation="vertical"
-              value="0.25"
-              indicator-offset="0.25"
-              min="0"
-              max="1"
-            ></wa-slider>
-            <wa-slider
-              orientation="vertical"
-              value="0.5"
-              indicator-offset="0.5"
-              min="0"
-              max="1"
-            ></wa-slider>
-          </div>
-          <h1
-            class="hero-title"
-            id="hero-title"
-          >
-            <hue-hop
-              hue="dusk"
-              drift
-            >
-              Hue Hop
-            </hue-hop>
-          </h1>
-          <div class="hero-body wa-flank:end">
-            <p class="hero-pitch">
-              Give each letter of a heading or name its own color, stepped from
-              one color to another. The text stays real, so selection,
-              find-in-page and screen readers all work. No spans, no images, no
-              build step.
-            </p>
-            <div class="hero-actions wa-cluster wa-gap-2xs">
-              <a
-                class="lit-button is-lit"
-                href="#try"
+          <div class="hero-layout wa-flank:end wa-align-items-end">
+            <div>
+              <h1
+                class="hero-title"
+                id="hero-title"
               >
-                <span
-                  class="led"
-                  aria-hidden="true"
-                ></span>
-                Try it
-              </a>
-              <a
-                class="hop-link is-quiet readout-label"
-                href="{{docs-url}}"
+                <hue-hop
+                  hue="dusk"
+                  drift
+                >
+                  Hue Hop
+                </hue-hop>
+              </h1>
+              <p class="hero-pitch">
+                Give each letter of a heading or name its own color, stepped
+                from one color to another. The text stays real, so selection,
+                find-in-page and screen readers all work. No spans, no images,
+                no build step.
+              </p>
+            </div>
+            <div class="hero-side wa-stack wa-align-items-end">
+              <div
+                class="fader-bank"
+                aria-hidden="true"
+                inert
               >
-                Docs
-              </a>
-              <a
-                class="hop-link is-quiet readout-label"
-                href="{{studio-url}}"
-              >
-                Studio
-              </a>
+                <wa-slider
+                  orientation="vertical"
+                  value="0.45"
+                  indicator-offset="0.45"
+                  min="0"
+                  max="1"
+                ></wa-slider>
+                <wa-slider
+                  orientation="vertical"
+                  value="0.7"
+                  indicator-offset="0.7"
+                  min="0"
+                  max="1"
+                ></wa-slider>
+                <wa-slider
+                  orientation="vertical"
+                  value="0.85"
+                  indicator-offset="0.85"
+                  min="0"
+                  max="1"
+                ></wa-slider>
+                <wa-slider
+                  orientation="vertical"
+                  value="0.65"
+                  indicator-offset="0.65"
+                  min="0"
+                  max="1"
+                ></wa-slider>
+                <wa-slider
+                  orientation="vertical"
+                  value="0.4"
+                  indicator-offset="0.4"
+                  min="0"
+                  max="1"
+                ></wa-slider>
+                <wa-slider
+                  orientation="vertical"
+                  value="0.25"
+                  indicator-offset="0.25"
+                  min="0"
+                  max="1"
+                ></wa-slider>
+                <wa-slider
+                  orientation="vertical"
+                  value="0.5"
+                  indicator-offset="0.5"
+                  min="0"
+                  max="1"
+                ></wa-slider>
+              </div>
+              <div class="hero-actions wa-cluster wa-gap-s">
+                <a
+                  class="lit-button is-lit"
+                  href="#try"
+                >
+                  <span
+                    class="led"
+                    aria-hidden="true"
+                  ></span>
+                  Try it
+                </a>
+                <a
+                  class="lit-button"
+                  href="{{docs-url}}"
+                >
+                  Docs
+                </a>
+                <a
+                  class="lit-button"
+                  href="{{studio-url}}"
+                >
+                  Studio
+                </a>
+              </div>
             </div>
           </div>
         </section>
