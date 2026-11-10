@@ -144,9 +144,13 @@ export function readFills(manifest) {
 const HUE_ENDS =
   /:where\(hue-hop\[hue='(\w+)'\]\)\s*\{\s*--hop-start:\s*([^;]+);\s*--hop-end:\s*([^;]+);/g;
 
+const UNLISTED_HUES = ['moon'];
+
 // Read from the element's own hue rules, so the docs can't fall behind a retuned hue.
 function hueEndTabs() {
-  const hues = [...read('src/hues.css').matchAll(HUE_ENDS)];
+  const hues = [...read('src/hues.css').matchAll(HUE_ENDS)].filter(
+    ([, name]) => !UNLISTED_HUES.includes(name)
+  );
   if (hues.length === 0) {
     throw new Error('src/hues.css no longer has hue rules this can read');
   }
