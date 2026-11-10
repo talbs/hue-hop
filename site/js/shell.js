@@ -84,13 +84,24 @@ document.addEventListener('sidechange', () => {
 });
 
 for (const mark of document.querySelectorAll('.hop-quiet')) {
+  const hop = mark.querySelector('hue-hop');
   const wordmark = mark.querySelector('.wordmark');
   const lightUp = () => {
+    hop.hue = 'dusk';
     if (isMotionOk()) lightLetters(wordmark);
   };
+  const settle = () => {
+    hop.hue = 'moon';
+  };
   mark.addEventListener('pointerenter', lightUp);
+  mark.addEventListener('pointerleave', () => {
+    if (!mark.matches(':focus-visible')) settle();
+  });
   mark.addEventListener('focus', () => {
     if (mark.matches(':focus-visible')) lightUp();
+  });
+  mark.addEventListener('blur', () => {
+    if (!mark.matches(':hover')) settle();
   });
 }
 
