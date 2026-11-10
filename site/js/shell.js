@@ -89,43 +89,31 @@ function pinToBaseline(letters) {
   const baseline = Math.min(...boxes.map((box) => box.y + box.height));
   for (const [index, letter] of letters.entries()) {
     const box = boxes[index];
-    letter.style.transformBox = 'view-box';
     letter.style.transformOrigin = `${box.x + box.width / 2}px ${baseline}px`;
   }
 }
 
-function unitsPerEm(wordmark) {
-  const emPx = parseFloat(getComputedStyle(wordmark).fontSize);
-  const heightInEm = wordmark.getBoundingClientRect().height / emPx;
-  return wordmark.viewBox.baseVal.height / heightInEm;
-}
-
 for (const mark of document.querySelectorAll('.hop-quiet')) {
   const hop = mark.querySelector('hue-hop');
-  const wordmark = mark.querySelector('.wordmark');
-  const letters = [...wordmark.querySelectorAll('path')];
+  const restingHue = hop.getAttribute('hue');
+  const letters = [...mark.querySelectorAll('.wordmark path')];
+  pinToBaseline(letters);
+  const isEngaged = () => mark.matches(':hover, :focus-visible');
   const lightUp = () => {
     const restingFills = letters.map((letter) => getComputedStyle(letter).fill);
     const isHopping = letters.some((letter) => letter.getAnimations().length);
     hop.hue = 'dusk';
-    if (isMotionOk() && !isHopping) {
-      pinToBaseline(letters);
-      hopLettersIn(letters, restingFills, unitsPerEm(wordmark));
-    }
+    if (isMotionOk() && !isHopping) hopLettersIn(letters, restingFills);
   };
-  const settle = () => {
-    hop.hue = 'moon';
+  const settleUnlessEngaged = () => {
+    if (!isEngaged()) hop.hue = restingHue;
   };
   mark.addEventListener('pointerenter', lightUp);
-  mark.addEventListener('pointerleave', () => {
-    if (!mark.matches(':focus-visible')) settle();
-  });
   mark.addEventListener('focus', () => {
     if (mark.matches(':focus-visible')) lightUp();
   });
-  mark.addEventListener('blur', () => {
-    if (!mark.matches(':hover')) settle();
-  });
+  mark.addEventListener('pointerleave', settleUnlessEngaged);
+  mark.addEventListener('blur', settleUnlessEngaged);
 }
 
 const meter = document.querySelector('.eq-meter');

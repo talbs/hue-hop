@@ -5,7 +5,12 @@ import { escapeHtml } from '../site/js/state.js';
 import { DOCS_URL, REPO_URL, SITE_URL, STUDIO_URL } from '../site/js/urls.js';
 import { AGENT_RULES, ASSISTANT_PROMPT, DOCS_GROUPS } from './copy.js';
 import { compileExamples, fillCopyButtons } from './examples.js';
-import { attributeRows, cssPropertyRows, propertyRows } from './manifest.js';
+import {
+  attributeRows,
+  cssPropertyRows,
+  listedHues,
+  propertyRows,
+} from './manifest.js';
 import { keepGroupsOnTransform } from './page-move-boot.js';
 import { SOCIAL_IMAGE_SIZE } from './social-image.js';
 
@@ -132,7 +137,7 @@ export function readFills(manifest) {
     'assistant-prompt': escapeHtml(ASSISTANT_PROMPT),
     'agent-rules': escapeHtml(AGENT_RULES),
     'docs-nav': docsNav(DOCS_GROUPS),
-    'hue-end-tabs': hueEndTabs(),
+    'hue-end-tabs': hueEndTabs(listedHues(manifest)),
     'element-script':
       '<script type="module" src="{{root}}dist/hue-hop.js"></script>',
     // The 404's stage renders even if a module request to the site is slow.
@@ -144,12 +149,10 @@ export function readFills(manifest) {
 const HUE_ENDS =
   /:where\(hue-hop\[hue='(\w+)'\]\)\s*\{\s*--hop-start:\s*([^;]+);\s*--hop-end:\s*([^;]+);/g;
 
-const UNLISTED_HUES = ['moon'];
-
 // Read from the element's own hue rules, so the docs can't fall behind a retuned hue.
-function hueEndTabs() {
-  const hues = [...read('src/hues.css').matchAll(HUE_ENDS)].filter(
-    ([, name]) => !UNLISTED_HUES.includes(name)
+function hueEndTabs(listed) {
+  const hues = [...read('src/hues.css').matchAll(HUE_ENDS)].filter(([, name]) =>
+    listed.includes(name)
   );
   if (hues.length === 0) {
     throw new Error('src/hues.css no longer has hue rules this can read');

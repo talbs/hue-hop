@@ -160,8 +160,11 @@ wa-page::part(subheader) {
   vertical-align: -0.099em;
 }
 
+/* One em of the mark is 1000 drawing units, so a hop's em lift lands in the units the paths are drawn in. */
 .wordmark path {
   fill: currentColor;
+  font-size: 1000px;
+  transform-box: view-box;
 }
 
 .site-nav {

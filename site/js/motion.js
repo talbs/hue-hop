@@ -140,29 +140,17 @@ export function hopLetters(hop, { keyframes, beats }) {
   return total;
 }
 
-// SVG letters move in their drawing units, not ems.
-function withLiftInUnits(keyframes, unitsPerEm) {
-  return keyframes.map((frame) => {
-    const [x, y] = frame.translate.split(' ');
-    return {
-      ...frame,
-      translate: `${x} ${parseFloat(y) * unitsPerEm}px`,
-    };
-  });
-}
-
 // Each letter holds its old color with two identical keyframes, then snaps to the new one as it leaves the ground.
-export function hopLettersIn(letters, restingFills, unitsPerEm) {
+export function hopLettersIn(letters, restingFills) {
   const duration = beatMs() * LETTER_HOP.beats;
   const { step } = hopTiming(letters.length, duration);
   const crouch = duration * LETTER_HOP.keyframes[1].offset;
-  const keyframes = withLiftInUnits(LETTER_HOP.keyframes, unitsPerEm);
   for (const [index, letter] of letters.entries()) {
     const restingFill = { fill: restingFills[index] };
     letter.animate([restingFill, restingFill], {
       duration: index * step + crouch,
     });
-    letter.animate(keyframes, { duration, delay: index * step });
+    letter.animate(LETTER_HOP.keyframes, { duration, delay: index * step });
   }
   document.dispatchEvent(new CustomEvent('letterhop'));
 }
