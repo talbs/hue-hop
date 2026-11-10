@@ -2,6 +2,12 @@
 
 Newest version first. Changes go under Added, Changed, Deprecated, Removed, Fixed, or Security. Anything breaking says **Breaking** and goes at the top.
 
+## 0.3.1
+
+### Changed
+
+- `ember` and `honey` no longer look alike. `ember` now runs scarlet to crimson (coral to fire red in dark mode). `honey` runs gold to orange (butter yellow to tangerine). Both still pass contrast.
+
 ## 0.3.0 · 2026-11-09
 
 ### Changed
