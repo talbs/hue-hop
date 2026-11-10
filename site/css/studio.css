@@ -446,7 +446,7 @@ wa-page::part(subheader) {
   min-width: 0;
   padding: var(--space-group);
   border-radius: var(--panel-radius);
-  background: var(--surface);
+  background: var(--grain-soft), var(--surface);
   box-shadow: var(--depth-panel);
 }
 
