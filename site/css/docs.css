@@ -131,14 +131,6 @@
   --hop-link-y: calc(100% - var(--space-tight));
 }
 
-.docs-meta {
-  text-transform: none;
-}
-
-.docs-meta .hop-link {
-  font-size: inherit;
-}
-
 .docs-title {
   padding: var(--space-page) 0 0;
 }
@@ -148,8 +140,10 @@
   padding-block-start: var(--wa-space-2xl);
 }
 
-.docs-title .section-lead {
-  margin-block-end: 0;
+.docs-intro {
+  max-width: 48rem;
+  margin-block: var(--space-group) 0;
+  color: var(--ink-quiet);
 }
 
 .docs-wordmark,
@@ -159,6 +153,31 @@
   font-weight: var(--weight-display);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
+}
+
+.docs-wordmark {
+  margin-block-start: var(--space-group);
+  font-size: clamp(2.75rem, 5vw, 4rem);
+}
+
+.docs-version {
+  display: inline-flex;
+  padding: var(--space-tight) var(--space-related);
+  border: var(--border-thin) solid var(--border-control);
+  border-radius: var(--radius-control);
+  color: var(--ink-faint);
+  font-family: var(--font-code);
+  font-size: var(--type-small);
+  line-height: var(--leading-body);
+  text-decoration: none;
+  transition:
+    border-color var(--note-16) var(--ease-hit),
+    color var(--note-16) var(--ease-hit);
+}
+
+.docs-version:hover {
+  border-color: currentColor;
+  color: var(--ink);
 }
 
 .docs-mark {
