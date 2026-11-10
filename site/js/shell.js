@@ -1,10 +1,10 @@
 import {
   HOP_EASING,
   beatMs,
+  hopLettersIn,
   hopTiming,
   isMotionOk,
   segmentPitch,
-  stepLettersIn,
 } from './motion.js';
 import { setSide, slatTiming } from './scheme.js';
 import { track } from './track.js';
@@ -83,13 +83,35 @@ document.addEventListener('sidechange', () => {
   });
 });
 
+// Every letter squashes on the shared baseline, so the p's descender doesn't pull it lower than its neighbours.
+function pinToBaseline(letters) {
+  const boxes = letters.map((letter) => letter.getBBox());
+  const baseline = Math.min(...boxes.map((box) => box.y + box.height));
+  for (const [index, letter] of letters.entries()) {
+    const box = boxes[index];
+    letter.style.transformBox = 'view-box';
+    letter.style.transformOrigin = `${box.x + box.width / 2}px ${baseline}px`;
+  }
+}
+
+function unitsPerEm(wordmark) {
+  const emPx = parseFloat(getComputedStyle(wordmark).fontSize);
+  const heightInEm = wordmark.getBoundingClientRect().height / emPx;
+  return wordmark.viewBox.baseVal.height / heightInEm;
+}
+
 for (const mark of document.querySelectorAll('.hop-quiet')) {
   const hop = mark.querySelector('hue-hop');
-  const letters = [...mark.querySelectorAll('.wordmark path')];
+  const wordmark = mark.querySelector('.wordmark');
+  const letters = [...wordmark.querySelectorAll('path')];
   const lightUp = () => {
     const restingFills = letters.map((letter) => getComputedStyle(letter).fill);
+    const isHopping = letters.some((letter) => letter.getAnimations().length);
     hop.hue = 'dusk';
-    if (isMotionOk()) stepLettersIn(letters, restingFills);
+    if (isMotionOk() && !isHopping) {
+      pinToBaseline(letters);
+      hopLettersIn(letters, restingFills, unitsPerEm(wordmark));
+    }
   };
   const settle = () => {
     hop.hue = 'moon';
