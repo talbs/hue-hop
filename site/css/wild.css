@@ -1,16 +1,27 @@
 /* Skips this section's layout until it nears the screen. It sits on the section because content-visibility clips at the box's edge, and .wild's edge would slice the top row as it lifts on hover. */
 #wild {
   content-visibility: auto;
-  contain-intrinsic-size: auto 5874px;
+  contain-intrinsic-size: auto 6055px;
 }
 
-/* content-visibility also clips the heading's tick scale, which hangs in the margin. Wider padding with a matching max-width moves the clip edge past it and keeps the content the same width. */
+/* Wide screens get a deeper inset, so the band's content doesn't hug the window edge. */
 @media (min-width: 80rem) {
   #wild {
-    --tick-room: var(--wa-space-2xl);
-    max-width: calc(var(--measure) + var(--tick-room) * 2);
-    padding-inline: calc(var(--gutter) + var(--tick-room));
+    --band-inset: calc(var(--gutter) + var(--wa-space-2xl));
   }
+}
+
+/* A sunken band from edge to edge. The side padding holds the content to the wide measure. */
+#wild {
+  max-width: none;
+  margin-block-start: var(--space-page);
+  padding-block-end: var(--space-page);
+  padding-inline: max(
+    var(--band-inset, var(--gutter)),
+    (100% - var(--measure-wide)) / 2
+  );
+  border-block: var(--border-thin) solid var(--divider);
+  background: var(--grain), var(--surface-sunken);
 }
 
 /* The site's inks are fixed per side, so a dark island on the light side would get dark ink. These pairs let each island resolve to its own scheme. */
@@ -1314,7 +1325,7 @@
 
 @media (min-width: 48rem) {
   #wild {
-    contain-intrinsic-size: auto 5497px;
+    contain-intrinsic-size: auto 5696px;
   }
 
   .wild {
@@ -1338,7 +1349,7 @@
 
 @media (min-width: 64rem) {
   #wild {
-    contain-intrinsic-size: auto 3500px;
+    contain-intrinsic-size: auto 3622px;
   }
 
   .wild {
@@ -1412,5 +1423,84 @@
   .wild-player {
     grid-column: 4 / span 3;
     grid-row: 10;
+  }
+}
+
+@media (min-width: 90rem) {
+  #wild {
+    contain-intrinsic-size: auto 2743px;
+  }
+
+  .wild {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+
+  .wild-deck {
+    grid-column: 1 / span 6;
+    grid-row: 1 / span 2;
+  }
+  .wild-year {
+    grid-column: 7 / span 3;
+    grid-row: 1;
+  }
+  .wild-countdown {
+    grid-column: 7 / span 3;
+    grid-row: 2;
+  }
+  .wild-bill {
+    grid-column: 10 / span 3;
+    grid-row: 1 / span 2;
+  }
+  .wild-nav {
+    grid-column: 1 / span 8;
+    grid-row: 3;
+  }
+  .wild-themer {
+    grid-column: 9 / span 4;
+    grid-row: 3;
+  }
+  .wild-neon {
+    grid-column: 1 / span 4;
+    grid-row: 4;
+  }
+  .wild-record {
+    grid-column: 5 / span 4;
+    grid-row: 4;
+  }
+  .wild-tapes {
+    grid-column: 9 / span 4;
+    grid-row: 4;
+  }
+  .wild-line {
+    grid-column: 1 / span 8;
+    grid-row: 5;
+  }
+  .wild-passage {
+    grid-column: 9 / span 4;
+    grid-row: 5;
+  }
+  .wild-404 {
+    grid-column: 1 / span 6;
+    grid-row: 6;
+  }
+  .wild-player {
+    grid-column: 1 / span 6;
+    grid-row: 7;
+  }
+  .wild-term {
+    grid-column: 7 / span 6;
+    grid-row: 6 / span 2;
+  }
+}
+
+/* Longer than the other leads, so on a wide screen it sits in two lines without running the band's full width. Measured in ch like wa-prose's 65ch measure. */
+.wild-lead {
+  max-width: 100ch;
+}
+
+/* Chrome only balances up to six lines, so on a phone the lead falls back to plain wrapping and strands its last word. */
+@media (width < 48rem) {
+  .wild-lead {
+    text-wrap: pretty;
   }
 }

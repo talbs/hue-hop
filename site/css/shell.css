@@ -272,6 +272,7 @@ wa-page::part(subheader) {
 .site-footer {
   margin-block-start: var(--space-page);
   border-block-start: var(--border-thin) solid var(--divider);
+  background: var(--grain), var(--surface-sunken);
   color: var(--ink-quiet);
   font-size: var(--type-small);
 }
@@ -463,6 +464,7 @@ wa-divider[orientation='vertical'] {
   color: var(--ink-quiet);
   font-size: var(--type-lead);
   line-height: var(--leading-tight);
+  text-wrap: balance;
 }
 
 .code-block {
