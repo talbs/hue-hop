@@ -220,7 +220,7 @@ function wireDriftSwitch(figure) {
   });
   const showMotionNote = () => {
     note.textContent = reducedMotion.matches
-      ? 'Reduced motion is on, so the hues hold still.'
+      ? 'Reduced motion is on, so the colors hold still.'
       : '';
   };
   reducedMotion.addEventListener('change', showMotionNote);

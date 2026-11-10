@@ -17,7 +17,7 @@ export class HueHop extends HTMLElement {
   /** How many degrees each letter's hue turns, mirroring the `shift` attribute, where `null` removes it. */
   get shift(): string | null;
   set shift(value: string | number | null);
-  /** How many degrees the hues sway each way, mirroring the `drift-range` attribute, where `null` removes it. */
+  /** How many degrees the colors sway each way, mirroring the `drift-range` attribute, where `null` removes it. */
   get driftRange(): string | null;
   set driftRange(value: string | number | null);
   /** How long one full sway takes, like `4s`, mirroring the `drift-cycle` attribute, where `null` removes it. */
@@ -27,6 +27,6 @@ export class HueHop extends HTMLElement {
   hue: HueName | null;
   /** Whether the hue uses its large-heading version, mirroring the `display` attribute, where `false` removes it. */
   display: boolean;
-  /** Whether the hues sway, mirroring the `drift` attribute, where `false` removes it. */
+  /** Whether the colors sway, mirroring the `drift` attribute, where `false` removes it. */
   drift: boolean;
 }

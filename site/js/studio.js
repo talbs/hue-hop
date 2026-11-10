@@ -703,7 +703,7 @@ function showLamp(readings) {
 function showBridgeNotes() {
   setHidden(restNote, !state.isDriftOn);
   setHidden(shiftNote, state.shift === 0);
-  setText(shiftNote, `Shift ${state.shift}°: hues differ from your ends.`);
+  setText(shiftNote, `Shift ${state.shift}°: colors differ from your ends.`);
 }
 
 function writeFitChange(change) {

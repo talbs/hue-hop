@@ -96,7 +96,7 @@
             </h2>
 
             <p>
-              Three steps: load it, wrap a heading, pick colors. Working with a
+              Three parts: load it, wrap a heading, pick colors. Working with a
               coding assistant? Skip to
               <a href="#build-with-ai">Build with AI</a>
               .
@@ -291,7 +291,7 @@
               look with
               <code>hue</code>
               . Each letter gets one flat color, one step on the way from the
-              start color to the end. One hop is one color step.
+              start color to the end.
             </p>
             <figure class="example">
               <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
@@ -407,9 +407,10 @@
               </figcaption>
             </figure>
             <p>
-              A heading that wraps keeps one ramp across its lines. Links and
-              other inline markup can sit inside, and they keep working. The
-              colors run straight across them (see
+              A heading that wraps keeps one ramp (the run of steps from start
+              to end) across its lines. Links and other inline markup can sit
+              inside, and they keep working. The colors run straight across them
+              (see
               <a href="#styling">Styling Around It</a>
               ).
             </p>
@@ -840,48 +841,45 @@
             </dl>
             <h3 id="from-javascript">From JavaScript</h3>
             <p>
-              <code>el.hue</code>
-              ,
-              <code>el.start</code>
-              ,
-              <code>el.end</code>
-              ,
-              <code>el.display</code>
-              and
-              <code>el.drift</code>
-              read and set the attributes. So do
-              <code>el.curve</code>
-              ,
-              <code>el.boost</code>
-              ,
-              <code>el.shift</code>
-              ,
-              <code>el.driftRange</code>
-              and
-              <code>el.driftCycle</code>
-              . The last two set
+              Every attribute has a matching property. Setting one works the
+              same as setting the attribute, even before the element has loaded.
+              That covers frameworks that set properties (Angular, Solid, Lit's
+              <code>.start=</code>
+              ).
+            </p>
+            <div class="code-well">
+              <p class="code-label readout-label">In your JavaScript</p>
+              <pre
+                class="code-block"
+              ><code class="language-javascript" id="docs-properties">const el = document.querySelector('hue-hop');
+el.start = 'teal';     // start="teal"
+el.driftRange = '40';  // drift-range="40"
+el.drift = true;       // adds drift
+el.start = null;       // removes start</code></pre>
+              <wa-copy-button
+                class="code-copy"
+                from="docs-properties"
+                copy-label="Copy JavaScript"
+              ></wa-copy-button>
+            </div>
+            <p>
+              Two-word names use camelCase, so
               <code>drift-range</code>
-              and
-              <code>drift-cycle</code>
-              . All of these except
+              is
+              <code>el.driftRange</code>
+              .
               <code>display</code>
               and
               <code>drift</code>
-              take
-              <code>null</code>
-              to remove the attribute.
-              <code>display</code>
-              and
-              <code>drift</code>
-              take
+              are on or off, so they take
               <code>true</code>
               or
               <code>false</code>
-              . Setting a property works the same as setting the attribute, even
-              before the element has loaded. That covers frameworks that set
-              properties (Angular, Solid, Lit's
-              <code>.start=</code>
-              ).
+              . The rest take
+              <code>null</code>
+              to remove the attribute. The full list is in
+              <a href="#properties">Properties</a>
+              .
             </p>
             <p>Change the text any time. The colors follow.</p>
             <h3 id="keep-them-readable">Keep Them Readable</h3>
@@ -1122,7 +1120,8 @@
 
             <p>
               <code>drift.css</code>
-              slowly sways the hues back and forth. Load it once (see
+              slowly sways the colors back and forth around the color wheel.
+              Load it once (see
               <a href="#load-it">Load It</a>
               ), then add
               <code>drift</code>
@@ -1192,7 +1191,7 @@
                     <td><code>drift-range</code></td>
                     <td><code>--hop-drift-range</code></td>
                     <td><code>24</code></td>
-                    <td>How many degrees the hues sway each way.</td>
+                    <td>How many degrees the colors sway each way.</td>
                   </tr>
                   <tr>
                     <td><code>drift-cycle</code></td>
@@ -1204,9 +1203,9 @@
               </table>
             </wa-scroller>
             <p>
-              Drift only turns hues, and lightness holds. Contrast can still
-              shift a little as the hues turn, so leave some margin at the start
-              and end colors. Drift stops when the visitor prefers reduced
+              Drift only turns the colors, and lightness holds. Contrast can
+              still shift a little as they turn, so leave some margin at the
+              start and end colors. Drift stops when the visitor prefers reduced
               motion, and under forced colors and increased contrast.
             </p>
             <p>
@@ -1552,7 +1551,7 @@
               </div>
             </figure>
             <p>
-              Contrast can still move a little as the hues turn. A shifted
+              Contrast can still move a little as the colors turn. A shifted
               ready-made hue isn't the one that was measured, so check it.
             </p>
             <h3 id="tuning-in-css">Tuning in CSS</h3>
@@ -1919,17 +1918,10 @@
               <code>document.querySelector('hue-hop')</code>
               comes back as a
               <code>HueHop</code>
-              . It also types the element in React JSX:
+              . It also types every attribute in React JSX, with
               <code>hue</code>
-              (the seven names),
-              <code>start</code>
-              ,
-              <code>end</code>
-              ,
-              <code>drift</code>
-              , and
-              <code>display</code>
-              . Nothing to declare. The seven names are exported as
+              limited to the seven names. Nothing to declare. The seven names
+              are exported as
               <code>HueName</code>
               .
             </p>
@@ -1948,40 +1940,13 @@
               <code>display</code>
               with the bare name, like
               <code>&lt;hue-hop drift&gt;</code>
-              , and leave them out to turn them off. React 19 treats
+              , and leave them out to turn them off. Skip
               <code>drift=""</code>
-              as off, and React 18 treats
+              and
               <code>drift={false}</code>
+              : React 19 reads the first as off, and React 18 reads the second
               as on.
             </p>
-            <h3 id="server-rendering">Server Rendering</h3>
-            <p>
-              Importing it on the server is safe. There's no browser there, so
-              it does nothing, and the heading goes out as plain text. The
-              colors arrive when the same import runs in the browser.
-            </p>
-            <p>
-              So import it from code that also runs in the browser. Code that
-              only runs on the server never defines the element on the page.
-            </p>
-            <ul>
-              <li>
-                Next.js: import it in a file that starts with
-                <code>'use client'</code>
-                , not in a Server Component.
-              </li>
-              <li>
-                Astro: import it in a
-                <code>&lt;script&gt;</code>
-                tag, not in the frontmatter.
-              </li>
-              <li>
-                Nuxt: import it in a plugin named like
-                <code>plugins/hue-hop.client.js</code>
-                .
-              </li>
-              <li>SvelteKit: import it in the component. That runs in both.</li>
-            </ul>
             <h3 id="vue-and-angular">Vue and Angular</h3>
             <p>
               Both need to be told that
@@ -2022,6 +1987,34 @@
                 copy-label="Copy Angular setting"
               ></wa-copy-button>
             </div>
+            <h3 id="server-rendering">Server Rendering</h3>
+            <p>
+              Importing it on the server is safe. There's no browser there, so
+              it does nothing, and the heading goes out as plain text. The
+              colors arrive when the same import runs in the browser.
+            </p>
+            <p>
+              So import it from code that also runs in the browser. Code that
+              only runs on the server never defines the element on the page.
+            </p>
+            <ul>
+              <li>
+                Next.js: import it in a file that starts with
+                <code>'use client'</code>
+                , not in a Server Component.
+              </li>
+              <li>
+                Astro: import it in a
+                <code>&lt;script&gt;</code>
+                tag, not in the frontmatter.
+              </li>
+              <li>
+                Nuxt: import it in a plugin named like
+                <code>plugins/hue-hop.client.js</code>
+                .
+              </li>
+              <li>SvelteKit: import it in the component. That runs in both.</li>
+            </ul>
             <h3 id="another-tag">Another Tag</h3>
             <p>
               The
@@ -2192,17 +2185,25 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             </p>
             <h3 id="test-doms">Test DOMs</h3>
             <p>
-              jsdom and happy-dom have no highlights, so the element goes inert
-              there. It's defined, it never draws, and it logs nothing. That's
-              what Vitest's
+              Your tests won't break. jsdom and happy-dom can't paint
+              highlights, so the element loads and shows its text with no
+              colors. It logs nothing. Checked with jsdom 30.1, happy-dom 21.0,
+              and Vitest 5.1's
               <code>jsdom</code>
               and
               <code>happy-dom</code>
-              environments do, checked with jsdom 30.1, happy-dom 21.0, and
-              Vitest 5.1.
+              environments.
             </p>
             <p>
-              Wiring up a DOM by hand? Copying only
+              Don't test for colors there.
+              <code>el.hops</code>
+              is
+              <code>0</code>
+              in a test DOM, the same as off the page. Test the text and the
+              attributes instead.
+            </p>
+            <p>
+              Wiring up a DOM by hand? Copy
               <code>window</code>
               ,
               <code>document</code>
@@ -2210,15 +2211,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>HTMLElement</code>
               , and
               <code>customElements</code>
-              onto the global is enough. With no
+              onto the global. That's enough for it to load. Without a global
               <code>CSS</code>
-              , the element loads and stays inert.
-            </p>
-            <p>
-              <code>el.hops</code>
-              is
-              <code>0</code>
-              off the page or without support, test DOMs included.
+              object, it skips the colors.
             </p>
           </section>
           <p class="docs-group readout-label">Reference</p>
@@ -2358,7 +2353,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                           class="readout-label"
                           for="hops-count"
                         >
-                          hops
+                          steps
                         </label>
                         <output
                           id="hops-count"
@@ -2382,7 +2377,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             </figure>
             <p>
               <code>el.hops</code>
-              returns the count as a read-only number. It's
+              returns the step count as a read-only number. It's
               <code>0</code>
               when the element is off the page or the browser lacks support.
             </p>
