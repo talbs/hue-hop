@@ -3,8 +3,8 @@ import {
   beatMs,
   hopTiming,
   isMotionOk,
-  lightLetters,
   segmentPitch,
+  stepLettersIn,
 } from './motion.js';
 import { setSide, slatTiming } from './scheme.js';
 import { track } from './track.js';
@@ -85,10 +85,11 @@ document.addEventListener('sidechange', () => {
 
 for (const mark of document.querySelectorAll('.hop-quiet')) {
   const hop = mark.querySelector('hue-hop');
-  const wordmark = mark.querySelector('.wordmark');
+  const letters = [...mark.querySelectorAll('.wordmark path')];
   const lightUp = () => {
+    const restingFills = letters.map((letter) => getComputedStyle(letter).fill);
     hop.hue = 'dusk';
-    if (isMotionOk()) lightLetters(wordmark);
+    if (isMotionOk()) stepLettersIn(letters, restingFills);
   };
   const settle = () => {
     hop.hue = 'moon';

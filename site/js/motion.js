@@ -140,16 +140,12 @@ export function hopLetters(hop, { keyframes, beats }) {
   return total;
 }
 
-export function lightLetters(wordmark) {
-  const letters = [...wordmark.querySelectorAll('path')];
-  const { step, length } = hopTiming(letters.length);
+// Two identical keyframes hold a letter's old color, so it snaps to the new one on its turn instead of fading.
+export function stepLettersIn(letters, restingFills) {
+  const { step } = hopTiming(letters.length);
   for (const [index, letter] of letters.entries()) {
-    letter.animate([{ filter: 'grayscale(1)' }, { filter: 'none' }], {
-      duration: length,
-      delay: index * step,
-      easing: HOP_EASING,
-      fill: 'backwards',
-    });
+    const restingFill = { fill: restingFills[index] };
+    letter.animate([restingFill, restingFill], { duration: index * step });
   }
 }
 
