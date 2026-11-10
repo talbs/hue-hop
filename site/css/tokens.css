@@ -49,6 +49,7 @@
 
   --type-display: clamp(3.75rem, 1rem + 11vw, 11rem);
   --type-stage: clamp(2.5rem, 1.25rem + 6vw, 5.5rem);
+  --type-title: clamp(2.75rem, 5vw, 4rem);
   --type-heading: clamp(2.25rem, 1.5rem + 2.6vw, 3.5rem);
   --type-lead: 1.375rem;
   --type-body: 1.125rem;

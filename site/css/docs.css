@@ -157,7 +157,7 @@
 
 .docs-wordmark {
   margin-block-start: var(--space-group);
-  font-size: clamp(2.75rem, 5vw, 4rem);
+  font-size: var(--type-title);
 }
 
 .docs-version {
