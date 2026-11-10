@@ -48,22 +48,39 @@
         aria-label="Docs"
       >
         {{docs-nav}}
-        <p class="docs-meta readout-label">
-          <a
-            class="hop-link is-quiet"
-            href="{{repo-url}}/releases"
-          >
-            v{{version}}
-          </a>
-        </p>
       </nav>
       <main id="main-content">
         <div class="docs-title">
+          <a
+            class="docs-version"
+            href="{{repo-url}}/releases"
+            aria-label="v{{version}} release notes"
+          >
+            v{{version}}
+          </a>
           <h1 class="docs-wordmark">
             <hue-hop hue="dusk">Hue Hop</hue-hop>
             <span class="docs-mark">Docs</span>
           </h1>
-          <p class="section-lead">Every letter hops a hue.</p>
+          <p class="docs-intro wa-body-l">
+            Hue Hop is one custom element:
+            <code>&lt;hue-hop&gt;</code>
+            . It colors each letter of a heading a flat step from a start color
+            to an end color. It's still real text, so you can select it, copy
+            it, and search for it. Pick one of
+            <a href="#hues">seven hues</a>
+            with
+            <code>hue</code>
+            . Or
+            <a href="#your-own-colors">set your own</a>
+            with
+            <code>start</code>
+            and
+            <code>end</code>
+            . Add
+            <a href="#drift">drift</a>
+            if you want the colors to sway.
+          </p>
         </div>
         <article class="wa-prose">
           <p class="docs-group readout-label">Start</p>
@@ -84,7 +101,7 @@
               <a href="#build-with-ai">Build with AI</a>
               .
             </p>
-            <h3 id="load-it">Load It</h3>
+            <h3 id="load-it">1. Load It</h3>
             <wa-tab-group class="install-tabs">
               <wa-tab
                 slot="nav"
@@ -268,7 +285,7 @@
               <a href="#another-tag">another tag</a>
               .
             </p>
-            <h3 id="wrap-a-heading">Wrap a Heading</h3>
+            <h3 id="wrap-a-heading">2. Wrap a Heading</h3>
             <p>
               Put the element inside the heading, around the words, and pick a
               look with
@@ -288,7 +305,7 @@
               work like on any heading. Kerning holds, links inside keep
               working, and nothing moves when the colors load.
             </p>
-            <h3 id="pick-colors">Pick Colors</h3>
+            <h3 id="pick-colors">3. Pick Colors</h3>
             <p>
               Use
               <code>hue</code>
@@ -3167,7 +3184,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                 <dt class="readout-label">Version</dt>
                 <dd>
                   <a href="{{repo-url}}/releases">v{{version}}</a>
-                  . Pin it until 1.0.
+                  . Pin it until 1.0. Names and defaults can still change before
+                  then.
                 </dd>
               </div>
               <div>
