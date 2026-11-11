@@ -1,5 +1,5 @@
 import { codeFromPreview } from './example-code.js';
-import { isMotionOk } from './motion.js';
+import { isMotionOk, typeOut } from './motion.js';
 import { whenSideChanges } from './scheme.js';
 import {
   DEFAULT_STATE,
@@ -242,12 +242,16 @@ function wireHopsReadout(figure) {
     const hopCount = String(hop.hops ?? 0);
     if (readout.textContent.trim() !== hopCount) readout.textContent = hopCount;
   };
-  const showFieldText = () => {
-    hop.textContent = field.value;
+  let stopTyping = () => {};
+  const showCountAndCode = () =>
     afterRepaint(() => {
       showHops();
       refreshCode(figure);
     });
+  const showFieldText = () => {
+    stopTyping();
+    hop.textContent = field.value;
+    showCountAndCode();
   };
   field.addEventListener('input', showFieldText);
   shuffle.addEventListener('click', () => {
@@ -257,7 +261,12 @@ function wireHopsReadout(figure) {
       sample = shownSample.textContent;
     }
     field.value = sample;
-    showFieldText();
+    if (!isMotionOk()) {
+      showFieldText();
+      return;
+    }
+    stopTyping();
+    stopTyping = typeOut(hop, sample, showCountAndCode);
   });
   customElements.whenDefined('hue-hop').then(() => afterRepaint(showHops));
 }
