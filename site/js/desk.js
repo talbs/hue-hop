@@ -4,7 +4,9 @@ import { whenSideChanges } from './scheme.js';
 import {
   isMotionOk,
   longestWordLength,
-  segmentPitch,
+  STAGE_BARS,
+  showStepBars,
+  tintStepBars,
   typeOut,
 } from './motion.js';
 import { DEFAULT_STATE, describeMarkup, describeStudioLink } from './state.js';
@@ -65,22 +67,16 @@ function showContrast() {
   lampDetail.textContent = `${floorRatio(ratio)}:1 of ${CONTRAST_FLOOR}`;
 }
 
-const STEP_BARS = 12;
+const canHover = matchMedia('(hover: hover)');
 
-function showStepBars() {
-  if (stageBars.children.length !== STEP_BARS) {
-    stageBars.replaceChildren(
-      ...Array.from({ length: STEP_BARS }, () => document.createElement('span'))
-    );
-  }
-  // Heights snap to whole segments, so no bar ends in a sliver of an LED.
-  const segment = segmentPitch(stageBars);
-  const segmentsTall = Math.floor(stageBars.clientHeight / segment);
-  [...stageBars.children].forEach((bar, index) => {
-    const progress = index / (STEP_BARS - 1);
-    const lit = Math.max(1, Math.round(segmentsTall * (0.2 + 0.8 * progress)));
-    bar.style.height = `${lit * segment}px`;
-  });
+// Read on hover rather than on every render, since the bars only show their colors then.
+function tintStageBars() {
+  if (!canHover.matches) return;
+  const stepColors = Array.from(
+    { length: live.hops ?? 0 },
+    (_, step) => getComputedStyle(live, `::highlight(hue-hop-${step})`).color
+  );
+  tintStepBars(stageBars, stepColors);
 }
 
 let stopTyping = () => {};
@@ -166,6 +162,7 @@ if (desk) {
     live.textContent = textField.value;
   });
   whenSideChanges(render);
-  showStepBars();
+  stage.addEventListener('pointerenter', tintStageBars);
+  showStepBars(stageBars, STAGE_BARS);
   render();
 }

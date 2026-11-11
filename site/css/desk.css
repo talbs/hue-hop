@@ -134,27 +134,10 @@
   margin-inline-end: var(--space-related);
 }
 
-/* A fixed meter behind the stage: twelve bars stepping up the way the colors step. */
+/* Starts below the readout, so no bar sits under the hue and contrast. */
 .stage-eq {
-  --segment: 10px;
-  --segment-gap: 4px;
-  position: absolute;
-  z-index: -1;
   inset-block: calc(var(--space-section) * 2) 0;
-  inset-inline: 45% var(--stage-pad-inline);
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: var(--space-tight);
-  opacity: 0.7;
-}
-
-.stage-eq span {
-  flex: 0 1 1.5rem;
-  min-width: 0;
-  height: 0;
-  max-height: 100%;
-  transition: height var(--note-8) var(--ease-bounce);
+  inset-inline: var(--stage-pad-inline);
 }
 
 /* A long word steps down until it fits one line: about 0.6em per letter at this weight. --letters is the longest word's length. */

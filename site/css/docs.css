@@ -578,15 +578,17 @@ wa-scroller > table {
   color: var(--lit);
 }
 
-/* Bars grow in whole segments, set by wireHopMeter, so no bar ends in a sliver of an LED. */
 .hop-meter {
+  --segment: 10px;
+  --segment-gap: 4px;
+  --segments: 7;
   display: grid;
   grid-auto-columns: minmax(0, 1fr);
   grid-auto-flow: column;
   align-items: end;
   gap: var(--space-tight);
-  /* The tallest bar is 7 segments of 14px, per docs.js. Reserved so bars rising and bouncing can't move the page. */
-  --bar-track: 98px;
+  /* Reserved at the tallest bar, so bars rising and bouncing can't move the page. */
+  --bar-track: calc(var(--segments) * (var(--segment) + var(--segment-gap)));
   --meter-pad: var(--wa-space-l);
   min-block-size: calc(
     var(--bar-track) + var(--space-related) + var(--type-label) *
@@ -604,10 +606,6 @@ wa-scroller > table {
 
 .hop-meter-bar {
   align-self: end;
-  block-size: 0;
-  background: currentColor;
-  mask: repeating-linear-gradient(to top, #000 0 10px, transparent 10px 14px);
-  transition: block-size var(--note-8) var(--ease-bounce);
 }
 
 .hop-meter-letter {

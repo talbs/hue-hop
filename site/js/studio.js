@@ -10,6 +10,9 @@ import {
   catchSoftStop,
   isBlankLetter,
   isMotionOk,
+  STAGE_BARS,
+  showStepBars,
+  tintStepBars,
   splitLetters,
   typeOut,
 } from './motion.js';
@@ -51,6 +54,7 @@ const studio = document.querySelector('.studio');
 const stageArt = document.querySelector('.stage-art');
 const wordmark = document.getElementById('wordmark');
 const hop = document.getElementById('hop');
+const stageBars = document.getElementById('stage-eq');
 const accentMark = document.getElementById('accent-mark');
 const colorReader = document.getElementById('color-reader');
 const probes = {
@@ -966,6 +970,9 @@ function paint() {
   showControlStates();
   showReadouts();
   if (codeDrawer.open) showCode();
+  showStepBars(stageBars, STAGE_BARS, state.curve);
+  const stepColors = (readings[shownScheme()] ?? []).map(({ hex }) => hex);
+  tintStepBars(stageBars, stepColors);
 }
 
 let hasPendingRender = false;

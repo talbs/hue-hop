@@ -1,5 +1,5 @@
 import { codeFromPreview } from './example-code.js';
-import { isMotionOk } from './motion.js';
+import { isMotionOk, splitLetters, stepLevel, typeOut } from './motion.js';
 import { whenSideChanges } from './scheme.js';
 import {
   DEFAULT_STATE,
@@ -203,6 +203,10 @@ function wireFader(figure) {
     readout.textContent = value;
     hop.setAttribute(name, String(Number(value)));
     refreshCode(figure);
+    if (name === 'curve') {
+      const detail = { curve: Number(value) };
+      document.dispatchEvent(new CustomEvent('curvechange', { detail }));
+    }
   });
 }
 
@@ -242,12 +246,16 @@ function wireHopsReadout(figure) {
     const hopCount = String(hop.hops ?? 0);
     if (readout.textContent.trim() !== hopCount) readout.textContent = hopCount;
   };
-  const showFieldText = () => {
-    hop.textContent = field.value;
+  let stopTyping = () => {};
+  const showCountAndCode = () =>
     afterRepaint(() => {
       showHops();
       refreshCode(figure);
     });
+  const showFieldText = () => {
+    stopTyping();
+    hop.textContent = field.value;
+    showCountAndCode();
   };
   field.addEventListener('input', showFieldText);
   shuffle.addEventListener('click', () => {
@@ -257,19 +265,23 @@ function wireHopsReadout(figure) {
       sample = shownSample.textContent;
     }
     field.value = sample;
-    showFieldText();
+    if (!isMotionOk()) {
+      showFieldText();
+      return;
+    }
+    stopTyping();
+    stopTyping = typeOut(hop, sample, showCountAndCode);
   });
   customElements.whenDefined('hue-hop').then(() => afterRepaint(showHops));
 }
-
-const METER_SEGMENTS = 7;
-const METER_SEGMENT_PITCH = 14;
 
 function wireHopMeter(figure) {
   const meter = figure.querySelector('.hop-meter');
   const fader = figure.querySelector('.fader wa-slider');
   const hop = previewHopIn(figure);
-  const letters = [...hop.textContent.trim()];
+  const letters = splitLetters(hop.textContent.trim())
+    .filter(({ isBlank }) => !isBlank)
+    .map(({ letter }) => letter);
   const steps = [];
   for (const letter of letters) {
     const step = document.createElement('span');
@@ -285,15 +297,13 @@ function wireHopMeter(figure) {
   }
   const paintMeter = () => {
     const curve = Number(fader.value);
-    for (let index = 0; index < steps.length; index++) {
-      const { step, bar } = steps[index];
-      const progress = (index / (steps.length - 1)) ** curve;
-      const litSegments = Math.round(METER_SEGMENTS * (0.2 + 0.8 * progress));
-      bar.style.blockSize = `${litSegments * METER_SEGMENT_PITCH}px`;
-      step.style.color = getComputedStyle(
-        hop,
-        `::highlight(hue-hop-${index})`
-      ).color;
+    // Read every color before writing any level, so the loop forces one style pass instead of one per letter.
+    const colors = steps.map(
+      (_, index) => getComputedStyle(hop, `::highlight(hue-hop-${index})`).color
+    );
+    for (const [index, { step, bar }] of steps.entries()) {
+      bar.style.setProperty('--level', stepLevel(index, steps.length, curve));
+      step.style.color = colors[index];
     }
   };
   fader.addEventListener('input', paintMeter);

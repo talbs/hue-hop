@@ -5,6 +5,7 @@ import {
   hopTiming,
   isMotionOk,
   segmentPitch,
+  stepLevel,
 } from './motion.js';
 import { setSide, slatTiming } from './scheme.js';
 import { track } from './track.js';
@@ -119,11 +120,41 @@ for (const mark of document.querySelectorAll('.hop-quiet')) {
   mark.addEventListener('blur', settleUnlessEngaged);
 }
 
+const METER_BARS = 40;
 const meter = document.querySelector('.eq-meter');
-const meterBars = [...document.querySelectorAll('.eq-meter span')];
+const meterBars = meter
+  ? Array.from({ length: METER_BARS }, () => document.createElement('span'))
+  : [];
 let isMeterVisible = false;
 
+// The footer's hand-drawn resting skyline, stretched across however many bars it has.
+const RESTING_LEVELS = [
+  0.5, 0.8, 0.95, 0.7, 0.85, 0.6, 0.75, 0.5, 0.6, 0.4, 0.55, 0.35, 0.45, 0.25,
+  0.3, 0.15,
+];
+
+function restingLevelAt(index) {
+  const lastLevel = RESTING_LEVELS.length - 1;
+  const position = (index / (METER_BARS - 1)) * lastLevel;
+  const below = Math.floor(position);
+  const above = Math.min(below + 1, lastLevel);
+  const blend = position - below;
+  return RESTING_LEVELS[below] * (1 - blend) + RESTING_LEVELS[above] * blend;
+}
+
+function showMeterLevels(levelAt) {
+  for (const [index, bar] of meterBars.entries()) {
+    bar.style.setProperty('--level', levelAt(index));
+  }
+}
+
 if (meter) {
+  meter.replaceChildren(...meterBars);
+  showMeterLevels(restingLevelAt);
+  // Once a curve fader moves, the footer mirrors whichever one moved last.
+  document.addEventListener('curvechange', ({ detail }) =>
+    showMeterLevels((index) => stepLevel(index, METER_BARS, detail.curve))
+  );
   new IntersectionObserver(([entry]) => {
     isMeterVisible = entry.isIntersecting;
   }).observe(meter);

@@ -419,6 +419,7 @@ wa-page::part(subheader) {
   display: flex;
   align-items: flex-end;
   gap: 3px;
+  max-width: calc(100% - 2 * var(--gutter));
   height: calc(var(--segments) * (var(--segment) + var(--segment-gap)));
   opacity: 0.7;
 }
@@ -429,13 +430,8 @@ wa-page::part(subheader) {
   }
 }
 
-/* Levels round to whole segments, so no bar ends in a sliver of an LED. */
 .eq-meter span {
   width: 10px;
-  height: calc(
-    max(1, round(var(--level) * var(--segments))) *
-      (var(--segment) + var(--segment-gap))
-  );
 }
 
 wa-divider[orientation='vertical'] {
@@ -452,14 +448,68 @@ wa-divider[orientation='vertical'] {
   );
 }
 
-/* LED ladder segments, shared by the footer meter and the stage's step bars. */
+/* LED ladder segments, shared by every meter. Painted in currentColor, so a meter can light its bars by changing color alone. */
+.eq-meter,
+.stage-eq {
+  color: var(--border-container);
+}
+
 .eq-meter span,
-.stage-eq span {
-  background: repeating-linear-gradient(
+.stage-eq span,
+.hop-meter-bar {
+  background: currentColor;
+  mask: repeating-linear-gradient(
     to top,
-    var(--border-container) 0 var(--segment),
+    #000 0 var(--segment),
     transparent var(--segment) calc(var(--segment) + var(--segment-gap))
   );
+}
+
+/* Levels round to whole segments, so no bar ends in a sliver of an LED. */
+.eq-meter span,
+.hop-meter-bar {
+  height: calc(
+    max(1, round(var(--level, 0) * var(--segments))) *
+      (var(--segment) + var(--segment-gap))
+  );
+  transition: height var(--note-8) var(--ease-bounce);
+}
+
+.stage-eq {
+  --segment: 10px;
+  --segment-gap: 4px;
+  position: absolute;
+  z-index: -1;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-tight);
+  opacity: 0.5;
+  transition: opacity var(--note-8) var(--ease-hit);
+  container-type: size;
+}
+
+/* The meter is its own container, so a bar's level resolves against the meter's height and still lands on a whole segment, at any stage size. */
+.stage-eq span {
+  --pitch: calc(var(--segment) + var(--segment-gap));
+  flex: 1 1 0;
+  height: max(
+    var(--pitch),
+    round(down, calc(var(--level, 0) * 100cqb), var(--pitch))
+  );
+  transition:
+    height var(--note-8) var(--ease-bounce),
+    color var(--note-8) var(--ease-hit);
+}
+
+@media (hover: hover) {
+  /* Fades as it lights up, so the colored bars stay behind the word instead of competing with it. */
+  .stage:hover .stage-eq[data-tinted] {
+    opacity: 0.25;
+  }
+
+  .stage:hover .stage-eq span {
+    color: var(--step-color, var(--border-container));
+  }
 }
 
 /* Measured in ch, like wa-prose's 65ch, but longer: leads are short and read better with room to run. */

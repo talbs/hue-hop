@@ -174,9 +174,15 @@ wa-page::part(subheader) {
   margin: 0;
   padding: var(--space-related) var(--stage-inset);
   min-height: 5rem;
+  position: relative;
+  isolation: isolate;
   overflow: hidden;
   background: var(--preview-page);
   container-type: size;
+}
+
+.stage-eq {
+  inset: 25% var(--gutter) 0;
 }
 
 .stage-art {
