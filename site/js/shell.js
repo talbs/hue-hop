@@ -108,7 +108,10 @@ for (const mark of document.querySelectorAll('.hop-quiet')) {
   const settleUnlessEngaged = () => {
     if (!isEngaged()) hop.hue = restingHue;
   };
-  mark.addEventListener('pointerenter', lightUp);
+  // A touch only enters the mark as it taps it, and the page leaves before the hop can finish.
+  mark.addEventListener('pointerenter', ({ pointerType }) => {
+    if (pointerType !== 'touch') lightUp();
+  });
   mark.addEventListener('focus', () => {
     if (mark.matches(':focus-visible')) lightUp();
   });
