@@ -168,6 +168,41 @@ export function segmentPitch(element) {
   );
 }
 
+// A step's bar runs from a fifth of the meter at the first letter to all of it at the last, spaced by the same curve as the colors.
+export function stepLevel(index, count, curve = 1) {
+  const progress = index / Math.max(count - 1, 1);
+  return 0.2 + 0.8 * progress ** curve;
+}
+
+// Landing and Studio show the same meter, so the word's trip between them lands on a matching stage.
+export const STAGE_BARS = 16;
+
+function stepNearBar(barIndex, barCount, stepTotal) {
+  return Math.round((barIndex / Math.max(barCount - 1, 1)) * (stepTotal - 1));
+}
+
+export function showStepBars(meter, count, curve = 1) {
+  if (meter.children.length !== count) {
+    meter.replaceChildren(
+      ...Array.from({ length: count }, () => document.createElement('span'))
+    );
+  }
+  for (const [index, bar] of [...meter.children].entries()) {
+    bar.style.setProperty('--level', stepLevel(index, count, curve));
+  }
+}
+
+export function tintStepBars(meter, stepColors) {
+  const bars = [...meter.children];
+  for (const [index, bar] of bars.entries()) {
+    const step = stepNearBar(index, bars.length, stepColors.length);
+    const color = stepColors[step];
+    if (color) bar.style.setProperty('--step-color', color);
+    else bar.style.removeProperty('--step-color');
+  }
+  meter.toggleAttribute('data-tinted', stepColors.length > 0);
+}
+
 // Letters as hue-hop counts them: graphemes, with blank ones marked so callers can skip them.
 export function splitLetters(text) {
   return [...graphemes.segment(text)].map(({ index, segment }) => ({
