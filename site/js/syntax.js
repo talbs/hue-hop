@@ -108,6 +108,14 @@ if (isHighlightingCode) {
     return CSS.highlights;
   };
   import('./microlighter/microlighter.min.js');
+
+  // WebKit never paints a highlight range added while its text was hidden, so a tab panel that opens needs fresh ranges once it has a box.
+  document.addEventListener('wa-tab-show', ({ target }) => {
+    if (!target.querySelector('pre > code')) return;
+    requestAnimationFrame(() => {
+      target.dispatchEvent(new Event('syntax-highlight', { bubbles: true }));
+    });
+  });
 }
 
 // microlighter re-highlights every code block on the page per event, so one timer covers every block filled before it fires, and a fader drag highlights once it pauses.
