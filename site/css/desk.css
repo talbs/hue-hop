@@ -1,6 +1,7 @@
 .hero {
   position: relative;
   isolation: isolate;
+  container-type: inline-size;
 }
 
 /* Fits the button tray, the side column's widest child. The copy takes whatever is left. */
@@ -41,7 +42,8 @@
 
 .hero-title {
   view-transition-name: hero-wordmark;
-  font-size: var(--type-display);
+  /* "Hue Hop" is 3.756em of ink at this weight and spacing, so 100cqi / 3.76 runs it gutter to gutter. The 7.5rem cap holds it there until the display size catches up, so it never jumps. */
+  font-size: max(var(--type-display), min(100cqi / 3.76, 7.5rem));
   font-weight: var(--weight-display);
   line-height: var(--leading-display);
   letter-spacing: -0.035em;
