@@ -157,7 +157,6 @@ async function buildSite() {
     await renderSocialImage({
       wordmark: fills.wordmark,
       wordmarkSteps: fills['wordmark-steps'],
-      surface: fills['dark-surface'],
       outputPath: `_site/${SOCIAL_IMAGE_FILE}`,
     });
     console.log(`wrote _site/${SOCIAL_IMAGE_FILE}`);
