@@ -65,7 +65,6 @@ const samples = document.getElementById('samples');
 const meters = document.getElementById('meters');
 const metersEmpty = document.getElementById('meters-empty');
 const head = document.querySelector('.head');
-const bridgeStrips = document.querySelector('.bridge-strips');
 const lampStatus = document.getElementById('lamp-status');
 const lampHeadline = lampStatus.querySelector('.lamp-text');
 const lampDetail = document.querySelector('.lamp-detail');
@@ -589,12 +588,6 @@ function showMeterColor(parts, lightHex, darkHex) {
 }
 
 let meterParts = [];
-let meterWordShown = null;
-
-function showStripScroll() {
-  const isOverflowing = bridgeStrips.scrollWidth > bridgeStrips.clientWidth + 1;
-  writeAttribute(bridgeStrips, 'tabindex', isOverflowing ? '0' : null);
-}
 
 function showMeters(stepLetters, readings) {
   if (meterParts.length !== stepLetters.length) {
@@ -610,11 +603,6 @@ function showMeters(stepLetters, readings) {
     showMeterLed(parts.leds.dark, 'dark', dark);
     showMeterLed(parts.leds.light, 'light', light);
   }
-  const meterWord = stepLetters.join('');
-  if (meterWord === meterWordShown) return;
-  meterWordShown = meterWord;
-  // Last, because measuring forces a style pass, and new meters styled before their readings go on would fade their LEDs in.
-  showStripScroll();
 }
 
 function lowestRatio(readings) {
@@ -713,9 +701,9 @@ function showBridgeNotes() {
 function writeFitChange(change) {
   const line = makeSpan('fit-change');
   const before = makeSpan('fit-swatch', { isDecorative: true });
-  before.style.background = change.oldText;
+  before.style.setProperty('--swatch', change.oldText);
   const after = makeSpan('fit-swatch', { isDecorative: true });
-  after.style.background = change.newText;
+  after.style.setProperty('--swatch', change.newText);
   line.append(
     `${SCHEME_NAME[change.scheme]} ${change.which} `,
     before,
@@ -1410,7 +1398,6 @@ new ResizeObserver(() => requestAnimationFrame(fitWordToStage)).observe(
 wordmark.addEventListener('transitionend', (event) => {
   if (event.propertyName === 'font-weight') fitWordToStage();
 });
-new ResizeObserver(showStripScroll).observe(bridgeStrips);
 new ResizeObserver(keepFocusClearOfHead).observe(head);
 document.fonts.addEventListener('loadingdone', fitWordToStage);
 
