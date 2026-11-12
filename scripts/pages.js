@@ -81,9 +81,9 @@ const SHARED_STYLESHEETS = [
   'controls.css',
 ];
 
-export const SOCIAL_IMAGE_FILE = 'social.png';
+export const SOCIAL_IMAGE_FILE = 'social.jpg';
 const SOCIAL_IMAGE_ALT =
-  'The Hue Hop wordmark on a dark background, each letter one step from sky blue to violet.';
+  'The Hue Hop wordmark, each letter one step from sky blue to violet, over faint equalizer bars that step through the same colors.';
 
 export const read = (path) => readFileSync(path, 'utf8');
 
@@ -198,14 +198,14 @@ function fillPage(html, navName, fills) {
   );
 }
 
-// The vector wordmark's letters take their fills from the element's own formula, so they step, drift and switch sides like live text.
+// Vector art marked data-hop-steps (the wordmark, the social card's bars) takes its fills from the element's own formula, so it steps, drifts and switches sides like live text.
 function wordmarkSteps() {
   const formula = read('src/formula.css');
   const placeholder = '::highlight(hue-hop-K)';
   if (!formula.includes(placeholder)) {
     throw new Error(`src/formula.css no longer has ${placeholder}`);
   }
-  const steps = formula.replace(placeholder, '.wordmark path');
+  const steps = formula.replace(placeholder, '[data-hop-steps] path');
   return `@media (forced-colors: none) and (prefers-contrast: no-preference) {\n${steps}}`;
 }
 
