@@ -922,19 +922,7 @@
 }
 
 .themer-swatch {
-  position: relative;
   aspect-ratio: 1;
-  border: var(--border-thin) solid var(--border-control);
-  border-radius: var(--radius-control);
-  forced-color-adjust: none;
-}
-
-.themer-swatch::before {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border-radius: 2px;
-  background: var(--swatch);
 }
 
 .themer-swatch.is-picked {

@@ -227,6 +227,31 @@ wa-color-picker::part(color-picker) {
   opacity: 0.5;
 }
 
+/* Before wa.js runs, wide content scrolls inside the scroller's box instead of widening the page. */
+wa-scroller:not(:defined) {
+  display: block;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+/* The pickers' ring-and-gap look, for a color shown outside a picker. */
+.themer-swatch,
+.fit-swatch {
+  position: relative;
+  border: var(--border-thin) solid var(--border-control);
+  border-radius: var(--radius-control);
+  forced-color-adjust: none;
+}
+
+.themer-swatch::before,
+.fit-swatch::before {
+  content: '';
+  position: absolute;
+  inset: var(--swatch-gap, 4px);
+  border-radius: 2px;
+  background: var(--swatch);
+}
+
 /* A real gap between the ring and the color, in place of Web Awesome's shadow over a checkerboard. */
 wa-color-picker::part(trigger) {
   background: none;

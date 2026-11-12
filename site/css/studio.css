@@ -237,14 +237,29 @@ wa-page::part(subheader) {
 
 .bridge-strips {
   min-width: 0;
-  overflow-x: auto;
+}
+
+.bridge-strips wa-scroller {
+  --shadow-color: var(--page);
+  --shadow-size: var(--wa-space-m);
+}
+
+.bridge-strips wa-scroller::part(content) {
   overscroll-behavior-inline: contain;
   scrollbar-color: var(--border-control) transparent;
   scrollbar-width: thin;
 }
 
-.bridge-strips:focus-visible {
+/* The scroller clips anything past its box, so the ring is drawn inside. */
+.bridge-strips wa-scroller::part(content):focus-visible {
+  outline: 2px solid var(--focus);
   outline-offset: -2px;
+}
+
+/* The fades lie over the content, so while it has focus they step in clear of its ring. */
+.bridge-strips wa-scroller:focus::part(start-shadow),
+.bridge-strips wa-scroller:focus::part(end-shadow) {
+  margin: 2px;
 }
 
 .meters {
@@ -372,25 +387,23 @@ wa-page::part(subheader) {
 }
 
 .bridge-messages {
-  grid-template-columns: minmax(0, 1fr) auto;
   align-items: start;
 }
 
-.bridge-messages > * {
-  grid-column: 1;
-}
-
-.bridge-messages > .undo-fit {
-  grid-area: 1 / 2 / span 3;
-}
-
 .bridge-messages:not(
-  :has(> :is(.bridge-note, .fit-message, .fit-result, .undo-fit):not([hidden]))
+  :has(> :is(.bridge-note, .fit-message, .fit-result):not([hidden]))
 ) {
   display: none;
 }
 
-.fit-button {
+.fit-slot {
+  display: flex;
+  gap: var(--space-related);
+}
+
+.fit-button,
+.undo-fit {
+  justify-content: center;
   min-height: var(--bar-control);
   padding-inline: var(--space-group);
 }
@@ -399,12 +412,6 @@ wa-page::part(subheader) {
   display: none;
   opacity: 0;
   transition-duration: var(--note-32);
-}
-
-.undo-fit {
-  justify-self: start;
-  min-height: var(--bar-control);
-  padding-inline: var(--space-related);
 }
 
 .bridge-note,
@@ -427,10 +434,11 @@ wa-page::part(subheader) {
 }
 
 .fit-swatch {
-  inline-size: 0.75rem;
-  block-size: 0.75rem;
+  --swatch-gap: 2px;
+  display: inline-block;
+  inline-size: 1em;
+  block-size: 1em;
   border-radius: var(--radius-cap);
-  box-shadow: inset 0 0 0 var(--border-thin) var(--border-control);
 }
 
 .desk {
@@ -797,8 +805,26 @@ wa-option {
     min-block-size: var(--meter-tile);
   }
 
-  .fit-button {
+  /* Fit and Undo share one spot, as wide as the wider of the two, and keep it while hidden. So the letter strip holds one width as contrast flips between pass and fail. */
+  .fit-slot {
     order: -1;
+    display: grid;
+    grid-auto-columns: 1fr;
+  }
+
+  .fit-slot > * {
+    grid-area: 1 / 1;
+  }
+
+  .fit-button:disabled,
+  .undo-fit[hidden] {
+    display: inline-flex;
+    visibility: hidden;
+  }
+
+  /* Both show only after a fit that left one side still failing. Then Undo steps beside Fit. */
+  .fit-button:enabled + .undo-fit:not([hidden]) {
+    grid-area: 1 / 2;
   }
 
   /* Fit's messages take a line under the letters and the lamp together, so reading them costs the word as little as possible. */

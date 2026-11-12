@@ -261,10 +261,12 @@
                 role="region"
                 aria-label="Letter colors and contrast"
               >
-                <ol
-                  class="meters wa-list-plain"
-                  id="meters"
-                ></ol>
+                <wa-scroller>
+                  <ol
+                    class="meters wa-list-plain"
+                    id="meters"
+                  ></ol>
+                </wa-scroller>
                 <p
                   class="meters-empty reveal reveal-in-only"
                   id="meters-empty"
@@ -296,14 +298,25 @@
                         Dark 4.9 · Light 4.8 · Min 4.5
                       </span>
                     </div>
-                    <button
-                      type="button"
-                      class="lit-button fit-button reveal"
-                      id="fit-button"
-                      disabled
-                    >
-                      Fit
-                    </button>
+                    <div class="fit-slot">
+                      <button
+                        type="button"
+                        class="lit-button fit-button reveal"
+                        id="fit-button"
+                        disabled
+                      >
+                        Fix
+                      </button>
+                      <button
+                        type="button"
+                        class="lit-button undo-fit reveal reveal-in-only"
+                        id="undo-fit"
+                        hidden
+                      >
+                        Undo
+                        <span class="wa-visually-hidden">the fix</span>
+                      </button>
+                    </div>
                   </div>
                   <output
                     class="wa-visually-hidden"
@@ -340,15 +353,6 @@
                     aria-live="polite"
                     hidden
                   ></p>
-                  <button
-                    type="button"
-                    class="lit-button undo-fit reveal reveal-in-only"
-                    id="undo-fit"
-                    hidden
-                  >
-                    Undo
-                    <span class="wa-visually-hidden">the fit</span>
-                  </button>
                 </div>
               </div>
             </div>

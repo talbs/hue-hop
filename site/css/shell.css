@@ -483,7 +483,7 @@ wa-divider[orientation='vertical'] {
   display: flex;
   align-items: flex-end;
   gap: var(--space-tight);
-  opacity: 0.5;
+  opacity: 0.3;
   transition: opacity var(--note-8) var(--ease-hit);
   container-type: size;
 }

@@ -525,13 +525,6 @@
   white-space: nowrap;
 }
 
-/* Before wa.js runs, a wide table scrolls inside the scroller's box instead of widening the page. */
-wa-scroller:not(:defined) {
-  display: block;
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
 wa-scroller > table {
   min-inline-size: max(100%, 36rem);
   border-collapse: collapse;
