@@ -13,14 +13,17 @@ const PRESET_HUES = [
 
 export const FONTS = {
   onest: { family: 'var(--font-display)', weights: [100, 900] },
-  'dm-sans': { family: "'DM Sans', sans-serif", weights: [100, 900] },
-  instrument: { family: "'Instrument Sans', sans-serif", weights: [400, 700] },
   funnel: { family: "'Funnel Sans', sans-serif", weights: [300, 800] },
-  host: { family: "'Host Grotesk', sans-serif", weights: [300, 800] },
-  golos: { family: "'Golos Text', sans-serif", weights: [400, 900] },
-  rethink: { family: "'Rethink Sans', sans-serif", weights: [400, 800] },
-  geist: { family: "'Geist', sans-serif", weights: [100, 900] },
-  mona: { family: "'Mona Sans', sans-serif", weights: [200, 900] },
+  besley: { family: "'Besley', serif", weights: [400, 900] },
+  bodoni: { family: "'Bodoni Moda', serif", weights: [400, 900] },
+  shoulders: {
+    family: "'Big Shoulders Display', sans-serif",
+    weights: [100, 900],
+  },
+  unbounded: { family: "'Unbounded', sans-serif", weights: [200, 900] },
+  martian: { family: "'Martian Mono', monospace", weights: [100, 800] },
+  grenze: { family: "'Grenze Gotisch', sans-serif", weights: [100, 900] },
+  handjet: { family: "'Handjet', sans-serif", weights: [100, 900] },
 };
 
 const SIDE_BY_SCHEME = new Map([
