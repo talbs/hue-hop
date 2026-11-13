@@ -1,7 +1,13 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { after, before, test } from 'node:test';
+import { after, afterEach, before, test } from 'node:test';
 import { chromium, firefox, webkit } from 'playwright';
+import {
+  clipToScreen,
+  contrastRatio,
+  luminance,
+  parseComputedColor,
+} from '../site/js/color.js';
 
 const engine = { chromium, firefox, webkit }[process.env.BROWSER ?? 'chromium'];
 
@@ -9,6 +15,10 @@ let browser;
 
 before(async () => {
   browser = await engine.launch();
+});
+
+afterEach(async () => {
+  for (const context of browser.contexts()) await context.close();
 });
 
 after(async () => {
@@ -21,45 +31,6 @@ async function openPage(html) {
   await page.addScriptTag({ path: 'dist/hue-hop.js', type: 'module' });
   return page;
 }
-
-test('a hue colors the element with only the script loaded', async () => {
-  const rows = [
-    ['hue-hop', 'Nas', false],
-    ['my-hop', 'Nas', false],
-    ['hue-hop', '<svg></svg>', false],
-    ['own-root', 'Nas', true],
-  ];
-  for (const [tag, content, hasOwnRoot] of rows) {
-    const page = await openPage(
-      `<${tag} id="t" hue="dusk">${content}</${tag}>`
-    );
-    const ends = await page.evaluate(
-      async ([tag, hasOwnRoot]) => {
-        if (!customElements.get(tag)) {
-          class Subclass extends customElements.get('hue-hop') {
-            constructor() {
-              super();
-              if (hasOwnRoot) {
-                this.attachShadow({ mode: 'open' }).innerHTML = '<slot></slot>';
-              }
-            }
-          }
-          customElements.define(tag, Subclass);
-        }
-        await new Promise((resolve) => requestAnimationFrame(resolve));
-        await new Promise((resolve) => requestAnimationFrame(resolve));
-        const style = getComputedStyle(document.getElementById('t'));
-        return [
-          style.getPropertyValue('--hop-start'),
-          style.getPropertyValue('--hop-end'),
-        ];
-      },
-      [tag, hasOwnRoot]
-    );
-    assert.ok(ends[0].includes('oklch'), `${tag} ${content} start: ${ends[0]}`);
-    assert.ok(ends[1].includes('oklch'), `${tag} ${content} end: ${ends[1]}`);
-  }
-});
 
 test('every attribute has a property that reflects it, even set before define', async () => {
   const rows = [
@@ -120,35 +91,58 @@ test('importing without a dom does not throw', async () => {
   assert.equal(typeof HueHop, 'function');
 });
 
-test('a subclass and the base tag both color on one page', async () => {
+test('the base tag and its subclasses take a hue and color their letters', async () => {
   const rows = [
-    ['base first', ['hue-hop', 'my-hop']],
-    ['subclass first', ['my-hop', 'hue-hop']],
+    ['base', '<hue-hop hue="dusk">Nas</hue-hop>'],
+    ['subclass', '<my-hop hue="dusk">Nas</my-hop>'],
+    ['subclass with its own root', '<own-root hue="dusk">Nas</own-root>'],
+    ['no text, only an svg', '<hue-hop hue="dusk"><svg></svg></hue-hop>'],
+    [
+      'base before subclass',
+      '<hue-hop hue="dusk">Short</hue-hop><my-hop hue="dusk">Much longer text</my-hop>',
+    ],
+    [
+      'subclass before base',
+      '<my-hop hue="dusk">Much longer text</my-hop><hue-hop hue="dusk">Short</hue-hop>',
+    ],
   ];
-  const textByTag = { 'hue-hop': 'Short', 'my-hop': 'Much longer text' };
-  for (const [name, tags] of rows) {
-    const page = await openPage(
-      tags
-        .map((tag) => `<${tag} hue="dusk">${textByTag[tag]}</${tag}>`)
-        .join('')
-    );
-    const firstLetterColors = await page.evaluate(async (tags) => {
+  for (const [name, html] of rows) {
+    const page = await openPage(html);
+    const hopsOnPage = await page.evaluate(async () => {
+      const HueHop = customElements.get('hue-hop');
+      customElements.define('my-hop', class extends HueHop {});
       customElements.define(
-        'my-hop',
-        class extends customElements.get('hue-hop') {}
+        'own-root',
+        class extends HueHop {
+          constructor() {
+            super();
+            this.attachShadow({ mode: 'open' }).innerHTML = '<slot></slot>';
+          }
+        }
       );
       await new Promise((resolve) => requestAnimationFrame(resolve));
       await new Promise((resolve) => requestAnimationFrame(resolve));
-      return tags.map(
-        (tag) =>
-          getComputedStyle(
-            document.querySelector(tag),
-            '::highlight(hue-hop-0)'
-          ).color
+      return [...document.body.children].map((element) => {
+        const style = getComputedStyle(element);
+        return {
+          tag: element.localName,
+          start: style.getPropertyValue('--hop-start'),
+          end: style.getPropertyValue('--hop-end'),
+          letterCount: element.hops,
+          firstLetter: getComputedStyle(element, '::highlight(hue-hop-0)')
+            .color,
+        };
+      });
+    });
+    for (const hop of hopsOnPage) {
+      const label = `${name} ${hop.tag}`;
+      assert.ok(hop.start.includes('oklch'), `${label} start: ${hop.start}`);
+      assert.ok(hop.end.includes('oklch'), `${label} end: ${hop.end}`);
+      if (hop.letterCount === 0) continue;
+      assert.ok(
+        hop.firstLetter.includes('oklch'),
+        `${label} first letter: ${hop.firstLetter}`
       );
-    }, tags);
-    for (const color of firstLetterColors) {
-      assert.ok(color.includes('oklch'), `${name}: ${firstLetterColors}`);
     }
   }
 });
@@ -464,4 +458,77 @@ test('forced colors holds back every range until it turns off', async () => {
   await page.emulateMedia({ forcedColors: 'none' });
   const whenTurnedOff = await rangesOf(page, '#t');
   assert.deepEqual(whenTurnedOff.texts, ['E', 'c', 'h', 'o']);
+});
+
+test('every letter of every hue passes its contrast bar on the documented pages', async () => {
+  const hueCss = await readFile('src/hues.css', 'utf8');
+  const hueNames = new Set(
+    Array.from(hueCss.matchAll(/hue='([a-z]+)'/g), (match) => match[1])
+  );
+  assert.ok(hueNames.size > 0, 'no hues found in src/hues.css');
+  const pageColorsBySide = {
+    light: ['rgb(245 245 245)', 'rgb(255 255 255)'],
+    dark: ['rgb(0 0 0)', 'rgb(26 26 26)'],
+  };
+  const driftSamples = [-24, -16, -8, 0, 8, 16, 24];
+  const sampleText = 'ab'.repeat(32);
+  const luminanceOf = (colorText) =>
+    luminance(clipToScreen(parseComputedColor(colorText)));
+
+  for (const [side, pageColors] of Object.entries(pageColorsBySide)) {
+    const hops = [];
+    for (const hue of hueNames) {
+      for (const display of ['', 'display']) {
+        for (const drift of driftSamples) {
+          hops.push(
+            `<hue-hop hue="${hue}" ${display} style="--_hop-drift: ${drift}">${sampleText}</hue-hop>`
+          );
+        }
+      }
+    }
+    const page = await openPage(
+      `<style>:root { color-scheme: ${side} }</style>${hops.join('')}`
+    );
+    const hopsOnPage = await page.evaluate(async () => {
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      return [...document.querySelectorAll('hue-hop')].map((element) => ({
+        hue: element.getAttribute('hue'),
+        isDisplay: element.hasAttribute('display'),
+        drift: element.style.getPropertyValue('--_hop-drift').trim(),
+        letters: Array.from(
+          { length: element.hops },
+          (_, index) =>
+            getComputedStyle(element, `::highlight(hue-hop-${index})`).color
+        ),
+      }));
+    });
+
+    const pageShades = pageColors.map((color) => ({
+      color,
+      luminance: luminanceOf(color),
+    }));
+    const firstLetterColors = new Map();
+    for (const hop of hopsOnPage) {
+      const name = `${hop.hue} ${side}${hop.isDisplay ? ' display' : ''}`;
+      const bar = hop.isDisplay ? 3 : 4.5;
+      assert.equal(hop.letters.length, sampleText.length, name);
+      if (!firstLetterColors.has(name)) firstLetterColors.set(name, new Set());
+      firstLetterColors.get(name).add(hop.letters[0]);
+
+      for (const [step, letter] of hop.letters.entries()) {
+        const letterLuminance = luminanceOf(letter);
+        for (const pageShade of pageShades) {
+          const ratio = contrastRatio(letterLuminance, pageShade.luminance);
+          assert.ok(
+            ratio >= bar,
+            `${name} drift ${hop.drift} step ${step} on ${pageShade.color}: ${ratio.toFixed(2)} under ${bar}`
+          );
+        }
+      }
+    }
+    for (const [name, colors] of firstLetterColors) {
+      assert.equal(colors.size, driftSamples.length, `${name}: drift moved`);
+    }
+  }
 });

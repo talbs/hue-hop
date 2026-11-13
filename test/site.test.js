@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { after, before, test } from 'node:test';
+import { after, afterEach, before, test } from 'node:test';
 import { chromium, firefox, webkit } from 'playwright';
 import { PAGES, readFills, renderPage } from '../scripts/pages.js';
 
@@ -20,6 +20,10 @@ let browser;
 before(async () => {
   execFileSync('node', ['scripts/site.js']);
   browser = await engine.launch();
+});
+
+afterEach(async () => {
+  for (const context of browser.contexts()) await context.close();
 });
 
 after(async () => {

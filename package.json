@@ -65,7 +65,7 @@
     "build": "node scripts/build.js",
     "size": "node scripts/size.js",
     "pretest": "npm run build",
-    "test": "prettier --check . --ignore-path .gitignore --ignore-path \"$(git rev-parse --git-path info/exclude)\" && node --test 'test/*.test.js'",
+    "test": "prettier --check . --ignore-path .gitignore --ignore-path \"$(git rev-parse --git-path info/exclude)\" && node --test --test-timeout=60000 'test/*.test.js'",
     "prepack": "npm run build && npm run size && node scripts/changelog.js",
     "format": "prettier --write . --ignore-path .gitignore --ignore-path \"$(git rev-parse --git-path info/exclude)\"",
     "prepublishOnly": "npm test",

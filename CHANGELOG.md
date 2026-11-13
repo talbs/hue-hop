@@ -2,6 +2,12 @@
 
 Newest version first. Changes go under Added, Changed, Deprecated, Removed, Fixed, or Security. Anything breaking says **Breaking** and goes at the top.
 
+## 0.4.1
+
+### Fixed
+
+- `ember` and `honey` now pass contrast with drift on. `ember` dipped under the bar on light pages, and with `display` on dark pages. `honey` dipped with `display` on light pages. Each fix is a small lightness change you'll barely see.
+
 ## 0.4.0 · 2026-11-10
 
 ### Changed
