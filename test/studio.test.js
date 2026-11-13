@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { after, before, test } from 'node:test';
+import { after, afterEach, before, test } from 'node:test';
 import { chromium, firefox, webkit } from 'playwright';
 import {
   clipToScreen,
@@ -26,6 +26,10 @@ let browser;
 
 before(async () => {
   browser = await engine.launch();
+});
+
+afterEach(async () => {
+  for (const context of browser.contexts()) await context.close();
 });
 
 after(async () => {
