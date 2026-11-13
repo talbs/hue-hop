@@ -211,9 +211,18 @@ a.track-row:is(:hover, :focus-visible) .track-title,
   font-size: 10px;
 }
 
-:any-link:hover > .readout-tag {
+:any-link:has(> .readout-tag) {
+  border-radius: var(--radius-control);
+  text-decoration: none;
+}
+
+:any-link > .readout-tag {
   background: color-mix(in oklch, var(--ink) 14%, transparent);
   color: var(--ink);
+}
+
+:any-link:hover > .readout-tag {
+  background: color-mix(in oklch, var(--ink) 20%, transparent);
 }
 
 .lit-button {
