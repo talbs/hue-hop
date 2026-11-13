@@ -162,22 +162,6 @@
 
 .docs-version {
   display: inline-flex;
-  padding: var(--space-tight) var(--space-related);
-  border: var(--border-thin) solid var(--border-control);
-  border-radius: var(--radius-control);
-  color: var(--ink-faint);
-  font-family: var(--font-code);
-  font-size: var(--type-small);
-  line-height: var(--leading-body);
-  text-decoration: none;
-  transition:
-    border-color var(--note-16) var(--ease-hit),
-    color var(--note-16) var(--ease-hit);
-}
-
-.docs-version:hover {
-  border-color: currentColor;
-  color: var(--ink);
 }
 
 .docs-mark {

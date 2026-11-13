@@ -174,13 +174,55 @@ a.track-row:is(:hover, :focus-visible) .track-title,
   }
 }
 
-.readout-label {
+.readout-label,
+.readout-tag {
   font-family: var(--font-readout);
   font-size: var(--type-label);
   line-height: var(--leading-tight);
+  font-variant-numeric: lining-nums tabular-nums;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--ink-quiet);
+}
+
+/* Every size sits on the host, not the shadow parts, so the tag is the same box before and after wa.js upgrades it. */
+.readout-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-related);
+  height: auto;
+  padding: calc(var(--space-tight) * 1.5) var(--space-related);
+  border: none;
+  border-radius: var(--radius-control);
+  background: color-mix(in oklch, var(--ink) 8%, transparent);
+  box-shadow: var(--depth-groove);
+  white-space: nowrap;
+  transition:
+    background-color var(--note-16) var(--ease-hit),
+    color var(--note-16) var(--ease-hit);
+}
+
+.readout-tag::part(content) {
+  font-size: inherit;
+}
+
+/* The other even size for the 10-square pixel grid, close to the readout's cap height. */
+.readout-tag wa-icon[family='pixel'] {
+  font-size: 10px;
+}
+
+:any-link:has(> .readout-tag) {
+  border-radius: var(--radius-control);
+  text-decoration: none;
+}
+
+:any-link > .readout-tag {
+  background: color-mix(in oklch, var(--ink) 14%, transparent);
+  color: var(--ink);
+}
+
+:any-link:hover > .readout-tag {
+  background: color-mix(in oklch, var(--ink) 20%, transparent);
 }
 
 .lit-button {
