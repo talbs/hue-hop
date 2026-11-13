@@ -414,7 +414,7 @@ test('studio URL round trip', () => {
         curve: 2,
         shift: -40,
         bar: 3,
-        font: 'mona',
+        font: 'besley',
         weight: 500,
         size: 40,
         pageA: '#000',

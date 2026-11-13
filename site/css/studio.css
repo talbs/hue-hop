@@ -1,20 +1,4 @@
 @font-face {
-  font-family: 'DM Sans';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 100 1000;
-  src: url('../fonts/dm-sans-latin-wght-normal.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Instrument Sans';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400 700;
-  src: url('../fonts/instrument-sans-latin-wght-normal.woff2') format('woff2');
-}
-
-@font-face {
   font-family: 'Funnel Sans';
   font-style: normal;
   font-display: swap;
@@ -23,43 +7,61 @@
 }
 
 @font-face {
-  font-family: 'Host Grotesk';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 300 800;
-  src: url('../fonts/host-grotesk-latin-wght-normal.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Golos Text';
+  font-family: 'Besley';
   font-style: normal;
   font-display: swap;
   font-weight: 400 900;
-  src: url('../fonts/golos-text-latin-wght-normal.woff2') format('woff2');
+  src: url('../fonts/besley-latin-wght-normal.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Rethink Sans';
+  font-family: 'Bodoni Moda';
   font-style: normal;
   font-display: swap;
-  font-weight: 400 800;
-  src: url('../fonts/rethink-sans-latin-wght-normal.woff2') format('woff2');
+  font-weight: 400 900;
+  src: url('../fonts/bodoni-moda-latin-wght-normal.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Geist';
+  font-family: 'Big Shoulders Display';
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url('../fonts/geist-latin-wght-normal.woff2') format('woff2');
+  src: url('../fonts/big-shoulders-display-latin-wght-normal.woff2')
+    format('woff2');
 }
 
 @font-face {
-  font-family: 'Mona Sans';
+  font-family: 'Unbounded';
   font-style: normal;
   font-display: swap;
   font-weight: 200 900;
-  src: url('../fonts/mona-sans-latin-wght-normal.woff2') format('woff2');
+  src: url('../fonts/unbounded-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Martian Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url('../fonts/martian-mono-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Grenze Gotisch';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../fonts/grenze-gotisch-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Handjet';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../fonts/handjet-latin-wght-normal.woff2') format('woff2');
+  size-adjust: 108%;
 }
 
 :root {
