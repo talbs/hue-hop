@@ -61,6 +61,7 @@
   font-display: swap;
   font-weight: 100 900;
   src: url('../fonts/handjet-latin-wght-normal.woff2') format('woff2');
+  size-adjust: 108%;
 }
 
 :root {
