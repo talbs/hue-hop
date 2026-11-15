@@ -239,6 +239,7 @@ wa-page::part(subheader) {
 
 .bridge-strips {
   min-width: 0;
+  padding-block-end: var(--meter-pad);
 }
 
 .bridge-strips wa-scroller {
@@ -279,7 +280,7 @@ wa-page::part(subheader) {
   display: grid;
   align-content: start;
   gap: var(--space-related);
-  padding-block: var(--space-group) var(--meter-pad);
+  padding-block-start: var(--space-group);
 }
 
 .meter-letter {
@@ -340,7 +341,7 @@ wa-page::part(subheader) {
 }
 
 .meters-empty {
-  padding-block: var(--space-group) var(--meter-pad);
+  padding-block-start: var(--space-group);
   font-size: var(--type-fine);
   color: var(--ink-faint);
 }
