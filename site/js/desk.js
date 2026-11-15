@@ -1,12 +1,7 @@
+import { isColorModeOn } from './contrast.js';
 import { whenSideChanges } from './scheme.js';
 
-import {
-  isMotionOk,
-  longestWordLength,
-  STAGE_BARS,
-  showStepBars,
-  typeOut,
-} from './motion.js';
+import { isMotionOk, STAGE_BARS, showStepBars, typeOut } from './motion.js';
 import {
   DEFAULT_STATE,
   describeCustomStudioLink,
@@ -18,8 +13,11 @@ import { isPlainClick } from './word-trip.js';
 
 const desk = document.getElementById('desk');
 const live = document.getElementById('live');
+const wordLine = live?.closest('.playground-word');
 const stage = document.getElementById('stage');
 const stageBars = stage?.querySelector('.stage-eq');
+const stepStrip = stage?.querySelector('.step-strip');
+const stepStripRow = stage?.querySelector('.step-strip-row');
 const textField = document.getElementById('desk-text');
 const hueChips = [...document.querySelectorAll('#desk .hue-chip')];
 const samples = document.getElementById('samples');
@@ -57,6 +55,94 @@ function checkHueChip(hue) {
   }
 }
 
+let wordFit = 1;
+
+// The word is a grid item stretched across its line, so its own box says nothing about the text's width.
+function measureWordWidth() {
+  const range = document.createRange();
+  range.selectNodeContents(live);
+  return range.getBoundingClientRect().width;
+}
+
+function setWordFit(fit) {
+  wordFit = fit;
+  stage.style.setProperty('--word-fit', fit);
+}
+
+// The size may be mid-glide, so this works from the width per pixel of size and the size before the fit, neither of which glides.
+function fitWordToStage(text) {
+  if (live.textContent !== text) return;
+  const width = measureWordWidth();
+  if (width === 0) return;
+  const lineStyle = getComputedStyle(wordLine);
+  const widthPerSizePixel = width / parseFloat(lineStyle.fontSize);
+  const unfitSize = parseFloat(lineStyle.getPropertyValue('--word-base'));
+  const fit = Math.min(
+    wordLine.clientWidth / (widthPerSizePixel * unfitSize),
+    1
+  );
+  if (Math.abs(fit - wordFit) >= 0.001) setWordFit(fit);
+  if (lineStyle.transitionDuration === '0s') trimOverflow();
+}
+
+// Width doesn't scale exactly with size, so once the word sits at its fitted size it is measured again.
+function trimOverflow() {
+  const overflow = measureWordWidth() / wordLine.clientWidth;
+  if (overflow > 1) setWordFit(wordFit / overflow);
+}
+
+const CHIP_WIDTH = 16;
+const CHIP_GAP = 3;
+const BAR_GAP = 1;
+
+function readStepColors() {
+  return Array.from(
+    { length: live.hops ?? 0 },
+    (_, step) => getComputedStyle(live, `::highlight(hue-hop-${step})`).color
+  );
+}
+
+// The strip may take the stage's width less 5rem, which keeps it clear of the hue name, and less its START and END labels.
+function roomForSteps() {
+  const labels = [...stepStrip.children].filter(
+    (child) => child !== stepStripRow
+  );
+  const gap = parseFloat(getComputedStyle(stepStrip).columnGap);
+  const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  let room = wordLine.clientWidth - 5 * remPx - gap * labels.length;
+  for (const label of labels) room -= label.offsetWidth;
+  return room;
+}
+
+function paintStepStrip() {
+  const colors = isColorModeOn.matches ? readStepColors() : [];
+  stepStrip.hidden = colors.length === 0;
+  if (colors.length === 0) return;
+
+  const room = roomForSteps();
+  const isDense = colors.length * (CHIP_WIDTH + CHIP_GAP) - CHIP_GAP > room;
+  stepStripRow.classList.toggle('is-dense', isDense);
+  const barWidth = (room - (colors.length - 1) * BAR_GAP) / colors.length;
+  stepStripRow.style.setProperty(
+    '--bar',
+    `${Math.min(8, Math.max(2, barWidth)).toFixed(1)}px`
+  );
+
+  // Chips that stay are recolored in place so the color glides. Only new ones drop in.
+  while (stepStripRow.children.length > colors.length) {
+    stepStripRow.lastElementChild.remove();
+  }
+  for (const [index, color] of colors.entries()) {
+    let chip = stepStripRow.children[index];
+    if (!chip) {
+      chip = document.createElement('span');
+      chip.className = 'fit-swatch is-new';
+      stepStripRow.append(chip);
+    }
+    chip.style.setProperty('--swatch', color);
+  }
+}
+
 let stopTyping = () => {};
 let shouldTypeText = false;
 
@@ -74,7 +160,7 @@ function render() {
     live.toggleAttribute('drift', state.drift);
     live.toggleAttribute('display', state.display);
     fillCode(markup, describeMarkup(state));
-    stage.style.setProperty('--letters', longestWordLength(state.text));
+    fitWordToStage(state.text);
     studioLink.href = describeStudioLink(state);
     customLink.href = describeCustomStudioLink(state);
     stageHue.textContent = state.hue;
@@ -83,6 +169,8 @@ function render() {
       stopTyping = typeOut(live, state.text);
     }
     shouldTypeText = false;
+    // The element re-steps its colors on the next frame.
+    requestAnimationFrame(paintStepStrip);
   });
 }
 
@@ -147,6 +235,15 @@ if (desk) {
     shouldTypeText = false;
     live.textContent = textField.value;
   });
+  wordLine.addEventListener('transitionend', (event) => {
+    if (event.propertyName === 'font-size') trimOverflow();
+  });
+  new ResizeObserver(() => {
+    fitWordToStage(textField.value);
+    paintStepStrip();
+  }).observe(stage);
+  document.fonts.ready.then(() => fitWordToStage(textField.value));
+  isColorModeOn.addEventListener('change', paintStepStrip);
   whenSideChanges(render);
   showStepBars(stageBars, STAGE_BARS);
   render();

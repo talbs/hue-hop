@@ -180,14 +180,21 @@
   align-self: start;
 }
 
+/* Registered as a length so desk.js can read the word's size before the fit in pixels. */
+@property --word-base {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
 .playground .playground-word {
-  --base: min(8rem, 100cqi / 5);
+  --word-base: min(8rem, 100cqi / 5);
   view-transition-name: hero-wordmark;
   display: grid;
   align-content: center;
-  min-height: calc(var(--base) * var(--leading-display));
+  min-height: calc(var(--word-base) * var(--leading-display));
   margin: 0;
-  font-size: calc(var(--base) * var(--word-fit, 1));
+  font-size: calc(var(--word-base) * var(--word-fit, 1));
   font-weight: 800;
   letter-spacing: -0.035em;
   white-space: nowrap;
@@ -209,6 +216,11 @@
   min-width: 0;
   max-width: calc(100% - 5rem);
   margin-block-end: calc(var(--space-group) * 1.5);
+}
+
+/* Hidden but holding its row, so the stage keeps one height. */
+.step-strip[hidden] {
+  visibility: hidden;
 }
 
 .step-strip-row {
@@ -243,6 +255,7 @@
 
 .step-strip-row.is-dense {
   gap: 1px;
+  overflow: clip;
 }
 
 .step-strip-row.is-dense .fit-swatch {
