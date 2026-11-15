@@ -142,7 +142,7 @@
     border-color: var(--border-control);
   }
 
-  .wild:has(.wild-item:hover) .wild-item:not(:hover) {
+  .wild.is-pointing:has(.wild-item:hover) .wild-item:not(:hover) {
     opacity: 0.45;
     filter: saturate(0.5);
   }

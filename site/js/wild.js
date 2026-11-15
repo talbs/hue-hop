@@ -93,6 +93,18 @@ function loadDemoFacesOnApproach(section) {
 const wildSection = document.getElementById('wild');
 if (wildSection) loadDemoFacesOnApproach(wildSection);
 
+// A scroll slides cards under a still pointer, which would keep the rest dimmed the whole way down.
+function dimOthersOnlyWhilePointing(gallery) {
+  gallery.addEventListener('pointermove', () => {
+    gallery.classList.add('is-pointing');
+  });
+  const stopPointing = () => gallery.classList.remove('is-pointing');
+  window.addEventListener('scroll', stopPointing, { passive: true });
+}
+
+const wildGallery = document.querySelector('.wild');
+if (wildGallery) dimOthersOnlyWhilePointing(wildGallery);
+
 customElements.whenDefined('hue-hop').then(() => {
   document.querySelectorAll('.hop-near').forEach(shareHueWithParent);
 });
