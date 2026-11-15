@@ -1,4 +1,3 @@
-import { floorRatio, lowestLetterContrast } from './contrast.js';
 import { whenSideChanges } from './scheme.js';
 
 import {
@@ -6,10 +5,14 @@ import {
   longestWordLength,
   STAGE_BARS,
   showStepBars,
-  tintStepBars,
   typeOut,
 } from './motion.js';
-import { DEFAULT_STATE, describeMarkup, describeStudioLink } from './state.js';
+import {
+  DEFAULT_STATE,
+  describeCustomStudioLink,
+  describeMarkup,
+  describeStudioLink,
+} from './state.js';
 import { fillCode } from './syntax.js';
 import { isPlainClick } from './word-trip.js';
 
@@ -20,16 +23,20 @@ const stageBars = stage?.querySelector('.stage-eq');
 const textField = document.getElementById('desk-text');
 const hueChips = [...document.querySelectorAll('#desk .hue-chip')];
 const samples = document.getElementById('samples');
-const lamp = document.getElementById('lamp');
 const stageHue = document.getElementById('stage-hue');
-const lampState = document.getElementById('lamp-state');
-const lampDetail = document.getElementById('lamp-detail');
 const markup = document.getElementById('markup');
 const studioLink = document.getElementById('studio-link');
+const customLink = document.getElementById('custom-link');
+const toggles = [...document.querySelectorAll('#desk .toggle')];
 
 function checkedHue() {
   return hueChips.find((chip) => chip.getAttribute('aria-checked') === 'true')
     ?.dataset.hue;
+}
+
+function isToggleOn(name) {
+  const toggle = toggles.find((each) => each.name === name);
+  return toggle?.getAttribute('aria-pressed') === 'true';
 }
 
 function readDeskState() {
@@ -37,6 +44,8 @@ function readDeskState() {
     ...DEFAULT_STATE,
     text: textField.value,
     hue: checkedHue() ?? DEFAULT_STATE.hue,
+    drift: isToggleOn('drift'),
+    display: isToggleOn('display'),
   };
 }
 
@@ -46,37 +55,6 @@ function checkHueChip(hue) {
     chip.setAttribute('aria-checked', String(isChecked));
     chip.tabIndex = isChecked ? 0 : -1;
   }
-}
-
-const CONTRAST_FLOOR = 4.5;
-
-function showContrast() {
-  const ratio = lowestLetterContrast(
-    live,
-    getComputedStyle(stage).backgroundColor
-  );
-  if (Number.isNaN(ratio)) {
-    lamp.dataset.state = 'off';
-    lampState.textContent = '—';
-    lampDetail.textContent = '';
-    return;
-  }
-  const isPass = ratio >= CONTRAST_FLOOR;
-  lamp.dataset.state = isPass ? 'pass' : 'check';
-  lampState.textContent = isPass ? 'Pass' : 'Check';
-  lampDetail.textContent = `${floorRatio(ratio)}:1 of ${CONTRAST_FLOOR}`;
-}
-
-const canHover = matchMedia('(hover: hover)');
-
-// Read on hover rather than on every render, since the bars only show their colors then.
-function tintStageBars() {
-  if (!canHover.matches) return;
-  const stepColors = Array.from(
-    { length: live.hops ?? 0 },
-    (_, step) => getComputedStyle(live, `::highlight(hue-hop-${step})`).color
-  );
-  tintStepBars(stageBars, stepColors);
 }
 
 let stopTyping = () => {};
@@ -93,11 +71,13 @@ function render() {
     if (live.textContent !== state.text) live.textContent = state.text;
     if (live.getAttribute('hue') !== state.hue)
       live.setAttribute('hue', state.hue);
+    live.toggleAttribute('drift', state.drift);
+    live.toggleAttribute('display', state.display);
     fillCode(markup, describeMarkup(state));
     stage.style.setProperty('--letters', longestWordLength(state.text));
     studioLink.href = describeStudioLink(state);
+    customLink.href = describeCustomStudioLink(state);
     stageHue.textContent = state.hue;
-    showContrast();
     stopTyping();
     if (shouldTypeText && isMotionOk() && state.text) {
       stopTyping = typeOut(live, state.text);
@@ -139,7 +119,6 @@ if (desk) {
       customElements.whenDefined(tag)
     )
   );
-  textField.value = shownSample();
   textField.addEventListener('input', render);
   document.getElementById('shuffle').addEventListener('click', () => {
     samples.randomize();
@@ -154,6 +133,13 @@ if (desk) {
     });
     chip.addEventListener('keydown', moveHueFocus);
   }
+  for (const toggle of toggles) {
+    toggle.addEventListener('click', () => {
+      const isOn = toggle.getAttribute('aria-pressed') === 'true';
+      toggle.setAttribute('aria-pressed', String(!isOn));
+      render();
+    });
+  }
   // The word's trip can't leave with half a word on the stage.
   studioLink.addEventListener('click', (event) => {
     if (!isPlainClick(event)) return;
@@ -162,7 +148,6 @@ if (desk) {
     live.textContent = textField.value;
   });
   whenSideChanges(render);
-  stage.addEventListener('pointerenter', tintStageBars);
   showStepBars(stageBars, STAGE_BARS);
   render();
 }

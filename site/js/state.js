@@ -64,3 +64,13 @@ export function describeStudioLink(state) {
   if (state.accent) params.set('accent', state.accent);
   return `${new URL('../studio/', import.meta.url)}?${params}`;
 }
+
+// No boost or display: a custom link carries neither, so Studio seeds both ends from the hue's plain colors.
+export function describeCustomStudioLink(state) {
+  const params = new URLSearchParams();
+  params.set('text', state.text);
+  params.set('hue', 'custom');
+  params.set('from', state.hue);
+  if (state.drift) params.set('drift', '1');
+  return `${new URL('../studio/', import.meta.url)}?${params}`;
+}
