@@ -64,6 +64,7 @@ const probes = {
 const samples = document.getElementById('samples');
 const meters = document.getElementById('meters');
 const metersEmpty = document.getElementById('meters-empty');
+const metersScroller = meters.closest('wa-scroller');
 const head = document.querySelector('.head');
 const lampStatus = document.getElementById('lamp-status');
 const lampHeadline = lampStatus.querySelector('.lamp-text');
@@ -593,6 +594,8 @@ function showMeters(stepLetters, readings) {
   if (meterParts.length !== stepLetters.length) {
     meterParts = Array.from(stepLetters, buildMeter);
     meters.replaceChildren(...meterParts.map((parts) => parts.meter));
+    // The scroller only rechecks its fades and focus stop when it resizes or scrolls, and a new word does neither.
+    metersScroller.updateScroll?.();
     setHidden(metersEmpty, stepLetters.length > 0);
   }
   for (const [index, parts] of meterParts.entries()) {
