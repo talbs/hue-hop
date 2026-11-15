@@ -767,6 +767,24 @@ wa-tooltip::part(body) {
   white-space: nowrap;
 }
 
+/* The copy button keeps its tooltip in its own shadow root, out of reach of the rules above, but exposes it as a part. */
+wa-copy-button::part(feedback) {
+  --wa-tooltip-background-color: var(--ink);
+  --wa-tooltip-content-color: var(--page);
+  --wa-tooltip-border-radius: var(--radius-cap);
+  --wa-tooltip-arrow-size: 4px;
+  --wa-tooltip-font-size: var(--wa-font-size-xs);
+  --wa-tooltip-line-height: var(--leading-tight);
+  --max-width: none;
+  /* Its padding can't be set from here. Its border can, so a border in the background color makes up the missing 0.15em on every side. */
+  --wa-tooltip-border-width: calc(1px + 0.15em);
+  --wa-tooltip-border-style: solid;
+  --wa-tooltip-border-color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: var(--weight-strong);
+  white-space: nowrap;
+}
+
 wa-copy-button::part(success-icon) {
   color: var(--lit);
 }
