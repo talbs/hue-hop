@@ -632,3 +632,16 @@ test('studio URL round trip', () => {
     assert.equal(writeStudioParams(state).toString(), expectedQuery, name);
   }
 });
+
+test('a link can ask for custom colors that start from a hue', () => {
+  const read = (search) => readStudioParams(search, { isColor: () => true });
+  const rows = [
+    ['?hue=custom&from=guava', 'guava'],
+    ['?hue=custom&from=nope', undefined],
+    ['?hue=reef&from=guava', undefined],
+    ['?hue=custom', undefined],
+  ];
+  for (const [search, from] of rows) {
+    assert.equal(read(search).from, from, search);
+  }
+});

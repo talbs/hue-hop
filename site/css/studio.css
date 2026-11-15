@@ -217,7 +217,8 @@ wa-page::part(subheader) {
     font-weight var(--note-8) var(--ease-hit);
 }
 
-.studio:has(wa-slider:state(dragging)) .stage-word {
+.studio:has(wa-slider:state(dragging)) .stage-word,
+.studio .stage-word.is-swapping {
   transition: none;
 }
 

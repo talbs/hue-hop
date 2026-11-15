@@ -383,7 +383,23 @@ wa-page::part(subheader) {
   letter-spacing: -0.03em;
 }
 
-/* A fader's tick scale in the margin beside each heading: a short tick every 6px, a long one every 30px. Wide screens only, where the margin has room. */
+/* A fader's tick scale: a short tick every 6px, a long one every 30px. The section titles wear it in the margin on wide screens, where the margin has room. */
+:root {
+  --fader-ticks:
+    repeating-linear-gradient(
+        to bottom,
+        var(--border-container) 0 1px,
+        transparent 1px 30px
+      )
+      right / 100% 100% no-repeat,
+    repeating-linear-gradient(
+        to bottom,
+        var(--border-container) 0 1px,
+        transparent 1px 6px
+      )
+      right / 50% 100% no-repeat;
+}
+
 @media (min-width: 80rem) {
   .section-title::after {
     content: '';
@@ -391,19 +407,7 @@ wa-page::part(subheader) {
     inset-block: 0;
     inset-inline-end: calc(100% + var(--wa-space-2xl));
     width: 0.75rem;
-    background:
-      repeating-linear-gradient(
-          to bottom,
-          var(--border-container) 0 1px,
-          transparent 1px 30px
-        )
-        right / 100% 100% no-repeat,
-      repeating-linear-gradient(
-          to bottom,
-          var(--border-container) 0 1px,
-          transparent 1px 6px
-        )
-        right / 50% 100% no-repeat;
+    background: var(--fader-ticks);
     pointer-events: none;
   }
 }
@@ -767,6 +771,24 @@ wa-tooltip::part(body) {
   white-space: nowrap;
 }
 
+/* The copy button keeps its tooltip in its own shadow root, out of reach of the rules above, but exposes it as a part. */
+wa-copy-button::part(feedback) {
+  --wa-tooltip-background-color: var(--ink);
+  --wa-tooltip-content-color: var(--page);
+  --wa-tooltip-border-radius: var(--radius-cap);
+  --wa-tooltip-arrow-size: 4px;
+  --wa-tooltip-font-size: var(--wa-font-size-xs);
+  --wa-tooltip-line-height: var(--leading-tight);
+  --max-width: none;
+  /* Its padding can't be set from here. Its border can, so a border in the background color makes up the missing 0.15em on every side. */
+  --wa-tooltip-border-width: calc(1px + 0.15em);
+  --wa-tooltip-border-style: solid;
+  --wa-tooltip-border-color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: var(--weight-strong);
+  white-space: nowrap;
+}
+
 wa-copy-button::part(success-icon) {
   color: var(--lit);
 }
@@ -812,7 +834,8 @@ wa-copy-button::part(success-icon) {
     object-position: left center;
   }
 
-  :root:active-view-transition-type(page-move) .hero-title {
+  :root:active-view-transition-type(page-move)
+    :is(.playground-word, .hero-title) {
     view-transition-name: none;
   }
 

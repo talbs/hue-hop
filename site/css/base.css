@@ -407,7 +407,7 @@ a {
     clip-path: inset(0 100% 0 0);
   }
 
-  :root[data-wordmark-tucked] .hero-title {
+  :root[data-wordmark-tucked] :is(.playground-word, .hero-title) {
     view-transition-name: none;
   }
 }

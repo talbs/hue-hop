@@ -75,34 +75,6 @@ export const LETTER_HOP = {
   ],
 };
 
-export const LETTER_DROP = {
-  beats: 0.7,
-  keyframes: [
-    { translate: '0 -0.5em', scale: '0.9 1.14', opacity: 0, easing: 'ease-in' },
-    {
-      translate: '0 0',
-      scale: '0.93 1.1',
-      opacity: 1,
-      offset: 0.5,
-      easing: 'ease-out',
-    },
-    { translate: '0 0', scale: '1.13 0.87', offset: 0.64, easing: 'ease-out' },
-    {
-      translate: '0 -0.04em',
-      scale: '0.98 1.03',
-      offset: 0.8,
-      easing: 'ease-in',
-    },
-    {
-      translate: '0 0',
-      scale: '1.02 0.98',
-      offset: 0.9,
-      easing: 'ease-in-out',
-    },
-    { translate: '0 0', scale: '1 1' },
-  ],
-};
-
 // Splits a hue-hop into one span per letter so each can move, then puts the plain text back. A selection made mid-hop keeps the spans, since swapping the text would drop it.
 function splitIntoLetters(hop) {
   const spans = splitLetters(hop.textContent.trim()).map(({ letter }) => {
@@ -210,6 +182,50 @@ export function splitLetters(text) {
     letter: segment,
     isBlank: isBlankLetter(segment),
   }));
+}
+
+const runningReveals = new WeakMap();
+
+// The word stays one plain run of text, so its colors and kerning are final from the first frame. A clip steps open from one letter's edge to the next at typeOut's pace. The line must hold one line that never wraps.
+export function revealLetters(line, word, text) {
+  line.classList.add('is-swapping');
+  const stopSwapping = () => line.classList.remove('is-swapping');
+  if (!isMotionOk() || word.firstChild?.data !== text) {
+    stopSwapping();
+    return () => {};
+  }
+  const isRtl = getComputedStyle(line).direction === 'rtl';
+  const lineBox = line.getBoundingClientRect();
+  const letterRange = document.createRange();
+  const insets = [];
+  for (const { index, letter } of splitLetters(text)) {
+    letterRange.setStart(word.firstChild, index);
+    letterRange.setEnd(word.firstChild, index + letter.length);
+    const letterBox = letterRange.getBoundingClientRect();
+    const hidden = isRtl
+      ? letterBox.left - lineBox.left
+      : lineBox.right - letterBox.right;
+    insets.push(Math.max(hidden, 0));
+  }
+  const frames = insets.map((hidden, index) => ({
+    clipPath: isRtl
+      ? `inset(-25% -5% -25% ${hidden}px)`
+      : `inset(-25% ${hidden}px -25% -5%)`,
+    offset: index / insets.length,
+    easing: 'step-end',
+  }));
+  frames.push({ clipPath: 'inset(-25% -5% -25% -5%)', offset: 1 });
+  const reveal = line.animate(frames, {
+    duration: (beatMs() / 16) * insets.length,
+  });
+  runningReveals.set(line, reveal);
+  // A cancelled reveal settles after the next one has started, so only the latest one may end the swap.
+  reveal.finished
+    .catch(() => {})
+    .finally(() => {
+      if (runningReveals.get(line) === reveal) stopSwapping();
+    });
+  return () => reveal.cancel();
 }
 
 // One letter per 64th note, so the stage types on the same beat as the rest of the motion.
