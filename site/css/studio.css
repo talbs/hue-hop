@@ -246,7 +246,9 @@ wa-page::part(subheader) {
   --shadow-size: var(--wa-space-m);
 }
 
+/* A scrollbar that takes up room would make the strip taller the moment a long word overflowed, so its room is held from the start. */
 .bridge-strips wa-scroller::part(content) {
+  overflow-x: scroll;
   overscroll-behavior-inline: contain;
   scrollbar-color: var(--border-control) transparent;
   scrollbar-width: thin;
