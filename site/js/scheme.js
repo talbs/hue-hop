@@ -116,7 +116,7 @@ function isClearOfHeader(wordmark) {
 
 export function setSide(side) {
   if (document.startViewTransition && isMotionOk()) {
-    const wordmark = document.querySelector('.hero-title');
+    const wordmark = document.querySelector('.playground-word, .hero-title');
     const isWordmarkLifted = isClearOfHeader(wordmark);
     const edges = isWordmarkLifted ? letterEdges(wordmark) : [];
     if (!isWordmarkLifted) {

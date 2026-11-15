@@ -62,13 +62,6 @@ function checkHueChip(hue) {
 
 let wordFit = 1;
 
-// The word is a grid item stretched across its line, so its own box says nothing about the text's width.
-function measureWordWidth() {
-  const range = document.createRange();
-  range.selectNodeContents(live);
-  return range.getBoundingClientRect().width;
-}
-
 function setWordFit(fit) {
   wordFit = fit;
   stage.style.setProperty('--word-fit', fit);
@@ -77,7 +70,7 @@ function setWordFit(fit) {
 // The size may be mid-glide, so this works from the width per pixel of size and the size before the fit, neither of which glides.
 function fitWordToStage(text) {
   if (live.textContent !== text) return;
-  const width = measureWordWidth();
+  const width = live.getBoundingClientRect().width;
   if (width === 0) return;
   const lineStyle = getComputedStyle(wordLine);
   const widthPerSizePixel = width / parseFloat(lineStyle.fontSize);
@@ -92,7 +85,7 @@ function fitWordToStage(text) {
 
 // Width doesn't scale exactly with size, so once the word sits at its fitted size it is measured again.
 function trimOverflow() {
-  const overflow = measureWordWidth() / wordLine.clientWidth;
+  const overflow = live.getBoundingClientRect().width / wordLine.clientWidth;
   if (overflow > 1) setWordFit(wordFit / overflow);
 }
 
@@ -237,12 +230,14 @@ if (desk) {
     });
   }
   // The word's trip can't leave with half a word on the stage.
-  studioLink.addEventListener('click', (event) => {
-    if (!isPlainClick(event)) return;
-    stopTyping();
-    shouldTypeText = false;
-    live.textContent = textField.value;
-  });
+  for (const link of [studioLink, customLink]) {
+    link.addEventListener('click', (event) => {
+      if (!isPlainClick(event)) return;
+      stopTyping();
+      shouldTypeText = false;
+      live.textContent = textField.value;
+    });
+  }
   wordLine.addEventListener('transitionend', (event) => {
     if (event.propertyName === 'font-size') trimOverflow();
   });

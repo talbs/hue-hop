@@ -25,7 +25,9 @@ function forgetFlag() {
 forgetFlag();
 
 function wordOfLink(link) {
-  if (link.id === 'studio-link') return document.getElementById('live');
+  if (link.id === 'studio-link' || link.id === 'custom-link') {
+    return document.getElementById('live');
+  }
   return link.closest('figure')?.querySelector('.example-preview hue-hop');
 }
 
@@ -57,7 +59,9 @@ function isFollowingClick(activation) {
 document.addEventListener('click', (event) => {
   wordToSend = null;
   if (!isPlainClick(event)) return;
-  const link = event.target.closest?.('#studio-link, .code-studio');
+  const link = event.target.closest?.(
+    '#studio-link, #custom-link, .code-studio'
+  );
   if (!link) return;
   wordToSend = wordOfLink(link) ?? null;
   urlToSend = link.href;

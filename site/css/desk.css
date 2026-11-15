@@ -192,6 +192,7 @@
   view-transition-name: hero-wordmark;
   display: grid;
   align-content: center;
+  justify-items: start;
   min-height: calc(var(--word-base) * var(--leading-display));
   margin: 0;
   font-size: calc(var(--word-base) * var(--word-fit, 1));

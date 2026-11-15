@@ -812,7 +812,8 @@ wa-copy-button::part(success-icon) {
     object-position: left center;
   }
 
-  :root:active-view-transition-type(page-move) .hero-title {
+  :root:active-view-transition-type(page-move)
+    :is(.playground-word, .hero-title) {
     view-transition-name: none;
   }
 
