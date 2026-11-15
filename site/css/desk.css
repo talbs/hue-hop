@@ -4,112 +4,6 @@
   container-type: inline-size;
 }
 
-/* Fits the button tray, the side column's widest child. The copy takes whatever is left. */
-.hero-layout {
-  --flank-size: 18.5rem;
-  --content-percentage: 55%;
-  gap: var(--space-section) var(--space-page);
-}
-
-.hero-side {
-  container: hero-side / inline-size;
-}
-
-/* Background only: hidden from assistive tech and inert. Each cap rides its letter when the wordmark hops. */
-.fader-bank {
-  display: none;
-  gap: var(--space-section);
-  padding-inline: 0.8125rem;
-}
-
-/* Dimmed part by part, not as a whole bank, so a hop's fill glows at the Studio's full strength. */
-.fader-bank wa-slider::part(track) {
-  height: 11rem;
-  background: color-mix(in oklab, var(--surface-sunken) 40%, transparent);
-  box-shadow:
-    var(--depth-groove),
-    0 1px 0 color-mix(in oklab, var(--edge-light) 40%, transparent);
-}
-
-.fader-bank wa-slider::part(thumb) {
-  opacity: 0.4;
-}
-
-/* The dimmed cap is see-through, so the fill starts at its edge instead of running under it. */
-.fader-bank wa-slider::part(indicator) {
-  margin-block-start: calc(var(--thumb-height) / 2);
-}
-
-.hero-title {
-  view-transition-name: hero-wordmark;
-  /* "Hue Hop" is 3.756em of ink at this weight and spacing, so 100cqi / 3.76 runs it gutter to gutter. The 7.5rem cap holds it there until the display size catches up, so it never jumps. */
-  font-size: max(var(--type-display), min(100cqi / 3.76, 7.5rem));
-  font-weight: var(--weight-display);
-  line-height: var(--leading-display);
-  letter-spacing: -0.035em;
-  /* Closes the word gap from the font's 317 units to the vector wordmark's 210. */
-  word-spacing: -0.107em;
-  /* The H's left side bearing in Onest 800, so its stem lines up with the text below. */
-  margin-inline-start: -0.071em;
-}
-
-/* Hidden until hero.js drops the letters in, so the wordmark doesn't flash first. If the script never runs, it shows after a second anyway. */
-@media (prefers-reduced-motion: no-preference) {
-  .hero-title:not(.is-landed) {
-    animation: hero-wait 1s step-end;
-  }
-}
-
-@keyframes hero-wait {
-  from {
-    opacity: 0;
-  }
-}
-
-/* Fills the row in equal thirds on a phone. */
-.hero-actions {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  align-self: stretch;
-  padding: var(--wa-space-s);
-  border-radius: calc(var(--radius-control) + var(--wa-space-s));
-  background: var(--surface-sunken);
-  box-shadow: var(--depth-pressed);
-}
-
-.hero-actions .lit-button {
-  justify-content: center;
-}
-
-@media (min-width: 48rem) {
-  .hero-actions {
-    display: flex;
-    align-self: auto;
-  }
-
-  /* The side column only grows past its 18.5rem flank size once it wraps under the copy, and a wrapped column is far wider than 22rem. Wrapped, a bank on its own would look stranded. */
-  @container hero-side (width < 22rem) {
-    .fader-bank {
-      display: flex;
-    }
-  }
-
-  @container hero-side (width >= 22rem) {
-    .hero-actions {
-      align-self: start;
-    }
-  }
-}
-
-.hero-pitch {
-  max-width: 46rem;
-  margin-block-start: var(--space-section);
-  color: var(--ink-quiet);
-  font-size: var(--type-lead);
-  line-height: var(--leading-tight);
-}
-
 .stage {
   position: relative;
   isolation: isolate;
@@ -207,42 +101,6 @@
     font-size: var(--type-small);
   }
 }
-.lamp-led {
-  width: 0.625rem;
-  height: 0.625rem;
-}
-
-.lamp-state {
-  color: var(--ink);
-}
-
-.lamp-detail {
-  font-variant-numeric: tabular-nums;
-  text-transform: none;
-}
-
-.studio-caption {
-  color: var(--ink-quiet);
-  font-size: var(--type-small);
-  line-height: var(--leading-tight);
-}
-
-/* Plain inline links, so a long one can break across lines with the sentence. */
-.studio-caption .hop-link {
-  display: inline;
-}
-
-/* The footer's LED-segment divider, laid flat. */
-.desk > wa-divider {
-  --spacing: 0;
-  height: 2px;
-  border: 0;
-  background: repeating-linear-gradient(
-    to right,
-    var(--border-container) 0 2px,
-    transparent 2px 3px
-  );
-}
 
 @media (min-width: 48rem) {
   .stage {
@@ -270,5 +128,278 @@
 
   .desk-code {
     grid-column: 1 / -1;
+  }
+}
+
+.section.hero {
+  padding-block-start: 2.5rem;
+}
+
+.hero-intro {
+  display: grid;
+  gap: var(--space-group);
+  margin-block-end: var(--space-section);
+}
+
+.hero-lead {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.75rem, 1rem + 2.2vw, 2.75rem);
+  font-weight: var(--weight-heading);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+
+.hero-lead span {
+  color: var(--ink-quiet);
+}
+
+.hero-about {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--ink-quiet);
+  font-size: var(--type-body);
+  line-height: var(--leading-tight);
+  text-wrap: pretty;
+}
+
+.hero-about .hop-link {
+  display: inline;
+}
+
+/* The 404 page shares the stage classes, so every hero change to the stage is scoped to .playground. */
+.playground .stage {
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 0;
+  padding-block: var(--space-section);
+}
+
+.playground .stage-readout {
+  grid-area: 1 / 1;
+  align-self: start;
+}
+
+.playground .playground-word {
+  --base: min(8rem, 100cqi / 5);
+  view-transition-name: hero-wordmark;
+  display: grid;
+  align-content: center;
+  min-height: calc(var(--base) * var(--leading-display));
+  margin: 0;
+  font-size: calc(var(--base) * var(--word-fit, 1));
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  transition: font-size 260ms var(--ease-hit);
+}
+
+/* On a word swap the new size is set at once, so the letter edges measured for the reveal stay true. */
+.playground .playground-word.is-swapping {
+  transition: none;
+}
+
+.step-strip {
+  grid-area: 1 / 1;
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: var(--space-related);
+  min-width: 0;
+  max-width: calc(100% - 5rem);
+  margin-block-end: calc(var(--space-group) * 1.5);
+}
+
+.step-strip-row {
+  display: flex;
+  gap: 3px;
+  min-width: 0;
+}
+
+/* The shared ring-and-gap swatch, sized here because its size rule lives in the Studio sheet. */
+.step-strip-row .fit-swatch {
+  --swatch-gap: 2px;
+  inline-size: 1rem;
+  block-size: 1rem;
+  border-radius: var(--radius-cap);
+}
+
+.step-strip-row .fit-swatch,
+.step-strip-row .fit-swatch::before {
+  transition: background-color 240ms var(--ease-hit);
+}
+
+.step-strip-row .fit-swatch.is-new {
+  animation: step-chip-in 220ms var(--ease-hit) backwards;
+}
+
+@keyframes step-chip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.step-strip-row.is-dense {
+  gap: 1px;
+}
+
+.step-strip-row.is-dense .fit-swatch {
+  flex: none;
+  inline-size: var(--bar, 4px);
+  border: 0;
+  border-radius: 1px;
+  background: var(--swatch);
+}
+
+.step-strip-row.is-dense .fit-swatch::before {
+  content: none;
+}
+
+.desk-column {
+  display: grid;
+  align-content: start;
+  gap: var(--wa-space-l);
+  min-width: 0;
+}
+
+.studio-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding-inline: var(--space-tight);
+  border: 1px dashed var(--border-control);
+  background: none;
+  color: var(--ink-quiet);
+  font-family: var(--font-readout);
+  font-size: var(--type-label);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.studio-chip:is(:hover, :focus-visible) {
+  border-color: var(--ink-quiet);
+  color: var(--ink);
+}
+
+/* Four chips across a phone leave the Studio link little room. */
+@media (width < 30rem) {
+  .studio-chip {
+    gap: 0.2rem;
+    padding-inline: 2px;
+    letter-spacing: 0;
+  }
+}
+
+/* At 320px even the smaller label overruns the chip, so the arrow goes and the words stay legible. */
+@media (width < 23rem) {
+  .studio-chip {
+    font-size: 0.625rem;
+  }
+
+  .studio-chip [aria-hidden='true'] {
+    display: none;
+  }
+}
+
+.playground .desk-code .code-well {
+  flex-wrap: wrap;
+  gap: var(--space-related) var(--space-group);
+}
+
+.playground .desk-code .code-block {
+  flex: 1 1 16rem;
+}
+
+.hero-points {
+  display: grid;
+  gap: var(--space-section);
+  margin: calc(var(--space-section) * 1.75) 0 0;
+  padding: 0;
+}
+
+/* Title, body, link: the body row takes the slack, so every link sits on the same line. */
+.hero-points li {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-content: start;
+  gap: var(--space-related);
+  padding-inline-start: calc(0.75rem + var(--space-section));
+}
+
+/* The section titles' fader tick scale, standing beside each column. */
+.hero-points li::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 0.75rem;
+  background:
+    repeating-linear-gradient(
+        to bottom,
+        var(--border-container) 0 1px,
+        transparent 1px 30px
+      )
+      right / 100% 100% no-repeat,
+    repeating-linear-gradient(
+        to bottom,
+        var(--border-container) 0 1px,
+        transparent 1px 6px
+      )
+      right / 50% 100% no-repeat;
+  pointer-events: none;
+}
+
+.point-title {
+  color: var(--ink);
+  font-size: var(--type-lead);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+}
+
+.point-body {
+  margin: 0;
+  color: var(--ink-quiet);
+  font-size: var(--type-body);
+  line-height: var(--leading-tight);
+}
+
+.point-link {
+  justify-self: start;
+  margin-block-start: 0.25rem;
+  color: var(--ink);
+  font-size: var(--type-body);
+}
+
+@media (min-width: 48rem) {
+  .playground .stage {
+    --stage-pad-inline: 3rem;
+  }
+
+  .playground .desk {
+    --desk-pad: 3rem;
+    padding-block-start: var(--space-section);
+  }
+
+  .hero-points {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--space-page);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playground .playground-word,
+  .step-strip-row .fit-swatch,
+  .step-strip-row .fit-swatch::before {
+    transition: none;
+  }
+
+  .step-strip-row .fit-swatch.is-new {
+    animation: none;
   }
 }
