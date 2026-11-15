@@ -1027,8 +1027,10 @@ function showEdit() {
 function settleLinkedEnds() {
   const linkedEnds = { start: state.start, end: state.end };
   const hasLinkedEnd = Boolean(linkedEnds.start || linkedEnds.end);
+  const customFrom = state.from ?? DEFAULT_STUDIO.hue;
+  delete state.from;
   if (state.hue === 'custom' && !hasLinkedEnd) {
-    state.hue = DEFAULT_STUDIO.hue;
+    state.hue = customFrom;
     switchToCustom();
     return;
   }

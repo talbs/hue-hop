@@ -57,8 +57,8 @@ export const DEFAULT_STUDIO = {
   display: false,
   bar: 4.5,
   font: 'onest',
-  weight: 700,
-  size: 96,
+  weight: 800,
+  size: 128,
   pageA: '#141416',
   pageB: '#f7f7f5',
   isAccentOn: false,
@@ -195,6 +195,8 @@ export function readStudioParams(search, { isColor }) {
   if (start) state.start = start;
   if (end) state.end = end;
   if (isCustom) state.boost = defaultBoost(hue);
+  const from = params.get('from');
+  if (isCustom && PRESET_HUES.includes(from)) state.from = from;
 
   for (const name of Object.keys(NUMBER_RANGES)) {
     const value = readNumber(params, name);
