@@ -272,13 +272,14 @@ wa-page::part(subheader) {
   width: max-content;
 }
 
+/* Small and short windows save their height under the letters, not above: tight against the stage they read as part of its equalizer. */
 .meter {
   flex: none;
   inline-size: 2.75rem;
   display: grid;
   align-content: start;
   gap: var(--space-related);
-  padding-block: var(--meter-pad);
+  padding-block: var(--space-group) var(--meter-pad);
 }
 
 .meter-letter {
@@ -339,7 +340,7 @@ wa-page::part(subheader) {
 }
 
 .meters-empty {
-  padding-block: var(--meter-pad);
+  padding-block: var(--space-group) var(--meter-pad);
   font-size: var(--type-fine);
   color: var(--ink-faint);
 }
