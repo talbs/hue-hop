@@ -1480,15 +1480,3 @@
     grid-row: 6 / span 2;
   }
 }
-
-/* The margin's tick scale reads as noise against the grain and the wider grid. */
-#wild-title::after {
-  content: none;
-}
-
-/* Chrome only balances up to six lines, so on a phone the lead falls back to plain wrapping and strands its last word. */
-@media (width < 48rem) {
-  .wild-lead {
-    text-wrap: pretty;
-  }
-}

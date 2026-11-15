@@ -75,34 +75,6 @@ export const LETTER_HOP = {
   ],
 };
 
-export const LETTER_DROP = {
-  beats: 0.7,
-  keyframes: [
-    { translate: '0 -0.5em', scale: '0.9 1.14', opacity: 0, easing: 'ease-in' },
-    {
-      translate: '0 0',
-      scale: '0.93 1.1',
-      opacity: 1,
-      offset: 0.5,
-      easing: 'ease-out',
-    },
-    { translate: '0 0', scale: '1.13 0.87', offset: 0.64, easing: 'ease-out' },
-    {
-      translate: '0 -0.04em',
-      scale: '0.98 1.03',
-      offset: 0.8,
-      easing: 'ease-in',
-    },
-    {
-      translate: '0 0',
-      scale: '1.02 0.98',
-      offset: 0.9,
-      easing: 'ease-in-out',
-    },
-    { translate: '0 0', scale: '1 1' },
-  ],
-};
-
 // Splits a hue-hop into one span per letter so each can move, then puts the plain text back. A selection made mid-hop keeps the spans, since swapping the text would drop it.
 function splitIntoLetters(hop) {
   const spans = splitLetters(hop.textContent.trim()).map(({ letter }) => {
@@ -212,15 +184,14 @@ export function splitLetters(text) {
   }));
 }
 
-// The word stays one plain run of text, so its colors and kerning are final from the first frame. A clip steps open from one letter's edge to the next at typeOut's pace. The line must hold one line that never wraps.
 const runningReveals = new WeakMap();
 
-export function revealLetters(line, word, text, onFinish) {
+// The word stays one plain run of text, so its colors and kerning are final from the first frame. A clip steps open from one letter's edge to the next at typeOut's pace. The line must hold one line that never wraps.
+export function revealLetters(line, word, text) {
   line.classList.add('is-swapping');
   const stopSwapping = () => line.classList.remove('is-swapping');
   if (!isMotionOk() || word.firstChild?.data !== text) {
     stopSwapping();
-    onFinish?.();
     return () => {};
   }
   const isRtl = getComputedStyle(line).direction === 'rtl';
@@ -250,7 +221,7 @@ export function revealLetters(line, word, text, onFinish) {
   runningReveals.set(line, reveal);
   // A cancelled reveal settles after the next one has started, so only the latest one may end the swap.
   reveal.finished
-    .then(onFinish, () => {})
+    .catch(() => {})
     .finally(() => {
       if (runningReveals.get(line) === reveal) stopSwapping();
     });

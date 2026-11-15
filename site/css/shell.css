@@ -383,7 +383,23 @@ wa-page::part(subheader) {
   letter-spacing: -0.03em;
 }
 
-/* A fader's tick scale in the margin beside each heading: a short tick every 6px, a long one every 30px. Wide screens only, where the margin has room. */
+/* A fader's tick scale: a short tick every 6px, a long one every 30px. The section titles wear it in the margin on wide screens, where the margin has room. */
+:root {
+  --fader-ticks:
+    repeating-linear-gradient(
+        to bottom,
+        var(--border-container) 0 1px,
+        transparent 1px 30px
+      )
+      right / 100% 100% no-repeat,
+    repeating-linear-gradient(
+        to bottom,
+        var(--border-container) 0 1px,
+        transparent 1px 6px
+      )
+      right / 50% 100% no-repeat;
+}
+
 @media (min-width: 80rem) {
   .section-title::after {
     content: '';
@@ -391,19 +407,7 @@ wa-page::part(subheader) {
     inset-block: 0;
     inset-inline-end: calc(100% + var(--wa-space-2xl));
     width: 0.75rem;
-    background:
-      repeating-linear-gradient(
-          to bottom,
-          var(--border-container) 0 1px,
-          transparent 1px 30px
-        )
-        right / 100% 100% no-repeat,
-      repeating-linear-gradient(
-          to bottom,
-          var(--border-container) 0 1px,
-          transparent 1px 6px
-        )
-        right / 50% 100% no-repeat;
+    background: var(--fader-ticks);
     pointer-events: none;
   }
 }

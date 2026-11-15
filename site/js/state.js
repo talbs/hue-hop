@@ -50,6 +50,10 @@ export function describeMarkup(state) {
   return `${element}<span class="accent">${escapeHtml(state.accent)}</span>`;
 }
 
+function studioUrl(params) {
+  return `${new URL('../studio/', import.meta.url)}?${params}`;
+}
+
 export function describeStudioLink(state) {
   const params = new URLSearchParams();
   params.set('text', state.text);
@@ -62,7 +66,7 @@ export function describeStudioLink(state) {
   if (state.drift) params.set('drift', '1');
   if (state.display) params.set('display', '1');
   if (state.accent) params.set('accent', state.accent);
-  return `${new URL('../studio/', import.meta.url)}?${params}`;
+  return studioUrl(params);
 }
 
 // No boost or display: a custom link carries neither, so Studio seeds both ends from the hue's plain colors.
@@ -72,5 +76,5 @@ export function describeCustomStudioLink(state) {
   params.set('hue', 'custom');
   params.set('from', state.hue);
   if (state.drift) params.set('drift', '1');
-  return `${new URL('../studio/', import.meta.url)}?${params}`;
+  return studioUrl(params);
 }

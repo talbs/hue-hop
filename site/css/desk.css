@@ -28,7 +28,7 @@
   margin-inline-end: var(--space-related);
 }
 
-/* Starts below the readout, so no bar sits under the hue and contrast. */
+/* Starts below the readout, so no bar sits under the hue name. */
 .stage-eq {
   inset-block: calc(var(--space-section) * 2) 0;
   inset-inline: var(--stage-pad-inline);
@@ -196,7 +196,7 @@
   min-height: calc(var(--word-base) * var(--leading-display));
   margin: 0;
   font-size: calc(var(--word-base) * var(--word-fit, 1));
-  font-weight: 800;
+  font-weight: var(--weight-display);
   letter-spacing: -0.035em;
   white-space: nowrap;
   overflow-wrap: normal;
@@ -230,7 +230,7 @@
   min-width: 0;
 }
 
-/* The shared ring-and-gap swatch, sized here because its size rule lives in the Studio sheet. */
+/* The shared ring-and-gap swatch, sized here because the Studio sheet sets its size. */
 .step-strip-row .fit-swatch {
   --swatch-gap: 2px;
   inline-size: 1rem;
@@ -346,33 +346,20 @@
   padding-inline-start: calc(0.75rem + var(--space-section));
 }
 
-/* The section titles' fader tick scale, standing beside each column. */
 .hero-points li::before {
   content: '';
   position: absolute;
   inset-block: 0;
   inset-inline-start: 0;
   width: 0.75rem;
-  background:
-    repeating-linear-gradient(
-        to bottom,
-        var(--border-container) 0 1px,
-        transparent 1px 30px
-      )
-      right / 100% 100% no-repeat,
-    repeating-linear-gradient(
-        to bottom,
-        var(--border-container) 0 1px,
-        transparent 1px 6px
-      )
-      right / 50% 100% no-repeat;
+  background: var(--fader-ticks);
   pointer-events: none;
 }
 
 .point-title {
   color: var(--ink);
   font-size: var(--type-lead);
-  font-weight: 600;
+  font-weight: var(--weight-strong);
   line-height: var(--leading-tight);
 }
 
