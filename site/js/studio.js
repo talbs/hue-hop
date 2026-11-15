@@ -14,7 +14,7 @@ import {
   showStepBars,
   tintStepBars,
   splitLetters,
-  typeOut,
+  revealLetters,
 } from './motion.js';
 import { whenSideChanges } from './scheme.js';
 import { defaultBoost, escapeHtml } from './state.js';
@@ -946,7 +946,7 @@ function paint() {
   showWord();
   stopTyping();
   if (shouldTypeWord && isMotionOk()) {
-    stopTyping = typeOut(hop, wordInUse(), fitWordToStage);
+    stopTyping = revealLetters(wordmark, hop, wordInUse());
   }
   shouldTypeWord = false;
   showPageColors();

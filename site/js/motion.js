@@ -212,6 +212,51 @@ export function splitLetters(text) {
   }));
 }
 
+// The word stays one plain run of text, so its colors and kerning are final from the first frame. A clip steps open from one letter's edge to the next at typeOut's pace. The line must hold one line that never wraps.
+const runningReveals = new WeakMap();
+
+export function revealLetters(line, word, text, onFinish) {
+  line.classList.add('is-swapping');
+  const stopSwapping = () => line.classList.remove('is-swapping');
+  if (!isMotionOk() || word.firstChild?.data !== text) {
+    stopSwapping();
+    onFinish?.();
+    return () => {};
+  }
+  const isRtl = getComputedStyle(line).direction === 'rtl';
+  const lineBox = line.getBoundingClientRect();
+  const letterRange = document.createRange();
+  const insets = [];
+  for (const { index, letter } of splitLetters(text)) {
+    letterRange.setStart(word.firstChild, index);
+    letterRange.setEnd(word.firstChild, index + letter.length);
+    const letterBox = letterRange.getBoundingClientRect();
+    const hidden = isRtl
+      ? letterBox.left - lineBox.left
+      : lineBox.right - letterBox.right;
+    insets.push(Math.max(hidden, 0));
+  }
+  const frames = insets.map((hidden, index) => ({
+    clipPath: isRtl
+      ? `inset(-25% -5% -25% ${hidden}px)`
+      : `inset(-25% ${hidden}px -25% -5%)`,
+    offset: index / insets.length,
+    easing: 'step-end',
+  }));
+  frames.push({ clipPath: 'inset(-25% -5% -25% -5%)', offset: 1 });
+  const reveal = line.animate(frames, {
+    duration: (beatMs() / 16) * insets.length,
+  });
+  runningReveals.set(line, reveal);
+  // A cancelled reveal settles after the next one has started, so only the latest one may end the swap.
+  reveal.finished
+    .then(onFinish, () => {})
+    .finally(() => {
+      if (runningReveals.get(line) === reveal) stopSwapping();
+    });
+  return () => reveal.cancel();
+}
+
 // One letter per 64th note, so the stage types on the same beat as the rest of the motion.
 export function typeOut(element, text, onFinish) {
   const letters = splitLetters(text).map(({ letter }) => letter);

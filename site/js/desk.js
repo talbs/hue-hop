@@ -1,7 +1,12 @@
 import { isColorModeOn } from './contrast.js';
 import { whenSideChanges } from './scheme.js';
 
-import { isMotionOk, STAGE_BARS, showStepBars, typeOut } from './motion.js';
+import {
+  isMotionOk,
+  revealLetters,
+  STAGE_BARS,
+  showStepBars,
+} from './motion.js';
 import {
   DEFAULT_STATE,
   describeCustomStudioLink,
@@ -160,13 +165,16 @@ function render() {
     live.toggleAttribute('drift', state.drift);
     live.toggleAttribute('display', state.display);
     fillCode(markup, describeMarkup(state));
+    stopTyping();
+    const isRevealing = shouldTypeText && isMotionOk() && state.text;
+    // A swapped word takes its new size at once, so the reveal measures the letters where they land.
+    if (isRevealing) wordLine.classList.add('is-swapping');
     fitWordToStage(state.text);
     studioLink.href = describeStudioLink(state);
     customLink.href = describeCustomStudioLink(state);
     stageHue.textContent = state.hue;
-    stopTyping();
-    if (shouldTypeText && isMotionOk() && state.text) {
-      stopTyping = typeOut(live, state.text);
+    if (isRevealing) {
+      stopTyping = revealLetters(wordLine, live, state.text);
     }
     shouldTypeText = false;
     // The element re-steps its colors on the next frame.
