@@ -441,11 +441,10 @@ wa-page::part(subheader) {
 }
 
 .fit-swatch {
-  --swatch-gap: 2px;
   display: inline-block;
   inline-size: 1em;
   block-size: 1em;
-  border-radius: var(--radius-cap);
+  border-radius: 2px;
 }
 
 .desk {
