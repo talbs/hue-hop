@@ -94,11 +94,19 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* At 320px the chip names need a smaller size to fit four across with room around them. */
+.desk .hue-chip {
+  container-type: inline-size;
+}
+
+/* The longest hue name is about 3em wide, so with enlarged text the name shrinks to fit instead of clipping. */
+.desk .hue-chip hue-hop {
+  font-size: min(1em, 100cqi / 3.1);
+}
+
+/* At 320px four chips across leave the names little room, so the padding tightens. */
 @media (width < 23rem) {
   .desk .hue-chip {
     padding-inline: var(--space-tight);
-    font-size: var(--type-small);
   }
 }
 
