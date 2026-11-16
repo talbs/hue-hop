@@ -132,14 +132,13 @@ wa-page::part(subheader) {
   }
 }
 
+/* One row at every width. When the links don't fit, the nav's scroller takes the squeeze. */
 .site-header-inner {
   display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-areas:
-    'wordmark side'
-    'nav nav';
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'wordmark nav side';
   align-items: center;
-  column-gap: var(--space-group);
+  column-gap: var(--space-related);
   max-width: var(--header-measure);
   margin-inline: auto;
   padding: var(--space-related) var(--gutter) 0;
@@ -148,7 +147,7 @@ wa-page::part(subheader) {
 .site-wordmark {
   grid-area: wordmark;
   justify-self: start;
-  font-size: var(--type-lead);
+  font-size: var(--type-body);
   text-decoration: none;
 }
 
@@ -167,8 +166,10 @@ wa-page::part(subheader) {
   transform-box: view-box;
 }
 
+/* Hugs its links, so its page move only slides. */
 .site-nav {
   grid-area: nav;
+  justify-self: end;
   max-inline-size: 100%;
   overflow-x: auto;
   scrollbar-width: none;
@@ -321,22 +322,10 @@ wa-page::part(subheader) {
   }
 }
 
-/* Hugs its links, so its page move only slides. */
-@media (min-width: 23rem) {
-  .site-nav {
-    justify-self: end;
-  }
-}
-
-/* From 368px the header fits on one line, with a body-size wordmark. */
-@media (23rem <= width < 48rem) {
-  .site-header-inner {
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: 'wordmark nav side';
-  }
-
-  .site-wordmark {
-    font-size: var(--type-body);
+/* Below 368px the links fit beside the wordmark only with the tightest gaps. */
+@media (width < 23rem) {
+  .site-nav-links {
+    gap: var(--space-related);
   }
 }
 
@@ -363,9 +352,11 @@ wa-page::part(subheader) {
   }
 
   .site-header-inner {
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: 'wordmark nav side';
     padding-block: var(--space-related);
+  }
+
+  .site-wordmark {
+    font-size: var(--type-lead);
   }
 }
 
