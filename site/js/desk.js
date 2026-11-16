@@ -89,8 +89,7 @@ function trimOverflow() {
   if (overflow > 1) setWordFit(wordFit / overflow);
 }
 
-const CHIP_WIDTH = 16;
-const CHIP_GAP = 3;
+const MAX_STEP_WIDTH = 16;
 const BAR_GAP = 1;
 
 function readStepColors() {
@@ -118,13 +117,9 @@ function paintStepStrip() {
   if (colors.length === 0) return;
 
   const room = roomForSteps();
-  const isDense = colors.length * (CHIP_WIDTH + CHIP_GAP) - CHIP_GAP > room;
-  stepStripRow.classList.toggle('is-dense', isDense);
-  const barWidth = (room - (colors.length - 1) * BAR_GAP) / colors.length;
-  stepStripRow.style.setProperty(
-    '--bar',
-    `${Math.min(8, Math.max(2, barWidth)).toFixed(1)}px`
-  );
+  const roomPerStep = (room - (colors.length - 1) * BAR_GAP) / colors.length;
+  const stepWidth = Math.min(MAX_STEP_WIDTH, Math.max(2, roomPerStep));
+  stepStripRow.style.setProperty('--bar', `${stepWidth.toFixed(1)}px`);
 
   // Chips that stay are recolored in place so the color glides. Only new ones drop in.
   while (stepStripRow.children.length > colors.length) {

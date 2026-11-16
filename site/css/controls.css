@@ -234,22 +234,25 @@ wa-scroller:not(:defined) {
   scrollbar-width: thin;
 }
 
-/* The pickers' ring-and-gap look, for a color shown outside a picker. */
-.themer-swatch,
-.fit-swatch {
+/* The pickers' ring-and-gap look, for the themer's color outside a picker. */
+.themer-swatch {
   position: relative;
   border: var(--border-thin) solid var(--border-control);
   border-radius: var(--radius-control);
   forced-color-adjust: none;
 }
 
-.themer-swatch::before,
-.fit-swatch::before {
+.themer-swatch::before {
   content: '';
   position: absolute;
   inset: var(--swatch-gap, 4px);
   border-radius: 2px;
   background: var(--swatch);
+}
+
+.fit-swatch {
+  background: var(--swatch);
+  forced-color-adjust: none;
 }
 
 /* A real gap between the ring and the color, in place of Web Awesome's shadow over a checkerboard. */

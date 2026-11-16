@@ -225,20 +225,16 @@
 
 .step-strip-row {
   display: flex;
-  gap: 3px;
+  gap: 1px;
   min-width: 0;
+  overflow: clip;
 }
 
-/* The shared ring-and-gap swatch, sized here because the Studio sheet sets its size. */
 .step-strip-row .fit-swatch {
-  --swatch-gap: 2px;
-  inline-size: 1rem;
+  flex: none;
+  inline-size: var(--bar);
   block-size: 1rem;
-  border-radius: var(--radius-cap);
-}
-
-.step-strip-row .fit-swatch,
-.step-strip-row .fit-swatch::before {
+  border-radius: 1px;
   transition: background-color 240ms var(--ease-hit);
 }
 
@@ -251,23 +247,6 @@
     opacity: 0;
     transform: translateY(-4px);
   }
-}
-
-.step-strip-row.is-dense {
-  gap: 1px;
-  overflow: clip;
-}
-
-.step-strip-row.is-dense .fit-swatch {
-  flex: none;
-  inline-size: var(--bar, 4px);
-  border: 0;
-  border-radius: 1px;
-  background: var(--swatch);
-}
-
-.step-strip-row.is-dense .fit-swatch::before {
-  content: none;
 }
 
 .option-row {
@@ -446,8 +425,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .playground .playground-word,
-  .step-strip-row .fit-swatch,
-  .step-strip-row .fit-swatch::before {
+  .step-strip-row .fit-swatch {
     transition: none;
   }
 
