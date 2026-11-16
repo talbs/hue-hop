@@ -105,246 +105,241 @@
               class="desk"
               id="desk"
             >
-              <div class="desk-column">
-                <div class="wa-stack wa-gap-xs">
-                  <span
-                    class="readout-label"
-                    aria-hidden="true"
+              <div class="desk-text wa-stack wa-gap-xs">
+                <span
+                  class="readout-label"
+                  aria-hidden="true"
+                >
+                  Text
+                </span>
+                <div class="wa-flank:end wa-gap-s">
+                  <wa-input
+                    class="wa-visually-hidden-label"
+                    id="desk-text"
+                    label="Text"
+                    maxlength="200"
+                    value="Hue Hop"
+                    autocomplete="off"
+                    spellcheck="false"
+                  ></wa-input>
+                  <button
+                    type="button"
+                    class="lit-button"
+                    id="shuffle"
                   >
-                    Text
-                  </span>
-                  <div class="wa-flank:end wa-gap-s">
-                    <wa-input
-                      class="wa-visually-hidden-label"
-                      id="desk-text"
-                      label="Text"
-                      maxlength="200"
-                      value="Hue Hop"
-                      autocomplete="off"
-                      spellcheck="false"
-                    ></wa-input>
-                    <button
-                      type="button"
-                      class="lit-button"
-                      id="shuffle"
-                    >
-                      Shuffle
-                    </button>
-                  </div>
-                  <wa-random-content
-                    id="samples"
-                    items="1"
-                    hidden
-                  >
-                    {{sample-titles}}
-                  </wa-random-content>
+                    Shuffle
+                  </button>
                 </div>
-                <div class="wa-stack wa-gap-xs">
-                  <span
-                    class="readout-label"
-                    id="options-label"
-                  >
-                    Options
-                  </span>
-                  <div
-                    class="option-row"
-                    role="group"
-                    aria-labelledby="options-label"
-                  >
-                    <button
-                      type="button"
-                      class="lit-button toggle"
-                      id="toggle-drift"
-                      name="drift"
-                      aria-pressed="false"
-                      aria-describedby="drift-tip"
-                    >
-                      <span
-                        class="led"
-                        aria-hidden="true"
-                      ></span>
-                      Drift
-                    </button>
-                    <button
-                      type="button"
-                      class="lit-button toggle"
-                      id="toggle-display"
-                      name="display"
-                      aria-pressed="false"
-                      aria-describedby="display-tip"
-                    >
-                      <span
-                        class="led"
-                        aria-hidden="true"
-                      ></span>
-                      Display
-                    </button>
-                  </div>
-                  <wa-tooltip
-                    for="toggle-drift"
-                    id="drift-tip"
-                  >
-                    Slowly sways the colors back and forth. Needs drift.css.
-                  </wa-tooltip>
-                  <wa-tooltip
-                    for="toggle-display"
-                    id="display-tip"
-                  >
-                    For large headings: a brighter version of the hue that
-                    passes 3:1.
-                  </wa-tooltip>
-                </div>
+                <wa-random-content
+                  id="samples"
+                  items="1"
+                  hidden
+                >
+                  {{sample-titles}}
+                </wa-random-content>
               </div>
-
-              <div class="desk-column">
-                <div class="wa-stack wa-gap-xs">
-                  <span
-                    class="readout-label"
-                    id="hues-label"
+              <div class="desk-hues wa-stack wa-gap-xs">
+                <span
+                  class="readout-label"
+                  id="hues-label"
+                >
+                  Hues
+                </span>
+                <div
+                  class="hue-grid"
+                  role="radiogroup"
+                  aria-labelledby="hues-label"
+                >
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="true"
+                    data-hue="dusk"
+                    aria-describedby="hue-route-dusk"
                   >
-                    Hues
-                  </span>
-                  <div
-                    class="hue-grid"
-                    role="radiogroup"
-                    aria-labelledby="hues-label"
+                    <hue-hop hue="dusk">dusk</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="reef"
+                    aria-describedby="hue-route-reef"
                   >
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="true"
-                      data-hue="dusk"
-                      aria-describedby="hue-route-dusk"
-                    >
-                      <hue-hop hue="dusk">dusk</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="reef"
-                      aria-describedby="hue-route-reef"
-                    >
-                      <hue-hop hue="reef">reef</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="fern"
-                      aria-describedby="hue-route-fern"
-                    >
-                      <hue-hop hue="fern">fern</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="ember"
-                      aria-describedby="hue-route-ember"
-                    >
-                      <hue-hop hue="ember">ember</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="guava"
-                      aria-describedby="hue-route-guava"
-                    >
-                      <hue-hop hue="guava">guava</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="orchid"
-                      aria-describedby="hue-route-orchid"
-                    >
-                      <hue-hop hue="orchid">orchid</hue-hop>
-                    </button>
-                    <button
-                      type="button"
-                      class="chip hue-chip"
-                      role="radio"
-                      aria-checked="false"
-                      tabindex="-1"
-                      data-hue="honey"
-                      aria-describedby="hue-route-honey"
-                    >
-                      <hue-hop hue="honey">honey</hue-hop>
-                    </button>
-                    <a
-                      class="chip studio-chip"
-                      id="custom-link"
-                      href="{{studio-url}}?text=Hue+Hop&hue=custom&from=dusk"
-                      aria-describedby="custom-tip"
-                    >
-                      Your
-                      <span>own</span>
-                      <span class="wa-visually-hidden">colors, in Studio</span>
-                    </a>
-                  </div>
-                  <wa-tooltip
-                    for="custom-link"
-                    id="custom-tip"
+                    <hue-hop hue="reef">reef</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="fern"
+                    aria-describedby="hue-route-fern"
                   >
-                    Set your own start and end colors in Studio
-                  </wa-tooltip>
-                  <span
-                    class="wa-visually-hidden"
-                    id="hue-route-dusk"
+                    <hue-hop hue="fern">fern</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="ember"
+                    aria-describedby="hue-route-ember"
                   >
-                    pale sky to blue-violet
-                  </span>
-                  <span
-                    class="wa-visually-hidden"
-                    id="hue-route-reef"
+                    <hue-hop hue="ember">ember</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="guava"
+                    aria-describedby="hue-route-guava"
                   >
-                    pale aqua to blue
-                  </span>
-                  <span
-                    class="wa-visually-hidden"
-                    id="hue-route-fern"
+                    <hue-hop hue="guava">guava</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="orchid"
+                    aria-describedby="hue-route-orchid"
                   >
-                    lime to pine
-                  </span>
-                  <span
-                    class="wa-visually-hidden"
-                    id="hue-route-ember"
+                    <hue-hop hue="orchid">orchid</hue-hop>
+                  </button>
+                  <button
+                    type="button"
+                    class="chip hue-chip"
+                    role="radio"
+                    aria-checked="false"
+                    tabindex="-1"
+                    data-hue="honey"
+                    aria-describedby="hue-route-honey"
                   >
-                    coral to fire red
-                  </span>
-                  <span
-                    class="wa-visually-hidden"
-                    id="hue-route-guava"
+                    <hue-hop hue="honey">honey</hue-hop>
+                  </button>
+                  <a
+                    class="chip studio-chip"
+                    id="custom-link"
+                    href="{{studio-url}}?text=Hue+Hop&hue=custom&from=dusk"
+                    aria-describedby="custom-tip"
                   >
-                    peach to magenta
-                  </span>
-                  <span
-                    class="wa-visually-hidden"
-                    id="hue-route-orchid"
-                  >
-                    blush pink to aubergine
-                  </span>
-                  <span
-                    class="wa-visually-hidden"
-                    id="hue-route-honey"
-                  >
-                    butter yellow to tangerine
-                  </span>
+                    Your
+                    <span>own</span>
+                    <span class="wa-visually-hidden">colors, in Studio</span>
+                  </a>
                 </div>
+                <wa-tooltip
+                  for="custom-link"
+                  id="custom-tip"
+                >
+                  Set your own start and end colors in Studio
+                </wa-tooltip>
+                <span
+                  class="wa-visually-hidden"
+                  id="hue-route-dusk"
+                >
+                  pale sky to blue-violet
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="hue-route-reef"
+                >
+                  pale aqua to blue
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="hue-route-fern"
+                >
+                  lime to pine
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="hue-route-ember"
+                >
+                  coral to fire red
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="hue-route-guava"
+                >
+                  peach to magenta
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="hue-route-orchid"
+                >
+                  blush pink to aubergine
+                </span>
+                <span
+                  class="wa-visually-hidden"
+                  id="hue-route-honey"
+                >
+                  butter yellow to tangerine
+                </span>
+              </div>
+              <div class="desk-options wa-stack wa-gap-xs">
+                <span
+                  class="readout-label"
+                  id="options-label"
+                >
+                  Options
+                </span>
+                <div
+                  class="option-row"
+                  role="group"
+                  aria-labelledby="options-label"
+                >
+                  <button
+                    type="button"
+                    class="lit-button toggle"
+                    id="toggle-drift"
+                    name="drift"
+                    aria-pressed="false"
+                    aria-describedby="drift-tip"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Drift
+                  </button>
+                  <button
+                    type="button"
+                    class="lit-button toggle"
+                    id="toggle-display"
+                    name="display"
+                    aria-pressed="false"
+                    aria-describedby="display-tip"
+                  >
+                    <span
+                      class="led"
+                      aria-hidden="true"
+                    ></span>
+                    Display
+                  </button>
+                </div>
+                <wa-tooltip
+                  for="toggle-drift"
+                  id="drift-tip"
+                >
+                  Slowly sways the colors back and forth. Needs drift.css.
+                </wa-tooltip>
+                <wa-tooltip
+                  for="toggle-display"
+                  id="display-tip"
+                >
+                  For large headings: a brighter version of the hue that passes
+                  3:1.
+                </wa-tooltip>
               </div>
 
               <div class="desk-code wa-stack wa-gap-s">
