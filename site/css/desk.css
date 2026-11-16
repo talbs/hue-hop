@@ -138,7 +138,7 @@
 .hero-intro {
   display: grid;
   gap: var(--space-group);
-  margin-block-end: var(--space-section);
+  margin-block-end: var(--space-group);
 }
 
 .hero-lead {
@@ -357,8 +357,8 @@
 
 .hero-points {
   display: grid;
-  gap: var(--space-section);
-  margin: calc(var(--space-section) * 1.75) 0 0;
+  gap: var(--space-group);
+  margin: calc(var(--space-section) * 1.5) 0 0;
   padding: 0;
 }
 
@@ -368,8 +368,8 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   align-content: start;
-  gap: var(--space-related);
-  padding-inline-start: calc(0.75rem + var(--space-section));
+  gap: var(--space-tight);
+  padding-inline-start: calc(0.75rem + var(--space-related));
 }
 
 .hero-points li::before {
@@ -384,7 +384,7 @@
 
 .point-title {
   color: var(--ink);
-  font-size: var(--type-lead);
+  font-size: var(--type-body);
   font-weight: var(--weight-strong);
   line-height: var(--leading-tight);
 }
@@ -392,15 +392,32 @@
 .point-body {
   margin: 0;
   color: var(--ink-quiet);
-  font-size: var(--type-body);
+  font-size: var(--type-small);
   line-height: var(--leading-tight);
 }
 
 .point-link {
+  position: relative;
   justify-self: start;
   margin-block-start: 0.25rem;
   color: var(--ink);
-  font-size: var(--type-body);
+  font-size: var(--type-small);
+}
+
+/* The words sit in a box shorter than a tap target, so the target reaches past them. */
+.point-link::after {
+  content: '';
+  position: absolute;
+  inset-block: calc((var(--tap) - 100%) / -2);
+  inset-inline: 0;
+}
+
+@media (width < 48rem) {
+  .hero-points .point-link:not(:hover, :focus-visible) {
+    background-size:
+      100% 0,
+      100% var(--border-thin);
+  }
 }
 
 @media (min-width: 48rem) {
@@ -413,13 +430,32 @@
     padding-block-start: var(--space-section);
   }
 
+  .hero-intro {
+    margin-block-end: var(--space-section);
+  }
+
   .hero-lead {
     text-wrap: balance;
   }
 
   .hero-points {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: var(--space-page);
+    gap: var(--space-section) var(--space-page);
+    margin-block-start: calc(var(--space-section) * 1.75);
+  }
+
+  .hero-points li {
+    gap: var(--space-related);
+    padding-inline-start: calc(0.75rem + var(--space-section));
+  }
+
+  .point-title {
+    font-size: var(--type-lead);
+  }
+
+  .point-body,
+  .point-link {
+    font-size: var(--type-body);
   }
 }
 
