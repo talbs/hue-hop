@@ -342,6 +342,40 @@
   flex: 1 1 16rem;
 }
 
+@media (width < 48rem) {
+  .playground .desk-code .code-well {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--tap);
+    grid-template-areas:
+      'code code'
+      'studio copy';
+    row-gap: var(--space-group);
+  }
+
+  .playground .desk-code .code-block {
+    grid-area: code;
+    font-size: var(--type-fine);
+  }
+
+  /* Inside its shadow root the button sits in a line of text with empty slots around it. Their spaces and line height would push the button off the square. */
+  .playground .desk-code .code-copy {
+    grid-area: copy;
+    margin-block: 0;
+    font-size: 0;
+  }
+
+  .playground .desk-code .code-copy::part(button) {
+    inline-size: var(--tap);
+    block-size: var(--tap);
+    font-size: var(--type-body);
+  }
+
+  .playground #studio-link {
+    grid-area: studio;
+    justify-self: start;
+  }
+}
+
 .hero-points {
   display: grid;
   gap: var(--space-section);
