@@ -270,8 +270,31 @@
   content: none;
 }
 
+.option-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-related);
+}
+
+.option-row .lit-button {
+  justify-content: center;
+  padding-inline: var(--space-related);
+}
+
+@media (min-width: 64rem) {
+  .option-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .option-row .lit-button {
+    padding-inline: var(--space-group);
+  }
+}
+
 .desk-column {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: var(--wa-space-l);
   min-width: 0;
@@ -299,23 +322,14 @@
   color: var(--ink);
 }
 
-/* Four chips across a phone leave the Studio link little room. */
+/* Four chips across a phone leave the Studio link little room, so the label stacks. */
 @media (width < 30rem) {
   .studio-chip {
-    gap: 0.2rem;
+    flex-direction: column;
+    gap: 0;
     padding-inline: 2px;
     letter-spacing: 0;
-  }
-}
-
-/* At 320px even the smaller label overruns the chip, so the arrow goes and the words stay legible. */
-@media (width < 23rem) {
-  .studio-chip {
-    font-size: 0.625rem;
-  }
-
-  .studio-chip [aria-hidden='true'] {
-    display: none;
+    line-height: 1.1;
   }
 }
 
