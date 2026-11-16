@@ -148,7 +148,6 @@
   font-weight: var(--weight-heading);
   line-height: 1.1;
   letter-spacing: var(--tracking-display);
-  text-wrap: balance;
 }
 
 .hero-lead span {
@@ -161,11 +160,11 @@
   color: var(--ink-quiet);
   font-size: var(--type-body);
   line-height: var(--leading-tight);
-  text-wrap: pretty;
 }
 
 .hero-about .hop-link {
   display: inline;
+  white-space: nowrap;
 }
 
 /* The 404 page shares the stage classes, so every hero change to the stage is scoped to .playground. */
@@ -385,6 +384,10 @@
   .playground .desk {
     --desk-pad: 3rem;
     padding-block-start: var(--space-section);
+  }
+
+  .hero-lead {
+    text-wrap: balance;
   }
 
   .hero-points {
