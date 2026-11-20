@@ -195,9 +195,18 @@
 
 /* The 404 page shares the stage classes, so every hero change to the stage is scoped to .playground. */
 .playground .stage {
+  --stage-pad-inline: var(--gutter);
   grid-template-columns: minmax(0, 1fr);
   min-height: 0;
   padding-block: var(--space-section);
+}
+
+.playground .desk {
+  --desk-pad: var(--gutter);
+}
+
+.playground .stage-eq {
+  opacity: 0.16;
 }
 
 /* Registered as a length so desk.js can read the word's size before the fit in pixels. */
@@ -451,15 +460,15 @@
     margin-block-start: var(--space-related);
   }
 
+  /* In the flow, on its own row, so a word that runs the full width never reaches it. */
   .playground .step-strip {
     --strip-share: 0.5;
-    position: absolute;
-    inset-block-start: var(--space-section);
-    inset-inline-end: var(--stage-pad-inline);
+    justify-self: end;
     display: flex;
     align-items: center;
     gap: var(--space-related);
     max-width: calc(var(--strip-share) * 100%);
+    min-block-size: 1rem;
   }
 
   .playground .hero-intro {
