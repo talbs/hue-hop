@@ -164,7 +164,7 @@
 .hero-intro {
   display: grid;
   gap: var(--space-group);
-  margin-block-end: var(--space-group);
+  margin-block-end: var(--wa-space-l);
 }
 
 .hero-lead {
@@ -375,7 +375,7 @@
 
 .hero-points {
   display: grid;
-  gap: var(--space-group);
+  gap: var(--wa-space-l);
   margin: calc(var(--space-section) * 1.5) 0 0;
   padding: 0;
 }
@@ -431,6 +431,13 @@
 }
 
 @media (width < 48rem) {
+  /* On most phones the link can't fit on the paragraph's last line, so it always takes its own. */
+  .hero-about .hop-link {
+    display: block;
+    inline-size: fit-content;
+    margin-block-start: var(--space-related);
+  }
+
   .hero-points .point-link:not(:hover, :focus-visible) {
     background-size:
       100% 0,
