@@ -315,6 +315,14 @@
   color: var(--ink);
 }
 
+/* A heading whose last word ends near the screen edge hangs its anchor past it. Clipped, the anchor can't widen the page. */
+@media (width < 860px) {
+  .docs-page::part(body),
+  .docs-page:not(:defined) > main {
+    overflow-x: clip;
+  }
+}
+
 .example-panel,
 .example > .example-preview {
   border: var(--border-thin) solid var(--border-container);
