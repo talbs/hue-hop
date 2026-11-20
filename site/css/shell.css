@@ -322,15 +322,15 @@ wa-page::part(subheader) {
   }
 }
 
-/* Below 368px the links fit beside the wordmark only with the tightest gaps. */
+/* Below 368px all three links fit only with gaps too tight to read as separate. The footer links to GitHub too. */
 @media (width < 23rem) {
-  .site-nav-links {
-    gap: var(--space-related);
+  .site-nav [data-nav='github'] {
+    display: none;
   }
 }
 
 /* The tight gaps are only for phones, to make room for the links. From 480px the desktop's fit, with room to spare. */
-@media (23rem <= width < 30rem) {
+@media (width < 30rem) {
   .site-header-inner {
     column-gap: var(--wa-space-s);
   }
