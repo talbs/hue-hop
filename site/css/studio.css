@@ -742,6 +742,13 @@ wa-option {
   color: var(--hop-end, transparent);
 }
 
+/* With its label the bar is 2px wider than a 320px window. The picker keeps its own label for screen readers. */
+@media (width < 23rem) {
+  .page-pick .readout-label {
+    display: none;
+  }
+}
+
 @media (width < 50rem) {
   .channel {
     --bar-control: var(--tap);
