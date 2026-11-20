@@ -1201,23 +1201,25 @@ function readGlideTops() {
   return glideParts.map((part) => part.getBoundingClientRect().top);
 }
 
+let runningGlides = [];
+
 // Layout changes once, then each part slides from where it was. Transforms stay smooth where animating the height would lay out the panels and refit the word on every frame.
 function glideFrom(oldTops) {
   if (!isMotionOk()) return;
   const easing = getComputedStyle(document.documentElement).getPropertyValue(
     '--ease-hit'
   );
-  for (const part of glideParts) {
-    for (const animation of part.getAnimations()) animation.cancel();
-  }
+  for (const glide of runningGlides) glide.cancel();
+  runningGlides = [];
   const newTops = readGlideTops();
   for (const [index, part] of glideParts.entries()) {
     const distance = oldTops[index] - newTops[index];
     if (Math.abs(distance) < 1) continue;
-    part.animate(
+    const glide = part.animate(
       { transform: [`translateY(${distance}px)`, 'translateY(0)'] },
       { duration: beatMs() / 2, easing }
     );
+    runningGlides.push(glide);
   }
 }
 
@@ -1265,6 +1267,7 @@ function moveHueChoice(event) {
 }
 
 function resetStudio() {
+  const oldTops = readGlideTops();
   Object.assign(state, structuredClone(DEFAULT_STUDIO), { side: state.side });
   links = null;
   setAsideCustom = null;
@@ -1274,6 +1277,7 @@ function resetStudio() {
   writeFieldsFromState();
   shouldTypeWord = true;
   showEdit();
+  glideAfterRender(oldTops);
 }
 
 let copiedTimer;
@@ -1385,15 +1389,14 @@ copyLinkTip.addEventListener('wa-after-hide', () => {
 codeDrawer.addEventListener('wa-show', showCode);
 isColorModeOn.addEventListener('change', render);
 
-document.addEventListener('sidechange', ({ detail }) => {
-  state.side = detail.side;
-  writeAddressSoon();
-});
 addEventListener('pagehide', flushAddress);
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) flushAddress();
 });
-whenSideChanges(render);
+whenSideChanges(() => {
+  state.side = document.documentElement.dataset.side;
+  showEdit();
+});
 
 // A frame later, because resizing the word from inside the observer resizes what it's watching.
 new ResizeObserver(() => requestAnimationFrame(fitWordToStage)).observe(
