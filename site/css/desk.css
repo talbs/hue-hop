@@ -28,7 +28,7 @@
   margin-inline-end: var(--space-related);
 }
 
-/* Starts below the readout, so no bar sits under the hue name. */
+/* Starts below the readout or step strip, so no bar sits under either. */
 .stage-eq {
   inset-block: calc(var(--space-section) * 2) 0;
   inset-inline: var(--stage-pad-inline);
@@ -161,34 +161,34 @@
   padding-block-start: 2.5rem;
 }
 
-.hero-intro {
+.playground .hero-intro {
   display: grid;
-  gap: var(--space-group);
-  margin-block-end: var(--wa-space-l);
+  gap: calc(var(--space-group) * 0.75);
+  margin-block-start: calc(var(--space-group) * 1.5);
 }
 
-.hero-lead {
+.playground .hero-lead {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(1.75rem, 1rem + 2.2vw, 2.75rem);
+  font-size: clamp(1.375rem, 1rem + 1vw, 1.75rem);
   font-weight: var(--weight-heading);
-  line-height: 1.1;
+  line-height: 1.2;
   letter-spacing: var(--tracking-display);
 }
 
-.hero-lead span {
+.playground .hero-lead span {
   color: var(--ink-quiet);
 }
 
-.hero-about {
-  max-width: 62ch;
+.playground .hero-about {
+  max-width: 36rem;
   margin: 0;
   color: var(--ink-quiet);
-  font-size: var(--type-body);
-  line-height: var(--leading-tight);
+  font-size: 1rem;
+  line-height: 1.45;
 }
 
-.hero-about .hop-link {
+.playground .hero-about .hop-link {
   display: inline;
   white-space: nowrap;
 }
@@ -198,11 +198,6 @@
   grid-template-columns: minmax(0, 1fr);
   min-height: 0;
   padding-block: var(--space-section);
-}
-
-.playground .stage-readout {
-  grid-area: 1 / 1;
-  align-self: start;
 }
 
 /* Registered as a length so desk.js can read the word's size before the fit in pixels. */
@@ -234,17 +229,10 @@
 }
 
 .step-strip {
-  grid-area: 1 / 1;
-  justify-self: start;
-  display: flex;
-  align-items: center;
-  gap: var(--space-related);
-  min-width: 0;
-  max-width: calc(100% - 5rem);
-  margin-block-end: calc(var(--space-group) * 1.5);
+  display: none;
 }
 
-/* Hidden but holding its row, so the stage keeps one height. */
+/* The 48rem display: flex outranks the hidden attribute, so hidden has to work another way. */
 .step-strip[hidden] {
   visibility: hidden;
 }
@@ -294,6 +282,10 @@
 
   .option-row .lit-button {
     padding-inline: var(--space-group);
+  }
+
+  .playground .hero-about {
+    max-width: 48rem;
   }
 }
 
@@ -432,7 +424,7 @@
 
 @media (width < 48rem) {
   /* On most phones the link can't fit on the paragraph's last line, so it always takes its own. */
-  .hero-about .hop-link {
+  .playground .hero-about .hop-link {
     display: block;
     inline-size: fit-content;
     margin-block-start: var(--space-related);
@@ -455,12 +447,32 @@
     padding-block-start: var(--space-section);
   }
 
-  .hero-intro {
-    margin-block-end: var(--space-section);
+  .playground .playground-word {
+    margin-block-start: var(--space-related);
   }
 
-  .hero-lead {
+  .playground .step-strip {
+    --strip-share: 0.5;
+    position: absolute;
+    inset-block-start: var(--space-section);
+    inset-inline-end: var(--stage-pad-inline);
+    display: flex;
+    align-items: center;
+    gap: var(--space-related);
+    max-width: calc(var(--strip-share) * 100%);
+  }
+
+  .playground .hero-intro {
+    gap: var(--space-group);
+    margin-block-start: var(--space-section);
+  }
+
+  .playground .hero-lead {
     text-wrap: balance;
+  }
+
+  .playground .hero-about {
+    font-size: var(--type-body);
   }
 
   .hero-points {

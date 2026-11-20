@@ -26,7 +26,6 @@ const stepStripRow = stage?.querySelector('.step-strip-row');
 const textField = document.getElementById('desk-text');
 const hueChips = [...document.querySelectorAll('#desk .hue-chip')];
 const samples = document.getElementById('samples');
-const stageHue = document.getElementById('stage-hue');
 const markup = document.getElementById('markup');
 const studioLink = document.getElementById('studio-link');
 const customLink = document.getElementById('custom-link');
@@ -99,24 +98,25 @@ function readStepColors() {
   );
 }
 
-// The strip may take the stage's width less 5rem, which keeps it clear of the hue name, and less its START and END labels.
-function roomForSteps() {
+function roomForSteps(stripStyle) {
   const labels = [...stepStrip.children].filter(
     (child) => child !== stepStripRow
   );
-  const gap = parseFloat(getComputedStyle(stepStrip).columnGap);
-  const remPx = parseFloat(getComputedStyle(document.documentElement).fontSize);
-  let room = wordLine.clientWidth - 5 * remPx - gap * labels.length;
+  const share = parseFloat(stripStyle.getPropertyValue('--strip-share'));
+  const gap = parseFloat(stripStyle.columnGap);
+  let room = wordLine.clientWidth * share - gap * labels.length;
   for (const label of labels) room -= label.offsetWidth;
   return room;
 }
 
 function paintStepStrip() {
+  const stripStyle = getComputedStyle(stepStrip);
+  if (stripStyle.display === 'none') return;
   const colors = isColorModeOn.matches ? readStepColors() : [];
   stepStrip.hidden = colors.length === 0;
   if (colors.length === 0) return;
 
-  const room = roomForSteps();
+  const room = roomForSteps(stripStyle);
   const roomPerStep = (room - (colors.length - 1) * BAR_GAP) / colors.length;
   const stepWidth = Math.min(MAX_STEP_WIDTH, Math.max(2, roomPerStep));
   stepStripRow.style.setProperty('--bar', `${stepWidth.toFixed(1)}px`);
@@ -160,7 +160,6 @@ function render() {
     fitWordToStage(state.text);
     studioLink.href = describeStudioLink(state);
     customLink.href = describeCustomStudioLink(state);
-    stageHue.textContent = state.hue;
     if (isRevealing) {
       stopTyping = revealLetters(wordLine, live, state.text);
     }
