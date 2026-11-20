@@ -347,10 +347,6 @@ wa-page::part(subheader) {
 }
 
 @media (min-width: 48rem) {
-  :root {
-    --gutter: var(--space-section);
-  }
-
   .site-header-inner {
     padding-block: var(--space-related);
   }

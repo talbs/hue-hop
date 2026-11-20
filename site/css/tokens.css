@@ -78,7 +78,7 @@
   --space-group: var(--wa-space-m);
   --space-section: var(--wa-space-xl);
   --space-page: clamp(3rem, 2rem + 5vw, 6rem);
-  --gutter: var(--space-group);
+  --gutter: clamp(var(--space-group), 5vw, var(--space-section));
   --measure: 72rem;
   --measure-wide: 110rem;
 
