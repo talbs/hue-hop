@@ -70,6 +70,7 @@
   --panel-radius: 0.625rem;
   --stage-inset: var(--space-section);
   --word-size: 3.5rem;
+  --word-floor: 2.5rem;
   --meter-tile: 1.5rem;
   --meter-pad: var(--space-tight);
 }
@@ -966,10 +967,15 @@ wa-option {
     pointer-events: auto;
   }
 
+  /* The stage's size can't come from the word, so without a floor the panels take every pixel and the word shrinks to nothing. */
   .stage {
-    min-height: 0;
-    padding: calc(var(--gutter) + var(--bar-control) + var(--space-related))
-      var(--stage-inset) var(--space-related);
+    --stage-pad-top: calc(
+      var(--gutter) + var(--bar-control) + var(--space-related)
+    );
+    min-height: calc(
+      var(--stage-pad-top) + var(--space-related) + var(--word-floor) * 1.2
+    );
+    padding: var(--stage-pad-top) var(--stage-inset) var(--space-related);
   }
 
   .desk {
