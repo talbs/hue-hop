@@ -66,8 +66,8 @@
             Hue Hop is one custom element:
             <code>&lt;hue-hop&gt;</code>
             . It colors each letter of a heading a flat step from a start color
-            to an end color. It's still real text, so you can select it, copy
-            it, and search for it. Pick one of
+            to an end color. It's still real text. Select it, copy it, search
+            for it. Pick one of
             <a href="#hues">seven hues</a>
             with
             <code>hue</code>
@@ -301,9 +301,9 @@
               </div>
             </figure>
             <p>
-              The heading stays one piece of text, so select, find, and copy
-              work like on any heading. Kerning holds, links inside keep
-              working, and nothing moves when the colors load.
+              The heading stays one piece of text. Select, find, and copy work
+              like on any heading. Kerning holds, links inside keep working, and
+              nothing moves when the colors load.
             </p>
             <h3 id="pick-colors">3. Pick Colors</h3>
             <p>
@@ -608,9 +608,9 @@
               </strong>
               They use
               <code>light-dark()</code>
-              , so without a
+              . Without a
               <code>color-scheme</code>
-              on the page you always get the light colors. See
+              on the page, you always get the light colors. See
               <a href="#light-and-dark">Light and Dark</a>
               .
             </wa-callout>
@@ -646,8 +646,7 @@
               <code>end</code>
               attribute wins over the hue's, and so does a
               <code>--hop-*</code>
-              value set on the element. So you can pick a hue and change one
-              end.
+              value set on the element. Pick a hue, then change one end.
             </p>
             <figure class="example">
               <div class="example-preview wa-not-prose wa-stack wa-gap-xs">
@@ -668,9 +667,9 @@
               .
             </p>
             <p>
-              A rule on the element beats the hue, even inside a cascade layer,
-              so Tailwind v4 utilities work with no setup. A color set on a
-              parent, like
+              A rule on the element beats the hue, even inside a cascade layer.
+              Tailwind v4 utilities work with no setup. A color set on a parent,
+              like
               <code>:root</code>
               , loses to the hue. A boost set there beats it. See
               <a href="#which-value-wins">Which Value Wins</a>
@@ -863,7 +862,7 @@ el.start = null;       // removes start</code></pre>
               ></wa-copy-button>
             </div>
             <p>
-              Two-word names use camelCase, so
+              Two-word names use camelCase:
               <code>drift-range</code>
               is
               <code>el.driftRange</code>
@@ -871,7 +870,7 @@ el.start = null;       // removes start</code></pre>
               <code>display</code>
               and
               <code>drift</code>
-              are on or off, so they take
+              are on or off, and take
               <code>true</code>
               or
               <code>false</code>
@@ -940,7 +939,7 @@ el.start = null;       // removes start</code></pre>
               </table>
             </wa-scroller>
             <p>
-              So for body text on a light page,
+              For body text on a light page,
               <code>start="oklch(50% 0.15 250)"</code>
               passes. The
               <code>50%</code>
@@ -948,7 +947,7 @@ el.start = null;       // removes start</code></pre>
             </p>
             <p>
               These hold for any hue and any chroma a screen can show. Lightness
-              steps evenly from one end to the other, so if both ends pass, most
+              steps evenly from one end to the other. If both ends pass, most
               letters between them do too. Ends far apart on the color wheel
               (green to violet, say) can still dip in the middle, and
               <a href="#boost">boost</a>
@@ -963,8 +962,8 @@ el.start = null;       // removes start</code></pre>
               Yellows can't stay bright that dark. At
               <code>52%</code>
               , a yellow holds about half the color (OKLCH chroma) a blue or
-              pink can, so it goes dull. For a yellow start, use the display bar
-              or a dark page.
+              pink can. It goes dull. For a yellow start, use the display bar or
+              a dark page.
             </p>
             <p>
               Or let the
@@ -993,7 +992,7 @@ el.start = null;       // removes start</code></pre>
             <p>
               The element has no theme logic. It reads
               <code>--hop-*</code>
-              live, so when your theme changes them, the letters follow with no
+              live. When your theme changes them, the letters follow with no
               re-render. Flip the side switch in the header. Examples that use a
               <code>hue</code>
               or
@@ -1204,8 +1203,8 @@ el.start = null;       // removes start</code></pre>
             </wa-scroller>
             <p>
               Drift only turns the colors, and lightness holds. Contrast can
-              still shift a little as they turn, so leave some margin at the
-              start and end colors. Drift stops when the visitor prefers reduced
+              still shift a little as they turn. Leave some margin at the start
+              and end colors. Drift stops when the visitor prefers reduced
               motion, and under forced colors and increased contrast.
             </p>
             <p>
@@ -1323,10 +1322,7 @@ el.start = null;       // removes start</code></pre>
               </div>
               <div>
                 <dt class="readout-label">Where to use it</dt>
-                <dd>
-                  Use it on headings and names, not body copy. Body copy gets
-                  hard to read when every letter changes color.
-                </dd>
+                <dd>Use it on headings and names, not body copy.</dd>
               </div>
               <div>
                 <dt class="readout-label">Display</dt>
@@ -1502,7 +1498,7 @@ el.start = null;       // removes start</code></pre>
               >
                 Studio
               </a>
-              checks them after the clip, so it catches this.
+              checks them after the clip and catches this.
             </wa-callout>
             <h3 id="shift">Shift</h3>
             <p>
@@ -1513,8 +1509,8 @@ el.start = null;       // removes start</code></pre>
               <code>30deg</code>
               ). The default is
               <code>0</code>
-              . Lightness holds, so it's a quick way to try a pair in another
-              color without picking new ends.
+              . Lightness holds. It's a quick way to try a pair in another color
+              without picking new ends.
             </p>
             <figure
               class="example"
@@ -1994,13 +1990,13 @@ el.start = null;       // removes start</code></pre>
             </div>
             <h3 id="server-rendering">Server Rendering</h3>
             <p>
-              Importing it on the server is safe. There's no browser there, so
-              it does nothing, and the heading goes out as plain text. The
-              colors arrive when the same import runs in the browser.
+              Importing it on the server is safe. There's no browser there. It
+              does nothing, and the heading goes out as plain text. The colors
+              arrive when the same import runs in the browser.
             </p>
             <p>
-              So import it from code that also runs in the browser. Code that
-              only runs on the server never defines the element on the page.
+              Import it from code that also runs in the browser. Code that only
+              runs on the server never defines the element on the page.
             </p>
             <ul>
               <li>
@@ -2113,7 +2109,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               The element adds its styles from JavaScript as constructed
               stylesheets (built in script, not written into the page), not a
               <code>&lt;style&gt;</code>
-              tag. So your policy doesn't need
+              tag. Your policy doesn't need
               <code>style-src 'unsafe-inline'</code>
               for it.
               <code>drift.css</code>
@@ -2126,7 +2122,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               describes every attribute, property, and custom property in the
               Custom Elements Manifest format. The package's
               <code>customElements</code>
-              field points to it, so any tool that reads the format can find it.
+              field points to it. Any tool that reads the format can find it.
               Scripts can import it as
               <code>hue-hop/custom-elements.json</code>
               .
@@ -2191,9 +2187,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <h3 id="test-doms">Test DOMs</h3>
             <p>
               Your tests won't break. jsdom and happy-dom can't paint
-              highlights, so the element loads and shows its text with no
-              colors. It logs nothing. Checked with jsdom 30.1, happy-dom 21.0,
-              and Vitest 5.1's
+              highlights. The element loads and shows its text with no colors.
+              It logs nothing. Checked with jsdom 30.1, happy-dom 21.0, and
+              Vitest 5.1's
               <code>jsdom</code>
               and
               <code>happy-dom</code>
@@ -2303,9 +2299,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>hue-hop-0</code>
               up to
               <code>hue-hop-63</code>
-              . Every one has priority −1, so your own highlights (a search-term
-              marker, say) paint above them. The names are public and won't
-              change.
+              . Every one has priority −1. Your own highlights paint above them.
+              The names are public and won't change.
             </p>
             <p>
               <code>CSS.highlights.clear()</code>
@@ -2317,8 +2312,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <h3 id="step-count">Step Count</h3>
             <p>
               Every letter except a space gets its own step, up to 64. Longer
-              text shares steps, so a 200-letter heading still runs the whole
-              ramp at about three letters per color. More steps would slow every
+              text shares steps. A 200-letter heading still runs the whole ramp,
+              at about three letters per color. More steps would slow every
               restyle (the browser working out styles again) on the page, theme
               switches and drift included.
             </p>
@@ -2486,7 +2481,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <p>
               Without JavaScript, or before the element loads, the heading is
               plain text in its normal color. When the colors arrive, nothing
-              moves, so there's no layout shift to prevent and nothing to load
+              moves. There's no layout shift to prevent and nothing to load
               ahead of it.
             </p>
           </section>
@@ -2503,18 +2498,11 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <h3 id="limits-colors">Colors</h3>
             <ul>
               <li>
-                The element can't check contrast at the start and end colors, so
-                that part is up to you.
+                The element can't check contrast at the start and end colors.
+                That part is up to you.
               </li>
               <li>Two ends, no middle stops.</li>
-              <li>
-                A typo in a color (
-                <code>start="tael"</code>
-                ) shows plain text. A
-                <code>var()</code>
-                that points nowhere counts as left out, so Hue Hop picks its
-                partner instead.
-              </li>
+
               <li>
                 Ends far apart on the color wheel, and boost, can push the
                 middle letters past what an sRGB screen can show. They get
@@ -2631,16 +2619,16 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                     <code>shift="30deg"</code>
                     (write
                     <code>30</code>
-                    ). Hue Hop passes values through unchecked, so the letters
-                    fall back to the heading's normal color. A bad
+                    ). Hue Hop passes values through unchecked. The letters fall
+                    back to the heading's normal color. A bad
                     <code>drift-range</code>
                     or
                     <code>drift-cycle</code>
                     only stops the sway.
                   </li>
                   <li>
-                    An older browser. Below the floor the heading stays plain on
-                    purpose. See
+                    An older browser. Below the floor the heading stays plain.
+                    See
                     <a href="#browser-support">Browser Support</a>
                     .
                   </li>
@@ -2670,7 +2658,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   </li>
                   <li>
                     Forced colors or increased contrast is on. The effect turns
-                    off on purpose. See
+                    off by design. See
                     <a href="#accessibility">Accessibility</a>
                     .
                   </li>
@@ -2826,8 +2814,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   gets a
                   <code>StaticRange</code>
                   (a fixed start and end point in the text) over the real text
-                  node, and each step is one highlight. So there are no spans.
-                  The element adds one thing: a shadow root holding one
+                  node, and each step is one highlight. No spans. The element
+                  adds one thing: a shadow root holding one
                   <code>&lt;slot&gt;</code>
                   . Your text stays where you wrote it.
                 </dd>
@@ -2839,7 +2827,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   <code>color-mix()</code>
                   in OKLCH between the two ends. The curve spaces the steps,
                   boost saturates the middle, and shift and drift turn the hue.
-                  So a theme switch or a
+                  A theme switch or a
                   <code>--hop-*</code>
                   change recolors the letters with no JavaScript. Read the
                   <a href="{{repo-url}}/blob/main/src/formula.css">formula</a>
@@ -2859,9 +2847,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   <code>start</code>
                   or
                   <code>end</code>
-                  value, so a page of headings with the same ends adds two
-                  rules. At 256 rules, that sheet is rebuilt from the elements
-                  still on the page.
+                  value. A page of headings with the same ends adds two rules.
+                  At 256 rules, that sheet is rebuilt from the elements still on
+                  the page.
                 </dd>
               </div>
               <div>
@@ -2914,8 +2902,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <div>
                 <dt class="readout-label">Why now</dt>
                 <dd>
-                  The CSS Custom Highlight API ships in Chrome, Firefox, and
-                  Safari. That's what lets the text stay text.
+                  The CSS Custom Highlight API now ships in Chrome, Firefox, and
+                  Safari. Before it, a color per letter meant a span around
+                  every letter.
                 </dd>
               </div>
             </dl>
