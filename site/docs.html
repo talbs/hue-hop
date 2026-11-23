@@ -608,9 +608,9 @@
               </strong>
               They use
               <code>light-dark()</code>
-              , so without a
+              . Without a
               <code>color-scheme</code>
-              on the page you always get the light colors. See
+              on the page, you always get the light colors. See
               <a href="#light-and-dark">Light and Dark</a>
               .
             </wa-callout>
@@ -862,7 +862,7 @@ el.start = null;       // removes start</code></pre>
               ></wa-copy-button>
             </div>
             <p>
-              Two-word names use camelCase, so
+              Two-word names use camelCase:
               <code>drift-range</code>
               is
               <code>el.driftRange</code>
@@ -870,7 +870,7 @@ el.start = null;       // removes start</code></pre>
               <code>display</code>
               and
               <code>drift</code>
-              are on or off, so they take
+              are on or off, and take
               <code>true</code>
               or
               <code>false</code>
@@ -1203,8 +1203,8 @@ el.start = null;       // removes start</code></pre>
             </wa-scroller>
             <p>
               Drift only turns the colors, and lightness holds. Contrast can
-              still shift a little as they turn, so leave some margin at the
-              start and end colors. Drift stops when the visitor prefers reduced
+              still shift a little as they turn. Leave some margin at the start
+              and end colors. Drift stops when the visitor prefers reduced
               motion, and under forced colors and increased contrast.
             </p>
             <p>
@@ -1498,7 +1498,7 @@ el.start = null;       // removes start</code></pre>
               >
                 Studio
               </a>
-              checks them after the clip, so it catches this.
+              checks them after the clip and catches this.
             </wa-callout>
             <h3 id="shift">Shift</h3>
             <p>
@@ -1509,8 +1509,8 @@ el.start = null;       // removes start</code></pre>
               <code>30deg</code>
               ). The default is
               <code>0</code>
-              . Lightness holds, so it's a quick way to try a pair in another
-              color without picking new ends.
+              . Lightness holds. It's a quick way to try a pair in another color
+              without picking new ends.
             </p>
             <figure
               class="example"
@@ -1990,9 +1990,9 @@ el.start = null;       // removes start</code></pre>
             </div>
             <h3 id="server-rendering">Server Rendering</h3>
             <p>
-              Importing it on the server is safe. There's no browser there, so
-              it does nothing, and the heading goes out as plain text. The
-              colors arrive when the same import runs in the browser.
+              Importing it on the server is safe. There's no browser there. It
+              does nothing, and the heading goes out as plain text. The colors
+              arrive when the same import runs in the browser.
             </p>
             <p>
               Import it from code that also runs in the browser. Code that only
@@ -2122,7 +2122,7 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               describes every attribute, property, and custom property in the
               Custom Elements Manifest format. The package's
               <code>customElements</code>
-              field points to it, so any tool that reads the format can find it.
+              field points to it. Any tool that reads the format can find it.
               Scripts can import it as
               <code>hue-hop/custom-elements.json</code>
               .
@@ -2187,9 +2187,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <h3 id="test-doms">Test DOMs</h3>
             <p>
               Your tests won't break. jsdom and happy-dom can't paint
-              highlights, so the element loads and shows its text with no
-              colors. It logs nothing. Checked with jsdom 30.1, happy-dom 21.0,
-              and Vitest 5.1's
+              highlights. The element loads and shows its text with no colors.
+              It logs nothing. Checked with jsdom 30.1, happy-dom 21.0, and
+              Vitest 5.1's
               <code>jsdom</code>
               and
               <code>happy-dom</code>
@@ -2299,9 +2299,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
               <code>hue-hop-0</code>
               up to
               <code>hue-hop-63</code>
-              . Every one has priority −1, so your own highlights (a search-term
-              marker, say) paint above them. The names are public and won't
-              change.
+              . Every one has priority −1. Your own highlights paint above them.
+              The names are public and won't change.
             </p>
             <p>
               <code>CSS.highlights.clear()</code>
@@ -2499,8 +2498,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
             <h3 id="limits-colors">Colors</h3>
             <ul>
               <li>
-                The element can't check contrast at the start and end colors, so
-                that part is up to you.
+                The element can't check contrast at the start and end colors.
+                That part is up to you.
               </li>
               <li>Two ends, no middle stops.</li>
 
@@ -2620,8 +2619,8 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                     <code>shift="30deg"</code>
                     (write
                     <code>30</code>
-                    ). Hue Hop passes values through unchecked, so the letters
-                    fall back to the heading's normal color. A bad
+                    ). Hue Hop passes values through unchecked. The letters fall
+                    back to the heading's normal color. A bad
                     <code>drift-range</code>
                     or
                     <code>drift-cycle</code>
@@ -2848,9 +2847,9 @@ customElements.define('my-hop', class extends HueHop {});</code></pre>
                   <code>start</code>
                   or
                   <code>end</code>
-                  value, so a page of headings with the same ends adds two
-                  rules. At 256 rules, that sheet is rebuilt from the elements
-                  still on the page.
+                  value. A page of headings with the same ends adds two rules.
+                  At 256 rules, that sheet is rebuilt from the elements still on
+                  the page.
                 </dd>
               </div>
               <div>
